@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Fedezd fel a digitális titkokat – Interaktív nyomozós krimi</title>
+    <meta name="description" content="Interaktív online nyomozós krimi a kiberbiztonság világában. Rejtélyek, hackelés, logikai feladványok és döntések – csatlakozz most!" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet" />
+
+    <style>
+        :root {
+            --bg: #0b0f14;
+            --panel: #101820;
+            --ink: #cfe6ff;
+            --muted: #94a3b8;
+            --neon: #00e5ff;
+            --neon-2: #7c3aed;
+            --accent: #21ffc3;
+            --danger: #ff3b6b;
+            --ok: #33ff99;
+        }
+        html, body { height: 100%; }
+        body {
+            margin: 0;
+            background: radial-gradient(1200px 800px at 70% -10%, #0d1320 0%, #0b0f14 45%, #06090d 100%),
+                        linear-gradient(180deg, rgba(16,24,32,0.6), rgba(16,24,32,0.1));
+            color: var(--ink);
+            font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, 'Helvetica Neue', Arial, sans-serif;
+            -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility;
+        }
+        .scanlines {
+            position: fixed; inset: 0; pointer-events: none; z-index: 0;
+            background: repeating-linear-gradient(180deg, rgba(255,255,255,0.03) 0 1px, transparent 1px 3px);
+            mix-blend-mode: overlay;
+        }
+        .grid-overlay {
+            position: fixed; inset: 0; pointer-events: none; z-index: 0;
+            background-image:
+                linear-gradient(rgba(124,58,237,0.07) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0,229,255,0.07) 1px, transparent 1px);
+            background-size: 40px 40px, 40px 40px;
+        }
+        .container { width: min(1100px, 92vw); margin: 0 auto; position: relative; z-index: 2; }
+
+        header { padding: 20px 0; display: flex; align-items: center; justify-content: space-between; }
+        .brand { display: flex; align-items: center; gap: 12px; color: var(--ink); text-decoration: none; }
+        .brand-badge {
+            width: 36px; height: 36px; border-radius: 8px; display: grid; place-items: center;
+            background: linear-gradient(135deg, var(--neon), var(--neon-2));
+            box-shadow: 0 0 20px rgba(0,229,255,0.45), inset 0 0 12px rgba(33,255,195,0.35);
+            font-family: Rajdhani, Inter, sans-serif; font-weight: 700; color: #051018;
+        }
+        .brand-title { font-weight: 700; letter-spacing: .5px; }
+
+        .hero { display: grid; grid-template-columns: 1.1fr .9fr; gap: clamp(16px, 4vw, 36px); align-items: center; padding: 40px 0 16px; }
+        .hero h1 { font-family: Rajdhani, Inter, sans-serif; font-size: clamp(28px, 4.2vw, 48px); line-height: 1.1; margin: 0 0 10px; }
+        .hero p.lead { font-size: clamp(16px, 1.5vw, 18px); color: var(--muted); margin: 0 0 18px; }
+        .cta-row { display: flex; gap: 14px; flex-wrap: wrap; }
+        .btn { display: inline-flex; align-items: center; gap: 10px; padding: 14px 22px; border-radius: 12px; text-decoration: none; font-weight: 700; letter-spacing: .3px; font-size: 16px; }
+        .btn-primary { background: linear-gradient(135deg, var(--neon), var(--accent)); color: #07131b; box-shadow: 0 10px 24px rgba(0,229,255,0.25); }
+        .btn-primary:hover { filter: brightness(1.05); transform: translateY(-1px); }
+        .btn-secondary { background: #0f1621; color: var(--ink); border: 1px solid rgba(207,230,255,0.15); }
+        .btn-secondary:hover { background: #131e2b; }
+
+        .terminal-card {
+            position: relative; background: linear-gradient(180deg, #0d141d, #0a0f17);
+            border: 1px solid rgba(207,230,255,0.08); border-radius: 16px; padding: 18px;
+            box-shadow: 0 14px 30px rgba(0,0,0,0.35), inset 0 0 80px rgba(124,58,237,0.06);
+            overflow: hidden; min-height: 280px;
+        }
+        .terminal-card::before {
+            content: ""; position: absolute; inset: -40% -30% auto auto; width: 70%; height: 160%;
+            background: radial-gradient(closest-side, rgba(0,229,255,0.18), transparent 70%);
+            transform: rotate(12deg); filter: blur(18px); pointer-events: none;
+        }
+        .terminal-bar { display: flex; gap: 6px; margin-bottom: 10px; }
+        .dot { width: 10px; height: 10px; border-radius: 999px; }
+        .dot.red { background: #ff5f56; } .dot.yellow { background: #ffbd2e; } .dot.green { background: #27c93f; }
+        .terminal-body { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 14px; color: #b0c7e8; line-height: 1.6; }
+        .prompt { color: var(--neon); }
+        .cursor { display:inline-block; width: 8px; height: 1.1em; background: var(--neon); animation: blink 1.2s step-end infinite; vertical-align: middle; }
+        @keyframes blink { 50% { opacity: 0; } }
+
+        .features { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin: 26px 0 10px; }
+        .feat { background: #0f1621; border: 1px solid rgba(207,230,255,0.08); border-radius: 12px; padding: 14px; }
+        .feat h4 { margin: 0 0 6px; font-size: 14px; color: var(--ink); letter-spacing: .4px; }
+        .feat p { margin: 0; font-size: 13px; color: var(--muted); }
+
+        .signup {
+            display: grid; grid-template-columns: 1.2fr .8fr; gap: 18px; align-items: center;
+            background: linear-gradient(180deg, #0d141d, #0a0f17);
+            border: 1px solid rgba(207,230,255,0.08); border-radius: 16px; padding: 18px; margin-top: 20px;
+        }
+        .signup form { display: grid; grid-template-columns: 1fr 1fr auto; gap: 10px; }
+        .input, .btn-submit { height: 48px; border-radius: 10px; border: 1px solid rgba(207,230,255,0.22); background: #0f1621; color: var(--ink); padding: 12px 14px; }
+        .btn-submit {
+            display: inline-flex; align-items: center; justify-content: center; height: 56px; padding: 14px 22px;
+            background: linear-gradient(135deg, var(--neon), var(--accent));
+            color: #051018; font-weight: 800; letter-spacing: .2px; cursor: pointer; font-size: 17px;
+            box-shadow: 0 10px 24px rgba(0,229,255,0.28), 0 2px 0 rgba(7,19,27,0.35);
+            border: 1px solid rgba(0,229,255,0.5);
+        }
+        .btn-submit:hover { filter: brightness(1.06); transform: translateY(-1px); }
+        .btn-submit:focus, .btn-submit:focus-visible { outline: 3px solid rgba(0,229,255,0.6); outline-offset: 2px; }
+        .trust { display: flex; gap: 18px; align-items: center; color: var(--muted); font-size: 14px; }
+        .trust .badge { color: var(--ok); font-weight: 700; }
+
+        footer { padding: 40px 0; color: var(--muted); font-size: 13px; text-align: center; }
+
+        /* GDPR & Cookie UI */
+        .gdpr-consent { margin-top: 10px; color: var(--muted); font-size: 13px; line-height: 1.6; }
+        .gdpr-checkbox { display: flex; align-items: flex-start; gap: 10px; }
+        .gdpr-checkbox input[type="checkbox"] { width: 16px; height: 16px; margin-top: 3px; accent-color: var(--neon); }
+        .gdpr-consent a { color: var(--neon); text-decoration: none; }
+        .gdpr-consent a:hover { text-decoration: underline; }
+        .btn-submit[aria-disabled="true"] { cursor: not-allowed; }
+
+        .cookie-banner { position: fixed; left: 16px; right: 16px; bottom: 16px; z-index: 50; }
+        .cookie-card {
+            display: grid; grid-template-columns: 1fr auto; gap: 12px; align-items: center;
+            background: #0f1621; border: 1px solid rgba(207,230,255,0.12); border-radius: 14px; padding: 12px 14px;
+            box-shadow: 0 10px 28px rgba(0,0,0,0.45), 0 0 40px rgba(0,229,255,0.08);
+        }
+        .cookie-text { color: var(--ink); font-size: 14px; }
+        .cookie-text a { color: var(--neon); text-decoration: none; }
+        .cookie-actions { display: flex; gap: 10px; }
+        .btn-ghost { background: transparent; color: var(--ink); border: 1px solid rgba(207,230,255,0.18); padding: 10px 12px; border-radius: 10px; cursor: pointer; }
+        .btn-accept { background: linear-gradient(135deg, var(--neon), var(--accent)); color: #07131b; border: 1px solid rgba(0,229,255,0.5); padding: 10px 12px; border-radius: 10px; cursor: pointer; font-weight: 800; }
+
+        @media (max-width: 960px) {
+            .hero { grid-template-columns: 1fr; }
+            .signup { grid-template-columns: 1fr; }
+            .features { grid-template-columns: repeat(2, 1fr); }
+            .terminal-card { min-height: 240px; }
+            .hero h1 { font-size: clamp(26px, 7vw, 42px); }
+        }
+        @media (max-width: 560px) {
+            .features { grid-template-columns: 1fr; }
+            .signup form { grid-template-columns: 1fr; }
+            .btn-submit { width: 100%; }
+        }
+        @media (max-width: 640px){ .cookie-card { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+    <div class="scanlines" aria-hidden="true"></div>
+    <div class="grid-overlay" aria-hidden="true"></div>
+    <div class="container">
+        <header>
+            <a href="#" class="brand" aria-label="CyberMystery">
+                <div class="brand-badge">CM</div>
+                <div class="brand-title">CyberMystery</div>
+            </a>
+        </header>
+
+        <section class="hero" aria-label="Fő szekció">
+            <div class="hero-copy">
+                <h1>Fedezd fel a digitális titkokat!</h1>
+                <p class="lead">Interaktív online nyomozós krimi a kiberbiztonság világában. Oldj meg <strong>rejtélyeket</strong>, fejts meg <strong>logikai feladványokat</strong>, hozz meg <strong>döntéseket</strong> – és leplezd le, ki áll a digitális támadások mögött.</p>
+                <div class="features">
+                    <div class="feat"><h4>Nyomozás</h4><p>Interjúk, nyomok, idővonal, bizonyítékok.</p></div>
+                    <div class="feat"><h4>Hackelés</h4><p>Kódtörés, hálózati minták, OSINT feladatok.</p></div>
+                    <div class="feat"><h4>Logika</h4><p>Fejtörők, rejtvények, kombinációk.</p></div>
+                    <div class="feat"><h4>Döntések</h4><p>Több lehetséges végkimenetel.</p></div>
+                </div>
+                <div class="cta-row">
+                    <a href="https://forms.gle/KdPhaUQxhe5JANxb8" target="_blank" rel="noopener" class="btn btn-primary" aria-label="Kezdd el a nyomozást">Kezdd el a nyomozást</a>
+                </div>
+            </div>
+            <div class="hero-media">
+                <div class="terminal-card" role="img" aria-label="Hangulatvizuál – neon terminál">
+                    <div class="terminal-bar"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
+                    <div class="terminal-body">
+                        <div><span class="prompt">investigator@cm</span>:~$ trace --source breach.log</div>
+                        <div>› scanning network… <span style="color:var(--ok)">OK</span></div>
+                        <div>› anomaly detected: <span style="color:var(--danger)">UNAUTHORIZED ACCESS</span></div>
+                        <div>› decrypting payload… ████░░░░░ 42%</div>
+                        <div>› clue unlocked: <em>"A jelszó a történetben rejtőzik."</em></div>
+                        <div>_ <span class="cursor"></span></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="signup" class="signup" aria-label="Feliratkozás">
+            <div>
+                <h2 style="margin: 0 0 6px; font-family: Rajdhani, Inter, sans-serif;">Jelentkezz most – az első feladvány automatikusan érkezik</h2>
+                <p style="margin:0; color: var(--muted);">Kattints a gombra, és 24 órán belül küldjük az első titkos nyomot.</p>
+            </div>
+            <div class="cta-row" style="justify-content:center;">
+                <a id="signupBtn" href="https://forms.gle/KdPhaUQxhe5JANxb8" target="_blank" rel="noopener" class="btn-submit" style="text-decoration:none;" aria-disabled="true">Kérem az első nyomot</a>
+            </div>
+            <div class="gdpr-consent">
+                <div class="gdpr-checkbox">
+                    <input type="checkbox" id="gdprAgree" />
+                    <label for="gdprAgree">Elfogadom, hogy adataimat a játék céljára kezeljék. Bővebben az <a href="/adatkezeles">adatkezelési tájékoztatóban</a>.</label>
+                </div>
+                <div id="gdprHint" style="margin-top:6px; font-size:12px; color: var(--muted);">A gomb aktiválásához fogadd el az adatkezelést.</div>
+            </div>
+        </section>
+
+        <section id="brief" style="margin: 28px 0 6px;">
+            <h3 style="font-family: Rajdhani, Inter, sans-serif; margin: 0 0 8px;">Miért izgalmas?</h3>
+            <ul style="margin: 0; padding-left: 18px; color: var(--muted); line-height: 1.8;">
+                <li>Nyomozás a kiberbiztonság szürke zónájában: minden döntésed számít.</li>
+                <li>Fejleszti a problémamegoldást és a logikai gondolkodást.</li>
+                <li>Változatos pályák: OSINT feladatok, kódtörés, hálózati nyomok elemzése.</li>
+                <li>Újrajátszhatóság: több befejezés, rejtett szálak, bónusznyomok.</li>
+            </ul>
+        </section>
+
+        <section aria-label="Idézet" style="margin: 10px 0 30px;">
+            <blockquote style="margin:0; padding: 14px 16px; background: #0f1621; border: 1px solid rgba(207,230,255,0.08); border-radius: 12px; color: var(--ink);">
+                „Mint egy modern noir – neonfényben úszó kódsorok, rejtett minták, és egy nyom, ami végigvezet a sötét web határáig.”
+            </blockquote>
+        </section>
+
+        
+
+        <footer>
+            © 2025 CyberMystery. Minden jog fenntartva.
+        </footer>
+    </div>
+
+    <div id="cookieBanner" class="cookie-banner" role="region" aria-label="Cookie tájékoztató" style="display:none;">
+        <div class="cookie-card">
+            <div class="cookie-text">
+                Ez a weboldal kizárólag a működéshez szükséges cookie-kat használ.
+            </div>
+            <div class="cookie-actions">
+                <button id="cookieSettings" class="btn-ghost" type="button">Beállítások</button>
+                <button id="cookieAccept" class="btn-accept" type="button">Elfogadom</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // GDPR checkbox enables primary signup button
+        (function(){
+            const cb = document.getElementById('gdprAgree');
+            const btn = document.getElementById('signupBtn');
+            const hint = document.getElementById('gdprHint');
+            if(cb && btn){
+                const sync = () => btn.setAttribute('aria-disabled', cb.checked ? 'false' : 'true');
+                cb.addEventListener('change', sync); sync();
+                btn.addEventListener('click', function(e){
+                    if(cb.checked) return; // allowed
+                    e.preventDefault();
+                    if(hint){
+                        hint.textContent = 'Kérjük, fogadd el az adatkezelést a folytatáshoz.';
+                        const prev = hint.style.color;
+                        hint.style.color = 'var(--danger)';
+                        setTimeout(()=>{ hint.style.color = prev; }, 1800);
+                    }
+                    cb.focus();
+                });
+            }
+        })();
+
+        // Cookie banner simple consent
+        (function(){
+            const banner = document.getElementById('cookieBanner');
+            const accept = document.getElementById('cookieAccept');
+            const settings = document.getElementById('cookieSettings');
+            try {
+                const consent = localStorage.getItem('cookieConsent');
+                if(!consent){ banner.style.display = 'block'; }
+                accept.addEventListener('click', ()=>{ localStorage.setItem('cookieConsent','accepted'); banner.style.display='none'; });
+                settings.addEventListener('click', ()=>{
+                    // Minimal inline "settings": inform user we only use essential cookies
+                    alert('Csak működéshez szükséges cookie-kat használunk – nincs követés / analitika ezen az oldalon.');
+                });
+            } catch(e){ /* no-op */ }
+        })();
+    </script>
+</body>
+</html>

@@ -116,7 +116,7 @@
         .gdpr-checkbox input[type="checkbox"] { width: 16px; height: 16px; margin-top: 3px; accent-color: var(--neon); }
         .gdpr-consent a { color: var(--neon); text-decoration: none; }
         .gdpr-consent a:hover { text-decoration: underline; }
-        .btn-submit[aria-disabled="true"] { cursor: not-allowed; }
+        .btn[aria-disabled="true"], .btn-primary[aria-disabled="true"], .btn-submit[aria-disabled="true"] { cursor: not-allowed; }
 
         .cookie-banner { position: fixed; left: 16px; right: 16px; bottom: 16px; z-index: 50; }
         .cookie-card {
@@ -167,7 +167,7 @@
                     <div class="feat"><h4>Döntések</h4><p>Több lehetséges végkimenetel.</p></div>
                 </div>
                 <div class="cta-row">
-                    <a href="https://forms.gle/KdPhaUQxhe5JANxb8" target="_blank" rel="noopener" class="btn btn-primary" aria-label="Kezdd el a nyomozást">Kezdd el a nyomozást</a>
+                    <a id="heroBtn" href="https://forms.gle/KdPhaUQxhe5JANxb8" target="_blank" rel="noopener" class="btn btn-primary" aria-label="Kezdd el a nyomozást" aria-disabled="true">Kezdd el a nyomozást</a>
                 </div>
             </div>
             <div class="hero-media">
@@ -196,7 +196,7 @@
             <div class="gdpr-consent">
                 <div class="gdpr-checkbox">
                     <input type="checkbox" id="gdprAgree" />
-                    <label for="gdprAgree">Elfogadom, hogy adataimat a játék céljára kezeljék. Bővebben az <a href="/adatkezeles">adatkezelési tájékoztatóban</a>.</label>
+                    <label for="gdprAgree">Elfogadom, hogy adataimat a játék céljára kezeljék. Bővebben az <a href="/privacy.html">adatkezelési tájékoztatóban</a>.</label>
                 </div>
                 <div id="gdprHint" style="margin-top:6px; font-size:12px; color: var(--muted);">A gomb aktiválásához fogadd el az adatkezelést.</div>
             </div>
@@ -228,7 +228,7 @@
     <div id="cookieBanner" class="cookie-banner" role="region" aria-label="Cookie tájékoztató" style="display:none;">
         <div class="cookie-card">
             <div class="cookie-text">
-                Ez a weboldal kizárólag a működéshez szükséges cookie-kat használ.
+                Ez a weboldal kizárólag a működéshez szükséges cookie-kat használ. Részletek: <a href="/privacy.html">adatkezelési tájékoztató</a>.
             </div>
             <div class="cookie-actions">
                 <button id="cookieSettings" class="btn-ghost" type="button">Beállítások</button>
@@ -242,11 +242,15 @@
         (function(){
             const cb = document.getElementById('gdprAgree');
             const btn = document.getElementById('signupBtn');
+            const hero = document.getElementById('heroBtn');
             const hint = document.getElementById('gdprHint');
-            if(cb && btn){
-                const sync = () => btn.setAttribute('aria-disabled', cb.checked ? 'false' : 'true');
+            if(cb){
+                const sync = () => {
+                    if(btn) btn.setAttribute('aria-disabled', cb.checked ? 'false' : 'true');
+                    if(hero) hero.setAttribute('aria-disabled', cb.checked ? 'false' : 'true');
+                };
                 cb.addEventListener('change', sync); sync();
-                btn.addEventListener('click', function(e){
+                const guard = function(e){
                     if(cb.checked) return; // allowed
                     e.preventDefault();
                     if(hint){
@@ -256,7 +260,9 @@
                         setTimeout(()=>{ hint.style.color = prev; }, 1800);
                     }
                     cb.focus();
-                });
+                };
+                if(btn) btn.addEventListener('click', guard);
+                if(hero) hero.addEventListener('click', guard);
             }
         })();
 

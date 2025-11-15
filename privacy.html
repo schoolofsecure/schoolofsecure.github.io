@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Adatkezelési tájékoztató</title>
+    <meta name="description" content="Adatkezelési tájékoztató – interaktív online nyomozós krimi játék (kiberbiztonság témában)." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Rajdhani:wght@600;700&display=swap" rel="stylesheet" />
+    <style>
+        :root { --bg:#0b0f14; --panel:#0f1621; --ink:#cfe6ff; --muted:#94a3b8; --neon:#00e5ff; --accent:#21ffc3; }
+        html,body{height:100%}
+        body{margin:0;background: radial-gradient(1200px 800px at 70% -10%, #0d1320 0%, #0b0f14 45%, #06090d 100%), linear-gradient(180deg, rgba(16,24,32,0.6), rgba(16,24,32,0.1)); color:var(--ink); font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,'Helvetica Neue',Arial,sans-serif; -webkit-font-smoothing:antialiased}
+        .container{width:min(980px,92vw);margin:0 auto;padding:28px 0}
+        .card{background:linear-gradient(180deg,#0d141d,#0a0f17);border:1px solid rgba(207,230,255,.12);border-radius:14px;box-shadow:0 14px 30px rgba(0,0,0,.35), inset 0 0 80px rgba(0,229,255,.04);padding:20px}
+        h1{font-family:Rajdhani,Inter,sans-serif; font-size:clamp(26px,4.5vw,40px); line-height:1.1; margin:0 0 8px}
+        h2{font-family:Rajdhani,Inter,sans-serif; font-size:clamp(18px,2.6vw,24px); margin:22px 0 8px}
+        p{margin:8px 0; color:var(--ink)}
+        .muted{color:var(--muted)}
+        a{color:var(--neon); text-decoration:none}
+        a:hover{text-decoration:underline}
+        .grid{display:grid; grid-template-columns:1fr; gap:14px}
+        .section{padding:14px;border:1px solid rgba(207,230,255,.08); border-radius:12px; background:#0f1621}
+        ul{margin:8px 0 8px 18px; color:var(--muted); line-height:1.75}
+        .pill{display:inline-block; padding:4px 10px; border-radius:999px; background:rgba(0,229,255,.12); border:1px solid rgba(0,229,255,.3); color:var(--ink); font-size:12px; letter-spacing:.3px}
+        .footer{margin-top:18px; font-size:12px; color:var(--muted); text-align:center}
+        .scanlines{position:fixed; inset:0; pointer-events:none; background:repeating-linear-gradient(180deg, rgba(255,255,255,.03) 0 1px, transparent 1px 3px); mix-blend-mode:overlay}
+    </style>
+</head>
+<body>
+    <div class="scanlines" aria-hidden="true"></div>
+    <div class="container">
+        <div class="card">
+            <h1 id="adatkezeles">Adatkezelési tájékoztató</h1>
+            <p class="muted">Utolsó frissítés: 2025-01-01</p>
+            <span class="pill">GDPR kompatibilis</span>
+
+            <div class="grid" style="margin-top:14px;">
+                <section class="section">
+                    <h2>1. Adatkezelő</h2>
+                    <p>Az interaktív nyomozós krimi (kiberbiztonság témában) jelentkezéseinek és kommunikációjának kezelője: <strong>CyberMystery projekt</strong> (adatkezelő). Elérhetőség: <a href="mailto:info@example.com">info@example.com</a>.</p>
+                </section>
+
+                <section class="section">
+                    <h2>2. Kezelt adatok köre</h2>
+                    <ul>
+                        <li>Azonosítás és kapcsolat: név, e‑mail cím.</li>
+                        <li>Technikai naplók: dátum/idő, böngésző típusa, alapvető hibajegyzék (csak működési célból).</li>
+                        <li>Felhasználói interakció: jelentkezés időpontja, feladványok küldésének státusza.</li>
+                    </ul>
+                </section>
+
+                <section class="section">
+                    <h2>3. Adatkezelés célja és jogalapja</h2>
+                    <ul>
+                        <li>Játékhoz kapcsolódó kommunikáció, feladványok küldése (hozzájárulás – GDPR 6. cikk (1) a)).</li>
+                        <li>Rendszerbiztonság és hibakeresés (jogos érdek – GDPR 6. cikk (1) f)).</li>
+                    </ul>
+                </section>
+
+                <section class="section">
+                    <h2>4. Megőrzési idő</h2>
+                    <ul>
+                        <li>Feliratkozási adatok: a visszavonásig, de legfeljebb 24 hónap.</li>
+                        <li>Technikai naplók: legfeljebb 90 nap.</li>
+                    </ul>
+                </section>
+
+                <section class="section">
+                    <h2>5. Adatfeldolgozók, adattovábbítás</h2>
+                    <ul>
+                        <li>Google Forms (feliratkozások gyűjtése).</li>
+                        <li>E‑mail szolgáltató a feladványok kiküldéséhez.</li>
+                    </ul>
+                    <p>Harmadik országba irányuló adattovábbítás esetén az EU megfelelőségi határozata vagy megfelelő garanciák biztosítottak.</p>
+                </section>
+
+                <section class="section" id="cookies">
+                    <h2>6. Sütik (Cookie-k)</h2>
+                    <p>Az oldal kizárólag a működéshez feltétlenül szükséges cookie-kat használ (beállítások, űrlapvédelem, alapszintű működés). Profilozó vagy marketing cookie-kat nem alkalmazunk.</p>
+                </section>
+
+                <section class="section">
+                    <h2>7. Érintetti jogok</h2>
+                    <ul>
+                        <li>Hozzáférés és tájékoztatás kérése a kezelt adatokhoz.</li>
+                        <li>Helyesbítés, törlés („elfeledtetés”), adatkezelés korlátozása.</li>
+                        <li>Hozzájárulás visszavonása bármikor, indoklás nélkül.</li>
+                        <li>Adathordozhatóság (automatikusan kezelt adatok esetén).</li>
+                        <li>Panasz benyújtása: Nemzeti Adatvédelmi és Információszabadság Hatóság (NAIH).</li>
+                    </ul>
+                </section>
+
+                <section class="section">
+                    <h2>8. Adatbiztonság</h2>
+                    <p>Megfelelő technikai és szervezési intézkedésekkel védjük a személyes adatokat a jogosulatlan hozzáféréssel, megváltoztatással vagy nyilvánosságra hozatallal szemben.</p>
+                </section>
+
+                <section class="section">
+                    <h2>9. Kapcsolat</h2>
+                    <p>Adatkezeléssel kapcsolatos megkeresés: <a href="mailto:privacy@example.com">privacy@example.com</a>.</p>
+                </section>
+
+                <section class="section">
+                    <h2>10. Hatály</h2>
+                    <p>Jelen tájékoztató az interaktív nyomozós krimi játék (kiberbiztonság témában) landing oldalára és kommunikációjára vonatkozik. Változás esetén a módosított verzió lép hatályba a közzétételtől.</p>
+                </section>
+            </div>
+            <p class="footer">© 2025 CyberMystery – Adatkezelési tájékoztató</p>
+        </div>
+    </div>
+</body>
+</html>

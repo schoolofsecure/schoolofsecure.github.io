@@ -39,15 +39,13 @@
             <div class="grid" style="margin-top:14px;">
                 <section class="section">
                     <h2>1. Adatkezelő</h2>
-                    <p>Az interaktív nyomozós krimi (kiberbiztonság témában) jelentkezéseinek és kommunikációjának kezelője: <strong>CyberMystery projekt</strong> (adatkezelő). Elérhetőség: <a href="mailto:info@example.com">info@example.com</a>.</p>
+                    <p>Az interaktív nyomozós krimi (kiberbiztonság témában) jelentkezéseinek és kommunikációjának kezelője: <strong>Papp‑Kovács Erika</strong> (adatkezelő). Elérhetőség: <span class="obf-email" data-user="schoolofsecure" data-domain="gmail.com" aria-label="E‑mail cím – kattintással megjelenik">[e‑mail megjelenítése]</span>.</p>
                 </section>
 
                 <section class="section">
                     <h2>2. Kezelt adatok köre</h2>
                     <ul>
-                        <li>Azonosítás és kapcsolat: név, e‑mail cím.</li>
-                        <li>Technikai naplók: dátum/idő, böngésző típusa, alapvető hibajegyzék (csak működési célból).</li>
-                        <li>Felhasználói interakció: jelentkezés időpontja, feladványok küldésének státusza.</li>
+                        <li>E‑mail cím.</li>
                     </ul>
                 </section>
 
@@ -99,7 +97,7 @@
 
                 <section class="section">
                     <h2>9. Kapcsolat</h2>
-                    <p>Adatkezeléssel kapcsolatos megkeresés: <a href="mailto:privacy@example.com">privacy@example.com</a>.</p>
+                    <p>Adatkezeléssel kapcsolatos megkeresés: <span class="obf-email" data-user="schoolofsecure" data-domain="gmail.com" aria-label="E‑mail cím – kattintással megjelenik">[e‑mail megjelenítése]</span>.</p>
                 </section>
 
                 <section class="section">
@@ -110,5 +108,27 @@
             <p class="footer">© 2025 CyberMystery – Adatkezelési tájékoztató</p>
         </div>
     </div>
+    <script>
+        (function(){
+            try {
+                var nodes = document.querySelectorAll('.obf-email');
+                nodes.forEach(function(node){
+                    var user = node.getAttribute('data-user');
+                    var domain = node.getAttribute('data-domain');
+                    var reveal = function(){
+                        var addr = user + '@' + domain;
+                        var a = document.createElement('a');
+                        a.href = 'mailto:' + addr;
+                        a.textContent = addr;
+                        a.rel = 'noopener';
+                        node.replaceWith(a);
+                    };
+                    node.style.cursor = 'pointer';
+                    node.addEventListener('click', reveal, { once: true });
+                    node.textContent = 'Kattints az e‑mail megjelenítéséhez';
+                });
+            } catch(e) {}
+        })();
+    </script>
 </body>
 </html>

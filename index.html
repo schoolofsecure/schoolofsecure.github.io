@@ -343,6 +343,12 @@
                         hero.setAttribute('href', 'https://forms.gle/pVMdZ7SSWWbCJhzdA');
                         hero.dataset.scroll = 'false';
                     }
+                    // Ensure signup button always points to Google Form (mobile és desktop)
+                    if(btn){
+                        btn.setAttribute('href', 'https://forms.gle/pVMdZ7SSWWbCJhzdA');
+                        btn.setAttribute('target', '_blank');
+                        btn.setAttribute('rel', 'noopener');
+                    }
                 };
                 try { mq.addEventListener('change', rewireHero); } catch(_) { /* Safari */ mq.addListener(rewireHero); }
                 rewireHero();

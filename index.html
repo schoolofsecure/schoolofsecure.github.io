@@ -170,6 +170,10 @@
         .trust .badge { color: var(--ok); font-weight: 700; }
 
         footer { padding: 40px 0; color: var(--muted); font-size: 13px; text-align: center; }
+        .footer-social { display:flex; gap:10px; justify-content:center; align-items:center; margin-top:10px; }
+        .footer-social a { display:inline-flex; align-items:center; gap:8px; padding:8px 10px; border-radius:10px; text-decoration:none; color:var(--ink); background:#0f1621; border:1px solid rgba(207,230,255,0.12); }
+        .footer-social a:hover { background:#131e2b; }
+        .footer-social svg { width:18px; height:18px; fill:#1877f2; }
 
         /* GDPR & Cookie UI */
         .gdpr-consent { margin-top: 10px; color: var(--muted); font-size: 13px; line-height: 1.6; }
@@ -304,6 +308,14 @@
 
         <footer>
             © 2025 CyberMystery. Minden jog fenntartva.
+            <div class="footer-social">
+                <a href="https://www.facebook.com/groups/1177342823898055" target="_blank" rel="noopener" aria-label="Csatlakozz a Facebook közösséghez">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M22.675 0h-21.35C.596 0 0 .597 0 1.333v21.333C0 23.403.596 24 1.325 24h11.495v-9.294H9.847V11.06h2.973V8.413c0-2.94 1.792-4.544 4.412-4.544 1.253 0 2.332.093 2.646.135v3.07l-1.816.001c-1.423 0-1.698.676-1.698 1.668v2.318h3.396l-.442 3.646h-2.954V24h5.789C23.404 24 24 23.403 24 22.667V1.333C24 .597 23.404 0 22.675 0z"></path>
+                    </svg>
+                    <span>Csatlakozz a közösséghez és bázishoz</span>
+                </a>
+            </div>
         </footer>
     </div>
 

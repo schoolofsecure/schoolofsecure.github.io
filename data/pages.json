@@ -1,0 +1,19 @@
+{
+  "landing": {
+    "blocks": [
+      { "type": "partial", "path": "/partials/blocks/hero-placeholder.html" }
+    ]
+  },
+  "privacy": { "blocks": [] },
+  "aurora": {
+    "blocks": [
+      { "type": "partial", "path": "/partials/aurora/gate.html" },
+      { "type": "partial", "path": "/partials/aurora/intro-hero.html" },
+      { "type": "partial", "path": "/partials/aurora/levels.html" }
+    ]
+  },
+  "nightOwl": { "blocks": [] },
+  "ugy1": { "blocks": [] }
+}
+
+

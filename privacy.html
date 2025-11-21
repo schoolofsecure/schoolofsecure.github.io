@@ -39,7 +39,7 @@
             <div class="grid" style="margin-top:14px;">
                 <section class="section">
                     <h2>1. Adatkezelő</h2>
-                    <p>Az interaktív nyomozós krimi (kiberbiztonság témában) jelentkezéseinek és kommunikációjának kezelője: <strong>Papp‑Kovács Erika</strong> (adatkezelő). Elérhetőség: <span class="obf-email" data-user="schoolofsecure" data-domain="gmail.com" aria-label="E‑mail cím – kattintással megjelenik">[e‑mail megjelenítése]</span>.</p>
+                    <p>Az interaktív nyomozós krimi (kiberbiztonság témában) jelentkezéseinek és kommunikációjának kezelője: <strong>Papp‑Kovács Erika</strong> (adatkezelő). Elérhetőség: <span class="obf-emails" data-items="schoolofsecure@gmail.com,secure@schoolofsecure.com" aria-label="E‑mail címek – kattintással megjelennek">[e‑mail címek megjelenítése]</span>.</p>
                 </section>
 
                 <section class="section">
@@ -97,7 +97,7 @@
 
                 <section class="section">
                     <h2>9. Kapcsolat</h2>
-                    <p>Adatkezeléssel kapcsolatos megkeresés: <span class="obf-email" data-user="schoolofsecure" data-domain="gmail.com" aria-label="E‑mail cím – kattintással megjelenik">[e‑mail megjelenítése]</span>.</p>
+                    <p>Adatkezeléssel kapcsolatos megkeresés: <span class="obf-emails" data-items="schoolofsecure@gmail.com,secure@schoolofsecure.com" aria-label="E‑mail címek – kattintással megjelennek">[e‑mail címek megjelenítése]</span>.</p>
                 </section>
 
                 <section class="section">
@@ -126,6 +126,29 @@
                     node.style.cursor = 'pointer';
                     node.addEventListener('click', reveal, { once: true });
                     node.textContent = 'Kattints az e‑mail megjelenítéséhez';
+                });
+                var multi = document.querySelectorAll('.obf-emails');
+                multi.forEach(function(node){
+                    var items = (node.getAttribute('data-items') || '').split(',').map(function(s){ return s.trim(); }).filter(Boolean);
+                    var revealAll = function(){
+                        var frag = document.createDocumentFragment();
+                        items.forEach(function(addr, i){
+                            var a = document.createElement('a');
+                            a.href = 'mailto:' + addr;
+                            a.textContent = addr;
+                            a.rel = 'noopener';
+                            frag.appendChild(a);
+                            if(i < items.length - 1){
+                                frag.appendChild(document.createTextNode(', '));
+                            }
+                        });
+                        var span = document.createElement('span');
+                        span.appendChild(frag);
+                        node.replaceWith(span);
+                    };
+                    node.style.cursor = 'pointer';
+                    node.addEventListener('click', revealAll, { once: true });
+                    node.textContent = 'Kattints az e‑mail címek megjelenítéséhez';
                 });
             } catch(e) {}
         })();

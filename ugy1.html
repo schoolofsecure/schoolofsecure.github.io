@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>A múzeum éjszakája – ÜGY 1</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/src/styles/ugy1.css" />
+  <!-- React via CDN (UMD) + Babel for JSX -->
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head>
+<body>
+  <script>
+    (function(){
+      var isMobile = (window.matchMedia && window.matchMedia('(max-width: 800px)').matches) ||
+                     /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+      if(!isMobile) return;
+      var style = document.createElement('style');
+      style.textContent = `
+        .mobile-block{position:fixed;inset:0;display:grid;place-items:center;background:
+          radial-gradient(1200px 800px at 70% -10%, #0d1320 0%, #0b0f14 45%, #06090d 100%),
+          linear-gradient(180deg, rgba(16,24,32,0.6), rgba(16,24,32,0.1)); z-index:9999}
+        .mb-panel{width:min(640px,92vw);background:#0f1621;border:1px solid rgba(207,230,255,0.12);
+          border-radius:16px;padding:18px;box-shadow:0 14px 30px rgba(0,0,0,.45)}
+        .mb-panel h1{margin:0 0 6px;font-family: Inter, system-ui, sans-serif;font-size:22px}
+        .mb-panel p{margin:6px 0;color:#94a3b8;line-height:1.7}
+        .mb-emoji{font-size:28px;margin-bottom:6px}
+        .mb-actions{display:flex;gap:10px;margin-top:10px;flex-wrap:wrap}
+        .btn-ghost{background:transparent;color:#cfe6ff;border:1px solid rgba(207,230,255,0.18);padding:10px 12px;border-radius:10px;text-decoration:none}
+        .btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;padding:12px 16px;border-radius:12px;text-decoration:none;font-weight:800;letter-spacing:.2px;cursor:pointer;font-size:16px;background: linear-gradient(135deg, #00e5ff, #21ffc3); color:#051018; border:1px solid rgba(0,229,255,0.5);}
+      `;
+      document.head.appendChild(style);
+      document.body.innerHTML = `
+        <div class="mobile-block">
+          <div class="mb-panel">
+            <div class="mb-emoji">📱</div>
+            <h1>Mobilnézet nem támogatott</h1>
+            <p>A játék jelenlegi verziója nem támogatja a mobilnézetet, bizonyos elemek hibásan jelenhetnek meg vagy nem működnek megfelelően.</p>
+            <p>Kérjük, használd asztali gépen vagy laptopon a zavartalan élményhez.</p>
+            <p>Dolgozunk a mobilalkalmazáson, és amint elkészül, értesítést küldünk róla.</p>
+            <p>Köszönjük a türelmed és a kitartásod!</p>
+            <div class="mb-actions">
+              <a class="btn" href="/">Vissza a főoldalra</a>
+              <a class="btn-ghost" href="/privacy.html">Adatkezelés</a>
+            </div>
+          </div>
+        </div>
+      `;
+    })();
+  </script>
+  <div id="root"></div>
+  <!-- Components -->
+  <script type="text/babel" data-presets="react" src="/src/components/Ugy1/TaskCard.jsx"></script>
+  <script type="text/babel" data-presets="react" src="/src/components/Ugy1/NarrativeBlock.jsx"></script>
+  <script type="text/babel" data-presets="react" src="/src/components/Ugy1/ChallengeInput.jsx"></script>
+  <!-- App -->
+  <script type="text/babel" data-presets="react" src="/src/pages/ugy1/index.jsx"></script>
+</body>
+</html>
+
+

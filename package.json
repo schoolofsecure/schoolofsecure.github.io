@@ -1,0 +1,16 @@
+{
+  "name": "cybermystery",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "build:min": "terser js/app.js --compress --mangle --output js/app.min.js",
+    "build:obf": "javascript-obfuscator js/app.min.js --output js/app.obf.js --compact true --control-flow-flattening true --dead-code-injection true --string-array true --string-array-encoding base64 --identifier-names-generator hexadecimal",
+    "build": "npm run build:min && npm run build:obf"
+  },
+  "devDependencies": {
+    "javascript-obfuscator": "^4.1.0",
+    "terser": "^5.29.0"
+  }
+}
+
+

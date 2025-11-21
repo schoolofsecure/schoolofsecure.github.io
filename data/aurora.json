@@ -1,0 +1,55 @@
+{
+  "gate": {
+    "title": "Belépés szükséges",
+    "desc": "Add meg a belépési kulcsot a pálya megnyitásához.",
+    "placeholder": "Belépési kulcs",
+    "hint": "Tipp: a kulcsot a toborzó üzenet vagy a játékmester adja meg.",
+    "pass": "kriptográfia"
+  },
+  "intro": {
+    "badge": "Kezdő szint",
+    "title": "Bevezető a művelethez",
+    "lead": "„Secure”: Ez a belépő pálya. Rövid, kérdés‑alapú bemelegítés – hogy a következő szinten már otthon legyél a nyomokban.",
+    "chips": ["alapok","jó gyakorlatok","OSINT","Wi‑Fi védelem","mentések"],
+    "start": "Kezdd el a játékot"
+  },
+  "mission": {
+    "badge": "Küldetés 1",
+    "title": "Belépő protokoll",
+    "narr1": "Az ügynöki terminál éled. A háttérben logok peregnek, a kijelző sarkában halvány neonvonal pulzál.",
+    "narr2": "Secure csak ennyit ír: „Első lépés: igazold, hogy figyelsz a részletekre.”",
+    "leftTitle": "Protokoll terminál",
+    "puzzleHTML": "Egy rövid kódrészlet villan fel a képernyőn:<br /><code id=\"entryCode\" class=\"neon-flicker\" style=\"background:#0b121c; border:1px solid rgba(207,230,255,.12); padding:2px 6px; border-radius:6px;\">ACCCESS‑LEVEL: NOVICE_01</code><br />Vedd észre a hibát, majd add meg a helyes ellenőrző szót (csak betűk/számok, kötőjel).",
+    "statusReady": "[status] READY — várakozás a bevitelre…",
+    "rightTitle": "Válasz",
+    "inputPlaceholder": "ellenőrző szó…",
+    "hintTitle": "Súgó megnyitása",
+    "hintText": "Egy extra „C” betű csúszott be a „ACCESS” szóba. Tipp: csak a javasolt karaktereket használd.",
+    "hintChips": ["ACCESS-LEVEL","NOVICE-01","ENTRY"],
+    "expected": "ACCESS-LEVEL-NOVICE-01",
+    "statusOk": "[status] ACCESS GRANTED — belépő protokoll teljesítve.",
+    "statusErrEmpty": "[status] HIBA — üres bevitel.",
+    "statusErrChars": "[status] HIBA — csak betűk, számok és kötőjel engedélyezett.",
+    "statusErrWrong": "[status] ACCESS DENIED — ellenőrizd az „ACCESS” írásmódját és a kötőjeleket."
+  },
+  "levels": {
+    "title": "Válaszd ki az ügyet",
+    "desc": "Minden ügy megnyitásáról értesítést küldünk.",
+    "cards": [
+      { "n": 1, "title": "A Titkosított Adatcsomag", "img": "/images/1.jpg", "href": "/ugy1.html", "locked": false },
+      { "n": 2, "title": "A Hamisított Archívum", "img": "/images/2.jpg", "href": "#", "locked": true },
+      { "n": 3, "title": "A Kézbesítetlen Üzenet", "img": "/images/3.jpg", "href": "#", "locked": true },
+      { "n": 4, "title": "A Hiányzó Idővonal", "img": "/images/4.jpg", "href": "#", "locked": true },
+      { "n": 5, "title": "A Rejtett Metaadat", "img": "/images/5.jpg", "href": "#", "locked": true },
+      { "n": 6, "title": "A Szivárgó Port", "img": "/images/6.jpg", "href": "#", "locked": true },
+      { "n": 7, "title": "A Kettős Identitás", "img": "/images/7.jpg", "href": "#", "locked": true },
+      { "n": 8, "title": "A Törött Kulcs", "img": "/images/8.jpg", "href": "#", "locked": true },
+      { "n": 9, "title": "A Megszakított Átvitel", "img": "/images/9.jpg", "href": "#", "locked": true },
+      { "n": 10, "title": "A Phantom‑Profil", "img": "/images/10.jpg", "href": "#", "locked": true },
+      { "n": 11, "title": "A Lopott Árnyékfiók", "img": "/images/11.jpg", "href": "#", "locked": true },
+      { "n": 12, "title": "A Főkolompos", "img": "/images/12.jpg", "href": "#", "locked": true }
+    ]
+  }
+}
+
+

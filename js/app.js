@@ -86,7 +86,7 @@
       FORM.addEventListener('submit', (e)=>{
         e.preventDefault();
         const v = (INPUT.value||'').trim();
-        if(!v){ if(ERR) ERR.textContent = 'Írd be a belépési kulcsot.'; INPUT && INPUT.focus(); return; }
+        if(!v){ if(ERR) ERR.textContent = 'Írj be a belépési kulcsot.'; INPUT && INPUT.focus(); return; }
         if(v === (gate.pass || '')){ unlock(); } else { if(ERR) ERR.textContent = 'Helytelen kulcs. Próbáld újra.'; INPUT && INPUT.focus(); }
       });
     }

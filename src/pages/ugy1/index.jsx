@@ -137,7 +137,7 @@ const App = () => {
                 </div>
                 <div className="statusline" style={{marginTop:'10px'}}>
                   Gyűjtsd össze a naplósorok értékeinek első betűit,
-                  olvasd össze kulcsszóvá, majd írd be a mezőbe.
+                  olvasd össze kulcsszóvá, majd írj be a mezőbe.
                 </div>
               </div>
               <div className="card">
@@ -199,7 +199,7 @@ Minden percben egyetlen percet gondolok rád,
                   placeholder="4 számjegy…"
                   onCheck={(val, _norm)=>{
                     const v = String(val||'').replace(/\D/g,'');
-                    const ok = (v === '3871' || v === '8371');
+                    const ok = (v === '3871');
                     if (ok) { markDone(2); setTimeout(next, 400); }
                     return ok;
                   }}
@@ -282,7 +282,7 @@ Minden percben egyetlen percet gondolok rád,
               <div className="card">
                 <h3>Nyomok dokumentálása</h3>
                 <p className="muted">A központ rákérdez, mennyire figyeltél az eddigi nyomokra. Egy ügyes kibernyomozó minden nyomot rendszerez, hogy később könnyen visszakereshető legyen.</p>
-                <p className="muted">Dokumentáld az előző négy feladat nyomait! Írd le minden nyomot külön sorban, és jelöld, honnan származik. Csak akkor tudsz továbblépni, ha mind a négy nyomot helyesen jegyzed fel.</p>
+                <p className="muted">Dokumentáld az előző négy feladat nyomait! Írj le minden nyomot külön sorban, és jelöld, honnan származik. Csak akkor tudsz továbblépni, ha mind a négy nyomot helyesen jegyzed fel.</p>
                 <div className="task-note"><img className="task-ill" src="/images/1e.jpg" alt="Illusztráció 1e" loading="lazy" width="280" height="280" /></div>
 
               </div>
@@ -518,17 +518,17 @@ function MatchTable({ onDone }){
       .toUpperCase();
   }
   // Frissített forráslista a feladat szerint (frappánsabb megnevezések)
-  const SOURCES = ['Titkosított levél','Kódolt betűk','Metaadat','Páncélszekrény'];
+  const SOURCES = ['Rejtjel','Torzult rendszerlog','Titkosított levél','Kódolt betűk'];
   // Elfogadott nyomok
   const ACCEPT = [
-    // „Vigyázz, Zoli lehet titkosügynök.” – Páncélszekrény (alternatív: Rejtjel)
-    { texts: ['VIGYAZZZOLILEHETTITKOSUGYNOK'], src: 'PANCELSZEKRENY', altSrc: ['REJTJEL'] },
-    // „NYOMOK” – Metaadat (alternatív: Rendszerlog)
-    { texts: ['NYOMOK'], src: 'METAADAT', altSrc: ['RENDSZERLOG'] },
-    // „3871/8371” – Titkosított levél (alternatív: Levél) – ideiglenesen mindkettőt elfogadjuk
-    { texts: ['3871','8371'], src: 'TITKOSITOTTLEVEL', altSrc: ['LEVEL'] },
-    // „3542” – Kódolt betűk (alternatív: Szókereső)
-    { texts: ['3542'], src: 'KODOLTBETUK', altSrc: ['SZOKEREZO'] }
+    // „Vigyázz, Zoli lehet titkosügynök.” → Rejtjel
+    { texts: ['VIGYAZZZOLILEHETTITKOSUGYNOK'], src: 'REJTJEL' },
+    // „NYOMOK” → Torzult rendszerlog
+    { texts: ['NYOMOK'], src: 'TORZULTRENDSZERLOG' },
+    // „3871” → Titkosított levél
+    { texts: ['3871'], src: 'TITKOSITOTTLEVEL' },
+    // „3542” → Kódolt betűk
+    { texts: ['3542'], src: 'KODOLTBETUK' }
   ];
   function updateRow(i, field, val){
     setRows(prev=>{

@@ -3,7 +3,7 @@ const { useState, useMemo } = React;
 
 // Kis teljesítmény-optimalizáció: késleltetett képbetöltés IntersectionObserverrel
 const PLACEHOLDER = 'data:image/gif;base64,R0lGODlhAQABAAAAACw=';
-function PerfImg({ src, alt, className, width, height }){
+function PerfImg({ src, alt, className, width, height, priority }){
   const ref = React.useRef(null);
   React.useEffect(()=>{
     const img = ref.current;
@@ -35,7 +35,7 @@ function PerfImg({ src, alt, className, width, height }){
       alt={alt}
       loading="lazy"
       decoding="async"
-      fetchPriority="low"
+      fetchPriority={priority ? 'high' : 'low'}
       width={width}
       height={height}
       style={{ backgroundColor:'#0f1621' }}
@@ -78,6 +78,16 @@ const App = () => {
   const [done, setDone] = useState([false,false,false,false,false]);
   const [showArchive, setShowArchive] = useState(false);
   const [soonMsg, setSoonMsg] = useState('');
+  // Prefetch következő feladat képe a gyorsabb élményért
+  React.useEffect(()=>{
+    const STEP_IMAGES = ['/images/1a.jpg','/images/1b.jpg','/images/1c.jpg','/images/1d.jpg','/images/1e.jpg'];
+    const next = step + 1;
+    if(next >= STEP_IMAGES.length) return;
+    const img = new Image();
+    img.decoding = 'async';
+    img.loading = 'eager';
+    img.src = STEP_IMAGES[next];
+  }, [step]);
 
   const next = () => setStep(s => Math.min(s+1, 4));
   const markDone = (i) => setDone(d => {
@@ -135,7 +145,7 @@ const App = () => {
                     return ok;
                   }}
                 />
-                <div className="task-note"><PerfImg className="task-ill" src="/images/1a.jpg" alt="Illusztráció 1a" width="280" height="280" /></div>
+                <div className="task-note"><PerfImg className="task-ill" src="/images/1a.jpg" alt="Illusztráció 1a" width="280" height="280" priority /></div>
                 <div className="hint">
                   <details>
                     <summary>Súgó megnyitása</summary>
@@ -194,7 +204,7 @@ const App = () => {
                     return ok;
                   }}
                 />
-                <div className="task-note"><PerfImg className="task-ill" src="/images/1b.jpg" alt="Illusztráció 1b" width="280" height="280" /></div>
+                <div className="task-note"><PerfImg className="task-ill" src="/images/1b.jpg" alt="Illusztráció 1b" width="280" height="280" priority /></div>
                 <div className="hint">
                   <details>
                     <summary>Súgó megnyitása</summary>
@@ -248,7 +258,7 @@ Minden percben egyetlen percet gondolok rád,
                   okText="Helyes! Tovább…"
                   errText="Nem egészen – figyeld a számokat szavakban és a sorrendet."
                 />
-                <div className="task-note"><PerfImg className="task-ill" src="/images/1c.jpg" alt="Illusztráció 1c" width="280" height="280" /></div>
+                <div className="task-note"><PerfImg className="task-ill" src="/images/1c.jpg" alt="Illusztráció 1c" width="280" height="280" priority /></div>
                 <div className="hint">
                   <details>
                     <summary>Súgó megnyitása</summary>
@@ -303,7 +313,7 @@ Minden percben egyetlen percet gondolok rád,
                   okText="Helyes! Tovább…"
                   errText="Nem egészen – előbb találd meg a szavakat, majd alakítsd számokká az első betűiket."
                 />
-                <PerfImg className="task-ill" src="/images/1d.jpg" alt="Illusztráció 1d" width="280" height="280" />
+                <PerfImg className="task-ill" src="/images/1d.jpg" alt="Illusztráció 1d" width="280" height="280" priority />
                 <div className="hint">
                   <details>
                     <summary>Súgó megnyitása</summary>
@@ -325,7 +335,7 @@ Minden percben egyetlen percet gondolok rád,
                 <h3>Nyomok dokumentálása</h3>
                 <p className="muted">A központ rákérdez, mennyire figyeltél az eddigi nyomokra. Egy ügyes kibernyomozó minden nyomot rendszerez, hogy később könnyen visszakereshető legyen.</p>
                 <p className="muted">Dokumentáld az előző négy feladat nyomait! Írj le minden nyomot külön sorban, és jelöld, honnan származik. Csak akkor tudsz továbblépni, ha mind a négy nyomot helyesen jegyzed fel.</p>
-                <div className="task-note"><PerfImg className="task-ill" src="/images/1e.jpg" alt="Illusztráció 1e" width="280" height="280" /></div>
+                <div className="task-note"><PerfImg className="task-ill" src="/images/1e.jpg" alt="Illusztráció 1e" width="280" height="280" priority /></div>
 
               </div>
               <div className="card">

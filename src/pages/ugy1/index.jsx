@@ -1,6 +1,48 @@
 /** global React, ReactDOM, NarrativeBlock, TaskCard, ChallengeInput */
 const { useState, useMemo } = React;
 
+// Kis teljesítmény-optimalizáció: késleltetett képbetöltés IntersectionObserverrel
+const PLACEHOLDER = 'data:image/gif;base64,R0lGODlhAQABAAAAACw=';
+function PerfImg({ src, alt, className, width, height }){
+  const ref = React.useRef(null);
+  React.useEffect(()=>{
+    const img = ref.current;
+    if(!img) return;
+    let loaded = false;
+    function loadReal(){
+      if(loaded) return;
+      loaded = true;
+      const real = img.getAttribute('data-src');
+      if(real){ img.src = real; }
+    }
+    if('IntersectionObserver' in window){
+      const io = new IntersectionObserver((entries)=>{
+        entries.forEach(e=>{ if(e.isIntersecting) { loadReal(); io.disconnect(); } });
+      }, { rootMargin: '200px 0px' });
+      io.observe(img);
+      return () => { try { io.disconnect(); } catch(_){} };
+    } else {
+      // Fallback: azonnal betöltjük
+      loadReal();
+    }
+  }, []);
+  return (
+    <img
+      ref={ref}
+      className={className}
+      src={PLACEHOLDER}
+      data-src={src}
+      alt={alt}
+      loading="lazy"
+      decoding="async"
+      fetchPriority="low"
+      width={width}
+      height={height}
+      style={{ backgroundColor:'#0f1621' }}
+    />
+  );
+}
+
 function CaesarShiftDecode(input, shift) {
   const A = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
   const up = (input || '').toUpperCase();
@@ -93,7 +135,7 @@ const App = () => {
                     return ok;
                   }}
                 />
-                <div className="task-note"><img className="task-ill" src="/images/1a.jpg" alt="Illusztráció 1a" loading="lazy" width="280" height="280" /></div>
+                <div className="task-note"><PerfImg className="task-ill" src="/images/1a.jpg" alt="Illusztráció 1a" width="280" height="280" /></div>
                 <div className="hint">
                   <details>
                     <summary>Súgó megnyitása</summary>
@@ -152,7 +194,7 @@ const App = () => {
                     return ok;
                   }}
                 />
-                <div className="task-note"><img className="task-ill" src="/images/1b.jpg" alt="Illusztráció 1b" loading="lazy" width="280" height="280" /></div>
+                <div className="task-note"><PerfImg className="task-ill" src="/images/1b.jpg" alt="Illusztráció 1b" width="280" height="280" /></div>
                 <div className="hint">
                   <details>
                     <summary>Súgó megnyitása</summary>
@@ -206,7 +248,7 @@ Minden percben egyetlen percet gondolok rád,
                   okText="Helyes! Tovább…"
                   errText="Nem egészen – figyeld a számokat szavakban és a sorrendet."
                 />
-                <div className="task-note"><img className="task-ill" src="/images/1c.jpg" alt="Illusztráció 1c" loading="lazy" width="280" height="280" /></div>
+                <div className="task-note"><PerfImg className="task-ill" src="/images/1c.jpg" alt="Illusztráció 1c" width="280" height="280" /></div>
                 <div className="hint">
                   <details>
                     <summary>Súgó megnyitása</summary>
@@ -261,7 +303,7 @@ Minden percben egyetlen percet gondolok rád,
                   okText="Helyes! Tovább…"
                   errText="Nem egészen – előbb találd meg a szavakat, majd alakítsd számokká az első betűiket."
                 />
-                <img className="task-ill" src="/images/1d.jpg" alt="Illusztráció 1d" loading="lazy" width="280" height="280" />
+                <PerfImg className="task-ill" src="/images/1d.jpg" alt="Illusztráció 1d" width="280" height="280" />
                 <div className="hint">
                   <details>
                     <summary>Súgó megnyitása</summary>
@@ -283,7 +325,7 @@ Minden percben egyetlen percet gondolok rád,
                 <h3>Nyomok dokumentálása</h3>
                 <p className="muted">A központ rákérdez, mennyire figyeltél az eddigi nyomokra. Egy ügyes kibernyomozó minden nyomot rendszerez, hogy később könnyen visszakereshető legyen.</p>
                 <p className="muted">Dokumentáld az előző négy feladat nyomait! Írj le minden nyomot külön sorban, és jelöld, honnan származik. Csak akkor tudsz továbblépni, ha mind a négy nyomot helyesen jegyzed fel.</p>
-                <div className="task-note"><img className="task-ill" src="/images/1e.jpg" alt="Illusztráció 1e" loading="lazy" width="280" height="280" /></div>
+                <div className="task-note"><PerfImg className="task-ill" src="/images/1e.jpg" alt="Illusztráció 1e" width="280" height="280" /></div>
 
               </div>
               <div className="card">

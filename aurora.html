@@ -904,5 +904,45 @@
             goTo(startIdx, false);
         })();
     </script>
+    <script>
+        // Staggered lazy loading for level thumbnails to speed first render
+        (function(){
+            var ric = window.requestIdleCallback || function(cb){ return setTimeout(cb, 50); };
+            function initStagger(){
+                var grid = document.querySelector('.levels-grid');
+                if(!grid) return;
+                var imgs = Array.prototype.slice.call(grid.querySelectorAll('img'));
+                if(!imgs.length) return;
+                var placeholder = 'data:image/gif;base64,R0lGODlhAQABAAAAACw=';
+                // Mark sources and lower priority for all except the first visible
+                imgs.forEach(function(img, i){
+                    var real = img.getAttribute('src');
+                    if(!real) return;
+                    img.dataset.src = real;
+                    img.setAttribute('decoding','async');
+                    if(i === 0){
+                        img.setAttribute('fetchpriority','high');
+                    } else {
+                        img.setAttribute('fetchpriority','low');
+                        img.setAttribute('loading','lazy');
+                        img.src = placeholder;
+                    }
+                });
+                var idx = 1; // first already visible
+                function loadNext(){
+                    if(idx >= imgs.length) return;
+                    var img = imgs[idx++];
+                    var real = img && img.dataset ? img.dataset.src : null;
+                    if(!img || !real){ return ric(loadNext); }
+                    img.addEventListener('load', function(){ ric(loadNext); }, { once: true });
+                    img.src = real;
+                }
+                // Start loading a couple after idle to avoid network burst
+                ric(function(){ loadNext(); loadNext(); });
+            }
+            if(document.readyState === 'loading'){ document.addEventListener('DOMContentLoaded', initStagger); }
+            else { initStagger(); }
+        })();
+    </script>
 </body>
 </html>

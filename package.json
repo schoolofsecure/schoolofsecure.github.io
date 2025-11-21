@@ -5,11 +5,13 @@
   "scripts": {
     "build:min": "terser js/app.js --compress --mangle --output js/app.min.js",
     "build:obf": "javascript-obfuscator js/app.min.js --output js/app.obf.js --compact true --control-flow-flattening true --dead-code-injection true --string-array true --string-array-encoding base64 --identifier-names-generator hexadecimal",
-    "build": "npm run build:min && npm run build:obf"
+    "build": "npm run build:min && npm run build:obf",
+    "optimize:images": "node scripts/optimize-images.js"
   },
   "devDependencies": {
     "javascript-obfuscator": "^4.1.0",
-    "terser": "^5.29.0"
+    "terser": "^5.29.0",
+    "sharp": "^0.33.4"
   }
 }
 

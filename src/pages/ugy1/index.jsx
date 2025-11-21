@@ -93,7 +93,7 @@ const App = () => {
                     return ok;
                   }}
                 />
-                <div className="task-note"><img className="task-ill" src="/images/1a.jpg" alt="Illusztráció 1a" loading="lazy" /></div>
+                <div className="task-note"><img className="task-ill" src="/images/1a.jpg" alt="Illusztráció 1a" loading="lazy" width="280" height="280" /></div>
                 <div className="hint">
                   <details>
                     <summary>Súgó megnyitása</summary>
@@ -152,7 +152,7 @@ const App = () => {
                     return ok;
                   }}
                 />
-                <div className="task-note"><img className="task-ill" src="/images/1b.jpg" alt="Illusztráció 1b" loading="lazy" /></div>
+                <div className="task-note"><img className="task-ill" src="/images/1b.jpg" alt="Illusztráció 1b" loading="lazy" width="280" height="280" /></div>
                 <div className="hint">
                   <details>
                     <summary>Súgó megnyitása</summary>
@@ -199,14 +199,14 @@ Minden percben egyetlen percet gondolok rád,
                   placeholder="4 számjegy…"
                   onCheck={(val, _norm)=>{
                     const v = String(val||'').replace(/\D/g,'');
-                    const ok = (v === '8371');
+                    const ok = (v === '3871' || v === '8371');
                     if (ok) { markDone(2); setTimeout(next, 400); }
                     return ok;
                   }}
                   okText="Helyes! Tovább…"
                   errText="Nem egészen – figyeld a számokat szavakban és a sorrendet."
                 />
-                <div className="task-note"><img className="task-ill" src="/images/1c.jpg" alt="Illusztráció 1c" loading="lazy" /></div>
+                <div className="task-note"><img className="task-ill" src="/images/1c.jpg" alt="Illusztráció 1c" loading="lazy" width="280" height="280" /></div>
                 <div className="hint">
                   <details>
                     <summary>Súgó megnyitása</summary>
@@ -240,7 +240,7 @@ Minden percben egyetlen percet gondolok rád,
                   <div className="ws-words">
                     <strong>Keresendő szavak:</strong>
                     <ul id="wsList" style={{margin:'8px 0 0 16px', padding:0}}></ul>
-                    <div id="wsDone" className="ws-done">Kész! Minden szót megtaláltál.</div>
+                    <div id="wsDone" className="ws-done">Kész!</div>
                   </div>
                 </div>
                 <div className="statusline" style={{marginTop:'10px'}}>
@@ -261,7 +261,7 @@ Minden percben egyetlen percet gondolok rád,
                   okText="Helyes! Tovább…"
                   errText="Nem egészen – előbb találd meg a szavakat, majd alakítsd számokká az első betűiket."
                 />
-                <img className="task-ill" src="/images/1d.jpg" alt="Illusztráció 1d" loading="lazy" />
+                <img className="task-ill" src="/images/1d.jpg" alt="Illusztráció 1d" loading="lazy" width="280" height="280" />
                 <div className="hint">
                   <details>
                     <summary>Súgó megnyitása</summary>
@@ -283,7 +283,7 @@ Minden percben egyetlen percet gondolok rád,
                 <h3>Nyomok dokumentálása</h3>
                 <p className="muted">A központ rákérdez, mennyire figyeltél az eddigi nyomokra. Egy ügyes kibernyomozó minden nyomot rendszerez, hogy később könnyen visszakereshető legyen.</p>
                 <p className="muted">Dokumentáld az előző négy feladat nyomait! Írd le minden nyomot külön sorban, és jelöld, honnan származik. Csak akkor tudsz továbblépni, ha mind a négy nyomot helyesen jegyzed fel.</p>
-                <div className="task-note"><img className="task-ill" src="/images/1e.jpg" alt="Illusztráció 1e" loading="lazy" /></div>
+                <div className="task-note"><img className="task-ill" src="/images/1e.jpg" alt="Illusztráció 1e" loading="lazy" width="280" height="280" /></div>
 
               </div>
               <div className="card">
@@ -352,8 +352,8 @@ function WordSearchMount(){
     const planned = [
       { w:'CIPHER',  r:1, c:1, dr:0,  dc:1 },   // → jobbra
       { w:'ENCRYPT', r:2, c:2, dr:1,  dc:0 },   // ↓ lefelé
-      { w:'DATA',    r:7, c:5, dr:-1, dc:0 },   // ↑ felfelé
-      { w:'LOGIC',   r:4, c:7, dr:0,  dc:-1 }   // ← balra
+      { w:'DATA',    r:9, c:9, dr:-1, dc:0 },   // ↑ felfelé (alsó sarokból indul)
+      { w:'LOGIC',   r:4, c:9, dr:0,  dc:-1 }   // ← balra (jobb szélről)
     ];
     // Fix elhelyezés – nincs fallback, így nem íródik felül és nem vándorol
     planned.forEach(p => placeWord(empty, p.w, p.r, p.c, p.dr, p.dc));
@@ -525,8 +525,8 @@ function MatchTable({ onDone }){
     { texts: ['VIGYAZZZOLILEHETTITKOSUGYNOK'], src: 'PANCELSZEKRENY', altSrc: ['REJTJEL'] },
     // „NYOMOK” – Metaadat (alternatív: Rendszerlog)
     { texts: ['NYOMOK'], src: 'METAADAT', altSrc: ['RENDSZERLOG'] },
-    // „8371” – Titkosított levél (alternatív: Levél)
-    { texts: ['8371'], src: 'TITKOSITOTTLEVEL', altSrc: ['LEVEL'] },
+    // „3871/8371” – Titkosított levél (alternatív: Levél) – ideiglenesen mindkettőt elfogadjuk
+    { texts: ['3871','8371'], src: 'TITKOSITOTTLEVEL', altSrc: ['LEVEL'] },
     // „3542” – Kódolt betűk (alternatív: Szókereső)
     { texts: ['3542'], src: 'KODOLTBETUK', altSrc: ['SZOKEREZO'] }
   ];
@@ -614,8 +614,8 @@ function ArchiveModal({ onClose }){
     const planned = [
       { w:'CIPHER',  r:1, c:1, dr:0,  dc:1 },   // →
       { w:'ENCRYPT', r:2, c:2, dr:1,  dc:0 },   // ↓
-      { w:'DATA',    r:7, c:5, dr:-1, dc:0 },   // ↑
-      { w:'LOGIC',   r:4, c:7, dr:0,  dc:-1 }   // ←
+      { w:'DATA',    r:9, c:9, dr:-1, dc:0 },   // ↑
+      { w:'LOGIC',   r:4, c:9, dr:0,  dc:-1 }   // ←
     ];
     planned.forEach(p => placeWord(empty, p.w, p.r, p.c, p.dr, p.dc));
     // Az első betű helyére számot írunk (A1Z26 mod 10), az irányt figyelembe véve

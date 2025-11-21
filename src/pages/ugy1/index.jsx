@@ -211,6 +211,7 @@ const App = () => {
                     <p className="muted" style={{margin:'8px 0 0'}}>
                       Figyeld a kulcs‑érték párokat. Minden érték vezető karaktere fontos a következő feladathoz.
                       Gyűjtsd össze ezeket a karaktereket, és rakd össze a jelszót!
+                      (Magyarázat: a „kulcs‑érték pár” olyan forma, mint „Név=Secure” – a bal oldal a kulcs, a jobb oldal az érték.)
                     </p>
                   </details>
                 </div>

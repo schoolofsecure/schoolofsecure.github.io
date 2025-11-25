@@ -1,11 +1,16 @@
-/** global React, ReactDOM, NarrativeBlock, TaskCard, ChallengeInput */
-const { useState, useMemo, useEffect } = React;
+import React, { useState, useMemo, useEffect, useRef } from 'react'
+import { Link, useSearchParams } from 'react-router-dom'
+import { useAuth } from '../../contexts/AuthContext'
+import NarrativeBlock from '../../components/Ugy1/NarrativeBlock'
+import TaskCard from '../../components/Ugy1/TaskCard'
+import ChallengeInput from '../../components/Ugy1/ChallengeInput'
+import '../../styles/ugy1.css'
 
 // Kis teljesítmény-optimalizáció: késleltetett képbetöltés IntersectionObserverrel
 const PLACEHOLDER = 'data:image/gif;base64,R0lGODlhAQABAAAAACw=';
 function PerfImg({ src, alt, className, width, height, priority }){
-  const ref = React.useRef(null);
-  React.useEffect(()=>{
+  const ref = useRef(null);
+  useEffect(()=>{
     const img = ref.current;
     if(!img) return;
     let loaded = false;
@@ -78,17 +83,7 @@ function vigenereDecode(cipher, key) {
 const STORAGE_KEY = 'ugy7_progress';
 const STORAGE_COMPLETED_KEY = 'ugy7_completed';
 
-function saveProgress(step, done) {
-  try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify({ step, done }));
-    // Firestore mentés is, ha be van jelentkezve
-    if (window.CMAuth && window.CMAuth.isAuthenticated) {
-      window.CMAuth.saveLevelCompletion('ugy7');
-    }
-  } catch(e) {
-    console.warn('Nem sikerült menteni az állapotot:', e);
-  }
-}
+// saveProgress will be updated inside the component to use useAuth hook
 
 function loadProgress() {
   try {
@@ -122,15 +117,16 @@ function checkPreviousCompleted() {
   }
 }
 
-const App = () => {
+const Ugy7 = () => {
   const [step, setStep] = useState(0); // 0..4
   const [done, setDone] = useState([false,false,false,false,false]);
   const [previousLocked, setPreviousLocked] = useState(true);
+  const [searchParams] = useSearchParams()
+  const { saveLevelCompletion, isAuthenticated } = useAuth()
 
   // Betöltés: állapot visszaállítása és előző pályák ellenőrzése
   useEffect(() => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const startFromBeginning = urlParams.get('start') === '1';
+    const startFromBeginning = searchParams.get('start') === '1';
     
     if (startFromBeginning) {
       setStep(0);
@@ -159,8 +155,15 @@ const App = () => {
 
   // Mentés minden változásnál
   useEffect(() => {
-    saveProgress(step, done);
-  }, [step, done]);
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify({ step, done }));
+      if (isAuthenticated) {
+        saveLevelCompletion('ugy7').catch(console.warn)
+      }
+    } catch(e) {
+      console.warn('Nem sikerült menteni az állapotot:', e);
+    }
+  }, [step, done, isAuthenticated, saveLevelCompletion]);
 
   const next = () => setStep(s => Math.min(s+1, 4));
   const markDone = (i) => setDone(d => {
@@ -174,7 +177,7 @@ const App = () => {
     return (
       <div className="container">
         <header>
-          <a href="/" className="brand" aria-label="CyberMystery – Vissza a főoldalra">
+          <Link to="/" className="brand" aria-label="CyberMystery – Vissza a főoldalra">
             <div className="brand-badge">CM</div>
             <div>A Kettős Identitás – Ügy #7</div>
           </a>
@@ -188,9 +191,9 @@ const App = () => {
               Visszatérhetsz az előző pályákra, hogy befejezd a feladatokat.
             </p>
             <div style={{display:'flex', gap:'12px', justifyContent:'center', flexWrap:'wrap'}}>
-              <a className="btn" href="/ugy1.html">Első pálya</a>
-              <a className="btn" href="/ugy2.html">Második pálya</a>
-              <a className="btn-ghost" href="/aurora.html">Ügyek áttekintése</a>
+              <Link className="btn" to="/ugy1">Első pálya</Link>
+              <Link className="btn" to="/ugy2">Második pálya</Link>
+              <Link className="btn-ghost" to="/aurora">Ügyek áttekintése</Link>
             </div>
             {/* Fejlesztői gomb - zárolás feloldása */}
             <div style={{marginTop:'24px', paddingTop:'24px', borderTop:'1px solid rgba(207,230,255,0.1)'}}>
@@ -217,7 +220,7 @@ const App = () => {
   return (
     <div className="container">
       <header>
-        <a href="/" className="brand" aria-label="CyberMystery – Vissza a főoldalra">
+        <Link to="/" className="brand" aria-label="CyberMystery – Vissza a főoldalra">
           <div className="brand-badge">CM</div>
           <div>A Kettős Identitás – Ügy #7</div>
         </a>
@@ -385,8 +388,8 @@ const App = () => {
                       markDone(4); 
                       try {
                         localStorage.setItem('ugy7_completed', 'true');
-                        if (window.CMAuth && window.CMAuth.isAuthenticated) {
-                          window.CMAuth.saveLevelCompletion('ugy7');
+                        if (isAuthenticated) {
+                          saveLevelCompletion('ugy7').catch(console.warn)
                         }
                       } catch(e) {
                         console.warn('Nem sikerült menteni a teljesítést:', e);

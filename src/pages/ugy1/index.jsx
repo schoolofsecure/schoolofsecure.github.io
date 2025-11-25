@@ -1,11 +1,16 @@
-/** global React, ReactDOM, NarrativeBlock, TaskCard, ChallengeInput */
-const { useState, useMemo } = React;
+import React, { useState, useMemo, useEffect, useRef } from 'react'
+import { Link } from 'react-router-dom'
+import { useAuth } from '../../contexts/AuthContext'
+import NarrativeBlock from '../../components/Ugy1/NarrativeBlock'
+import TaskCard from '../../components/Ugy1/TaskCard'
+import ChallengeInput from '../../components/Ugy1/ChallengeInput'
+import '../../styles/ugy1.css'
 
 // Kis teljesítmény-optimalizáció: késleltetett képbetöltés IntersectionObserverrel
 const PLACEHOLDER = 'data:image/gif;base64,R0lGODlhAQABAAAAACw=';
 function PerfImg({ src, alt, className, width, height, priority }){
-  const ref = React.useRef(null);
-  React.useEffect(()=>{
+  const ref = useRef(null);
+  useEffect(()=>{
     const img = ref.current;
     if(!img) return;
     let loaded = false;
@@ -22,7 +27,6 @@ function PerfImg({ src, alt, className, width, height, priority }){
       io.observe(img);
       return () => { try { io.disconnect(); } catch(_){} };
     } else {
-      // Fallback: azonnal betöltjük
       loadReal();
     }
   }, []);
@@ -73,12 +77,14 @@ function vigenereDecode(cipher, key) {
   return out;
 }
 
-const App = () => {
+const Ugy1 = () => {
   const [step, setStep] = useState(0); // 0..4
   const [done, setDone] = useState([false,false,false,false,false]);
   const [showArchive, setShowArchive] = useState(false);
+  const { saveLevelCompletion, isAuthenticated } = useAuth();
+  
   // Prefetch következő feladat képe a gyorsabb élményért
-  React.useEffect(()=>{
+  useEffect(()=>{
     const STEP_IMAGES = ['/images/1a.jpg','/images/1b.jpg','/images/1c.jpg','/images/1d.jpg','/images/1e.jpg'];
     const next = step + 1;
     if(next >= STEP_IMAGES.length) return;
@@ -95,20 +101,32 @@ const App = () => {
 
   const progressPct = useMemo(() => ((done.filter(Boolean).length)/5)*100, [done]);
 
+  const handleCompletion = async () => {
+    markDone(4);
+    try {
+      localStorage.setItem('ugy1_completed', 'true');
+      if (isAuthenticated) {
+        await saveLevelCompletion('ugy1');
+      }
+    } catch(e) {
+      console.warn('Nem sikerült menteni a teljesítést:', e);
+    }
+  };
+
   return (
     <div className="container">
       <header>
-        <a href="/" className="brand" aria-label="CyberMystery – Vissza a főoldalra">
+        <Link to="/" className="brand" aria-label="CyberMystery – Vissza a főoldalra">
           <div className="brand-badge">CM</div>
           <div>A múzeum éjszakája – Ügy #1</div>
-        </a>
+        </Link>
       </header>
 
       <main>
         <NarrativeBlock badge="Múzeum – éjszakai műszak">
           <h1 style={{margin:'10px 0 4px'}}>A múzeum éjszakája – Ügy #1</h1>
           <p>Az üres termekben csak az érzékelők pislognak. Az archívumban mozgás nyomai, de hiányzik az idővonal. 
-          A restaurátor szerint „csak egy kis rendrakás” – szerintünk nem.</p>
+          A restaurátor szerint „csak egy kis rendrakás" – szerintünk nem.</p>
         </NarrativeBlock>
 
         <div className="progress">
@@ -160,7 +178,6 @@ const App = () => {
                     </div>
                   </details>
                 </div>
-                {/* Fejlesztői gombok */}
                 <div style={{marginTop:'16px', paddingTop:'16px', borderTop:'1px solid rgba(207,230,255,0.2)', display:'flex', gap:'8px', flexWrap:'wrap'}}>
                   <button 
                     className="btn-ghost" 
@@ -184,7 +201,7 @@ const App = () => {
                 <p className="muted">Ahogy a múzeum biztonsági szerverszobájába lépsz, a levegő vibrál.</p>
                 <p className="muted">A ventilátorok túl gyorsan pörögnek, a monitorokon pedig remegő sorok futnak.</p>
                 <p className="muted" style={{marginTop:'8px'}}>
-                  A technikusok szerint valaki éjjel hozzáfért a rendszerhez és „kitisztította” a nyomait.
+                  A technikusok szerint valaki éjjel hozzáfért a rendszerhez és „kitisztította" a nyomait.
                   Csakhogy a hacker amatőr hibát vétett: hátrahagyott egy félbehagyott logfájlt, amelyben a fontos részeket ugyan törölte,
                   de egy mintát nem tudott eltakarni.
                 </p>
@@ -207,7 +224,6 @@ const App = () => {
                 <ChallengeInput
                   placeholder="kulcsszó…"
                   onCheck={(val, norm)=>{
-                    // Megoldás a log értékek első karaktereiből: NYOMOK
                     const v = norm(val).replace(/[\s\-_.]/g,'');
                     const ok = (v === 'NYOMOK');
                     if (ok) { markDone(1); setTimeout(next, 400); }
@@ -225,7 +241,6 @@ const App = () => {
                     </p>
                   </details>
                 </div>
-                {/* Fejlesztői gombok */}
                 <div style={{marginTop:'16px', paddingTop:'16px', borderTop:'1px solid rgba(207,230,255,0.2)', display:'flex', gap:'8px', flexWrap:'wrap'}}>
                   <button 
                     className="btn-ghost" 
@@ -290,7 +305,6 @@ Minden percben egyetlen percet gondolok rád,
                     </p>
                   </details>
                 </div>
-                {/* Fejlesztői gombok */}
                 <div style={{marginTop:'16px', paddingTop:'16px', borderTop:'1px solid rgba(207,230,255,0.2)', display:'flex', gap:'8px', flexWrap:'wrap'}}>
                   <button 
                     className="btn-ghost" 
@@ -339,7 +353,7 @@ Minden percben egyetlen percet gondolok rád,
                   placeholder="4 számjegy…"
                   onCheck={(val, _norm)=>{
                     const v = String(val||'').replace(/\D/g,'');
-                    const ok = (v === '3542'); // C,E,D,L → 3,5,4,2 (A1Z26 mod 10)
+                    const ok = (v === '3542');
                     if (ok) { markDone(3); setTimeout(next, 400); }
                     return ok;
                   }}
@@ -355,7 +369,6 @@ Minden percben egyetlen percet gondolok rád,
                     </p>
                   </details>
                 </div>
-                {/* Fejlesztői gombok */}
                 <div style={{marginTop:'16px', paddingTop:'16px', borderTop:'1px solid rgba(207,230,255,0.2)', display:'flex', gap:'8px', flexWrap:'wrap'}}>
                   <button 
                     className="btn-ghost" 
@@ -380,45 +393,19 @@ Minden percben egyetlen percet gondolok rád,
                 <p className="muted">A központ rákérdez, mennyire figyeltél az eddigi nyomokra. Egy ügyes kibernyomozó minden nyomot rendszerez, hogy később könnyen visszakereshető legyen.</p>
                 <p className="muted">Dokumentáld az előző négy feladat nyomait! Írj le minden nyomot külön sorban, és jelöld, honnan származik. Csak akkor tudsz továbblépni, ha mind a négy nyomot helyesen jegyzed fel.</p>
                 <div className="task-note"><PerfImg className="task-ill" src="/images/1e.jpg" alt="Illusztráció 1e" width="280" height="280" priority /></div>
-
               </div>
               <div className="card">
                 <h3>Táblázat</h3>
-                <MatchTable onDone={() => { 
-                  markDone(4); 
-                  // Teljesítés mentése localStorage-ba és Firestore-ba
-                  try {
-                    localStorage.setItem('ugy1_completed', 'true');
-                    if (window.CMAuth && window.CMAuth.isAuthenticated) {
-                      window.CMAuth.saveLevelCompletion('ugy1');
-                    }
-                  } catch(e) {
-                    console.warn('Nem sikerült menteni a teljesítést:', e);
-                  }
-                }} />
+                <MatchTable onDone={handleCompletion} />
                 <div style={{display:'flex', gap:'10px', marginTop:'10px'}}>
                   <button className="btn-ghost" type="button" onClick={()=>setShowArchive(true)}>
                     🔍 Nyomok újramegtekintése
                   </button>
                 </div>
-                <div style={{display:'flex', gap:'10px', marginTop:'10px'}}>
-                  {/* Tovább gomb eltávolítva a kérés szerint */}
-                </div>
-                {/* Fejlesztői gombok */}
                 <div style={{marginTop:'16px', paddingTop:'16px', borderTop:'1px solid rgba(207,230,255,0.2)', display:'flex', gap:'8px', flexWrap:'wrap'}}>
                   <button 
                     className="btn-ghost" 
-                    onClick={() => { 
-                      markDone(4); 
-                      try {
-                        localStorage.setItem('ugy1_completed', 'true');
-                        if (window.CMAuth && window.CMAuth.isAuthenticated) {
-                          window.CMAuth.saveLevelCompletion('ugy1');
-                        }
-                      } catch(e) {
-                        console.warn('Nem sikerült menteni a teljesítést:', e);
-                      }
-                    }}
+                    onClick={handleCompletion}
                     style={{fontSize:'13px', padding:'8px 14px', cursor:'pointer', fontWeight:600, borderColor:'rgba(0,229,255,0.4)'}}
                     title="Fejlesztői mód: feladat megoldása"
                   >
@@ -428,10 +415,10 @@ Minden percben egyetlen percet gondolok rád,
                 {done[4] && (
                   <div className="card" style={{marginTop:'10px', animation:'fadeIn .3s ease both'}}>
                     <div style={{display:'flex', gap:'10px', marginTop:'8px', flexWrap:'wrap'}}>
-                      <a className="btn" href="/aurora.html">Vissza az ügyekhez</a>
-                      <a className="btn-ghost" href="/ugy2.html?start=1" style={{textDecoration:'none'}}>
+                      <Link className="btn" to="/aurora">Vissza az ügyekhez</Link>
+                      <Link className="btn-ghost" to="/ugy2" style={{textDecoration:'none'}}>
                         Következő ügy
-                      </a>
+                      </Link>
                     </div>
                   </div>
                 )}
@@ -445,40 +432,30 @@ Minden percben egyetlen percet gondolok rád,
   );
 };
 
-ReactDOM.createRoot(document.getElementById('root')).render(<App />);
-
 // ——— Word search mounting (simple static board + interactions) ———
 function WordSearchMount(){
-  React.useEffect(()=>{
+  useEffect(()=>{
     const WORDS = ['CIPHER','ENCRYPT','DATA','LOGIC'];
     const SIZE = 10;
     const root = document.getElementById('wsGrid');
     const list = document.getElementById('wsList');
     if(!root || !list) return;
-    // static board with pre-placed words (for demo). Fill with random letters.
+    
+    // Event listeners tárolása cleanup-hoz
+    const eventListeners = [];
     const empty = Array.from({length:SIZE},()=>Array.from({length:SIZE},()=>'' ));
     function inBounds(r,c){ return r>=0 && r<SIZE && c>=0 && c<SIZE; }
-    function canPlace(grid, word, r, c, dr, dc){
-      for(let i=0;i<word.length;i++){
-        const rr = r+dr*i, cc = c+dc*i;
-        if(!inBounds(rr,cc)) return false;
-        if(grid[rr][cc] !== '' && grid[rr][cc] !== word[i]) return false;
-      }
-      return true;
-    }
     function placeWord(grid, word, r, c, dr, dc){
       for(let i=0;i<word.length;i++){
         grid[r+dr*i][c+dc*i] = word[i];
       }
     }
-    // Place words (horizontal/vertical only – aurora-stílus) konfliktusok nélkül
     const planned = [
-      { w:'CIPHER',  r:1, c:1, dr:0,  dc:1 },   // → jobbra
-      { w:'ENCRYPT', r:2, c:2, dr:1,  dc:0 },   // ↓ lefelé
-      { w:'DATA',    r:9, c:9, dr:-1, dc:0 },   // ↑ felfelé (alsó sarokból indul)
-      { w:'LOGIC',   r:4, c:9, dr:0,  dc:-1 }   // ← balra (jobb szélről)
+      { w:'CIPHER',  r:1, c:1, dr:0,  dc:1 },
+      { w:'ENCRYPT', r:2, c:2, dr:1,  dc:0 },
+      { w:'DATA',    r:9, c:9, dr:-1, dc:0 },
+      { w:'LOGIC',   r:4, c:9, dr:0,  dc:-1 }
     ];
-    // Fix elhelyezés – nincs fallback, így nem íródik felül és nem vándorol
     planned.forEach(p => placeWord(empty, p.w, p.r, p.c, p.dr, p.dc));
     const A = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
     for(let r=0;r<SIZE;r++){
@@ -572,7 +549,6 @@ function WordSearchMount(){
         }
         const li = wordItems[found]; if(li){ li.classList.add('found'); }
         if(activeWord === found){ activeWord = null; }
-        // Első betű számmá alakítása és megjelenítése a kiinduló cellában
         function letterToDigit(ch){
           const code = (ch.toUpperCase().charCodeAt(0) - 64);
           const d = code % 10;
@@ -592,26 +568,24 @@ function WordSearchMount(){
       }
       clearSelection();
     }
-    // Context menu tiltása és jobb gombos húzás
-    root.addEventListener('contextmenu', (e)=>{ e.preventDefault(); });
-    root.addEventListener('mousedown', (e)=>{
+    const handleContextMenu = (e) => { e.preventDefault(); };
+    const handleMouseDown = (e) => {
       const cell = getCell(e.target);
       if(!cell) return;
-      // Engedélyezzük a bal (0) és jobb (2) egérgombot is
       if(!(e.button === 0 || e.button === 2)) return;
       isDown = true; start = cell;
       if(e.button === 2) e.preventDefault();
       clearSelection();
-    });
-    root.addEventListener('mouseover', (e)=>{
+    };
+    const handleMouseOver = (e) => {
       if(!isDown || !start) return;
       const cell = getCell(e.target);
       if(!cell) return;
       if(cell.r===start.r || cell.c===start.c){
         markSel(start.r, start.c, cell.r, cell.c);
       }
-    });
-    window.addEventListener('mouseup', (e)=>{
+    };
+    const handleMouseUp = (e) => {
       if(!isDown || !start) return;
       isDown = false;
       const cell = getCell(e.target);
@@ -620,37 +594,46 @@ function WordSearchMount(){
         commit(start.r, start.c, cell.r, cell.c);
       } else { clearSelection(); }
       start = null;
-    });
+    };
+    
+    root.addEventListener('contextmenu', handleContextMenu);
+    root.addEventListener('mousedown', handleMouseDown);
+    root.addEventListener('mouseover', handleMouseOver);
+    window.addEventListener('mouseup', handleMouseUp);
+    
+    // Cleanup function
+    return () => {
+      root.removeEventListener('contextmenu', handleContextMenu);
+      root.removeEventListener('mousedown', handleMouseDown);
+      root.removeEventListener('mouseover', handleMouseOver);
+      window.removeEventListener('mouseup', handleMouseUp);
+      root.innerHTML = '';
+      if(list) list.innerHTML = '';
+    };
   }, []);
   return null;
 }
 
 // ——— Match table (task 5) ———
 function MatchTable({ onDone }){
-  const [rows, setRows] = React.useState([
+  const [rows, setRows] = useState([
     { text:'', src:'' },
     { text:'', src:'' },
     { text:'', src:'' },
     { text:'', src:'' }
   ]);
-  const [msg, setMsg] = React.useState('');
+  const [msg, setMsg] = useState('');
   function norm(s){
     return String(s||'')
       .normalize('NFD').replace(/[\u0300-\u036f]/g,'')
       .replace(/[^A-Za-z0-9]/g,'')
       .toUpperCase();
   }
-  // Frissített forráslista a feladat szerint (frappánsabb megnevezések)
   const SOURCES = ['Rejtjel','Torzult rendszerlog','Titkosított levél','Kódolt betűk'];
-  // Elfogadott nyomok
   const ACCEPT = [
-    // „Vigyázz, Zoli lehet titkosügynök.” → Rejtjel
     { texts: ['VIGYAZZZOLILEHETTITKOSUGYNOK'], src: 'REJTJEL' },
-    // „NYOMOK” → Torzult rendszerlog
     { texts: ['NYOMOK'], src: 'TORZULTRENDSZERLOG' },
-    // „3871” → Titkosított levél
     { texts: ['3871'], src: 'TITKOSITOTTLEVEL' },
-    // „3542” → Kódolt betűk
     { texts: ['3542'], src: 'KODOLTBETUK' }
   ];
   function updateRow(i, field, val){
@@ -661,7 +644,6 @@ function MatchTable({ onDone }){
     });
   }
   function check(){
-    // próbáljuk a négy sort egyenként bármelyik várttal összerendelni, de mind egyedi legyen
     const used = new Set();
     for(const row of rows){
       const t = norm(row.text);
@@ -669,7 +651,7 @@ function MatchTable({ onDone }){
       const matchIdx = ACCEPT.findIndex((a, idx) => {
         if(used.has(idx)) return false;
         const textOk = a.texts.some(x=>x===t);
-        const srcOk = (a.src === s) || (Array.isArray(a.altSrc) && a.altSrc.includes(s));
+        const srcOk = (a.src === s);
         return textOk && srcOk;
       });
       if(matchIdx === -1){ setMsg('Helytelen párosítás.'); return; }
@@ -715,11 +697,9 @@ function MatchTable({ onDone }){
   );
 }
 
-
 // ——— Archive modal: raw view of tasks 1–4 without solutions ———
 function ArchiveModal({ onClose }){
-  React.useEffect(()=>{
-    // Render a fresh, non-interactive grid for the word search (task 4)
+  useEffect(()=>{
     const root = document.getElementById('wsGridArchive');
     if(!root) return;
     const SIZE = 10;
@@ -735,13 +715,12 @@ function ArchiveModal({ onClose }){
       return String(code % 10);
     }
     const planned = [
-      { w:'CIPHER',  r:1, c:1, dr:0,  dc:1 },   // →
-      { w:'ENCRYPT', r:2, c:2, dr:1,  dc:0 },   // ↓
-      { w:'DATA',    r:9, c:9, dr:-1, dc:0 },   // ↑
-      { w:'LOGIC',   r:4, c:9, dr:0,  dc:-1 }   // ←
+      { w:'CIPHER',  r:1, c:1, dr:0,  dc:1 },
+      { w:'ENCRYPT', r:2, c:2, dr:1,  dc:0 },
+      { w:'DATA',    r:9, c:9, dr:-1, dc:0 },
+      { w:'LOGIC',   r:4, c:9, dr:0,  dc:-1 }
     ];
     planned.forEach(p => placeWord(empty, p.w, p.r, p.c, p.dr, p.dc));
-    // Az első betű helyére számot írunk (A1Z26 mod 10), az irányt figyelembe véve
     planned.forEach(p => {
       const firstR = p.r;
       const firstC = p.c;
@@ -825,4 +804,4 @@ Minden percben egyetlen percet gondolok rád,
   );
 }
 
-
+export default Ugy1

@@ -1,4 +1,5 @@
-/** global React */
+import React from 'react'
+
 const TaskCard = ({ title, children }) => {
   return (
     <section className="card" role="region" aria-label={title}>
@@ -8,6 +9,6 @@ const TaskCard = ({ title, children }) => {
   );
 };
 
-window.TaskCard = TaskCard;
+export default TaskCard
 
 

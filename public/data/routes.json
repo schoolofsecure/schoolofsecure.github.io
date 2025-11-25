@@ -1,0 +1,17 @@
+{
+  "routes": {
+    "": "landing",
+    "index": "landing",
+    "index.html": "landing",
+    "privacy": "privacy",
+    "privacy.html": "privacy",
+    "aurora": "aurora",
+    "aurora.html": "aurora",
+    "night-owl": "nightOwl",
+    "night-owl.html": "nightOwl",
+    "ugy1": "ugy1",
+    "ugy1.html": "ugy1"
+  }
+}
+
+

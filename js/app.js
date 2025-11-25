@@ -55,6 +55,8 @@
   }
   async function hydrateAurora(){
     const data = await fetchJSON('/data/aurora.json');
+    // Tároljuk globálisan, hogy az updateLevelAccess() hozzáférhessen
+    window.auroraData = data;
     // Gate texts
     const gate = data.gate || {};
     const gateEl = document.getElementById('gate');
@@ -81,7 +83,32 @@
       const el = document.getElementById(id);
       if(el) el.style.display = vis ? '' : 'none';
     }
-    try { if(sessionStorage.getItem('cm_lvl1_unlocked') === '1'){ unlock(); } } catch(e){}
+    // Ellenőrizzük, hogy van-e már teljesített pálya - ha igen, automatikusan unlock
+    let hasCompletedLevel = false;
+    try {
+      // Az első pálya ellenőrzése
+      const ugy1Done = sessionStorage.getItem('cm_lvl1_entry_ok') === '1' ||
+                       localStorage.getItem('ugy1_completed') === 'true';
+      if(ugy1Done) hasCompletedLevel = true;
+      
+      // További pályák ellenőrzése (2-12)
+      for(let i = 2; i <= 12; i++){
+        const ugyDone = localStorage.getItem(`ugy${i}_completed`) === 'true';
+        if(ugyDone) { hasCompletedLevel = true; break; }
+      }
+    } catch(e){ /* ignore */ }
+    
+    // Ha van teljesített pálya vagy már unlock volt, akkor automatikusan unlock
+    try { 
+      if(sessionStorage.getItem('cm_lvl1_unlocked') === '1' || hasCompletedLevel){ 
+        unlock(); 
+        // Ha van teljesített pálya, akkor azonnal mutassuk a pályákat
+        if(hasCompletedLevel){
+          showEl('introPanel', false);
+          showEl('levelsPanel', true);
+        }
+      } 
+    } catch(e){}
     if(FORM){
       FORM.addEventListener('submit', (e)=>{
         e.preventDefault();
@@ -96,19 +123,57 @@
     if(document.getElementById('levelsDesc')) document.getElementById('levelsDesc').textContent = levels.desc || '';
     const grid = document.getElementById('levelsGrid');
     if(grid && Array.isArray(levels.cards)){
+      // Keressük meg a legmagasabb teljesített ügy számát
+      let highestCompleted = 0;
+      try {
+        // Az első pálya ellenőrzése - mindkét módon ellenőrizzük
+        const ugy1EntryOk = sessionStorage.getItem('cm_lvl1_entry_ok') === '1';
+        const ugy1Completed = localStorage.getItem('ugy1_completed') === 'true';
+        if(ugy1EntryOk || ugy1Completed) highestCompleted = 1;
+        
+        // További pályák ellenőrzése (2-12)
+        for(let i = 2; i <= 12; i++){
+          const ugyDone = localStorage.getItem(`ugy${i}_completed`) === 'true';
+          if(ugyDone) highestCompleted = i;
+        }
+      } catch(e){ /* ignore */ }
+      
       grid.innerHTML = '';
-      levels.cards.forEach(card=>{
-        const a = document.createElement(card.locked ? 'div' : 'a');
-        if(!card.locked){ a.href = card.href || '#'; a.className = 'level-card'; a.style.textDecoration='none'; }
-        else { a.className = 'level-card'; a.setAttribute('aria-disabled','true'); }
+      levels.cards.forEach((card, index)=>{
+        // Feloldjuk az összes pályát a legmagasabb teljesített ügyig
+        let isUnlocked = false;
+        
+        // Ha a pálya száma kisebb vagy egyenlő a legmagasabb teljesített üggyel, feloldjuk
+        if(card.n <= highestCompleted){
+          isUnlocked = true;
+        }
+        
+        // Az első pálya mindig aktív, ha nincs zárolva
+        if(card.n === 1 && !card.locked){
+          isUnlocked = true;
+        }
+        
+        const a = document.createElement(isUnlocked ? 'a' : 'div');
+        if(isUnlocked){
+          a.href = card.href || (card.n === 1 ? '/ugy1.html' : `/ugy${card.n}.html`);
+          a.className = 'level-card';
+          a.style.textDecoration = 'none';
+        } else {
+          a.className = 'level-card';
+          a.setAttribute('aria-disabled','true');
+        }
         a.innerHTML = `
           <span class="level-label">Ügy #${card.n}</span>
           <img src="${card.img}" alt="Ügy ${card.n}" loading="lazy" />
           <div class="case-title">${card.title}</div>
-          ${card.locked ? '<span class="coming" aria-label="Zárolt">🔒</span>' : ''}
+          ${!isUnlocked ? '<span class="coming" aria-label="Zárolt">🔒</span>' : ''}
         `;
         grid.appendChild(a);
       });
+      // Ha van updateLevelAccess függvény, hívjuk meg, hogy frissítse a pályák állapotát
+      if(typeof updateLevelAccess === 'function'){
+        setTimeout(updateLevelAccess, 100);
+      }
     }
     function setupMission(d){
       const m = d.mission || {};

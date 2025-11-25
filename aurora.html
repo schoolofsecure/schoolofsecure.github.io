@@ -364,11 +364,16 @@
             <section id="levelsPanel" class="panel" style="display:none;">
                 <h2>Válaszd ki az ügyet</h2>
                 <p class="muted" style="margin:0 0 8px;">Minden ügy megnyitásáról értesítést küldünk.</p>
-                <div class="levels-grid" aria-label="Szintek">
+                <div id="levelsGrid" class="levels-grid" aria-label="Szintek">
                     <a id="level1Link" href="/ugy1.html" class="level-card" style="text-decoration:none;">
                         <span class="level-label">Ügy #1</span>
                         <img src="/images/1.jpg" alt="1. pálya" loading="lazy" width="1280" height="800" decoding="async" />
                         <div class="case-title">A Titkosított Adatcsomag</div>
+                    </a>
+                    <a id="level2Link" href="/ugy2.html" class="level-card" style="text-decoration:none; display:none;" aria-disabled="true">
+                        <span class="level-label">Ügy #2</span>
+                        <img src="/images/2.jpg" alt="2. pálya" loading="lazy" width="1280" height="800" decoding="async" />
+                        <div class="case-title">A Hamisított Archívum</div>
                     </a>
                     <div id="level2Card" class="level-card" aria-disabled="true">
                         <span class="level-label">Ügy #2</span>
@@ -513,17 +518,83 @@
                 el.style.display = show ? '' : 'none';
             }
             function updateLevelAccess(){
-                // A 2. pálya jelenleg nem elérhető mobil/teszt okokból: ne linkeljük
+                // Ha a js/app.js dinamikusan betöltötte a pályákat, akkor azokat kezeljük
+                const grid = document.getElementById('levelsGrid');
+                if(grid && grid.children.length > 0){
+                    // Dinamikusan betöltött pályák - újraellenőrizzük és frissítjük
+                    const levelsData = window.auroraData?.levels?.cards;
+                    if(levelsData && Array.isArray(levelsData)){
+                        // Keressük meg a legmagasabb teljesített ügy számát
+                        let highestCompleted = 0;
+                        try {
+                            // Az első pálya ellenőrzése - mindkét módon ellenőrizzük
+                            const ugy1EntryOk = sessionStorage.getItem('cm_lvl1_entry_ok') === '1';
+                            const ugy1Completed = localStorage.getItem('ugy1_completed') === 'true';
+                            if(ugy1EntryOk || ugy1Completed) highestCompleted = 1;
+                            
+                            // További pályák ellenőrzése (2-12)
+                            for(let i = 2; i <= 12; i++){
+                                const ugyDone = localStorage.getItem(`ugy${i}_completed`) === 'true';
+                                if(ugyDone) highestCompleted = i;
+                            }
+                        } catch(e){ /* ignore */ }
+                        
+                        grid.innerHTML = '';
+                        levelsData.forEach((card, index)=>{
+                            // Feloldjuk az összes pályát a legmagasabb teljesített ügyig
+                            let isUnlocked = false;
+                            
+                            // Ha a pálya száma kisebb vagy egyenlő a legmagasabb teljesített üggyel, feloldjuk
+                            if(card.n <= highestCompleted){
+                                isUnlocked = true;
+                            }
+                            
+                            // Az első pálya mindig aktív, ha nincs zárolva
+                            if(card.n === 1 && !card.locked){
+                                isUnlocked = true;
+                            }
+                            
+                            const a = document.createElement(isUnlocked ? 'a' : 'div');
+                            if(isUnlocked){
+                                a.href = card.href || (card.n === 1 ? '/ugy1.html' : `/ugy${card.n}.html`);
+                                a.className = 'level-card';
+                                a.style.textDecoration = 'none';
+                            } else {
+                                a.className = 'level-card';
+                                a.setAttribute('aria-disabled','true');
+                            }
+                            a.innerHTML = `
+                                <span class="level-label">Ügy #${card.n}</span>
+                                <img src="${card.img}" alt="Ügy ${card.n}" loading="lazy" />
+                                <div class="case-title">${card.title}</div>
+                                ${!isUnlocked ? '<span class="coming" aria-label="Zárolt">🔒</span>' : ''}
+                            `;
+                            grid.appendChild(a);
+                        });
+                        return;
+                    }
+                }
+                
+                // Fallback: statikus pályák kezelése (régi módszer)
+                let ugy1Completed = false;
+                try {
+                    ugy1Completed = sessionStorage.getItem('cm_lvl1_entry_ok') === '1' ||
+                                   localStorage.getItem('ugy1_completed') === 'true';
+                } catch(e){}
+                
                 let card = document.getElementById('level2Card');
-                if(card){
-                    try {
-                        const coming = card.querySelector('.coming');
-                        if(coming){
-                            coming.textContent = 'Elérhető hamarosan';
-                            coming.setAttribute('aria-label','Zárolt');
-                        }
-                        card.setAttribute('aria-disabled', 'true');
-                    } catch(e){}
+                let link = document.getElementById('level2Link');
+                
+                if(ugy1Completed){
+                    if(card) card.style.display = 'none';
+                    if(link){
+                        link.style.display = '';
+                        link.setAttribute('aria-disabled', 'false');
+                        link.removeAttribute('aria-disabled');
+                    }
+                } else {
+                    if(card) card.style.display = '';
+                    if(link) link.style.display = 'none';
                 }
             }
             function clearProgress(){
@@ -766,8 +837,31 @@
                     });
                 }
             }
+            // Ellenőrizzük, hogy van-e már teljesített pálya - ha igen, automatikusan unlock
+            let hasCompletedLevel = false;
             try {
-                if(sessionStorage.getItem('cm_lvl1_unlocked') === '1'){ unlock(); }
+                // Az első pálya ellenőrzése
+                const ugy1EntryOk = sessionStorage.getItem('cm_lvl1_entry_ok') === '1';
+                const ugy1Completed = localStorage.getItem('ugy1_completed') === 'true';
+                if(ugy1EntryOk || ugy1Completed) hasCompletedLevel = true;
+                
+                // További pályák ellenőrzése (2-12)
+                for(let i = 2; i <= 12; i++){
+                    const ugyDone = localStorage.getItem(`ugy${i}_completed`) === 'true';
+                    if(ugyDone) { hasCompletedLevel = true; break; }
+                }
+            } catch(e){ /* ignore */ }
+            
+            // Ha van teljesített pálya vagy már unlock volt, akkor automatikusan unlock
+            try {
+                if(sessionStorage.getItem('cm_lvl1_unlocked') === '1' || hasCompletedLevel){ 
+                    unlock(); 
+                    // Ha van teljesített pálya, akkor azonnal mutassuk a pályákat
+                    if(hasCompletedLevel){
+                        setVisibility(INTRO, false);
+                        setVisibility(LEVELS, true);
+                    }
+                } 
             } catch(e){}
 
             FORM.addEventListener('submit', function(e){
@@ -939,8 +1033,17 @@
                 // Start loading a couple after idle to avoid network burst
                 ric(function(){ loadNext(); loadNext(); });
             }
-            if(document.readyState === 'loading'){ document.addEventListener('DOMContentLoaded', initStagger); }
-            else { initStagger(); }
+            if(document.readyState === 'loading'){ 
+                document.addEventListener('DOMContentLoaded', function(){
+                    initStagger();
+                    // Frissítsük a pályák állapotát betöltéskor
+                    setTimeout(updateLevelAccess, 500);
+                }); 
+            }
+            else { 
+                initStagger();
+                setTimeout(updateLevelAccess, 500);
+            }
         })();
     </script>
 </body>

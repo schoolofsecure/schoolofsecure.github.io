@@ -77,7 +77,6 @@ const App = () => {
   const [step, setStep] = useState(0); // 0..4
   const [done, setDone] = useState([false,false,false,false,false]);
   const [showArchive, setShowArchive] = useState(false);
-  const [soonMsg, setSoonMsg] = useState('');
   // Prefetch következő feladat képe a gyorsabb élményért
   React.useEffect(()=>{
     const STEP_IMAGES = ['/images/1a.jpg','/images/1b.jpg','/images/1c.jpg','/images/1d.jpg','/images/1e.jpg'];
@@ -161,6 +160,17 @@ const App = () => {
                     </div>
                   </details>
                 </div>
+                {/* Fejlesztői gombok */}
+                <div style={{marginTop:'16px', paddingTop:'16px', borderTop:'1px solid rgba(207,230,255,0.2)', display:'flex', gap:'8px', flexWrap:'wrap'}}>
+                  <button 
+                    className="btn-ghost" 
+                    onClick={() => { markDone(0); setTimeout(next, 200); }}
+                    style={{fontSize:'13px', padding:'8px 14px', cursor:'pointer', fontWeight:600, borderColor:'rgba(0,229,255,0.4)'}}
+                    title="Fejlesztői mód: feladat megoldása és következő"
+                  >
+                    ✅ Megoldás + Következő
+                  </button>
+                </div>
               </div>
             </div>
           </TaskCard>
@@ -211,9 +221,20 @@ const App = () => {
                     <p className="muted" style={{margin:'8px 0 0'}}>
                       Figyeld a kulcs‑érték párokat. Minden érték vezető karaktere fontos a következő feladathoz.
                       Gyűjtsd össze ezeket a karaktereket, és rakd össze a jelszót!
-                      (Magyarázat: a „kulcs‑érték pár” olyan forma, mint „Név=Secure” – a bal oldal a kulcs, a jobb oldal az érték.)
+                      (Magyarázat: a „kulcs‑érték pár" olyan forma, mint „Név=Secure" – a bal oldal a kulcs, a jobb oldal az érték.)
                     </p>
                   </details>
+                </div>
+                {/* Fejlesztői gombok */}
+                <div style={{marginTop:'16px', paddingTop:'16px', borderTop:'1px solid rgba(207,230,255,0.2)', display:'flex', gap:'8px', flexWrap:'wrap'}}>
+                  <button 
+                    className="btn-ghost" 
+                    onClick={() => { markDone(1); setTimeout(next, 200); }}
+                    style={{fontSize:'13px', padding:'8px 14px', cursor:'pointer', fontWeight:600, borderColor:'rgba(0,229,255,0.4)'}}
+                    title="Fejlesztői mód: feladat megoldása és következő"
+                  >
+                    ✅ Megoldás + Következő
+                  </button>
                 </div>
               </div>
             </div>
@@ -269,6 +290,17 @@ Minden percben egyetlen percet gondolok rád,
                     </p>
                   </details>
                 </div>
+                {/* Fejlesztői gombok */}
+                <div style={{marginTop:'16px', paddingTop:'16px', borderTop:'1px solid rgba(207,230,255,0.2)', display:'flex', gap:'8px', flexWrap:'wrap'}}>
+                  <button 
+                    className="btn-ghost" 
+                    onClick={() => { markDone(2); setTimeout(next, 200); }}
+                    style={{fontSize:'13px', padding:'8px 14px', cursor:'pointer', fontWeight:600, borderColor:'rgba(0,229,255,0.4)'}}
+                    title="Fejlesztői mód: feladat megoldása és következő"
+                  >
+                    ✅ Megoldás + Következő
+                  </button>
+                </div>
               </div>
             </div>
           </TaskCard>
@@ -323,6 +355,17 @@ Minden percben egyetlen percet gondolok rád,
                     </p>
                   </details>
                 </div>
+                {/* Fejlesztői gombok */}
+                <div style={{marginTop:'16px', paddingTop:'16px', borderTop:'1px solid rgba(207,230,255,0.2)', display:'flex', gap:'8px', flexWrap:'wrap'}}>
+                  <button 
+                    className="btn-ghost" 
+                    onClick={() => { markDone(3); setTimeout(next, 200); }}
+                    style={{fontSize:'13px', padding:'8px 14px', cursor:'pointer', fontWeight:600, borderColor:'rgba(0,229,255,0.4)'}}
+                    title="Fejlesztői mód: feladat megoldása és következő"
+                  >
+                    ✅ Megoldás + Következő
+                  </button>
+                </div>
               </div>
             </div>
             <WordSearchMount />
@@ -341,7 +384,18 @@ Minden percben egyetlen percet gondolok rád,
               </div>
               <div className="card">
                 <h3>Táblázat</h3>
-                <MatchTable onDone={() => { markDone(4); }} />
+                <MatchTable onDone={() => { 
+                  markDone(4); 
+                  // Teljesítés mentése localStorage-ba és Firestore-ba
+                  try {
+                    localStorage.setItem('ugy1_completed', 'true');
+                    if (window.CMAuth && window.CMAuth.isAuthenticated) {
+                      window.CMAuth.saveLevelCompletion('ugy1');
+                    }
+                  } catch(e) {
+                    console.warn('Nem sikerült menteni a teljesítést:', e);
+                  }
+                }} />
                 <div style={{display:'flex', gap:'10px', marginTop:'10px'}}>
                   <button className="btn-ghost" type="button" onClick={()=>setShowArchive(true)}>
                     🔍 Nyomok újramegtekintése
@@ -350,19 +404,35 @@ Minden percben egyetlen percet gondolok rád,
                 <div style={{display:'flex', gap:'10px', marginTop:'10px'}}>
                   {/* Tovább gomb eltávolítva a kérés szerint */}
                 </div>
+                {/* Fejlesztői gombok */}
+                <div style={{marginTop:'16px', paddingTop:'16px', borderTop:'1px solid rgba(207,230,255,0.2)', display:'flex', gap:'8px', flexWrap:'wrap'}}>
+                  <button 
+                    className="btn-ghost" 
+                    onClick={() => { 
+                      markDone(4); 
+                      try {
+                        localStorage.setItem('ugy1_completed', 'true');
+                        if (window.CMAuth && window.CMAuth.isAuthenticated) {
+                          window.CMAuth.saveLevelCompletion('ugy1');
+                        }
+                      } catch(e) {
+                        console.warn('Nem sikerült menteni a teljesítést:', e);
+                      }
+                    }}
+                    style={{fontSize:'13px', padding:'8px 14px', cursor:'pointer', fontWeight:600, borderColor:'rgba(0,229,255,0.4)'}}
+                    title="Fejlesztői mód: feladat megoldása"
+                  >
+                    ✅ Megoldás
+                  </button>
+                </div>
                 {done[4] && (
                   <div className="card" style={{marginTop:'10px', animation:'fadeIn .3s ease both'}}>
-                    <div style={{display:'flex', gap:'10px', marginTop:'8px'}}>
+                    <div style={{display:'flex', gap:'10px', marginTop:'8px', flexWrap:'wrap'}}>
                       <a className="btn" href="/aurora.html">Vissza az ügyekhez</a>
-                      <button
-                        className="btn-ghost"
-                        type="button"
-                        onClick={()=> setSoonMsg('Noctua még alszik. Térj vissza később — a következő nyom akkor tárul fel.')}
-                      >
-                        Tovább az Éjféli kézfogásra
-                      </button>
+                      <a className="btn-ghost" href="/ugy2.html?start=1" style={{textDecoration:'none'}}>
+                        Következő ügy
+                      </a>
                     </div>
-                    {soonMsg && <div className="statusline" style={{marginTop:'8px'}} aria-live="polite">{soonMsg}</div>}
                   </div>
                 )}
               </div>

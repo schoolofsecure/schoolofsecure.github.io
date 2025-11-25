@@ -210,7 +210,7 @@ const Aurora = () => {
           <div className="gate-card">
             <h1 id="gateTitle">{data.gate?.title || 'Belépés szükséges'}</h1>
             <p id="gateDesc">{data.gate?.desc || ''}</p>
-            <form id="gateForm" onSubmit={handleGateSubmit}>
+            <form id="gateForm" className="gate-form" onSubmit={handleGateSubmit}>
               <input
                 id="email"
                 className="input"
@@ -279,7 +279,7 @@ const Aurora = () => {
               <div className="cm-card">
                 <h3 id="missionPaneLeftTitle">{data.mission?.leftTitle || ''}</h3>
                 <div className="cm-puzzle" id="missionPuzzleHTML" dangerouslySetInnerHTML={{__html: data.mission?.puzzleHTML || ''}}></div>
-                <div className={`cm-statusline ${entryStatusType ? `status-${entryStatusType}` : ''}`} id="entryStatus">
+                <div className={`cm-statusline caret ${entryStatusType ? `status-${entryStatusType}` : ''}`} id="entryStatus">
                   {entryStatus || data.mission?.statusReady || ''}
                 </div>
               </div>
@@ -300,7 +300,7 @@ const Aurora = () => {
                       }
                     }}
                   />
-                  <button id="entryBtn" className="btn" onClick={handleEntrySubmit}>Küldés</button>
+                  <button id="entryBtn" className="btn" onClick={handleEntrySubmit}>Beküldés</button>
                 </div>
                 <div className="cm-hint">
                   <details>

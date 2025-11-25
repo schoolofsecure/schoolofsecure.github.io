@@ -24,7 +24,7 @@
     "rightTitle": "Válasz",
     "inputPlaceholder": "ellenőrző szó…",
     "hintTitle": "Súgó megnyitása",
-    "hintText": "Egy extra „C” betű csúszott be a „ACCESS” szóba. Tipp: csak a javasolt karaktereket használd.",
+    "hintText": "Figyeld meg: az egyik betűből túl sok van, és nem minden karakter megengedett. Használj csak betűket, számokat és kötőjelet.",
     "hintChips": ["ACCESS-LEVEL","NOVICE-01","ENTRY"],
     "expected": "ACCESS-LEVEL-NOVICE-01",
     "statusOk": "[status] ACCESS GRANTED — belépő protokoll teljesítve.",

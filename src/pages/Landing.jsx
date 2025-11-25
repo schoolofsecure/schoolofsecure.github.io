@@ -6,6 +6,7 @@ import '../index.css'
 const Landing = () => {
   const [gdprAgreed, setGdprAgreed] = useState(false)
   const [cookieBannerVisible, setCookieBannerVisible] = useState(false)
+  const [showGdprHint, setShowGdprHint] = useState(false)
   const { user, registerWithEmail, loginWithEmail, logout, isAuthenticated } = useAuth()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -29,9 +30,17 @@ const Landing = () => {
   const handleSignup = (e) => {
     if (!gdprAgreed) {
       e.preventDefault()
-      alert('Kérjük, fogadd el az adatkezelést a folytatáshoz.')
+      setShowGdprHint(true)
+      // Scroll to the gdpr section
+      setTimeout(() => {
+        const signupSection = document.getElementById('signup')
+        if (signupSection) {
+          signupSection.scrollIntoView({ behavior: 'smooth', block: 'center' })
+        }
+      }, 100)
       return
     }
+    setShowGdprHint(false)
   }
 
   const handleRegister = async () => {
@@ -126,15 +135,31 @@ const Landing = () => {
               type="checkbox" 
               id="gdprAgree" 
               checked={gdprAgreed}
-              onChange={(e) => setGdprAgreed(e.target.checked)}
+              onChange={(e) => {
+                setGdprAgreed(e.target.checked)
+                if (e.target.checked) {
+                  setShowGdprHint(false)
+                }
+              }}
             />
             <label htmlFor="gdprAgree">
               Elfogadom, hogy adataimat a játék céljára kezeljék. Bővebben az <Link to="/privacy">adatkezelési tájékoztatóban</Link>.
             </label>
           </div>
-          <div id="gdprHint" style={{marginTop:'6px', fontSize:'12px', color: 'var(--muted)'}}>
-            A gomb aktiválásához fogadd el az adatkezelést.
-          </div>
+          {(showGdprHint || !gdprAgreed) && (
+            <div 
+              id="gdprHint" 
+              style={{
+                marginTop:'6px', 
+                fontSize:'12px', 
+                color: showGdprHint ? 'var(--danger)' : 'var(--muted)',
+                fontWeight: showGdprHint ? 600 : 400,
+                transition: 'color 0.3s ease'
+              }}
+            >
+              A gomb aktiválásához fogadd el az adatkezelést.
+            </div>
+          )}
         </div>
       </section>
 

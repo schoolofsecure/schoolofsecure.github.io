@@ -36,7 +36,7 @@
     "title": "Válaszd ki az ügyet",
     "desc": "Minden ügy megnyitásáról értesítést küldünk.",
     "cards": [
-      { "n": 1, "title": "A Titkosított Adatcsomag", "img": "/images/1.jpg", "href": "/ugy1.html", "locked": false },
+      { "n": 1, "title": "A Titkosított Adatcsomag", "img": "/images/1.jpg", "href": "/ugy1", "locked": false },
       { "n": 2, "title": "A Hamisított Archívum", "img": "/images/2.jpg", "href": "#", "locked": true },
       { "n": 3, "title": "A Kézbesítetlen Üzenet", "img": "/images/3.jpg", "href": "#", "locked": true },
       { "n": 4, "title": "A Hiányzó Idővonal", "img": "/images/4.jpg", "href": "#", "locked": true },

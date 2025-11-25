@@ -324,7 +324,7 @@ const Aurora = () => {
             <p id="levelsDesc">{data.levels?.desc || ''}</p>
             <div className="levels-grid" id="levelsGrid">
               {(data.levels?.cards || []).map((card) => {
-                const isUnlocked = card.n <= highestCompleted || (card.n === 1 && !card.locked)
+                const isUnlocked = card.n <= highestCompleted + 1 || (card.n === 1 && !card.locked)
                 return isUnlocked ? (
                   <Link
                     key={card.n}

@@ -104,7 +104,6 @@ const Ugy1 = () => {
   const handleCompletion = async () => {
     markDone(4);
     try {
-      localStorage.setItem('ugy1_completed', 'true');
       if (isAuthenticated) {
         await saveLevelCompletion('ugy1');
       }

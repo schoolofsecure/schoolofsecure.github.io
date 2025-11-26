@@ -11,12 +11,24 @@ export const normalizeText = (s) => {
     .toUpperCase();
 };
 
-const ChallengeInput = ({ placeholder = 'válasz…', onCheck, okText = 'Helyes!', errText = 'Nem egészen – próbáld újra.' }) => {
+const ChallengeInput = ({
+  placeholder = 'válasz…',
+  onCheck,
+  okText = 'Helyes!',
+  errText = 'Nem egészen – próbáld újra.',
+  onSuccess,
+  onFailure
+}) => {
   const [value, setValue] = useState('');
   const [status, setStatus] = useState(null); // 'ok' | 'err' | null
   const onSubmit = () => {
     const res = onCheck ? onCheck(value, normalizeText) : false;
     setStatus(res ? 'ok' : 'err');
+    if (res) {
+      onSuccess && onSuccess();
+    } else {
+      onFailure && onFailure();
+    }
   };
   return (
     <div>

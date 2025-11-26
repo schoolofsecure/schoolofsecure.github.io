@@ -5,7 +5,7 @@ import Landing from './pages/Landing'
 import Aurora from './pages/Aurora'
 import Privacy from './pages/Privacy'
 import Ugy1 from './pages/ugy1'
-//import Ugy2 from './pages/ugy2'
+import Ugy2 from './pages/ugy2'
 //import Ugy3 from './pages/ugy3'
 //import Ugy4 from './pages/ugy4'
 //import Ugy5 from './pages/ugy5'
@@ -28,8 +28,8 @@ function App() {
           <Route path="/aurora" element={<Aurora />} />
           <Route path="/privacy" element={<Privacy />} />
           <Route path="/ugy1" element={<Ugy1 />} />
-          {/*<Route path="/ugy2" element={<Ugy2 />} />
-          <Route path="/ugy3" element={<Ugy3 />} />
+          <Route path="/ugy2" element={<Ugy2 />} />
+          {/*<Route path="/ugy3" element={<Ugy3 />} />
           <Route path="/ugy4" element={<Ugy4 />} />
           <Route path="/ugy5" element={<Ugy5 />} />
           <Route path="/ugy6" element={<Ugy6 />} />

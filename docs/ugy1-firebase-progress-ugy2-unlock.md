@@ -63,6 +63,19 @@ Ez azt jelenti, hogy:
 - Ha `highestCompleted = 2` (ugy1 és ugy2 teljesítve), akkor az 1., 2. és 3. ügy is unlocked
 - És így tovább...
 
+### 3. Aurora.jsx - Retroaktív teljesítés felajánlása
+
+**Fájl:** `src/pages/Aurora.jsx`
+
+Belépés után – ha a felhasználó be van jelentkezve, de még nincs rögzítve a belépő protokoll/ugy1 teljesítése – megjelenik egy kérdéskártya:
+
+- *„Már megoldottad korábban?”*  
+- **Igen**: a `handleRetroCompletionClaim` mindkét pályát (mission + ugy1) menti Firebase-be, majd azonnal megnyitja a szinteket.
+- **Nem**: a kártya bezárul és a felhasználó folytathatja a belépő protokollt.
+- Hibára külön üzenet jelenik meg, a háttérmentés állapotát spinner-szöveg jelzi.
+
+Ez a megoldás biztosítja, hogy a korábban – regisztráció nélkül – teljesítő ügynökök manuális adminisztráció nélkül folytathassák a második pályát.
+
 ## Működés
 
 1. **Progress mentés:** Amikor a felhasználó befejezi az ugy1 oldal 5. feladatát, a `handleCompletion` függvény meghívódik
@@ -81,4 +94,21 @@ Ez azt jelenti, hogy:
 1. Bejelentkezés után teljesítsd az ugy1 oldalt
 2. Ellenőrizd, hogy az Aurora oldalon a 2. ügy feloldódott-e
 3. Ellenőrizd a Firebase konzolban, hogy a `users/{uid}/completions/ugy1` dokumentum létrejött-e
+
+---
+
+## Frissítés – Életrendszer az ugy1 pályán
+
+- Az `ugy1` pályán a játékos 3 élettel indul (`lives` state, HUD a jobb felső sarokban 🕵️ ikonnal).
+- Minden hibás próbálkozásnál (ChallengeInput + MatchTable) 1 élet levonódik.
+- A teljes ügy megoldásakor automatikusan +1 élet jár (akkor is, ha közben elfogytak az életek).
+- A HUD dinamikusan mutatja a maradék életeket; 0 esetén „nincs” felirat jelenik meg.
+- Ha elfogynak az életek, a pálya automatikusan resetelődik (step=0, minden feladat újra), majd a játékos friss 3 élettel folytathatja – akkor is, ha korábban végigjátszotta.
+
+## Frissítés – Ügy #2 sablon feladatok
+
+- A `src/pages/ugy2/index.jsx` most egy teljes, 5 kártyából álló sablont tartalmaz.
+- Minden kártya ugyanazt a struktúrát követi, mint az első ügy feladatai: bal oldali narratíva + jobb oldali interaktív panel.
+- A jobb oldali kártyákon placeholder dobozok és „Feladat megnyitása” / „Feladat kész” gombok találhatók, így könnyen behelyettesíthetők a végleges rejtvények.
+- A tetején progress bar, alul gyors-léptető gombok segítik a fejlesztést; a teljesítés végén automatikus `saveLevelCompletion('ugy2')` hívás történik (ha be van jelentkezve a felhasználó).
 

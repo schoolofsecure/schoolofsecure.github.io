@@ -77,11 +77,15 @@ function vigenereDecode(cipher, key) {
   return out;
 }
 
+const MAX_LIVES = 3;
+
 const Ugy1 = () => {
   const [step, setStep] = useState(0); // 0..4
   const [done, setDone] = useState([false,false,false,false,false]);
   const [showArchive, setShowArchive] = useState(false);
   const { saveLevelCompletion, isAuthenticated } = useAuth();
+  const [lives, setLives] = useState(MAX_LIVES);
+  const [lifeMessage, setLifeMessage] = useState('');
   
   // Prefetch következő feladat képe a gyorsabb élményért
   useEffect(()=>{
@@ -101,12 +105,35 @@ const Ugy1 = () => {
 
   const progressPct = useMemo(() => ((done.filter(Boolean).length)/5)*100, [done]);
 
+  const loseLife = () => {
+    setLives((prev) => Math.max(0, prev - 1));
+  };
+
+  const rewardLife = () => {
+    setLives((prev) => prev + 1);
+  };
+
+  useEffect(() => {
+    if (lives === 0) {
+      setLifeMessage('Elfogytak az életek. Újrakezdjük az ügyet az elejétől.');
+      const timeout = setTimeout(() => {
+        setStep(0);
+        setDone([false,false,false,false,false]);
+        setLives(MAX_LIVES);
+        setLifeMessage('Újrakezdve – 3 friss élet.');
+        setTimeout(() => setLifeMessage(''), 2000);
+      }, 1800);
+      return () => clearTimeout(timeout);
+    }
+  }, [lives]);
+
   const handleCompletion = async () => {
     markDone(4);
     try {
       if (isAuthenticated) {
         await saveLevelCompletion('ugy1');
       }
+      rewardLife();
     } catch(e) {
       console.warn('Nem sikerült menteni a teljesítést:', e);
     }
@@ -120,6 +147,50 @@ const Ugy1 = () => {
           <div>A múzeum éjszakája – Ügy #1</div>
         </Link>
       </header>
+      <div
+        className="lives-hud"
+        style={{
+          display:'flex',
+          justifyContent:'flex-end',
+          alignItems:'center',
+          gap:'10px',
+          marginBottom:'12px',
+          flexWrap:'wrap'
+        }}
+      >
+        <div style={{display:'flex', alignItems:'center', gap:'6px', fontSize:'13px', color:'var(--muted)'}}>
+          <span role="img" aria-label="Játékos ikon">🕵️</span>
+          <strong style={{fontFamily:'Rajdhani, Inter, sans-serif', letterSpacing:'0.4px'}}>Életek</strong>
+        </div>
+        <div style={{display:'flex', gap:'6px', alignItems:'center', minHeight:'16px'}}>
+          {lives === 0 && <span style={{color:'var(--danger)', fontSize:'12px'}}>nincs</span>}
+          {lives > 0 && lives <= 3 && (
+            <span>
+              {Array.from({length:lives}).map((_, idx) => (
+                <span key={idx} style={{color:'#00e5ff', marginRight:'2px'}}>●</span>
+              ))}
+            </span>
+          )}
+          {lives > 3 && (
+            <span style={{color:'#00e5ff', fontWeight:700, fontSize:'13px'}}>
+              {lives} élet
+            </span>
+          )}
+        </div>
+      </div>
+      {lifeMessage && (
+        <div
+          style={{
+            textAlign:'right',
+            fontSize:'12px',
+            color:'var(--muted)',
+            marginTop:'-6px',
+            marginBottom:'12px'
+          }}
+        >
+          {lifeMessage}
+        </div>
+      )}
 
       <main>
         <NarrativeBlock badge="Múzeum – éjszakai műszak">
@@ -160,6 +231,7 @@ const Ugy1 = () => {
                     if (ok) { markDone(0); setTimeout(next, 400); }
                     return ok;
                   }}
+                  onFailure={loseLife}
                 />
                 <div className="task-note"><PerfImg className="task-ill" src="/images/1a.jpg" alt="Illusztráció 1a" width="280" height="280" priority /></div>
                 <div className="hint">
@@ -228,6 +300,7 @@ const Ugy1 = () => {
                     if (ok) { markDone(1); setTimeout(next, 400); }
                     return ok;
                   }}
+                  onFailure={loseLife}
                 />
                 <div className="task-note"><PerfImg className="task-ill" src="/images/1b.jpg" alt="Illusztráció 1b" width="280" height="280" priority /></div>
                 <div className="hint">
@@ -293,6 +366,7 @@ Minden percben egyetlen percet gondolok rád,
                   }}
                   okText="Helyes! Tovább…"
                   errText="Nem egészen – figyeld a számokat szavakban és a sorrendet."
+                  onFailure={loseLife}
                 />
                 <div className="task-note"><PerfImg className="task-ill" src="/images/1c.jpg" alt="Illusztráció 1c" width="280" height="280" priority /></div>
                 <div className="hint">
@@ -358,6 +432,7 @@ Minden percben egyetlen percet gondolok rád,
                   }}
                   okText="Helyes! Tovább…"
                   errText="Nem egészen – előbb találd meg a szavakat, majd alakítsd számokká az első betűiket."
+                  onFailure={loseLife}
                 />
                 <PerfImg className="task-ill" src="/images/1d.jpg" alt="Illusztráció 1d" width="280" height="280" priority />
                 <div className="hint">
@@ -395,7 +470,7 @@ Minden percben egyetlen percet gondolok rád,
               </div>
               <div className="card">
                 <h3>Táblázat</h3>
-                <MatchTable onDone={handleCompletion} />
+                <MatchTable onDone={handleCompletion} onFailure={loseLife} />
                 <div style={{display:'flex', gap:'10px', marginTop:'10px'}}>
                   <button className="btn-ghost" type="button" onClick={()=>setShowArchive(true)}>
                     🔍 Nyomok újramegtekintése
@@ -414,9 +489,33 @@ Minden percben egyetlen percet gondolok rád,
                 {done[4] && (
                   <div className="card" style={{marginTop:'10px', animation:'fadeIn .3s ease both'}}>
                     <div style={{display:'flex', gap:'10px', marginTop:'8px', flexWrap:'wrap'}}>
-                      <Link className="btn" to="/aurora">Vissza az ügyekhez</Link>
-                      <Link className="btn-ghost" to="/ugy2" style={{textDecoration:'none'}}>
-                        Következő ügy
+                      <Link
+                        to="/aurora"
+                        style={{
+                          fontSize:'12px',
+                          color:'var(--muted)',
+                          textDecoration:'underline',
+                          textUnderlineOffset:'4px',
+                          padding:'4px 0'
+                        }}
+                      >
+                        Vissza az ügyekhez
+                      </Link>
+                      <Link
+                        className="btn"
+                        to="/ugy2"
+                        style={{
+                          textDecoration:'none',
+                          display:'inline-flex',
+                          justifyContent:'center',
+                          alignItems:'center',
+                          textAlign:'center',
+                          minWidth:'0',
+                          padding:'10px 18px',
+                          fontSize:'13px'
+                        }}
+                      >
+                        Tovább az Éjféli kézfogásra
                       </Link>
                     </div>
                   </div>
@@ -614,7 +713,7 @@ function WordSearchMount(){
 }
 
 // ——— Match table (task 5) ———
-function MatchTable({ onDone }){
+function MatchTable({ onDone, onFailure }){
   const [rows, setRows] = useState([
     { text:'', src:'' },
     { text:'', src:'' },
@@ -653,7 +752,11 @@ function MatchTable({ onDone }){
         const srcOk = (a.src === s);
         return textOk && srcOk;
       });
-      if(matchIdx === -1){ setMsg('Helytelen párosítás.'); return; }
+      if(matchIdx === -1){
+        setMsg('Helytelen párosítás.');
+        onFailure && onFailure();
+        return;
+      }
       used.add(matchIdx);
     }
     setMsg('Helyes! Minden párosítás stimmel.');

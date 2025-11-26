@@ -18,6 +18,9 @@ const Aurora = () => {
   const [entryCode, setEntryCode] = useState('')
   const [entryStatus, setEntryStatus] = useState('')
   const [entryStatusType, setEntryStatusType] = useState('')
+  const [retroPromptDismissed, setRetroPromptDismissed] = useState(true)
+  const [retroSaving, setRetroSaving] = useState(false)
+  const [retroError, setRetroError] = useState('')
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -33,6 +36,13 @@ const Aurora = () => {
       setEntryStatusType('')
     }
   }, [data])
+
+  useEffect(() => {
+    if (missionCompleted) {
+      setRetroPromptDismissed(true)
+      setRetroError('')
+    }
+  }, [missionCompleted])
 
   useEffect(() => {
     document.body.classList.add('aurora-page')
@@ -70,6 +80,15 @@ const Aurora = () => {
     
     checkMission()
   }, [isAuthenticated, checkMissionCompletion])
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      setRetroPromptDismissed(false)
+    } else {
+      setRetroPromptDismissed(true)
+      setRetroError('')
+    }
+  }, [isAuthenticated])
 
   const handleGateSubmit = async (e) => {
     e.preventDefault()
@@ -114,6 +133,33 @@ const Aurora = () => {
     } catch (error) {
       setGateError(error.message || 'Regisztráció sikertelen.')
       setRegistrationSuccess(false)
+    }
+  }
+
+  const handleRetroCompletionClaim = async () => {
+    if (!isAuthenticated) return
+    setRetroSaving(true)
+    setRetroError('')
+    try {
+      const missionResult = await saveLevelCompletion('mission')
+      if (!missionResult?.success) {
+        throw new Error(missionResult?.message || 'Nem sikerült rögzíteni a belépő protokollt.')
+      }
+      const ugy1Result = await saveLevelCompletion('ugy1')
+      if (!ugy1Result?.success) {
+        throw new Error(ugy1Result?.message || 'Nem sikerült rögzíteni az első ügyet.')
+      }
+      setMissionCompleted(true)
+      setRetroPromptDismissed(true)
+      setShowMission(false)
+      setShowLevels(true)
+      if (typeof window.updateLevelAccess === 'function') {
+        window.updateLevelAccess()
+      }
+    } catch (error) {
+      setRetroError(error.message || 'Nem sikerült rögzíteni a teljesítést. Próbáld meg újra.')
+    } finally {
+      setRetroSaving(false)
     }
   }
 
@@ -241,7 +287,7 @@ const Aurora = () => {
               />
               <div style={{display: 'flex', gap: '10px', flexWrap: 'wrap'}}>
                 <button className="btn" type="submit">Bejelentkezés</button>
-                <button className="btn btn-secondary" type="button" onClick={handleRegister}>Regisztráció</button>
+                <button className="btn-ghost" type="button" onClick={handleRegister}>Regisztráció</button>
               </div>
             </form>
             {registrationSuccess && (
@@ -275,6 +321,43 @@ const Aurora = () => {
             <h2 className="cm-title" id="missionTitle">{data.mission?.title || ''}</h2>
             <p className="cm-story" id="missionNarr1">{data.mission?.narr1 || ''}</p>
             <p className="cm-story" id="missionNarr2">{data.mission?.narr2 || ''}</p>
+            {!missionCompleted && !retroPromptDismissed && (
+              <div
+                className="cm-card"
+                style={{
+                  marginBottom:'16px',
+                  border:'1px solid rgba(0,229,255,0.25)',
+                  background:'rgba(5,16,29,0.8)'
+                }}
+              >
+                <h3 style={{marginTop:0, fontSize:'16px'}}>Már megoldottad korábban?</h3>
+                <p style={{color:'var(--muted)', margin:'4px 0 12px'}}>
+                  Ha regisztráció előtt már teljesítetted a belépő protokollt és az első ügyet, most vissza tudjuk jelölni neked.
+                </p>
+                <div style={{display:'flex', gap:'10px', flexWrap:'wrap'}}>
+                  <button
+                    className="btn"
+                    type="button"
+                    onClick={handleRetroCompletionClaim}
+                    disabled={retroSaving}
+                  >
+                    {retroSaving ? 'Mentés folyamatban…' : 'Igen, már megoldottam'}
+                  </button>
+                  <button
+                    className="btn-ghost"
+                    type="button"
+                    onClick={() => setRetroPromptDismissed(true)}
+                  >
+                    Nem, most fogom megoldani
+                  </button>
+                </div>
+                {retroError && (
+                  <div className="error" style={{marginTop:'10px'}}>
+                    {retroError}
+                  </div>
+                )}
+              </div>
+            )}
             <div className="cm-grid">
               <div className="cm-card">
                 <h3 id="missionPaneLeftTitle">{data.mission?.leftTitle || ''}</h3>

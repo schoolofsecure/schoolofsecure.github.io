@@ -7,9 +7,29 @@ const Landing = () => {
   const [gdprAgreed, setGdprAgreed] = useState(false)
   const [cookieBannerVisible, setCookieBannerVisible] = useState(false)
   const [showGdprHint, setShowGdprHint] = useState(false)
-  const { user, registerWithEmail, loginWithEmail, logout, isAuthenticated } = useAuth()
+  const [showGdprHoverHint, setShowGdprHoverHint] = useState(false)
+  const [authPanelOpen, setAuthPanelOpen] = useState(false)
+  const [authMode, setAuthMode] = useState('login')
+  const { user, registerWithEmail, loginWithEmail, logout } = useAuth()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+
+  const authStatusText = user
+    ? user.emailVerified
+      ? 'Bejelentkezve'
+      : 'Megerősítés szükséges'
+    : ''
+
+  const baseAuthBtnStyle = {
+    minWidth: '150px',
+    height: '46px',
+    borderRadius: '999px',
+    fontFamily: 'Rajdhani, Inter, sans-serif',
+    fontSize: '14px',
+    letterSpacing: '0.4px',
+    fontWeight: 600,
+    padding: '0 20px'
+  }
 
   useEffect(() => {
     try {
@@ -28,43 +48,242 @@ const Landing = () => {
   }
 
   const handleSignup = (e) => {
+    e.preventDefault()
+
     if (!gdprAgreed) {
-      e.preventDefault()
       setShowGdprHint(true)
-      // Scroll to the gdpr section
+      // Scroll to the GDPR szekcióhoz
       setTimeout(() => {
-        const signupSection = document.getElementById('signup')
-        if (signupSection) {
-          signupSection.scrollIntoView({ behavior: 'smooth', block: 'center' })
+        const consentBlock = document.getElementById('gdprConsent')
+        if (consentBlock) {
+          consentBlock.scrollIntoView({ behavior: 'smooth', block: 'center' })
         }
       }, 100)
       return
     }
+
     setShowGdprHint(false)
+    setAuthMode('register')
+    setAuthPanelOpen(true)
+    window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
   const handleRegister = async () => {
     const result = await registerWithEmail(email, password)
     alert(result.message)
+    if (result.success) {
+      setAuthPanelOpen(false)
+    }
   }
 
   const handleLogin = async () => {
     const result = await loginWithEmail(email, password)
     alert(result.message)
+    if (result.success) {
+      setAuthPanelOpen(false)
+    }
   }
 
   const handleLogout = async () => {
     const result = await logout()
     alert(result.message)
+    if (result.success) {
+      setAuthPanelOpen(false)
+    }
   }
 
   return (
     <div className="container">
-      <header>
+      <header style={{display:'flex', alignItems:'center', gap:'24px', flexWrap:'wrap'}}>
         <Link to="/" className="brand" aria-label="CyberMystery">
           <div className="brand-badge">CM</div>
           <div className="brand-title">CyberMystery</div>
         </Link>
+        <div style={{marginLeft:'auto', position:'relative'}}>
+          <div
+            style={{
+              display:'flex',
+              alignItems:'center',
+              gap:'10px',
+              justifyContent:'flex-end',
+              flexWrap:'wrap'
+            }}
+          >
+            {authStatusText && (
+              <span
+                style={{
+                  padding:'6px 12px',
+                  borderRadius:'999px',
+                  border:'1px solid rgba(207,230,255,0.2)',
+                  fontSize:'13px',
+                  color:'var(--muted)',
+                  background:'rgba(15,22,33,0.7)'
+                }}
+              >
+                {authStatusText}
+              </span>
+            )}
+            {!user && (
+              <>
+                <button
+                  type="button"
+                  className="btn-ghost"
+                  style={{
+                    ...baseAuthBtnStyle,
+                    border: '1px solid rgba(207,230,255,0.35)',
+                    color: 'var(--ink)',
+                    background: 'rgba(255,255,255,0.06)',
+                    boxShadow: '0 8px 20px rgba(0,0,0,0.25)'
+                  }}
+                  onClick={() => {
+                    setAuthMode('login')
+                    setAuthPanelOpen(true)
+                  }}
+                  aria-expanded={authPanelOpen}
+                  aria-controls="authPanel"
+                >
+                  Belépés
+                </button>
+                <button
+                  type="button"
+                  className="btn"
+                  style={{
+                    ...baseAuthBtnStyle,
+                    background: 'linear-gradient(120deg, #00e5ff, #66ffe3)',
+                    color: '#04111f',
+                    border: '1px solid rgba(0,229,255,0.9)',
+                    boxShadow: '0 12px 26px rgba(0,229,255,0.35)'
+                  }}
+                  onClick={() => {
+                    setAuthMode('register')
+                    setAuthPanelOpen(true)
+                  }}
+                  aria-expanded={authPanelOpen}
+                  aria-controls="authPanel"
+                >
+                  Regisztráció
+                </button>
+              </>
+            )}
+            {user && (
+              <button
+                type="button"
+                className="btn-secondary"
+                style={{
+                  ...baseAuthBtnStyle,
+                  border: '1px solid rgba(207,230,255,0.3)',
+                  background: 'rgba(255,255,255,0.04)'
+                }}
+                onClick={() => setAuthPanelOpen((open) => !open)}
+                aria-expanded={authPanelOpen}
+                aria-controls="authPanel"
+              >
+                Profil
+              </button>
+            )}
+          </div>
+          {authPanelOpen && (
+            <div
+              id="authPanel"
+              className="card"
+              style={{
+                position:'absolute',
+                top:'calc(100% + 12px)',
+                right:0,
+                minWidth:'320px',
+                padding:'20px',
+                background:'#0b121c',
+                border:'1px solid rgba(207,230,255,0.2)',
+                borderRadius:'16px',
+                boxShadow:'0 20px 45px rgba(0,0,0,0.4)',
+                zIndex:5
+              }}
+            >
+              <div style={{display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:'12px'}}>
+                <strong style={{fontSize:'15px'}}>
+                  {user ? 'Profil' : authMode === 'login' ? 'Belépés' : 'Regisztráció'}
+                </strong>
+                <button
+                  type="button"
+                  className="btn-ghost"
+                  style={{padding:'4px 10px'}}
+                  onClick={() => setAuthPanelOpen(false)}
+                  aria-label="Panel bezárása"
+                >
+                  ✕
+                </button>
+              </div>
+              {user ? (
+                user.emailVerified ? (
+                  <div>
+                    <p style={{margin:'0 0 12px', color:'var(--muted)', fontSize:'14px'}}>
+                      Bejelentkezve, készen állsz a nyomozásra.
+                    </p>
+                    <button className="btn-secondary" type="button" onClick={handleLogout} style={{width:'100%'}}>
+                      Kijelentkezés
+                    </button>
+                  </div>
+                ) : (
+                  <div>
+                    <p style={{margin:'0 0 12px', color:'var(--muted)', fontSize:'14px'}}>
+                      Az e-mail címed megerősítése szükséges a játékhoz.
+                    </p>
+                    <button className="btn-secondary" type="button" onClick={handleLogout} style={{width:'100%'}}>
+                      Kijelentkezés
+                    </button>
+                  </div>
+                )
+              ) : (
+                <form
+                  onSubmit={(e) => {
+                    e.preventDefault()
+                    if (authMode === 'login') {
+                      handleLogin()
+                    } else {
+                      handleRegister()
+                    }
+                  }}
+                  style={{display:'flex', flexDirection:'column', gap:'10px'}}
+                >
+                  <input
+                    id="cm-email"
+                    className="input"
+                    type="email"
+                    placeholder="E-mail cím"
+                    autoComplete="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                  />
+                  <input
+                    id="cm-pass"
+                    className="input"
+                    type="password"
+                    placeholder="Jelszó"
+                    autoComplete="current-password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                  />
+                  <button
+                    id={authMode === 'login' ? 'cm-login' : 'cm-register'}
+                    className={authMode === 'login' ? 'btn-submit' : 'btn-secondary'}
+                    type="submit"
+                    style={{width:'100%'}}
+                  >
+                    {authMode === 'login' ? 'Belépés' : 'Regisztráció'}
+                  </button>
+                  <button
+                    type="button"
+                    className="btn-ghost"
+                    onClick={() => setAuthMode((mode) => (mode === 'login' ? 'register' : 'login'))}
+                    style={{fontSize:'13px'}}
+                  >
+                    {authMode === 'login' ? 'Még nincs fiókod? Regisztrálj' : 'Van már fiókod? Lépj be'}
+                  </button>
+                </form>
+              )}
+            </div>
+          )}
+        </div>
       </header>
 
       <section className="hero" aria-label="Fő szekció">
@@ -77,7 +296,7 @@ const Landing = () => {
             <div className="feat"><h4>Logika</h4><p>Fejtörők, rejtvények, kombinációk.</p></div>
             <div className="feat"><h4>Döntések</h4><p>Több lehetséges végkimenetel.</p></div>
           </div>
-          <div className="cta-row">
+          <div className="cta-row" style={{position:'relative', display:'inline-block'}}>
             <a 
               id="heroBtn" 
               href="https://forms.gle/pVMdZ7SSWWbCJhzdA" 
@@ -85,11 +304,67 @@ const Landing = () => {
               rel="noopener" 
               className="btn btn-primary" 
               aria-label="Kezdd el a nyomozást" 
-              aria-disabled={!gdprAgreed}
               onClick={handleSignup}
+              onMouseEnter={() => {
+                if (!gdprAgreed) {
+                  setShowGdprHoverHint(true)
+                }
+              }}
+              onMouseLeave={() => setShowGdprHoverHint(false)}
+              style={{
+                opacity: 1,
+                filter: 'none',
+                pointerEvents: 'auto',
+                cursor: 'pointer'
+              }}
             >
               Kezdd el a nyomozást
             </a>
+            {(showGdprHoverHint || showGdprHint) && !gdprAgreed && (
+              <div
+                style={{
+                  position:'absolute',
+                  top:'50%',
+                  left:'50%',
+                  transform:'translate(-50%, -50%)',
+                  padding:'12px 16px',
+                  borderRadius:'12px',
+                  background:'rgba(4, 17, 31, 0.92)',
+                  border:'1px solid rgba(255,255,255,0.15)',
+                  color: showGdprHint ? 'var(--danger)' : 'var(--muted)',
+                  fontSize:'13px',
+                  fontWeight: showGdprHint ? 700 : 500,
+                  pointerEvents:'none',
+                  boxShadow:'0 12px 30px rgba(0,0,0,0.4)',
+                  width:'max-content',
+                  maxWidth:'260px',
+                  textAlign:'center',
+                  zIndex: 3,
+                  transition: 'color 0.2s ease'
+                }}
+              >
+                A gomb aktiválásához fogadd el az adatkezelést.
+              </div>
+            )}
+          </div>
+          <div className="gdpr-consent" id="gdprConsent" style={{marginTop:'10px'}}>
+            <div className="gdpr-checkbox">
+              <input 
+                type="checkbox" 
+                id="gdprAgree" 
+                checked={gdprAgreed}
+                onChange={(e) => {
+                  setGdprAgreed(e.target.checked)
+                  if (e.target.checked) {
+                    setShowGdprHint(false)
+                  setShowGdprHoverHint(false)
+                  }
+                }}
+              />
+              <label htmlFor="gdprAgree">
+                Elfogadom, hogy adataimat a játék céljára kezeljék. Bővebben az <Link to="/privacy">adatkezelési tájékoztatóban</Link>.
+              </label>
+            </div>
           </div>
         </div>
         <div className="hero-media">
@@ -108,58 +383,6 @@ const Landing = () => {
               <div>_ <span className="cursor"></span></div>
             </div>
           </div>
-        </div>
-      </section>
-
-      <section id="signup" className="signup" aria-label="Feliratkozás">
-        <div>
-          <h2 style={{margin: '0 0 6px', fontFamily: 'Rajdhani, Inter, sans-serif'}}>Jelentkezz most – az első feladvány 24 órán belül érkezik.</h2>
-        </div>
-        <div className="cta-row" style={{justifyContent:'center'}}>
-          <a 
-            id="signupBtn" 
-            href="https://forms.gle/pVMdZ7SSWWbCJhzdA" 
-            target="_blank" 
-            rel="noopener" 
-            className="btn-submit" 
-            style={{textDecoration:'none'}} 
-            aria-disabled={!gdprAgreed}
-            onClick={handleSignup}
-          >
-            Kérem az első nyomot
-          </a>
-        </div>
-        <div className="gdpr-consent">
-          <div className="gdpr-checkbox">
-            <input 
-              type="checkbox" 
-              id="gdprAgree" 
-              checked={gdprAgreed}
-              onChange={(e) => {
-                setGdprAgreed(e.target.checked)
-                if (e.target.checked) {
-                  setShowGdprHint(false)
-                }
-              }}
-            />
-            <label htmlFor="gdprAgree">
-              Elfogadom, hogy adataimat a játék céljára kezeljék. Bővebben az <Link to="/privacy">adatkezelési tájékoztatóban</Link>.
-            </label>
-          </div>
-          {(showGdprHint || !gdprAgreed) && (
-            <div 
-              id="gdprHint" 
-              style={{
-                marginTop:'6px', 
-                fontSize:'12px', 
-                color: showGdprHint ? 'var(--danger)' : 'var(--muted)',
-                fontWeight: showGdprHint ? 600 : 400,
-                transition: 'color 0.3s ease'
-              }}
-            >
-              A gomb aktiválásához fogadd el az adatkezelést.
-            </div>
-          )}
         </div>
       </section>
 
@@ -187,42 +410,6 @@ const Landing = () => {
           <img src="/images/secure.png" alt="Secure – kiberbiztonsági szakértő portré" loading="lazy" decoding="async" />
           <p className="secure-caption">Szia, Secure vagyok – kiberbiztonsági szakértő. Imádom a rejtett mintákat és a logikai kihívásokat. Végigvezetlek a bizonyítékokon, közben praktikus tippekkel és eszközökkel segítek, hogy magabiztosan gondolkodj, mint egy profi nyomozó.</p>
         </aside>
-      </section>
-
-      <section className="signup" aria-label="Bejelentkezés és játékállás mentés" style={{marginTop: '20px'}}>
-        <div>
-          <h2 style={{margin: '0 0 6px', fontFamily: 'Rajdhani, Inter, sans-serif'}}>Belépés / Regisztráció</h2>
-          <div id="cm-auth-status" style={{color: 'var(--muted)', fontSize: '14px'}}>
-            {user && user.emailVerified ? `Bejelentkezve: ${user.email}` : user && !user.emailVerified ? `E-mail megerősítés szükséges: ${user.email}` : 'Nem vagy bejelentkezve'}
-          </div>
-        </div>
-        <form id="cm-auth-form" style={{opacity: user && user.emailVerified ? 0.5 : 1}}>
-          <input 
-            id="cm-email" 
-            className="input" 
-            type="email" 
-            placeholder="E-mail cím" 
-            autocomplete="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-          <input 
-            id="cm-pass" 
-            className="input" 
-            type="password" 
-            placeholder="Jelszó" 
-            autocomplete="current-password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-          <div className="cta-row">
-            <button id="cm-login" className="btn-submit" type="button" onClick={handleLogin}>Bejelentkezés</button>
-            <button id="cm-register" className="btn-secondary" type="button" style={{height:'56px'}} onClick={handleRegister}>Regisztráció</button>
-            {user && (
-              <button id="cm-logout" className="btn-secondary" type="button" style={{height:'56px'}} onClick={handleLogout}>Kijelentkezés</button>
-            )}
-          </div>
-        </form>
       </section>
 
       <section aria-label="Idézet" style={{margin: '10px 0 30px'}}>

@@ -1,9 +1,9 @@
 {
   "gate": {
     "title": "Belépés szükséges",
-    "desc": "Add meg a belépési kulcsot a pálya megnyitásához.",
+    "desc": "",
     "placeholder": "Belépési kulcs",
-    "hint": "Tipp: a kulcsot a toborzó üzenet vagy a játékmester adja meg.",
+    "hint": "",
     "pass": "kriptográfia"
   },
   "intro": {
@@ -34,7 +34,7 @@
   },
   "levels": {
     "title": "Válaszd ki az ügyet",
-    "desc": "Minden ügy megnyitásáról értesítést küldünk.",
+    "desc": "",
     "cards": [
       { "n": 1, "title": "A Titkosított Adatcsomag", "img": "/images/1.jpg", "href": "/ugy1", "locked": false },
       { "n": 2, "title": "A Hamisított Archívum", "img": "/images/2.jpg", "href": "#", "locked": true },

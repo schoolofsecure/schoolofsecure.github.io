@@ -20,6 +20,76 @@ const PHISHING_ELEMENT_POOL = [
   { id: 'privacy-policy', text: 'Adatvédelmi irányelvek linkje', suspicious: false }
 ]
 
+// Email template-ek phishing feladatokhoz
+const EMAIL_TEMPLATES = [
+  {
+    from: 'security@paypaI.com',
+    fromName: 'PayPal Biztonsági Csapat',
+    subject: 'Sürgős: Fiókod biztonsági riasztás',
+    body: `Tisztelt Ügyfelünk,
+
+A fiókjához gyanús bejelentkezési kísérletet észleltünk. A fiók biztonsága érdekében azonnali intézkedésre van szükség.
+
+Kérjük, kattintson a következő linkre a fiók visszaállításához:
+bit.ly/paypal-secure-verify
+
+Ha nem Ön volt, akkor a fiók 12 órán belül lezárásra kerül.
+
+Üdvözlettel,
+PayPal Biztonsági Csapat`
+  },
+  {
+    from: 'noreply@banksecure.com',
+    fromName: 'BankSecure Ügyfélszolgálat',
+    subject: 'Fontos: Fiók frissítés szükséges',
+    body: `Tisztelt Ügyfelünk,
+
+A rendszerünkben frissítés történt. A fiókja eléréséhez kérjük, frissítse az adatait.
+
+Kattintson ide: https://banksecure.com/update-now
+
+A fiók elérése 24 órán belül korlátozásra kerül, ha nem frissíti az adatait.
+
+Ügyfélszolgálat: +36-1-234-5678
+
+Üdvözlettel,
+BankSecure Csapat`
+  },
+  {
+    from: 'alerts@cyb3rmuseum.org',
+    fromName: 'CyberMuseum Rendszergazda',
+    subject: 'Azonnali cselekvés szükséges',
+    body: `Tisztelt Felhasználó,
+
+A rendszerünkben kritikus biztonsági incidens történt. Azonnali cselekvésre van szükség.
+
+Kattintson a linkre a részletek megtekintéséhez:
+http://cyb3rmuseum.org/urgent-action
+
+FIGYELEM: Ha nem cselekszik 6 órán belül, a fiók véglegesen törlésre kerül.
+
+Minden kérdés esetén válaszoljon erre az emailre.
+
+Üdvözlettel,
+Rendszergazda`
+  },
+  {
+    from: 'support@amazon-marketplace.com',
+    fromName: 'Amazon Marketplace',
+    subject: 'Rendelés visszaigazolás',
+    body: `Kedves Vásárló,
+
+Köszönjük a rendelését! A rendelés részletei a csatolmányban találhatók.
+
+Kattintson ide a rendelés követéséhez: bit.ly/amazon-order-track
+
+Ha nem Ön adta le a rendelést, azonnal lépjen kapcsolatba velünk.
+
+Üdvözlettel,
+Amazon Marketplace Csapat`
+  }
+]
+
 export class PhishingRecognitionTask extends BaseTask {
   static create({ id, difficulty, levelNumber = 2, slot = 1 }) {
     // styleConfig randomRules használata
@@ -46,6 +116,9 @@ export class PhishingRecognitionTask extends BaseTask {
     if (this.payload) return this.payload
     const { elements, solution, levelNumber, slot } = this.parameters
     
+    // Email template választása
+    const emailTemplate = Random.choice(EMAIL_TEMPLATES)
+    
     // Narratív szövegek variációi
     const narratives = [
       {
@@ -71,6 +144,12 @@ export class PhishingRecognitionTask extends BaseTask {
     this.payload = {
       intro: narrative.intro,
       instructions: narrative.task,
+      email: {
+        from: emailTemplate.from,
+        fromName: emailTemplate.fromName,
+        subject: emailTemplate.subject,
+        body: emailTemplate.body
+      },
       elements,
       hint: narrative.hint
     }

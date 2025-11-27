@@ -16,10 +16,33 @@ const Ugy2 = () => {
   const { saveLevelCompletion, isAuthenticated } = useAuth()
   const [lives, setLives] = useState(MAX_LIVES)
   const [lifeMessage, setLifeMessage] = useState('')
+  const [currentLevel, setCurrentLevel] = useState(2)
 
   // Feladatok generálása az oldal betöltésekor
   useEffect(() => {
-    const generatedTasks = LevelGenerator.generateLevel(2, 5)
+    // QA debug mód: seed és forced types ellenőrzése
+    const qaSeed = sessionStorage.getItem('qa_seed')
+    const qaLevel = sessionStorage.getItem('qa_level')
+    const qaForcedTypes = sessionStorage.getItem('qa_forced_types')
+    
+    const level = qaLevel ? parseInt(qaLevel, 10) : 2
+    const seed = qaSeed ? parseInt(qaSeed, 10) : null
+    const forcedTypes = qaForcedTypes ? JSON.parse(qaForcedTypes) : null
+    
+    setCurrentLevel(level)
+    
+    // QA mód cleanup
+    if (qaSeed) {
+      sessionStorage.removeItem('qa_seed')
+      sessionStorage.removeItem('qa_level')
+      sessionStorage.removeItem('qa_forced_types')
+    }
+    
+    const generatedTasks = LevelGenerator.generateLevel(level, 5, new Map(), 4, {
+      seed,
+      forcedTypes
+    })
+    
     // Minden feladat payload-jának generálása
     generatedTasks.forEach(task => {
       if (!task.payload) {
@@ -27,6 +50,7 @@ const Ugy2 = () => {
       }
     })
     setTasks(generatedTasks)
+    setDone(Array(generatedTasks.length).fill(false))
   }, [])
 
   const next = () => setStep(s => Math.min(s + 1, 4))
@@ -36,7 +60,9 @@ const Ugy2 = () => {
     return nd
   })
 
-  const progressPct = useMemo(() => ((done.filter(Boolean).length) / 5) * 100, [done])
+  const completedCount = useMemo(() => done.filter(Boolean).length, [done])
+  const totalTasks = tasks.length || 5
+  const progressPct = useMemo(() => (totalTasks > 0 ? (completedCount / totalTasks) * 100 : 0), [completedCount, totalTasks])
 
   const loseLife = () => {
     setLives((prev) => Math.max(0, prev - 1))
@@ -92,7 +118,7 @@ const Ugy2 = () => {
       <header>
         <Link to="/" className="brand" aria-label="CyberMystery – Vissza a főoldalra">
           <div className="brand-badge">CM</div>
-          <div>A hamisított archívum – Ügy #2</div>
+          <div>Ügy #{currentLevel}</div>
         </Link>
       </header>
       <div
@@ -141,8 +167,8 @@ const Ugy2 = () => {
       )}
 
       <main>
-        <NarrativeBlock badge="Archívum – hamisított nyomok">
-          <h1 style={{ margin: '10px 0 4px' }}>A hamisított archívum – Ügy #2</h1>
+        <NarrativeBlock badge={`Ügy #${currentLevel}`}>
+          <h1 style={{ margin: '10px 0 4px' }}>Ügy #{currentLevel}</h1>
           <p>
             Az üres termekben csak az érzékelők pislognak. Az archívumban mozgás nyomai, de hiányzik az idővonal.
             A restaurátor szerint „csak egy kis rendrakás" – szerintünk nem.
@@ -151,7 +177,7 @@ const Ugy2 = () => {
 
         <div className="progress">
           <div className="bar"><div className="bar-in" style={{ width: progressPct + '%' }} /></div>
-          <div className="step">{done.filter(Boolean).length} / 5</div>
+          <div className="step">{completedCount} / {totalTasks}</div>
         </div>
 
         {tasks.length === 0 ? (
@@ -159,106 +185,103 @@ const Ugy2 = () => {
             <p className="muted">Feladatok betöltése...</p>
           </div>
         ) : (
-          <>
-            {step === 0 && currentTask && (
-              <TaskCard title="1. feladat">
+          <TaskCard title={`${step + 1}. feladat`}>
+            {currentTask ? (
+              <>
                 <TaskRenderer
                   task={currentTask}
-                  onSuccess={() => handleTaskSuccess(0)}
+                  onSuccess={() => handleTaskSuccess(step)}
                   onFailure={handleTaskFailure}
                 />
-              </TaskCard>
+                <div
+                  style={{
+                    marginTop: '16px',
+                    paddingTop: '16px',
+                    borderTop: '1px solid rgba(207,230,255,0.2)',
+                    display: 'flex',
+                    gap: '8px',
+                    flexWrap: 'wrap'
+                  }}
+                >
+                  <button
+                    type="button"
+                    className="btn-ghost"
+                    onClick={() => handleTaskSuccess(step)}
+                    style={{
+                      fontSize: '13px',
+                      padding: '8px 14px',
+                      cursor: 'pointer',
+                      fontWeight: 600,
+                      borderColor: 'rgba(0,229,255,0.4)'
+                    }}
+                  >
+                    ✅ Megoldás + Következő
+                  </button>
+                </div>
+              </>
+            ) : (
+              <p className="muted">Aktív feladat betöltése...</p>
             )}
-
-            {step === 1 && tasks[1] && (
-              <TaskCard title="2. feladat">
-                <TaskRenderer
-                  task={tasks[1]}
-                  onSuccess={() => handleTaskSuccess(1)}
-                  onFailure={handleTaskFailure}
-                />
-              </TaskCard>
-            )}
-
-            {step === 2 && tasks[2] && (
-              <TaskCard title="3. feladat">
-                <TaskRenderer
-                  task={tasks[2]}
-                  onSuccess={() => handleTaskSuccess(2)}
-                  onFailure={handleTaskFailure}
-                />
-              </TaskCard>
-            )}
-
-            {step === 3 && tasks[3] && (
-              <TaskCard title="4. feladat">
-                <TaskRenderer
-                  task={tasks[3]}
-                  onSuccess={() => handleTaskSuccess(3)}
-                  onFailure={handleTaskFailure}
-                />
-              </TaskCard>
-            )}
-
-            {step === 4 && tasks[4] && (
-              <TaskCard title="5. feladat">
-                <TaskRenderer
-                  task={tasks[4]}
-                  onSuccess={() => handleTaskSuccess(4)}
-                  onFailure={handleTaskFailure}
-                />
-                {done[4] && (
-                  <div className="card" style={{ marginTop: '10px', animation: 'fadeIn .3s ease both' }}>
-                    <div style={{ display: 'flex', gap: '10px', marginTop: '8px', flexWrap: 'wrap' }}>
-                      <Link
-                        to="/aurora"
-                        style={{
-                          fontSize: '12px',
-                          color: 'var(--muted)',
-                          textDecoration: 'underline',
-                          textUnderlineOffset: '4px',
-                          padding: '4px 0'
-                        }}
-                      >
-                        Vissza az ügyekhez
-                      </Link>
-                      <Link
-                        className="btn"
-                        to="/ugy3"
-                        style={{
-                          textDecoration: 'none',
-                          display: 'inline-flex',
-                          justifyContent: 'center',
-                          alignItems: 'center',
-                          textAlign: 'center',
-                          minWidth: '0',
-                          padding: '10px 18px',
-                          fontSize: '13px'
-                        }}
-                      >
-                        Tovább a következő ügyre
-                      </Link>
-                    </div>
-                  </div>
-                )}
-              </TaskCard>
-            )}
-          </>
+          </TaskCard>
         )}
 
-        <div className="card" style={{ marginTop: '20px', display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
-          {[0, 1, 2, 3, 4].map((idx) => (
-            <button
-              key={idx}
-              type="button"
-              className={idx === step ? 'btn' : 'btn-ghost'}
-              style={{ minWidth: '160px' }}
-              onClick={() => setStep(idx)}
-            >
-              {idx + 1}. feladat
-            </button>
-          ))}
-        </div>
+        {completedCount === tasks.length && tasks.length > 0 && (
+          <div className="card" style={{ marginTop: '20px', animation: 'fadeIn .3s ease both' }}>
+            {currentLevel === 2 ? (
+              <>
+                <h3 style={{ marginTop: 0 }}>✅ Pálya teljesítve</h3>
+                <p className="muted" style={{ marginBottom: '16px' }}>
+                  Gratulálunk! A harmadik pálya <strong>december 6-án, este 7 órakor nyílik</strong>.
+                </p>
+                <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
+                  <Link
+                    to="/aurora"
+                    style={{
+                      fontSize: '12px',
+                      color: 'var(--muted)',
+                      textDecoration: 'underline',
+                      textUnderlineOffset: '4px',
+                      padding: '4px 0'
+                    }}
+                  >
+                    Vissza az ügyekhez
+                  </Link>
+                </div>
+              </>
+            ) : (
+              <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
+                <Link
+                  to="/aurora"
+                  style={{
+                    fontSize: '12px',
+                    color: 'var(--muted)',
+                    textDecoration: 'underline',
+                    textUnderlineOffset: '4px',
+                    padding: '4px 0'
+                  }}
+                >
+                  Vissza az ügyekhez
+                </Link>
+                <Link
+                  className="btn"
+                  to={`/ugy${currentLevel + 1}`}
+                  style={{
+                    textDecoration: 'none',
+                    display: 'inline-flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    textAlign: 'center',
+                    minWidth: '0',
+                    padding: '10px 18px',
+                    fontSize: '13px'
+                  }}
+                >
+                  Tovább a következő ügyre
+                </Link>
+              </div>
+            )}
+          </div>
+        )}
       </main>
     </div>
   )

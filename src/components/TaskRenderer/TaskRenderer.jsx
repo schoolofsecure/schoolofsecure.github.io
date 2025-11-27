@@ -28,9 +28,11 @@ const TaskRenderer = ({ task, onSuccess, onFailure }) => {
     case 'ICON_MEMORY':
       return <IconMemoryTaskRenderer task={task} payload={payload} onSuccess={onSuccess} onFailure={onFailure} />
     
+    case 'PASSWORD_STRENGTH':
+      return <PasswordStrengthTaskRenderer task={task} payload={payload} onSuccess={onSuccess} onFailure={onFailure} />
+    
     case 'XOR':
     case 'HASH_MISMATCH':
-    case 'PASSWORD_STRENGTH':
     case 'URL_TRUST':
     case 'SOCIAL_ENGINEERING':
     case 'FIREWALL':
@@ -245,6 +247,26 @@ const PhishingTaskRenderer = ({ task, payload, onSuccess, onFailure }) => {
         <h3>Email elemzés</h3>
         {payload.intro && <p className="muted">{payload.intro}</p>}
         <p className="muted">{payload.instructions}</p>
+        {payload.email && (
+          <div className="statusline" style={{ marginTop: '16px', padding: '16px', background: '#0b121c', borderRadius: '8px', border: '1px solid rgba(207,230,255,0.2)' }}>
+            <div style={{ marginBottom: '12px', paddingBottom: '12px', borderBottom: '1px solid rgba(207,230,255,0.1)' }}>
+              <div style={{ fontSize: '12px', color: 'var(--muted)', marginBottom: '4px' }}>Feladó:</div>
+              <div style={{ fontSize: '14px', fontWeight: 600 }}>
+                {payload.email.fromName} &lt;{payload.email.from}&gt;
+              </div>
+            </div>
+            <div style={{ marginBottom: '12px', paddingBottom: '12px', borderBottom: '1px solid rgba(207,230,255,0.1)' }}>
+              <div style={{ fontSize: '12px', color: 'var(--muted)', marginBottom: '4px' }}>Tárgy:</div>
+              <div style={{ fontSize: '14px', fontWeight: 600 }}>{payload.email.subject}</div>
+            </div>
+            <div>
+              <div style={{ fontSize: '12px', color: 'var(--muted)', marginBottom: '8px' }}>Üzenet:</div>
+              <div style={{ fontSize: '13px', lineHeight: '1.6', whiteSpace: 'pre-wrap', color: '#cfe6ff' }}>
+                {payload.email.body}
+              </div>
+            </div>
+          </div>
+        )}
         {payload.hint && (
           <div className="hint" style={{marginTop:'12px'}}>
             <details>
@@ -561,6 +583,154 @@ const IconMemoryTaskRenderer = ({ task, payload, onSuccess, onFailure }) => {
               className="btn-ghost" 
               onClick={handleDevSkip}
               style={{fontSize:'13px', padding:'8px 14px', cursor:'pointer', fontWeight:600, borderColor:'rgba(0,229,255,0.4)'}}
+              title="Fejlesztői mód: feladat megoldása és következő"
+            >
+              ✅ Megoldás + Következő
+            </button>
+          </div>
+        )}
+      </div>
+    </div>
+  )
+}
+
+// Password Strength Task Renderer
+const PasswordStrengthTaskRenderer = ({ task, payload, onSuccess, onFailure }) => {
+  const [selectedAnswer, setSelectedAnswer] = useState(null)
+  const [feedback, setFeedback] = useState(null)
+  const [solved, setSolved] = useState(false)
+
+  const handleSubmit = () => {
+    const isValid = task.validate(selectedAnswer)
+    setFeedback(isValid ? 'ok' : 'err')
+    if (isValid) {
+      setSolved(true)
+      onSuccess?.()
+    } else {
+      onFailure?.()
+    }
+  }
+
+  const handleDevSkip = () => {
+    setSolved(true)
+    onSuccess?.()
+  }
+
+  return (
+    <div className="grid2">
+      <div className="card">
+        <h3>Jelszó értékelés</h3>
+        {payload.intro && <p className="muted">{payload.intro}</p>}
+        <p className="muted">{payload.instructions}</p>
+        <div className="statusline" style={{ marginTop: '12px', padding: '12px', background: '#0b121c', borderRadius: '8px' }}>
+          <div style={{ marginBottom: '8px' }}>
+            <strong>Jelszó:</strong>
+          </div>
+          <code style={{ fontSize: '16px', letterSpacing: '2px', wordBreak: 'break-all' }}>
+            {payload.candidate}
+          </code>
+        </div>
+        {payload.requirements && (
+          <div style={{ marginTop: '12px' }}>
+            <strong style={{ fontSize: '14px' }}>Követelmények:</strong>
+            <ul style={{ margin: '8px 0 0 20px', padding: 0, fontSize: '13px' }}>
+              {payload.requirements.map((req, idx) => (
+                <li key={idx} style={{ marginBottom: '4px', color: 'var(--muted)' }}>
+                  {req}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+        {payload.hint && (
+          <div className="hint" style={{ marginTop: '12px' }}>
+            <details>
+              <summary>Súgó megnyitása</summary>
+              <p className="muted" style={{ margin: '8px 0 0' }}>{payload.hint}</p>
+            </details>
+          </div>
+        )}
+      </div>
+      <div className="card">
+        <h3>Válasz</h3>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginBottom: '16px' }}>
+          <label
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '10px',
+              padding: '12px',
+              borderRadius: '8px',
+              border: '2px solid',
+              borderColor: selectedAnswer === true ? '#00e5ff' : 'rgba(207,230,255,0.3)',
+              backgroundColor: selectedAnswer === true ? 'rgba(0,229,255,0.1)' : 'transparent',
+              cursor: 'pointer',
+              transition: 'all 0.2s'
+            }}
+            onClick={() => {
+              setSelectedAnswer(true)
+              setFeedback(null)
+            }}
+          >
+            <input
+              type="radio"
+              name="password-strength"
+              checked={selectedAnswer === true}
+              onChange={() => {
+                setSelectedAnswer(true)
+                setFeedback(null)
+              }}
+            />
+            <span style={{ fontSize: '14px', fontWeight: 600 }}>Erős jelszó</span>
+          </label>
+          <label
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '10px',
+              padding: '12px',
+              borderRadius: '8px',
+              border: '2px solid',
+              borderColor: selectedAnswer === false ? '#00e5ff' : 'rgba(207,230,255,0.3)',
+              backgroundColor: selectedAnswer === false ? 'rgba(0,229,255,0.1)' : 'transparent',
+              cursor: 'pointer',
+              transition: 'all 0.2s'
+            }}
+            onClick={() => {
+              setSelectedAnswer(false)
+              setFeedback(null)
+            }}
+          >
+            <input
+              type="radio"
+              name="password-strength"
+              checked={selectedAnswer === false}
+              onChange={() => {
+                setSelectedAnswer(false)
+                setFeedback(null)
+              }}
+            />
+            <span style={{ fontSize: '14px', fontWeight: 600 }}>Gyenge jelszó</span>
+          </label>
+        </div>
+        {feedback && (
+          <div className={`feedback ${feedback}`} style={{ marginBottom: '12px' }}>
+            {feedback === 'ok'
+              ? 'Helyes! A jelszó értékelése stimmel.'
+              : 'Nem stimmel. Gondold végig, mely követelmények teljesülnek és melyek nem.'}
+          </div>
+        )}
+        <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
+          <button className="btn" type="button" onClick={handleSubmit} disabled={selectedAnswer === null || solved}>
+            {solved ? 'Feladat teljesítve' : 'Ellenőrzés'}
+          </button>
+        </div>
+        {!solved && (
+          <div style={{ marginTop: '16px', paddingTop: '16px', borderTop: '1px solid rgba(207,230,255,0.2)', display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+            <button
+              className="btn-ghost"
+              onClick={handleDevSkip}
+              style={{ fontSize: '13px', padding: '8px 14px', cursor: 'pointer', fontWeight: 600, borderColor: 'rgba(0,229,255,0.4)' }}
               title="Fejlesztői mód: feladat megoldása és következő"
             >
               ✅ Megoldás + Következő

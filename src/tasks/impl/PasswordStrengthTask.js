@@ -1,13 +1,14 @@
 import { BaseTask } from '../types/TaskInterface'
 import { Random } from '../utils/random'
 
-const PASSWORD_HINTS = [
-  'legalább 8 karakter',
-  'nagybetű és kisbetű is',
-  'szám és speciális karakter',
-  'ne tartalmazzon tiltott szót',
-  'ne ismételje háromszor ugyanazt a karaktert'
-]
+const REQUIREMENT_LABELS = {
+  minLength: 'legalább 8 karakter',
+  mixedCase: 'nagybetű és kisbetű is',
+  number: 'tartalmaz számot',
+  special: 'tartalmaz speciális karaktert',
+  noDictionary: 'ne tartalmazzon tiltott szót',
+  entropy: 'ne ismételje háromszor ugyanazt a karaktert'
+}
 
 export class PasswordStrengthTask extends BaseTask {
   static create({ id, difficulty }) {
@@ -56,7 +57,7 @@ export class PasswordStrengthTask extends BaseTask {
     this.payload = {
       instructions: 'Értékeld a jelszó erősségét a felsorolt követelmények alapján.',
       candidate,
-      requirements: requirements.map(req => PASSWORD_HINTS[['minLength','mixedCase','number','special','noDictionary','entropy'].indexOf(req)] || req)
+      requirements: requirements.map(req => REQUIREMENT_LABELS[req] || req)
     }
     return this.payload
   }

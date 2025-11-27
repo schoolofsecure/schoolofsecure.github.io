@@ -14,46 +14,40 @@ const ALL_TASK_TYPES = [
   'NETWORK_ANOMALY', 'EMAIL_HEADER', 'ATTACK_SCENARIO', 'ZERO_DAY'
 ]
 
+const DIFFICULTIES = ['easy', 'medium', 'hard']
+const BASE_SEED = 12345
+
 const TaskPreviewList = () => {
   const [previews, setPreviews] = useState({})
   const [selectedType, setSelectedType] = useState(null)
-  const [selectedExample, setSelectedExample] = useState(0)
+  const [selectedDifficulty, setSelectedDifficulty] = useState('easy')
 
   useEffect(() => {
-    // Seed beállítása konzisztens generáláshoz
-    Random.setSeed(12345)
-    
-    const generatedPreviews = {}
-    
+    const generated = {}
+
     ALL_TASK_TYPES.forEach((type, typeIndex) => {
-      const examples = []
-      
-      // Minden típusból 3 példa generálása
-      for (let i = 0; i < 3; i++) {
-        const seed = 12345 + typeIndex * 10 + i
+      generated[type] = {}
+      DIFFICULTIES.forEach((difficulty, diffIndex) => {
+        const seed = BASE_SEED + typeIndex * 100 + diffIndex * 10
         Random.setSeed(seed)
-        
-        const difficulty = i === 0 ? 'easy' : i === 1 ? 'medium' : 'hard'
-        const task = TaskFactory.createRandomTask(difficulty, [type], 2, i + 1)
+        const task = TaskFactory.createRandomTask(difficulty, [type], 2, diffIndex + 1)
         task.generate()
-        
-        examples.push({
-          task,
-          difficulty,
-          seed
-        })
-      }
-      
-      generatedPreviews[type] = examples
+        generated[type][difficulty] = {
+          seed,
+          task
+        }
+      })
     })
-    
-    setPreviews(generatedPreviews)
-    
-    // Seed reset
+
+    setPreviews(generated)
+    setSelectedType(ALL_TASK_TYPES[0])
     Random.resetSeed()
   }, [])
 
-  const currentExamples = selectedType ? previews[selectedType] : null
+  const current =
+    selectedType && previews[selectedType]
+      ? previews[selectedType][selectedDifficulty]
+      : null
 
   return (
     <div className="container">
@@ -68,8 +62,8 @@ const TaskPreviewList = () => {
         <NarrativeBlock badge="Task Preview">
           <h1 style={{ margin: '10px 0 4px' }}>Feladattípusok előnézete</h1>
           <p>
-            Minden feladattípusból 3 példa (könnyű, közepes, nehéz). A generálás seedelt módban történik,
-            így konzisztens eredményeket kapunk.
+            Válassz feladattípust, majd nehézségi szintet: minden kombinációhoz seedelt, fix feladatot mutatunk
+            megoldással együtt.
           </p>
         </NarrativeBlock>
 
@@ -88,7 +82,7 @@ const TaskPreviewList = () => {
                 className={selectedType === type ? 'btn' : 'btn-ghost'}
                 onClick={() => {
                   setSelectedType(type)
-                  setSelectedExample(0)
+                  setSelectedDifficulty('easy')
                 }}
                 style={{ textAlign: 'left', padding: '10px' }}
               >
@@ -98,27 +92,27 @@ const TaskPreviewList = () => {
           </div>
         </div>
 
-        {currentExamples && (
+        {selectedType && (
           <div className="card" style={{ marginTop: '20px' }}>
-            <h3>{selectedType} - Példák</h3>
+            <h3>{selectedType} – Nehézség</h3>
             <div style={{ display: 'flex', gap: '10px', marginBottom: '16px', flexWrap: 'wrap' }}>
-              {currentExamples.map((example, idx) => (
+              {DIFFICULTIES.map(diff => (
                 <button
-                  key={idx}
+                  key={diff}
                   type="button"
-                  className={idx === selectedExample ? 'btn' : 'btn-ghost'}
-                  onClick={() => setSelectedExample(idx)}
+                  className={selectedDifficulty === diff ? 'btn' : 'btn-ghost'}
+                  onClick={() => setSelectedDifficulty(diff)}
                 >
-                  {idx + 1}. {example.difficulty}
+                  {diff}
                 </button>
               ))}
             </div>
 
-            {currentExamples[selectedExample] && (
+            {current && (
               <>
-                <TaskCard title={`${selectedType} - ${currentExamples[selectedExample].difficulty}`}>
+                <TaskCard title={`${selectedType} – ${selectedDifficulty}`}>
                   <TaskRenderer
-                    task={currentExamples[selectedExample].task}
+                    task={current.task}
                     onSuccess={() => {}}
                     onFailure={() => {}}
                   />
@@ -127,20 +121,18 @@ const TaskPreviewList = () => {
                 <div className="card" style={{ marginTop: '16px', background: '#0b121c', border: '1px solid rgba(207,230,255,0.2)' }}>
                   <h4 style={{ marginTop: 0, fontSize: '14px' }}>Generálás információk</h4>
                   <div style={{ fontSize: '12px', fontFamily: 'monospace' }}>
-                    <div><strong>Típus:</strong> {selectedType}</div>
-                    <div><strong>Nehézség:</strong> {currentExamples[selectedExample].difficulty}</div>
-                    <div><strong>Seed:</strong> {currentExamples[selectedExample].seed}</div>
-                    <div><strong>ID:</strong> {currentExamples[selectedExample].task.id}</div>
-                    {currentExamples[selectedExample].task.solution && (
+                    <div><strong>Seed:</strong> {current.seed}</div>
+                    <div><strong>ID:</strong> {current.task.id}</div>
+                    {current.task.solution && (
                       <div style={{ marginTop: '8px', padding: '8px', background: 'rgba(0,229,255,0.1)', borderRadius: '4px' }}>
-                        <strong>Megoldás:</strong> {JSON.stringify(currentExamples[selectedExample].task.solution)}
+                        <strong>Megoldás:</strong> {JSON.stringify(current.task.solution)}
                       </div>
                     )}
-                    {currentExamples[selectedExample].task.payload && (
+                    {current.task.payload && (
                       <div style={{ marginTop: '8px', padding: '8px', background: 'rgba(0,229,255,0.05)', borderRadius: '4px', fontSize: '11px' }}>
                         <strong>Payload:</strong>
                         <pre style={{ margin: '4px 0 0', whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}>
-                          {JSON.stringify(currentExamples[selectedExample].task.payload, null, 2)}
+                          {JSON.stringify(current.task.payload, null, 2)}
                         </pre>
                       </div>
                     )}

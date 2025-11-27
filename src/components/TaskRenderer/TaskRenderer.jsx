@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import ChallengeInput from '../Ugy1/ChallengeInput'
 
 /**
@@ -35,10 +35,18 @@ const TaskRenderer = ({ task, onSuccess, onFailure }) => {
     case 'HASH_MISMATCH':
     case 'URL_TRUST':
     case 'SOCIAL_ENGINEERING':
+      return <SocialEngineeringTaskRenderer task={task} payload={payload} onSuccess={onSuccess} onFailure={onFailure} />
+    
     case 'FIREWALL':
+      return <FirewallTaskRenderer task={task} payload={payload} onSuccess={onSuccess} onFailure={onFailure} />
+    
     case 'MISCONFIG':
     case 'RISKY_PERMISSION':
+      return <DefaultTaskRenderer task={task} payload={payload} onSuccess={onSuccess} onFailure={onFailure} />
+    
     case 'SECURITY_DECISION':
+      return <SecurityDecisionTaskRenderer task={task} payload={payload} onSuccess={onSuccess} onFailure={onFailure} />
+    
     case 'CRYPTO_PUZZLE':
     case 'PSEUDOCODE_BUG':
     case 'NETWORK_ANOMALY':
@@ -51,6 +59,18 @@ const TaskRenderer = ({ task, onSuccess, onFailure }) => {
     default:
       return <div className="card"><p className="muted">Ismeretlen feladattípus: {type}</p></div>
   }
+}
+
+const HintDetails = ({ text }) => {
+  if (!text) return null
+  return (
+    <div className="hint" style={{ marginTop: '12px' }}>
+      <details>
+        <summary>Súgó megnyitása</summary>
+        <p className="muted" style={{ margin: '8px 0 0' }}>{text}</p>
+      </details>
+    </div>
+  )
 }
 
 // Caesar Task Renderer
@@ -86,14 +106,6 @@ const CaesarTaskRenderer = ({ task, payload, onSuccess, onFailure }) => {
             {payload.ciphertext}
           </code>
         </div>
-        {payload.hint && (
-          <div className="hint" style={{marginTop:'12px'}}>
-            <details>
-              <summary>Súgó megnyitása</summary>
-              <p className="muted" style={{margin:'8px 0 0'}}>{payload.hint}</p>
-            </details>
-          </div>
-        )}
       </div>
       <div className="card">
         <h3>Válasz</h3>
@@ -105,14 +117,7 @@ const CaesarTaskRenderer = ({ task, payload, onSuccess, onFailure }) => {
           onSuccess={onSuccess}
           onFailure={onFailure}
         />
-        {payload.hint && (
-          <div className="hint" style={{marginTop:'12px'}}>
-            <details>
-              <summary>Súgó megnyitása</summary>
-              <p className="muted" style={{margin:'8px 0 0'}}>{payload.hint}</p>
-            </details>
-          </div>
-        )}
+        <HintDetails text={payload.hint} />
         {!solved && (
           <div style={{marginTop:'16px', paddingTop:'16px', borderTop:'1px solid rgba(207,230,255,0.2)', display:'flex', gap:'8px', flexWrap:'wrap'}}>
             <button 
@@ -166,14 +171,6 @@ const VigenereTaskRenderer = ({ task, payload, onSuccess, onFailure }) => {
             Kulcs: <code>{payload.key}</code>
           </p>
         )}
-        {payload.hint && (
-          <div className="hint" style={{marginTop:'12px'}}>
-            <details>
-              <summary>Súgó megnyitása</summary>
-              <p className="muted" style={{margin:'8px 0 0'}}>{payload.hint}</p>
-            </details>
-          </div>
-        )}
       </div>
       <div className="card">
         <h3>Válasz</h3>
@@ -185,14 +182,7 @@ const VigenereTaskRenderer = ({ task, payload, onSuccess, onFailure }) => {
           onSuccess={onSuccess}
           onFailure={onFailure}
         />
-        {payload.hint && (
-          <div className="hint" style={{marginTop:'12px'}}>
-            <details>
-              <summary>Súgó megnyitása</summary>
-              <p className="muted" style={{margin:'8px 0 0'}}>{payload.hint}</p>
-            </details>
-          </div>
-        )}
+        <HintDetails text={payload.hint} />
         {!solved && (
           <div style={{marginTop:'16px', paddingTop:'16px', borderTop:'1px solid rgba(207,230,255,0.2)', display:'flex', gap:'8px', flexWrap:'wrap'}}>
             <button 
@@ -267,14 +257,6 @@ const PhishingTaskRenderer = ({ task, payload, onSuccess, onFailure }) => {
             </div>
           </div>
         )}
-        {payload.hint && (
-          <div className="hint" style={{marginTop:'12px'}}>
-            <details>
-              <summary>Súgó megnyitása</summary>
-              <p className="muted" style={{margin:'8px 0 0'}}>{payload.hint}</p>
-            </details>
-          </div>
-        )}
       </div>
       <div className="card">
         <h3>Gyanús elemek</h3>
@@ -317,19 +299,8 @@ const PhishingTaskRenderer = ({ task, payload, onSuccess, onFailure }) => {
           <button className="btn" type="button" onClick={handleSubmit} disabled={solved}>
             {solved ? 'Feladat teljesítve' : 'Ellenőrzés'}
           </button>
-          {!solved && (
-            <button
-              className="btn-ghost"
-              type="button"
-              onClick={() => {
-                setSelectedIds([])
-                setFeedback(null)
-              }}
-            >
-              Jelölések törlése
-            </button>
-          )}
         </div>
+        <HintDetails text={payload.hint} />
         {!solved && (
           <div style={{marginTop:'16px', paddingTop:'16px', borderTop:'1px solid rgba(207,230,255,0.2)', display:'flex', gap:'8px', flexWrap:'wrap'}}>
             <button 
@@ -384,14 +355,6 @@ const LogAnalysisTaskRenderer = ({ task, payload, onSuccess, onFailure }) => {
         <h3>Rendszerlog elemzés</h3>
         {payload.intro && <p className="muted">{payload.intro}</p>}
         <p className="muted">{payload.instructions}</p>
-        {payload.hint && (
-          <div className="hint" style={{marginTop:'12px'}}>
-            <details>
-              <summary>Súgó megnyitása</summary>
-              <p className="muted" style={{margin:'8px 0 0'}}>{payload.hint}</p>
-            </details>
-          </div>
-        )}
       </div>
       <div className="card">
         <h3>Log sorok</h3>
@@ -455,6 +418,7 @@ const LogAnalysisTaskRenderer = ({ task, payload, onSuccess, onFailure }) => {
             </button>
           )}
         </div>
+        <HintDetails text={payload.hint} />
         {!solved && (
           <div style={{marginTop:'16px', paddingTop:'16px', borderTop:'1px solid rgba(207,230,255,0.2)', display:'flex', gap:'8px', flexWrap:'wrap'}}>
             <button 
@@ -509,14 +473,6 @@ const IconMemoryTaskRenderer = ({ task, payload, onSuccess, onFailure }) => {
         <h3>Memória ikon puzzle</h3>
         {payload.intro && <p className="muted">{payload.intro}</p>}
         <p className="muted">{payload.instructions}</p>
-        {payload.hint && (
-          <div className="hint" style={{marginTop:'12px'}}>
-            <details>
-              <summary>Súgó megnyitása</summary>
-              <p className="muted" style={{margin:'8px 0 0'}}>{payload.hint}</p>
-            </details>
-          </div>
-        )}
       </div>
       <div className="card">
         <h3>Ikonok</h3>
@@ -577,12 +533,356 @@ const IconMemoryTaskRenderer = ({ task, payload, onSuccess, onFailure }) => {
             </button>
           )}
         </div>
+        <HintDetails text={payload.hint} />
         {!solved && (
           <div style={{marginTop:'16px', paddingTop:'16px', borderTop:'1px solid rgba(207,230,255,0.2)', display:'flex', gap:'8px', flexWrap:'wrap'}}>
             <button 
               className="btn-ghost" 
               onClick={handleDevSkip}
               style={{fontSize:'13px', padding:'8px 14px', cursor:'pointer', fontWeight:600, borderColor:'rgba(0,229,255,0.4)'}}
+              title="Fejlesztői mód: feladat megoldása és következő"
+            >
+              ✅ Megoldás + Következő
+            </button>
+          </div>
+        )}
+      </div>
+    </div>
+  )
+}
+
+// Social Engineering Task Renderer
+const SocialEngineeringTaskRenderer = ({ task, payload, onSuccess, onFailure }) => {
+  const [choices, setChoices] = useState({})
+  const [feedback, setFeedback] = useState(null)
+  const [solved, setSolved] = useState(false)
+
+  const handleSelect = (scenarioId, actionId) => {
+    setChoices(prev => ({ ...prev, [scenarioId]: actionId }))
+    setFeedback(null)
+  }
+
+  const handleSubmit = () => {
+    if (!payload.scenarios || payload.scenarios.length === 0) return
+    const answers = payload.scenarios.map(sc => choices[sc.id] ?? null)
+    if (answers.some(ans => !ans)) {
+      setFeedback('missing')
+      return
+    }
+    const isValid = task.validate(answers)
+    setFeedback(isValid ? 'ok' : 'err')
+    if (isValid) {
+      setSolved(true)
+      onSuccess?.()
+    } else {
+      onFailure?.()
+    }
+  }
+
+  const handleDevSkip = () => {
+    setSolved(true)
+    onSuccess?.()
+  }
+
+  return (
+    <div className="grid2">
+      <div className="card">
+        <h3>Social engineering helyzetek</h3>
+        {payload.intro && <p className="muted">{payload.intro}</p>}
+        <p className="muted">{payload.instructions}</p>
+      </div>
+      <div className="card">
+        <h3>Válaszok</h3>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+          {payload.scenarios?.map((scenario, idx) => (
+            <div key={scenario.id} className="card" style={{ background: '#050a12', borderColor: 'rgba(207,230,255,0.15)' }}>
+              <div style={{ marginBottom: '8px' }}>
+                <strong>{idx + 1}. {scenario.title}</strong>
+              </div>
+              <p className="muted" style={{ marginTop: '4px' }}>{scenario.text}</p>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', marginTop: '10px' }}>
+                {scenario.actions?.map(action => (
+                  <button
+                    key={action.id}
+                    type="button"
+                    className={choices[scenario.id] === action.id ? 'btn' : 'btn-ghost'}
+                    onClick={() => handleSelect(scenario.id, action.id)}
+                    style={{ justifyContent: 'flex-start', textAlign: 'left' }}
+                  >
+                    {action.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+        {feedback === 'missing' && (
+          <div className="feedback err" style={{ margin: '12px 0' }}>
+            Minden helyzethez válassz reakciót az ellenőrzés előtt.
+          </div>
+        )}
+        {feedback && feedback !== 'missing' && (
+          <div className={`feedback ${feedback}`} style={{ margin: '12px 0' }}>
+            {feedback === 'ok'
+              ? 'Megfelelően reagáltál minden szituációban.'
+              : 'Nem minden reakció felelt meg a protokollnak. Gondold át újra a lépéseket.'}
+          </div>
+        )}
+        <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
+          <button className="btn" type="button" onClick={handleSubmit} disabled={solved}>
+            {solved ? 'Feladat teljesítve' : 'Ellenőrzés'}
+          </button>
+        </div>
+        <HintDetails text={payload.hint} />
+        {!solved && (
+          <div style={{ marginTop: '16px', paddingTop: '16px', borderTop: '1px solid rgba(207,230,255,0.2)', display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+            <button
+              className="btn-ghost"
+              onClick={handleDevSkip}
+              style={{ fontSize: '13px', padding: '8px 14px', cursor: 'pointer', fontWeight: 600, borderColor: 'rgba(0,229,255,0.4)' }}
+              title="Fejlesztői mód: feladat megoldása és következő"
+            >
+              ✅ Megoldás + Következő
+            </button>
+          </div>
+        )}
+      </div>
+    </div>
+  )
+}
+
+// Firewall Task Renderer
+const FirewallTaskRenderer = ({ task, payload, onSuccess, onFailure }) => {
+  const [rules, setRules] = useState({})
+  const [feedback, setFeedback] = useState(null)
+  const [solved, setSolved] = useState(false)
+
+  const services = React.useMemo(() => {
+    const map = new Map()
+    const list = [...(payload.requiredServices || []), ...(payload.blockedServices || [])]
+    list.forEach(service => {
+      const key = `${service.proto}:${service.port}`
+      if (!map.has(key)) {
+        map.set(key, service)
+      }
+    })
+    return Array.from(map.entries())
+  }, [payload.requiredServices, payload.blockedServices])
+
+  useEffect(() => {
+    const initial = {}
+    services.forEach(([key]) => { initial[key] = null })
+    setRules(initial)
+    setFeedback(null)
+    setSolved(false)
+  }, [services])
+
+  const updateRule = (key, action) => {
+    setRules(prev => ({ ...prev, [key]: prev[key] === action ? null : action }))
+    setFeedback(null)
+  }
+
+  const handleSubmit = () => {
+    const allow = []
+    const deny = []
+    Object.entries(rules).forEach(([key, action]) => {
+      if (action === 'allow') allow.push(key)
+      if (action === 'deny') deny.push(key)
+    })
+    const isValid = task.validate({ allow, deny })
+    setFeedback(isValid ? 'ok' : 'err')
+    if (isValid) {
+      setSolved(true)
+      onSuccess?.()
+    } else {
+      onFailure?.()
+    }
+  }
+
+  const handleDevSkip = () => {
+    setSolved(true)
+    onSuccess?.()
+  }
+
+  return (
+    <div className="grid2">
+      <div className="card">
+        <h3>Tűzfal konfiguráció</h3>
+        {payload.intro && <p className="muted">{payload.intro}</p>}
+        <p className="muted">{payload.instructions}</p>
+        <HintDetails text={payload.hint} />
+      </div>
+      <div className="card">
+        <h3>Szolgáltatások</h3>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+          {services.map(([key, service]) => (
+            <div
+              key={key}
+              style={{
+                padding: '10px',
+                border: '1px solid rgba(207,230,255,0.2)',
+                borderRadius: '8px',
+                background: 'rgba(5,10,18,0.85)'
+              }}
+            >
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <div>
+                  <strong>{service.name}</strong>
+                  <div className="muted" style={{ fontSize: '11px' }}>
+                    {service.proto} / {service.port}
+                  </div>
+                </div>
+                <div style={{ display: 'flex', gap: '6px' }}>
+                  <button
+                    type="button"
+                    className={rules[key] === 'allow' ? 'btn' : 'btn-ghost'}
+                    onClick={() => updateRule(key, 'allow')}
+                  >
+                    Engedélyez
+                  </button>
+                  <button
+                    type="button"
+                    className={rules[key] === 'deny' ? 'btn' : 'btn-ghost'}
+                    onClick={() => updateRule(key, 'deny')}
+                  >
+                    Tilt
+                  </button>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+        {feedback && (
+          <div className={`feedback ${feedback}`} style={{ margin: '12px 0' }}>
+            {feedback === 'ok'
+              ? 'Helyes szabályok! A forgalom a megfelelő irányban engedélyezett.'
+              : 'Nem stimmel. Ellenőrizd, mely szolgáltatásoknak kell menniük és melyeket kell zárni.'}
+          </div>
+        )}
+        <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
+          <button className="btn" type="button" onClick={handleSubmit} disabled={solved}>
+            {solved ? 'Feladat teljesítve' : 'Ellenőrzés'}
+          </button>
+        </div>
+        <HintDetails text={payload.hint} />
+        {!solved && (
+          <div style={{ marginTop: '16px', paddingTop: '16px', borderTop: '1px solid rgba(207,230,255,0.2)', display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+            <button
+              className="btn-ghost"
+              onClick={handleDevSkip}
+              style={{ fontSize: '13px', padding: '8px 14px', cursor: 'pointer', fontWeight: 600, borderColor: 'rgba(0,229,255,0.4)' }}
+              title="Fejlesztői mód: feladat megoldása és következő"
+            >
+              ✅ Megoldás + Következő
+            </button>
+          </div>
+        )}
+      </div>
+    </div>
+  )
+}
+
+// Security Decision Task Renderer
+const SecurityDecisionTaskRenderer = ({ task, payload, onSuccess, onFailure }) => {
+  const [answers, setAnswers] = useState([])
+  const [feedback, setFeedback] = useState(null)
+  const [solved, setSolved] = useState(false)
+
+  useEffect(() => {
+    setAnswers(Array(payload.scenarios?.length || 0).fill(null))
+    setFeedback(null)
+    setSolved(false)
+  }, [payload.scenarios])
+
+  const selectAnswer = (index, optionIndex) => {
+    setAnswers(prev => {
+      const copy = prev.slice()
+      copy[index] = optionIndex
+      return copy
+    })
+    setFeedback(null)
+  }
+
+  const handleSubmit = () => {
+    const isValid = task.validate(answers)
+    setFeedback(isValid ? 'ok' : 'err')
+    if (isValid) {
+      setSolved(true)
+      onSuccess?.()
+    } else {
+      onFailure?.()
+    }
+  }
+
+  const handleDevSkip = () => {
+    setSolved(true)
+    onSuccess?.()
+  }
+
+  return (
+    <div className="grid2">
+      <div className="card">
+        <h3>Nyomok dokumentálása</h3>
+        <p className="muted">{payload.instructions}</p>
+        <HintDetails text={payload.hint} />
+      </div>
+      <div className="card">
+        <h3>Helyzetek</h3>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+          {payload.scenarios?.map((scenario, scenarioIndex) => (
+            <div key={scenarioIndex} style={{ padding: '12px', border: '1px solid rgba(207,230,255,0.2)', borderRadius: '8px' }}>
+              <strong style={{ display: 'block', marginBottom: '6px' }}>{scenario.title || `Szituáció ${scenarioIndex + 1}`}</strong>
+              <p className="muted" style={{ marginBottom: '10px', whiteSpace: 'pre-line' }}>{scenario.scenario || scenario.text}</p>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                {scenario.options?.map((option, optionIndex) => (
+                  <label
+                    key={optionIndex}
+                    style={{
+                      padding: '8px',
+                      borderRadius: '6px',
+                      border: '1px solid',
+                      borderColor: answers[scenarioIndex] === optionIndex ? '#00e5ff' : 'rgba(207,230,255,0.2)',
+                      backgroundColor: answers[scenarioIndex] === optionIndex ? 'rgba(0,229,255,0.1)' : 'transparent',
+                      cursor: 'pointer'
+                    }}
+                  >
+                    <input
+                      type="radio"
+                      name={`scenario-${scenarioIndex}`}
+                      checked={answers[scenarioIndex] === optionIndex}
+                      onChange={() => selectAnswer(scenarioIndex, optionIndex)}
+                      style={{ marginRight: '8px' }}
+                    />
+                    {typeof option === 'string' ? option : option.label}
+                  </label>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+        {feedback && (
+          <div className={`feedback ${feedback}`} style={{ margin: '12px 0' }}>
+            {feedback === 'ok'
+              ? 'Helyes döntések! A helyzetet megfelelően dokumentáltad.'
+              : 'Nem minden döntés felel meg a protokollnak. Gondold át, milyen bizonyíték kell a jegyzőkönyvbe.'}
+          </div>
+        )}
+        <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
+          <button
+            className="btn"
+            type="button"
+            onClick={handleSubmit}
+            disabled={solved || answers.some(ans => ans === null)}
+          >
+            {solved ? 'Feladat teljesítve' : 'Ellenőrzés'}
+          </button>
+        </div>
+        {!solved && (
+          <div style={{ marginTop: '16px', paddingTop: '16px', borderTop: '1px solid rgba(207,230,255,0.2)', display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+            <button
+              className="btn-ghost"
+              onClick={handleDevSkip}
+              style={{ fontSize: '13px', padding: '8px 14px', cursor: 'pointer', fontWeight: 600, borderColor: 'rgba(0,229,255,0.4)' }}
               title="Fejlesztői mód: feladat megoldása és következő"
             >
               ✅ Megoldás + Következő
@@ -640,14 +940,6 @@ const PasswordStrengthTaskRenderer = ({ task, payload, onSuccess, onFailure }) =
                 </li>
               ))}
             </ul>
-          </div>
-        )}
-        {payload.hint && (
-          <div className="hint" style={{ marginTop: '12px' }}>
-            <details>
-              <summary>Súgó megnyitása</summary>
-              <p className="muted" style={{ margin: '8px 0 0' }}>{payload.hint}</p>
-            </details>
           </div>
         )}
       </div>
@@ -725,6 +1017,7 @@ const PasswordStrengthTaskRenderer = ({ task, payload, onSuccess, onFailure }) =
             {solved ? 'Feladat teljesítve' : 'Ellenőrzés'}
           </button>
         </div>
+        <HintDetails text={payload.hint} />
         {!solved && (
           <div style={{ marginTop: '16px', paddingTop: '16px', borderTop: '1px solid rgba(207,230,255,0.2)', display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
             <button

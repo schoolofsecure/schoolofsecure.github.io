@@ -54,10 +54,16 @@ export class PasswordStrengthTask extends BaseTask {
     if (this.payload) return this.payload
     const { requirements, candidate } = this.parameters
     this.solution = PasswordStrengthTask.evaluate(candidate, requirements)
+    const hintByDifficulty = {
+      easy: 'Figyeld meg: kell-e szám, és elég hosszú‑e a jelszó. A speciális karakterek itt még nem kötelezők.',
+      medium: 'A megfelelő jelszó vegyes kis- és nagybetűt, számot és speciális jelet is tartalmazzon.',
+      hard: 'A tiltott szavakat (password, admin stb.) kerüld, és ügyelj arra is, hogy ne ismétlődjön túl sok karakter.'
+    }
     this.payload = {
       instructions: 'Értékeld a jelszó erősségét a felsorolt követelmények alapján.',
       candidate,
-      requirements: requirements.map(req => REQUIREMENT_LABELS[req] || req)
+      requirements: requirements.map(req => REQUIREMENT_LABELS[req] || req),
+      hint: hintByDifficulty[this.difficulty] || 'Vizsgáld meg, hogy a jelszó teljesíti‑e a felsorolt szabályokat.'
     }
     return this.payload
   }

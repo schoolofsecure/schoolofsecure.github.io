@@ -66,19 +66,13 @@ export class TaskFactory {
     let TaskClass
     
     if (preferredTypes && preferredTypes.length > 0) {
-      // Ha van preferált típus, akkor 70% eséllyel abból választunk
-      if (Math.random() < 0.7) {
-        const availablePreferred = preferredTypes
-          .filter(type => TASK_TYPE_MAP[type])
-          .map(type => TASK_TYPE_MAP[type])
-        
-        if (availablePreferred.length > 0) {
-          TaskClass = Random.choice(availablePreferred)
-        } else {
-          TaskClass = Random.choice(REGISTERED_TASKS)
-        }
+      const availablePreferred = preferredTypes
+        .filter(type => TASK_TYPE_MAP[type])
+        .map(type => TASK_TYPE_MAP[type])
+
+      if (availablePreferred.length > 0) {
+        TaskClass = Random.choice(availablePreferred)
       } else {
-        // 30% eséllyel a teljes eloszlásból választunk
         TaskClass = TaskFactory._selectTaskByDistribution()
       }
     } else {

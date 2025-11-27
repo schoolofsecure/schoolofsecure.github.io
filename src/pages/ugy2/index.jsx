@@ -8,6 +8,35 @@ import { LevelGenerator } from '../../tasks'
 import '../../styles/ugy1.css'
 
 const MAX_LIVES = 3
+const TASK_LABELS = {
+  CAESAR: 'Caesar-rejtjel',
+  VIGENERE: 'Vigenère-kód',
+  XOR: 'XOR dekódolás',
+  HASH_MISMATCH: 'Hash hibakeresés',
+  ICON_MEMORY: 'Ikon memória',
+  PASSWORD_STRENGTH: 'Jelszó erősség értékelés',
+  PHISHING: 'Phishing email elemzés',
+  URL_TRUST: 'URL megbízhatóság',
+  LOG_ANALYSIS: 'Log elemzés',
+  SOCIAL_ENGINEERING: 'Social engineering döntés',
+  FIREWALL: 'Tűzfal puzzle',
+  MISCONFIG: 'Konfiguráció felismerés',
+  RISKY_PERMISSION: 'Engedélykérés értékelés',
+  SECURITY_DECISION: 'Nyomok dokumentálása',
+  CRYPTO_PUZZLE: 'Mini kripto puzzle',
+  PSEUDOCODE_BUG: 'Pszeudokód hibakeresés',
+  NETWORK_ANOMALY: 'Hálózati anomália',
+  EMAIL_HEADER: 'Email fejlécelemzés',
+  ATTACK_SCENARIO: 'Támadásszcenárió felismerés',
+  ZERO_DAY: 'Zero-day döntés'
+}
+
+const getTaskTitle = (task, index) => {
+  const base = `${index + 1}. feladat`
+  if (!task) return base
+  const label = TASK_LABELS[task.type] || task.type
+  return `${base} – ${label}`
+}
 
 const Ugy2 = () => {
   const [step, setStep] = useState(0) // 0..4
@@ -185,7 +214,7 @@ const Ugy2 = () => {
             <p className="muted">Feladatok betöltése...</p>
           </div>
         ) : (
-          <TaskCard title={`${step + 1}. feladat`}>
+          <TaskCard title={getTaskTitle(currentTask, step)}>
             {currentTask ? (
               <>
                 <TaskRenderer

@@ -34,18 +34,18 @@ export class LevelGenerator {
     
     // Speciális eset: 2. pálya fix típusokkal és csak easy nehézséggel
     if (levelNumber === 2 && !forcedTypes) {
-      const level2Types = ['PASSWORD_STRENGTH', 'PHISHING', 'ICON_MEMORY', 'SOCIAL_ENGINEERING', 'SECURITY_DECISION']
-      // Keverjük össze az első 4 típust, de az 5. mindig SECURITY_DECISION
-      const firstFour = Random.shuffle(level2Types.slice(0, 4))
-      const finalTypes = [...firstFour, level2Types[4]]
+      const level2Types = [
+        'PASSWORD_STRENGTH',
+        'FIREWALL',
+        'PHISHING',
+        'SOCIAL_ENGINEERING',
+        'SECURITY_DECISION'
+      ]
+      const finalTypes = level2Types.slice(0, tasksPerLevel)
+      const tasks = finalTypes.map((type, index) =>
+        TaskFactory.createRandomTask('easy', [type], levelNumber, index + 1)
+      )
       
-      const tasks = []
-      finalTypes.forEach((type, index) => {
-        const task = TaskFactory.createRandomTask('easy', [type], levelNumber, index + 1)
-        tasks.push(task)
-      })
-      
-      // Seed reset, ha volt beállítva
       if (seed !== null) {
         Random.resetSeed()
       }

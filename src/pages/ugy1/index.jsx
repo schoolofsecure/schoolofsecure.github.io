@@ -1,9 +1,11 @@
 import React, { useState, useMemo, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import { useAuth } from '../../contexts/AuthContext'
+import { useScoring } from '../../contexts/ScoringContext'
 import NarrativeBlock from '../../components/Ugy1/NarrativeBlock'
 import TaskCard from '../../components/Ugy1/TaskCard'
 import ChallengeInput from '../../components/Ugy1/ChallengeInput'
+import ScoreDisplay from '../../components/Scoring/ScoreDisplay'
 import '../../styles/ugy1.css'
 
 // Kis teljesítmény-optimalizáció: késleltetett képbetöltés IntersectionObserverrel
@@ -77,15 +79,15 @@ function vigenereDecode(cipher, key) {
   return out;
 }
 
-const MAX_LIVES = 3;
-
 const Ugy1 = () => {
   const [step, setStep] = useState(0); // 0..4
   const [done, setDone] = useState([false,false,false,false,false]);
   const [showArchive, setShowArchive] = useState(false);
   const { saveLevelCompletion, isAuthenticated } = useAuth();
-  const [lives, setLives] = useState(MAX_LIVES);
-  const [lifeMessage, setLifeMessage] = useState('');
+  const { scoreTask, scoreLevel } = useScoring();
+  const [errors, setErrors] = useState(0);
+  const [taskFeedback, setTaskFeedback] = useState('');
+  const levelStartTimeRef = useRef(Date.now());
   
   // Prefetch következő feladat képe a gyorsabb élményért
   useEffect(()=>{
@@ -105,38 +107,67 @@ const Ugy1 = () => {
 
   const progressPct = useMemo(() => ((done.filter(Boolean).length)/5)*100, [done]);
 
-  const loseLife = () => {
-    setLives((prev) => Math.max(0, prev - 1));
-  };
-
-  const rewardLife = () => {
-    setLives((prev) => prev + 1);
-  };
-
-  useEffect(() => {
-    if (lives === 0) {
-      setLifeMessage('Elfogytak az életek. Újrakezdjük az ügyet az elejétől.');
-      const timeout = setTimeout(() => {
-        setStep(0);
-        setDone([false,false,false,false,false]);
-        setLives(MAX_LIVES);
-        setLifeMessage('Újrakezdve – 3 friss élet.');
-        setTimeout(() => setLifeMessage(''), 2000);
-      }, 1800);
-      return () => clearTimeout(timeout);
-    }
-  }, [lives]);
-
   const handleCompletion = async () => {
     markDone(4);
+    
+    // Pálya pontozása
+    const timeSpent = Math.floor((Date.now() - levelStartTimeRef.current) / 1000);
+    const result = scoreLevel({
+      level: 1,
+      totalTasks: 5,
+      completedTasks: 5,
+      errors,
+      timeSpent,
+      allCluesCorrect: errors === 0
+    });
+    
+    // Visszajelzés megjelenítése
+    setTaskFeedback(result.feedback);
+    
     try {
       if (isAuthenticated) {
         await saveLevelCompletion('ugy1');
       }
-      rewardLife();
     } catch(e) {
       console.warn('Nem sikerült menteni a teljesítést:', e);
     }
+  };
+  
+  const handleTaskSuccess = (taskIndex, difficulty = 'easy') => {
+    // Feladat pontozása
+    const timeSpent = taskIndex > 0 ? Math.floor((Date.now() - levelStartTimeRef.current) / (taskIndex + 1) / 1000) : null;
+    const result = scoreTask({
+      difficulty,
+      isCorrect: true,
+      level: 1,
+      timeSpent
+    });
+    
+    // Visszajelzés megjelenítése
+    setTaskFeedback(result.feedback);
+    setTimeout(() => setTaskFeedback(''), 3000);
+    
+    markDone(taskIndex);
+    if (taskIndex < 4) {
+      setTimeout(next, 400);
+    } else {
+      handleCompletion();
+    }
+  };
+  
+  const handleTaskFailure = (difficulty = 'easy') => {
+    // Hibázás pontozása
+    const result = scoreTask({
+      difficulty,
+      isCorrect: false,
+      level: 1
+    });
+    
+    // Visszajelzés megjelenítése
+    setTaskFeedback(result.feedback);
+    setTimeout(() => setTaskFeedback(''), 3000);
+    
+    setErrors(prev => prev + 1);
   };
 
   return (
@@ -147,48 +178,22 @@ const Ugy1 = () => {
           <div>A múzeum éjszakája – Ügy #1</div>
         </Link>
       </header>
-      <div
-        className="lives-hud"
-        style={{
-          display:'flex',
-          justifyContent:'flex-end',
-          alignItems:'center',
-          gap:'10px',
-          marginBottom:'12px',
-          flexWrap:'wrap'
-        }}
-      >
-        <div style={{display:'flex', alignItems:'center', gap:'6px', fontSize:'13px', color:'var(--muted)'}}>
-          <span role="img" aria-label="Játékos ikon">🕵️</span>
-          <strong style={{fontFamily:'Rajdhani, Inter, sans-serif', letterSpacing:'0.4px'}}>Életek</strong>
-        </div>
-        <div style={{display:'flex', gap:'6px', alignItems:'center', minHeight:'16px'}}>
-          {lives === 0 && <span style={{color:'var(--danger)', fontSize:'12px'}}>nincs</span>}
-          {lives > 0 && lives <= 3 && (
-            <span>
-              {Array.from({length:lives}).map((_, idx) => (
-                <span key={idx} style={{color:'#00e5ff', marginRight:'2px'}}>●</span>
-              ))}
-            </span>
-          )}
-          {lives > 3 && (
-            <span style={{color:'#00e5ff', fontWeight:700, fontSize:'13px'}}>
-              {lives} élet
-            </span>
-          )}
-        </div>
-      </div>
-      {lifeMessage && (
+      <ScoreDisplay />
+      {taskFeedback && (
         <div
           style={{
             textAlign:'right',
-            fontSize:'12px',
-            color:'var(--muted)',
+            fontSize:'13px',
+            color: taskFeedback.includes('Helyes') ? '#00e5ff' : 'var(--muted)',
             marginTop:'-6px',
-            marginBottom:'12px'
+            marginBottom:'12px',
+            padding: '8px 12px',
+            background: taskFeedback.includes('Helyes') ? 'rgba(0,229,255,0.1)' : 'rgba(207,230,255,0.05)',
+            borderRadius: '6px',
+            border: `1px solid ${taskFeedback.includes('Helyes') ? 'rgba(0,229,255,0.3)' : 'rgba(207,230,255,0.2)'}`
           }}
         >
-          {lifeMessage}
+          {taskFeedback}
         </div>
       )}
 
@@ -228,10 +233,10 @@ const Ugy1 = () => {
                   onCheck={(val, norm)=>{
                     const expected = 'Vigyázz, Zoli lehet titkosügynök.';
                     const ok = norm(val) === norm(expected);
-                    if (ok) { markDone(0); setTimeout(next, 400); }
+                    if (ok) { handleTaskSuccess(0, 'easy'); }
                     return ok;
                   }}
-                  onFailure={loseLife}
+                  onFailure={() => handleTaskFailure('easy')}
                 />
                 <div className="task-note"><PerfImg className="task-ill" src="/images/1a.jpg" alt="Illusztráció 1a" width="280" height="280" priority /></div>
                 <div className="hint">
@@ -297,10 +302,10 @@ const Ugy1 = () => {
                   onCheck={(val, norm)=>{
                     const v = norm(val).replace(/[\s\-_.]/g,'');
                     const ok = (v === 'NYOMOK');
-                    if (ok) { markDone(1); setTimeout(next, 400); }
+                    if (ok) { handleTaskSuccess(1, 'medium'); }
                     return ok;
                   }}
-                  onFailure={loseLife}
+                  onFailure={() => handleTaskFailure('medium')}
                 />
                 <div className="task-note"><PerfImg className="task-ill" src="/images/1b.jpg" alt="Illusztráció 1b" width="280" height="280" priority /></div>
                 <div className="hint">
@@ -361,12 +366,12 @@ Minden percben egyetlen percet gondolok rád,
                   onCheck={(val, _norm)=>{
                     const v = String(val||'').replace(/\D/g,'');
                     const ok = (v === '3871');
-                    if (ok) { markDone(2); setTimeout(next, 400); }
+                    if (ok) { handleTaskSuccess(2, 'medium'); }
                     return ok;
                   }}
                   okText="Helyes! Tovább…"
                   errText="Nem egészen – figyeld a számokat szavakban és a sorrendet."
-                  onFailure={loseLife}
+                  onFailure={() => handleTaskFailure('medium')}
                 />
                 <div className="task-note"><PerfImg className="task-ill" src="/images/1c.jpg" alt="Illusztráció 1c" width="280" height="280" priority /></div>
                 <div className="hint">
@@ -427,12 +432,12 @@ Minden percben egyetlen percet gondolok rád,
                   onCheck={(val, _norm)=>{
                     const v = String(val||'').replace(/\D/g,'');
                     const ok = (v === '3542');
-                    if (ok) { markDone(3); setTimeout(next, 400); }
+                    if (ok) { handleTaskSuccess(3, 'hard'); }
                     return ok;
                   }}
                   okText="Helyes! Tovább…"
                   errText="Nem egészen – előbb találd meg a szavakat, majd alakítsd számokká az első betűiket."
-                  onFailure={loseLife}
+                  onFailure={() => handleTaskFailure('hard')}
                 />
                 <PerfImg className="task-ill" src="/images/1d.jpg" alt="Illusztráció 1d" width="280" height="280" priority />
                 <div className="hint">
@@ -470,7 +475,7 @@ Minden percben egyetlen percet gondolok rád,
               </div>
               <div className="card">
                 <h3>Táblázat</h3>
-                <MatchTable onDone={handleCompletion} onFailure={loseLife} />
+                <MatchTable onDone={handleCompletion} onFailure={() => handleTaskFailure('hard')} />
                 <div style={{display:'flex', gap:'10px', marginTop:'10px'}}>
                   <button className="btn-ghost" type="button" onClick={()=>setShowArchive(true)}>
                     🔍 Nyomok újramegtekintése

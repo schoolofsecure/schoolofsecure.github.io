@@ -44,8 +44,16 @@
 
 ### 2025-11-27 — Második pálya könnyített forgatókönyve
 - **Fájl:** `src/tasks/LevelGenerator.js`
-- A 2. pálya most fixen easy feladatokat generál a megadott sorrendben: Password Strength → Firewall → Phishing → Social Engineering → Security Decision (ha kevesebb slot van, a lista az első elemekre rövidül).
-- Ennek célja, hogy az első pálya után egy stabil, könnyű gyakorló szakasz következzen, csak a felsorolt típusokból.
+- A 2. pálya most fix easy feladatlistából dolgozik (Password Strength, Firewall, Phishing, Social Engineering, Security Decision), de a sorrend minden betöltéskor keveredik, így ugyanazok a típusok változatos sorrendben jelennek meg.
+- Ennek célja, hogy az első pálya után stabil, mégis nem monoton gyakorló szakasz következzen.
+
+### 2025-11-27 — Éjszakai kézfogás narratíva
+- **Fájl:** `src/pages/ugy2/index.jsx`
+- Új epizódcím (Éjszakai kézfogás) és narratív leírás került az oldal tetejére, valamint minden feladathoz külön történetblokk tartozik, hogy a játékos jobban értse, miért fontos az adott kihívás.
+
+### 2025-11-27 — Duplikált feladattípusok tiltása
+- **Fájl:** `src/tasks/LevelGenerator.js`
+- A generátor most már pályánként egyszer engedélyez egy adott feladattípust (a forced listát leszámítva): ha a preferált pool kiürül, fallback-ként is csak olyan típust választhat, ami ebben a pályában még nem szerepelt.
 
 ### Miért volt szükség rá?
 - A felhasználói kérés szerint a második pálya UI-ja legyen azonos az első pályáéval.

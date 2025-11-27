@@ -1,6 +1,7 @@
 import React from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { AuthProvider } from './contexts/AuthContext'
+import { ScoringProvider } from './contexts/ScoringContext'
 import Landing from './pages/Landing'
 import Aurora from './pages/Aurora'
 import Privacy from './pages/Privacy'
@@ -22,7 +23,8 @@ import TaskPreviewList from './pages/task-preview'
 function App() {
   return (
     <AuthProvider>
-      <BrowserRouter>
+      <ScoringProvider>
+        <BrowserRouter>
         <div className="scanlines" aria-hidden="true"></div>
         <div className="grid-overlay" aria-hidden="true"></div>
         <Routes>
@@ -45,6 +47,7 @@ function App() {
           <Route path="/ugy12" element={<Ugy12 />} />*/}
         </Routes>
       </BrowserRouter>
+      </ScoringProvider>
     </AuthProvider>
   )
 }

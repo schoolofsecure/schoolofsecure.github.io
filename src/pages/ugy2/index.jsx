@@ -1,41 +1,72 @@
-import React, { useState, useEffect, useMemo } from 'react'
+import React, { useState, useEffect, useMemo, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import { useAuth } from '../../contexts/AuthContext'
+import { useScoring } from '../../contexts/ScoringContext'
 import NarrativeBlock from '../../components/Ugy1/NarrativeBlock'
 import TaskCard from '../../components/Ugy1/TaskCard'
 import TaskRenderer from '../../components/TaskRenderer/TaskRenderer'
+import ScoreDisplay from '../../components/Scoring/ScoreDisplay'
 import { LevelGenerator } from '../../tasks'
 import '../../styles/ugy1.css'
-
-const MAX_LIVES = 3
 const TASK_LABELS = {
-  CAESAR: 'Caesar-rejtjel',
-  VIGENERE: 'Vigenère-kód',
-  XOR: 'XOR dekódolás',
-  HASH_MISMATCH: 'Hash hibakeresés',
-  ICON_MEMORY: 'Ikon memória',
-  PASSWORD_STRENGTH: 'Jelszó erősség értékelés',
-  PHISHING: 'Phishing email elemzés',
-  URL_TRUST: 'URL megbízhatóság',
-  LOG_ANALYSIS: 'Log elemzés',
-  SOCIAL_ENGINEERING: 'Social engineering döntés',
-  FIREWALL: 'Tűzfal puzzle',
-  MISCONFIG: 'Konfiguráció felismerés',
-  RISKY_PERMISSION: 'Engedélykérés értékelés',
-  SECURITY_DECISION: 'Nyomok dokumentálása',
-  CRYPTO_PUZZLE: 'Mini kripto puzzle',
-  PSEUDOCODE_BUG: 'Pszeudokód hibakeresés',
-  NETWORK_ANOMALY: 'Hálózati anomália',
-  EMAIL_HEADER: 'Email fejlécelemzés',
-  ATTACK_SCENARIO: 'Támadásszcenárió felismerés',
-  ZERO_DAY: 'Zero-day döntés'
+  CAESAR: 'Titkosított suttogás',
+  VIGENERE: 'Kulcskeringő',
+  XOR: 'Villanó bitek',
+  HASH_MISMATCH: 'Elcsúszott ujjlenyomat',
+  ICON_MEMORY: 'Szimbólum-memória',
+  PASSWORD_STRENGTH: 'Admin jelszó audit',
+  PHISHING: 'Kurátori csali levél',
+  URL_TRUST: 'Kapuhivatkozás vizsgálat',
+  LOG_ANALYSIS: 'Éjjeli logvadászat',
+  SOCIAL_ENGINEERING: 'Beszivárgó kérés',
+  FIREWALL: 'Kézfogás-vadász tűzfal',
+  MISCONFIG: 'Rejtett konfigurációs hiba',
+  RISKY_PERMISSION: 'Veszélyes engedélykérés',
+  SECURITY_DECISION: 'Nyomok mérlegelése',
+  CRYPTO_PUZZLE: 'Mini kripto rejtély',
+  PSEUDOCODE_BUG: 'Pszeudokód csapda',
+  NETWORK_ANOMALY: 'Hálózati burjánzás',
+  EMAIL_HEADER: 'Fejléc-röntgen',
+  ATTACK_SCENARIO: 'Támadási mozaik',
+  ZERO_DAY: 'Nulladik nap dilemma'
 }
 
 const getTaskTitle = (task, index) => {
-  const base = `${index + 1}. feladat`
-  if (!task) return base
-  const label = TASK_LABELS[task.type] || task.type
-  return `${base} – ${label}`
+  return `${index + 1}. feladat`
+}
+
+const EPISODE_NAME = 'Éjszakai kézfogás'
+
+const TASK_STORIES = {
+  PASSWORD_STRENGTH: {
+    title: 'Admin jelszó audit',
+    text: `A rendszer egyik adminfiókja gyanús jelszóváltoztatási kérelmet küldött be.
+    A kérelmet pont akkor adták le, amikor az ismeretlen „kézfogás” kapcsolat megjelent.
+    Döntened kell, hogy a javasolt jelszó megfelel-e a követelményeknek, vagy a támadó próbál gyenge autentikációt becsempészni.`
+  },
+  FIREWALL: {
+    title: 'Kézfogás-vadász tűzfal',
+    text: `A tűzfal naplója szerint pár külső cím hirtelen „engedélyezett” állapotba került.
+    Ha rosszul zárod le a szabályt, fontos érzékelők némulhatnak el, de ha nyitva hagyod, a támadó tartós hozzáférést kap.`
+  },
+  PHISHING: {
+    title: 'Kurátori csali levél',
+    text: `Egy kurátor postaládájában gyanús üzenet jelent meg a belső technikai osztály nevében.
+    A logok szerint az éjszakai támadó küldhette, hogy megszerezze a bejelentkezési adatait.
+    Csak akkor állíthatod le az akciót, ha felismered a rejtett jeleket.`
+  },
+  SOCIAL_ENGINEERING: {
+    title: 'Beszivárgó kérés',
+    text: `Egy személyes hangvételű üzenet szerint a küldő a múzeum technikusa, aki sürgősen segítséget kér.
+    Valójában ez lehet a támadó kísérlete, hogy benned találjon új belépési pontot.
+    Elemezd a kérést, és dönts, hogy valós-e vagy manipulatív.`
+  },
+  SECURITY_DECISION: {
+    title: 'Nyomok mérlegelése',
+    text: `A rendszer jelzi, hogy a támadó létrehozott egy „kézfogás-alagutát”.
+    Azonnal lekapcsolod, vagy megfigyeled, hogy több információt gyűjts?
+    A döntésed hatással lesz arra, mihez fér hozzá a támadó – és te mire jössz rá.`
+  }
 }
 
 const Ugy2 = () => {
@@ -43,9 +74,12 @@ const Ugy2 = () => {
   const [tasks, setTasks] = useState([])
   const [done, setDone] = useState([false, false, false, false, false])
   const { saveLevelCompletion, isAuthenticated } = useAuth()
-  const [lives, setLives] = useState(MAX_LIVES)
-  const [lifeMessage, setLifeMessage] = useState('')
+  const { scoreTask, scoreLevel } = useScoring()
   const [currentLevel, setCurrentLevel] = useState(2)
+  const [errors, setErrors] = useState(0)
+  const [taskFeedback, setTaskFeedback] = useState('')
+  const [levelStartTime] = useState(Date.now())
+  const levelStartTimeRef = useRef(Date.now())
 
   // Feladatok generálása az oldal betöltésekor
   useEffect(() => {
@@ -93,43 +127,51 @@ const Ugy2 = () => {
   const totalTasks = tasks.length || 5
   const progressPct = useMemo(() => (totalTasks > 0 ? (completedCount / totalTasks) * 100 : 0), [completedCount, totalTasks])
 
-  const loseLife = () => {
-    setLives((prev) => Math.max(0, prev - 1))
-  }
-
-  const rewardLife = () => {
-    setLives((prev) => prev + 1)
-  }
-
-  useEffect(() => {
-    if (lives === 0) {
-      setLifeMessage('Elfogytak az életek. Újrakezdjük az ügyet az elejétől.')
-      const timeout = setTimeout(() => {
-        setStep(0)
-        setDone([false, false, false, false, false])
-        setLives(MAX_LIVES)
-        setLifeMessage('Újrakezdve – 3 friss élet.')
-        setTimeout(() => setLifeMessage(''), 2000)
-      }, 1800)
-      return () => clearTimeout(timeout)
-    }
-  }, [lives])
-
   const handleCompletion = async () => {
-    markDone(4)
+    markDone(tasks.length - 1)
+    
+    // Pálya pontozása
+    const timeSpent = Math.floor((Date.now() - levelStartTimeRef.current) / 1000)
+    const result = scoreLevel({
+      level: currentLevel,
+      totalTasks,
+      completedTasks: completedCount + 1,
+      errors,
+      timeSpent,
+      allCluesCorrect: errors === 0
+    })
+    
+    // Visszajelzés megjelenítése
+    setTaskFeedback(result.feedback)
+    
     try {
       if (isAuthenticated) {
-        await saveLevelCompletion('ugy2')
+        await saveLevelCompletion(`ugy${currentLevel}`)
       }
-      rewardLife()
     } catch (e) {
-      console.warn('Nem sikerült menteni a teljesítést:', e)
+      console.warn(`Nem sikerült menteni a(z) ${currentLevel}. pályát:`, e)
     }
   }
 
   const handleTaskSuccess = (taskIndex) => {
+    const task = tasks[taskIndex]
+    if (task) {
+      // Feladat pontozása
+      const timeSpent = taskIndex > 0 ? Math.floor((Date.now() - levelStartTimeRef.current) / (taskIndex + 1) / 1000) : null
+      const result = scoreTask({
+        difficulty: task.difficulty || 'easy',
+        isCorrect: true,
+        level: currentLevel,
+        timeSpent
+      })
+      
+      // Visszajelzés megjelenítése
+      setTaskFeedback(result.feedback)
+      setTimeout(() => setTaskFeedback(''), 3000)
+    }
+    
     markDone(taskIndex)
-    if (taskIndex < 4) {
+    if (taskIndex < tasks.length - 1) {
       setTimeout(next, 400)
     } else {
       handleCompletion()
@@ -137,7 +179,21 @@ const Ugy2 = () => {
   }
 
   const handleTaskFailure = () => {
-    loseLife()
+    const task = tasks[step]
+    if (task) {
+      // Hibázás pontozása
+      const result = scoreTask({
+        difficulty: task.difficulty || 'easy',
+        isCorrect: false,
+        level: currentLevel
+      })
+      
+      // Visszajelzés megjelenítése
+      setTaskFeedback(result.feedback)
+      setTimeout(() => setTaskFeedback(''), 3000)
+    }
+    
+    setErrors(prev => prev + 1)
   }
 
   const currentTask = tasks[step]
@@ -147,60 +203,38 @@ const Ugy2 = () => {
       <header>
         <Link to="/" className="brand" aria-label="CyberMystery – Vissza a főoldalra">
           <div className="brand-badge">CM</div>
-          <div>Ügy #{currentLevel}</div>
+          <div>Éjszakai kézfogás – Ügy #{currentLevel}</div>
         </Link>
       </header>
-      <div
-        className="lives-hud"
-        style={{
-          display: 'flex',
-          justifyContent: 'flex-end',
-          alignItems: 'center',
-          gap: '10px',
-          marginBottom: '12px',
-          flexWrap: 'wrap'
-        }}
-      >
-        <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '13px', color: 'var(--muted)' }}>
-          <span role="img" aria-label="Játékos ikon">🕵️</span>
-          <strong style={{ fontFamily: 'Rajdhani, Inter, sans-serif', letterSpacing: '0.4px' }}>Életek</strong>
-        </div>
-        <div style={{ display: 'flex', gap: '6px', alignItems: 'center', minHeight: '16px' }}>
-          {lives === 0 && <span style={{ color: 'var(--danger)', fontSize: '12px' }}>nincs</span>}
-          {lives > 0 && lives <= 3 && (
-            <span>
-              {Array.from({ length: lives }).map((_, idx) => (
-                <span key={idx} style={{ color: '#00e5ff', marginRight: '2px' }}>●</span>
-              ))}
-            </span>
-          )}
-          {lives > 3 && (
-            <span style={{ color: '#00e5ff', fontWeight: 700, fontSize: '13px' }}>
-              {lives} élet
-            </span>
-          )}
-        </div>
-      </div>
-      {lifeMessage && (
+      <ScoreDisplay />
+      {taskFeedback && (
         <div
           style={{
             textAlign: 'right',
-            fontSize: '12px',
-            color: 'var(--muted)',
+            fontSize: '13px',
+            color: taskFeedback.includes('Helyes') ? '#00e5ff' : 'var(--muted)',
             marginTop: '-6px',
-            marginBottom: '12px'
+            marginBottom: '12px',
+            padding: '8px 12px',
+            background: taskFeedback.includes('Helyes') ? 'rgba(0,229,255,0.1)' : 'rgba(207,230,255,0.05)',
+            borderRadius: '6px',
+            border: `1px solid ${taskFeedback.includes('Helyes') ? 'rgba(0,229,255,0.3)' : 'rgba(207,230,255,0.2)'}`
           }}
         >
-          {lifeMessage}
+          {taskFeedback}
         </div>
       )}
 
       <main>
-        <NarrativeBlock badge={`Ügy #${currentLevel}`}>
-          <h1 style={{ margin: '10px 0 4px' }}>Ügy #{currentLevel}</h1>
+        <NarrativeBlock badge="Éjszakai kézfogás">
+          <h1 style={{ margin: '10px 0 4px' }}>Éjszakai kézfogás – Ügy #{currentLevel}</h1>
           <p>
-            Az üres termekben csak az érzékelők pislognak. Az archívumban mozgás nyomai, de hiányzik az idővonal.
-            A restaurátor szerint „csak egy kis rendrakás" – szerintünk nem.
+            A múzeum csendje most valahogy nyugtalanítóbb, mint előző éjjel. A kamera-rendszer továbbra is akadozik,
+            a hálózati térkép pedig ismeretlen kapcsolatokat mutat – olyanokat, amelyeknek nem kellene létezniük.
+          </p>
+          <p>
+            Úgy tűnik, az éjszakai behatoló nem csak a gépeket érintette, hanem lassan kézfogást próbál kialakítani a teljes infrastruktúrával.
+            Ha sikerül neki mélyebbre jutnia, a múzeum rendszereinek titkai pillanatok alatt kiszivároghatnak. Rajtad múlik, hogy visszaverd a támadást.
           </p>
         </NarrativeBlock>
 
@@ -216,38 +250,13 @@ const Ugy2 = () => {
         ) : (
           <TaskCard title={getTaskTitle(currentTask, step)}>
             {currentTask ? (
-              <>
-                <TaskRenderer
-                  task={currentTask}
-                  onSuccess={() => handleTaskSuccess(step)}
-                  onFailure={handleTaskFailure}
-                />
-                <div
-                  style={{
-                    marginTop: '16px',
-                    paddingTop: '16px',
-                    borderTop: '1px solid rgba(207,230,255,0.2)',
-                    display: 'flex',
-                    gap: '8px',
-                    flexWrap: 'wrap'
-                  }}
-                >
-                  <button
-                    type="button"
-                    className="btn-ghost"
-                    onClick={() => handleTaskSuccess(step)}
-                    style={{
-                      fontSize: '13px',
-                      padding: '8px 14px',
-                      cursor: 'pointer',
-                      fontWeight: 600,
-                      borderColor: 'rgba(0,229,255,0.4)'
-                    }}
-                  >
-                    ✅ Megoldás + Következő
-                  </button>
-                </div>
-              </>
+              <TaskRenderer
+                task={currentTask}
+                taskStory={TASK_STORIES[currentTask.type]}
+                taskLabel={TASK_LABELS[currentTask.type]}
+                onSuccess={() => handleTaskSuccess(step)}
+                onFailure={handleTaskFailure}
+              />
             ) : (
               <p className="muted">Aktív feladat betöltése...</p>
             )}

@@ -41,7 +41,8 @@ export class LevelGenerator {
         'SOCIAL_ENGINEERING',
         'SECURITY_DECISION'
       ]
-      const finalTypes = level2Types.slice(0, tasksPerLevel)
+      const shuffledTypes = Random.shuffle(level2Types)
+      const finalTypes = shuffledTypes.slice(0, tasksPerLevel)
       const tasks = finalTypes.map((type, index) =>
         TaskFactory.createRandomTask('easy', [type], levelNumber, index + 1)
       )
@@ -105,6 +106,11 @@ export class LevelGenerator {
     // Keverjük össze az elérhető típusokat
     availableTypes = Random.shuffle([...availableTypes])
     
+    const pickFromList = (list) => {
+      const filtered = list.filter(type => !usedTypesInThisLevel.has(type))
+      return filtered.length > 0 ? Random.choice(filtered) : null
+    }
+
     for (let slot = 1; slot <= tasksPerLevel; slot++) {
       // Választunk egy típust, ami még nem volt használva ezen a pályán
       let selectedType = null
@@ -119,31 +125,25 @@ export class LevelGenerator {
           // Először próbáljuk a sequencing preferenciákat
           const sequencingRule = styleConfig.sequencing.find(s => s.slot === slot)
           if (sequencingRule && sequencingRule.preferredTypes) {
-            const preferred = sequencingRule.preferredTypes.filter(
-              type => availableTypes.includes(type) && !usedTypesInThisLevel.has(type)
-            )
-            if (preferred.length > 0) {
-              selectedType = Random.choice(preferred)
-            }
+            const preferredPool = sequencingRule.preferredTypes.filter(type => availableTypes.includes(type))
+            selectedType = pickFromList(preferredPool)
           }
           
           // Ha nincs preferált, akkor az elérhető típusokból választunk
           if (!selectedType) {
-            const candidates = availableTypes.filter(type => !usedTypesInThisLevel.has(type))
-            if (candidates.length > 0) {
-              selectedType = Random.choice(candidates)
-            } else {
-              // Ha már minden típus használva van, akkor újra használhatunk egyet
-              selectedType = Random.choice(availableTypes)
-            }
+            selectedType = pickFromList(availableTypes)
           }
           
           attempts++
         }
         
-        // Fallback: ha még mindig nincs típus, akkor random választunk
+        // Fallback: ha még mindig nincs típus, akkor olyan típust választunk, ami még nem volt
         if (!selectedType) {
-          selectedType = Random.choice(ALL_TASK_TYPES)
+          const fallbackPool = ALL_TASK_TYPES.filter(type => !usedTypesInThisLevel.has(type))
+          if (fallbackPool.length === 0) {
+            throw new Error('Nincs elég egyedi feladattípus a pálya feltöltéséhez.')
+          }
+          selectedType = Random.choice(fallbackPool)
         }
       }
       

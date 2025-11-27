@@ -5,7 +5,7 @@ import ChallengeInput from '../Ugy1/ChallengeInput'
  * Univerzális Task renderer komponens, ami a dinamikusan generált feladatokat jeleníti meg.
  * A Task objektum type mezője alapján választja ki a megfelelő renderelési módot.
  */
-const TaskRenderer = ({ task, onSuccess, onFailure }) => {
+const TaskRenderer = ({ task, taskStory, taskLabel, onSuccess, onFailure }) => {
   if (!task || !task.payload) {
     return <div className="card"><p className="muted">Feladat betöltése...</p></div>
   }
@@ -14,38 +14,38 @@ const TaskRenderer = ({ task, onSuccess, onFailure }) => {
 
   switch (type) {
     case 'CAESAR':
-      return <CaesarTaskRenderer task={task} payload={payload} onSuccess={onSuccess} onFailure={onFailure} />
+      return <CaesarTaskRenderer task={task} payload={payload} taskStory={taskStory} taskLabel={taskLabel} onSuccess={onSuccess} onFailure={onFailure} />
     
     case 'VIGENERE':
-      return <VigenereTaskRenderer task={task} payload={payload} onSuccess={onSuccess} onFailure={onFailure} />
+      return <VigenereTaskRenderer task={task} payload={payload} taskStory={taskStory} taskLabel={taskLabel} onSuccess={onSuccess} onFailure={onFailure} />
     
     case 'PHISHING':
-      return <PhishingTaskRenderer task={task} payload={payload} onSuccess={onSuccess} onFailure={onFailure} />
+      return <PhishingTaskRenderer task={task} payload={payload} taskStory={taskStory} taskLabel={taskLabel} onSuccess={onSuccess} onFailure={onFailure} />
     
     case 'LOG_ANALYSIS':
-      return <LogAnalysisTaskRenderer task={task} payload={payload} onSuccess={onSuccess} onFailure={onFailure} />
+      return <LogAnalysisTaskRenderer task={task} payload={payload} taskStory={taskStory} taskLabel={taskLabel} onSuccess={onSuccess} onFailure={onFailure} />
     
     case 'ICON_MEMORY':
-      return <IconMemoryTaskRenderer task={task} payload={payload} onSuccess={onSuccess} onFailure={onFailure} />
+      return <IconMemoryTaskRenderer task={task} payload={payload} taskStory={taskStory} taskLabel={taskLabel} onSuccess={onSuccess} onFailure={onFailure} />
     
     case 'PASSWORD_STRENGTH':
-      return <PasswordStrengthTaskRenderer task={task} payload={payload} onSuccess={onSuccess} onFailure={onFailure} />
+      return <PasswordStrengthTaskRenderer task={task} payload={payload} taskStory={taskStory} taskLabel={taskLabel} onSuccess={onSuccess} onFailure={onFailure} />
     
     case 'XOR':
     case 'HASH_MISMATCH':
     case 'URL_TRUST':
     case 'SOCIAL_ENGINEERING':
-      return <SocialEngineeringTaskRenderer task={task} payload={payload} onSuccess={onSuccess} onFailure={onFailure} />
+      return <SocialEngineeringTaskRenderer task={task} payload={payload} taskStory={taskStory} taskLabel={taskLabel} onSuccess={onSuccess} onFailure={onFailure} />
     
     case 'FIREWALL':
-      return <FirewallTaskRenderer task={task} payload={payload} onSuccess={onSuccess} onFailure={onFailure} />
+      return <FirewallTaskRenderer task={task} payload={payload} taskStory={taskStory} taskLabel={taskLabel} onSuccess={onSuccess} onFailure={onFailure} />
     
     case 'MISCONFIG':
     case 'RISKY_PERMISSION':
-      return <DefaultTaskRenderer task={task} payload={payload} onSuccess={onSuccess} onFailure={onFailure} />
+      return <DefaultTaskRenderer task={task} payload={payload} taskStory={taskStory} taskLabel={taskLabel} onSuccess={onSuccess} onFailure={onFailure} />
     
     case 'SECURITY_DECISION':
-      return <SecurityDecisionTaskRenderer task={task} payload={payload} onSuccess={onSuccess} onFailure={onFailure} />
+      return <SecurityDecisionTaskRenderer task={task} payload={payload} taskStory={taskStory} taskLabel={taskLabel} onSuccess={onSuccess} onFailure={onFailure} />
     
     case 'CRYPTO_PUZZLE':
     case 'PSEUDOCODE_BUG':
@@ -54,7 +54,7 @@ const TaskRenderer = ({ task, onSuccess, onFailure }) => {
     case 'ATTACK_SCENARIO':
     case 'ZERO_DAY':
       // Alapértelmezett renderelés szöveges inputtal
-      return <DefaultTaskRenderer task={task} payload={payload} onSuccess={onSuccess} onFailure={onFailure} />
+      return <DefaultTaskRenderer task={task} payload={payload} taskStory={taskStory} taskLabel={taskLabel} onSuccess={onSuccess} onFailure={onFailure} />
     
     default:
       return <div className="card"><p className="muted">Ismeretlen feladattípus: {type}</p></div>
@@ -74,7 +74,7 @@ const HintDetails = ({ text }) => {
 }
 
 // Caesar Task Renderer
-const CaesarTaskRenderer = ({ task, payload, onSuccess, onFailure }) => {
+const CaesarTaskRenderer = ({ task, payload, taskStory, taskLabel, onSuccess, onFailure }) => {
   const [feedback, setFeedback] = useState(null)
   const [solved, setSolved] = useState(false)
 
@@ -98,8 +98,13 @@ const CaesarTaskRenderer = ({ task, payload, onSuccess, onFailure }) => {
   return (
     <div className="grid2">
       <div className="card">
-        <h3>Rejtjel</h3>
-        {payload.intro && <p className="muted">{payload.intro}</p>}
+        {taskLabel && <h3>{taskLabel}</h3>}
+        {taskStory && (
+          <p className="muted" style={{ whiteSpace: 'pre-line', marginTop: taskLabel ? '8px' : '0' }}>
+            {taskStory.text}
+          </p>
+        )}
+        {payload.intro && <p className="muted" style={{ marginTop: taskStory ? '12px' : (taskLabel ? '8px' : '0') }}>{payload.intro}</p>}
         <p className="muted">{payload.instructions}</p>
         <div className="statusline">
           <code style={{fontSize:'16px', letterSpacing:'2px', wordBreak:'break-all'}}>
@@ -136,7 +141,7 @@ const CaesarTaskRenderer = ({ task, payload, onSuccess, onFailure }) => {
 }
 
 // Vigenère Task Renderer
-const VigenereTaskRenderer = ({ task, payload, onSuccess, onFailure }) => {
+const VigenereTaskRenderer = ({ task, payload, taskStory, taskLabel, onSuccess, onFailure }) => {
   const [solved, setSolved] = useState(false)
 
   const handleCheck = (value, normalize) => {
@@ -158,8 +163,13 @@ const VigenereTaskRenderer = ({ task, payload, onSuccess, onFailure }) => {
   return (
     <div className="grid2">
       <div className="card">
-        <h3>Titkosított üzenet</h3>
-        {payload.intro && <p className="muted">{payload.intro}</p>}
+        {taskLabel && <h3>{taskLabel}</h3>}
+        {taskStory && (
+          <p className="muted" style={{ whiteSpace: 'pre-line', marginTop: taskLabel ? '8px' : '0' }}>
+            {taskStory.text}
+          </p>
+        )}
+        {payload.intro && <p className="muted" style={{ marginTop: taskStory ? '12px' : (taskLabel ? '8px' : '0') }}>{payload.intro}</p>}
         <p className="muted">{payload.instructions}</p>
         <div className="statusline">
           <code style={{fontSize:'16px', letterSpacing:'2px', wordBreak:'break-all'}}>
@@ -201,7 +211,7 @@ const VigenereTaskRenderer = ({ task, payload, onSuccess, onFailure }) => {
 }
 
 // Phishing Task Renderer
-const PhishingTaskRenderer = ({ task, payload, onSuccess, onFailure }) => {
+const PhishingTaskRenderer = ({ task, payload, taskStory, taskLabel, onSuccess, onFailure }) => {
   const [selectedIds, setSelectedIds] = useState([])
   const [feedback, setFeedback] = useState(null)
   const [solved, setSolved] = useState(false)
@@ -234,8 +244,13 @@ const PhishingTaskRenderer = ({ task, payload, onSuccess, onFailure }) => {
   return (
     <div className="grid2">
       <div className="card">
-        <h3>Email elemzés</h3>
-        {payload.intro && <p className="muted">{payload.intro}</p>}
+        {taskLabel && <h3>{taskLabel}</h3>}
+        {taskStory && (
+          <p className="muted" style={{ whiteSpace: 'pre-line', marginTop: taskLabel ? '8px' : '0' }}>
+            {taskStory.text}
+          </p>
+        )}
+        {payload.intro && <p className="muted" style={{ marginTop: taskStory ? '12px' : (taskLabel ? '8px' : '0') }}>{payload.intro}</p>}
         <p className="muted">{payload.instructions}</p>
         {payload.email && (
           <div className="statusline" style={{ marginTop: '16px', padding: '16px', background: '#0b121c', borderRadius: '8px', border: '1px solid rgba(207,230,255,0.2)' }}>
@@ -319,7 +334,7 @@ const PhishingTaskRenderer = ({ task, payload, onSuccess, onFailure }) => {
 }
 
 // Log Analysis Task Renderer
-const LogAnalysisTaskRenderer = ({ task, payload, onSuccess, onFailure }) => {
+const LogAnalysisTaskRenderer = ({ task, payload, taskStory, taskLabel, onSuccess, onFailure }) => {
   const [selectedRows, setSelectedRows] = useState([])
   const [feedback, setFeedback] = useState(null)
   const [solved, setSolved] = useState(false)
@@ -352,8 +367,13 @@ const LogAnalysisTaskRenderer = ({ task, payload, onSuccess, onFailure }) => {
   return (
     <div className="grid2">
       <div className="card">
-        <h3>Rendszerlog elemzés</h3>
-        {payload.intro && <p className="muted">{payload.intro}</p>}
+        {taskLabel && <h3>{taskLabel}</h3>}
+        {taskStory && (
+          <p className="muted" style={{ whiteSpace: 'pre-line', marginTop: taskLabel ? '8px' : '0' }}>
+            {taskStory.text}
+          </p>
+        )}
+        {payload.intro && <p className="muted" style={{ marginTop: taskStory ? '12px' : (taskLabel ? '8px' : '0') }}>{payload.intro}</p>}
         <p className="muted">{payload.instructions}</p>
       </div>
       <div className="card">
@@ -470,8 +490,13 @@ const IconMemoryTaskRenderer = ({ task, payload, onSuccess, onFailure }) => {
   return (
     <div className="grid2">
       <div className="card">
-        <h3>Memória ikon puzzle</h3>
-        {payload.intro && <p className="muted">{payload.intro}</p>}
+        {taskLabel && <h3>{taskLabel}</h3>}
+        {taskStory && (
+          <p className="muted" style={{ whiteSpace: 'pre-line', marginTop: taskLabel ? '8px' : '0' }}>
+            {taskStory.text}
+          </p>
+        )}
+        {payload.intro && <p className="muted" style={{ marginTop: taskStory ? '12px' : (taskLabel ? '8px' : '0') }}>{payload.intro}</p>}
         <p className="muted">{payload.instructions}</p>
       </div>
       <div className="card">
@@ -552,7 +577,7 @@ const IconMemoryTaskRenderer = ({ task, payload, onSuccess, onFailure }) => {
 }
 
 // Social Engineering Task Renderer
-const SocialEngineeringTaskRenderer = ({ task, payload, onSuccess, onFailure }) => {
+const SocialEngineeringTaskRenderer = ({ task, payload, taskStory, taskLabel, onSuccess, onFailure }) => {
   const [choices, setChoices] = useState({})
   const [feedback, setFeedback] = useState(null)
   const [solved, setSolved] = useState(false)
@@ -587,8 +612,13 @@ const SocialEngineeringTaskRenderer = ({ task, payload, onSuccess, onFailure }) 
   return (
     <div className="grid2">
       <div className="card">
-        <h3>Social engineering helyzetek</h3>
-        {payload.intro && <p className="muted">{payload.intro}</p>}
+        {taskLabel && <h3>{taskLabel}</h3>}
+        {taskStory && (
+          <p className="muted" style={{ whiteSpace: 'pre-line', marginTop: taskLabel ? '8px' : '0' }}>
+            {taskStory.text}
+          </p>
+        )}
+        {payload.intro && <p className="muted" style={{ marginTop: taskStory ? '12px' : (taskLabel ? '8px' : '0') }}>{payload.intro}</p>}
         <p className="muted">{payload.instructions}</p>
       </div>
       <div className="card">
@@ -652,7 +682,7 @@ const SocialEngineeringTaskRenderer = ({ task, payload, onSuccess, onFailure }) 
 }
 
 // Firewall Task Renderer
-const FirewallTaskRenderer = ({ task, payload, onSuccess, onFailure }) => {
+const FirewallTaskRenderer = ({ task, payload, taskStory, taskLabel, onSuccess, onFailure }) => {
   const [rules, setRules] = useState({})
   const [feedback, setFeedback] = useState(null)
   const [solved, setSolved] = useState(false)
@@ -707,10 +737,16 @@ const FirewallTaskRenderer = ({ task, payload, onSuccess, onFailure }) => {
   return (
     <div className="grid2">
       <div className="card">
-        <h3>Tűzfal konfiguráció</h3>
-        {payload.intro && <p className="muted">{payload.intro}</p>}
+        {taskLabel && <h3>{taskLabel}</h3>}
+        {taskStory && (
+          <>
+            <p className="muted" style={{ whiteSpace: 'pre-line', marginTop: taskLabel ? '8px' : '0' }}>
+              {taskStory.text}
+            </p>
+          </>
+        )}
+        {payload.intro && <p className="muted" style={{ marginTop: taskStory ? '12px' : '0' }}>{payload.intro}</p>}
         <p className="muted">{payload.instructions}</p>
-        <HintDetails text={payload.hint} />
       </div>
       <div className="card">
         <h3>Szolgáltatások</h3>
@@ -783,7 +819,7 @@ const FirewallTaskRenderer = ({ task, payload, onSuccess, onFailure }) => {
 }
 
 // Security Decision Task Renderer
-const SecurityDecisionTaskRenderer = ({ task, payload, onSuccess, onFailure }) => {
+const SecurityDecisionTaskRenderer = ({ task, payload, taskStory, taskLabel, onSuccess, onFailure }) => {
   const [answers, setAnswers] = useState([])
   const [feedback, setFeedback] = useState(null)
   const [solved, setSolved] = useState(false)
@@ -822,8 +858,13 @@ const SecurityDecisionTaskRenderer = ({ task, payload, onSuccess, onFailure }) =
   return (
     <div className="grid2">
       <div className="card">
-        <h3>Nyomok dokumentálása</h3>
-        <p className="muted">{payload.instructions}</p>
+        {taskLabel && <h3>{taskLabel}</h3>}
+        {taskStory && (
+          <p className="muted" style={{ whiteSpace: 'pre-line', marginTop: taskLabel ? '8px' : '0' }}>
+            {taskStory.text}
+          </p>
+        )}
+        <p className="muted" style={{ marginTop: taskStory ? '12px' : (taskLabel ? '8px' : '0') }}>{payload.instructions}</p>
         <HintDetails text={payload.hint} />
       </div>
       <div className="card">
@@ -895,7 +936,7 @@ const SecurityDecisionTaskRenderer = ({ task, payload, onSuccess, onFailure }) =
 }
 
 // Password Strength Task Renderer
-const PasswordStrengthTaskRenderer = ({ task, payload, onSuccess, onFailure }) => {
+const PasswordStrengthTaskRenderer = ({ task, payload, taskStory, taskLabel, onSuccess, onFailure }) => {
   const [selectedAnswer, setSelectedAnswer] = useState(null)
   const [feedback, setFeedback] = useState(null)
   const [solved, setSolved] = useState(false)
@@ -919,9 +960,13 @@ const PasswordStrengthTaskRenderer = ({ task, payload, onSuccess, onFailure }) =
   return (
     <div className="grid2">
       <div className="card">
-        <h3>Jelszó értékelés</h3>
-        {payload.intro && <p className="muted">{payload.intro}</p>}
-        <p className="muted">{payload.instructions}</p>
+        {taskLabel && <h3>{taskLabel}</h3>}
+        {taskStory && (
+          <p className="muted" style={{ whiteSpace: 'pre-line', marginTop: taskLabel ? '8px' : '0' }}>
+            {taskStory.text}
+          </p>
+        )}
+        {payload.intro && <p className="muted" style={{ marginTop: taskStory ? '12px' : (taskLabel ? '8px' : '0') }}>{payload.intro}</p>}
         <div className="statusline" style={{ marginTop: '12px', padding: '12px', background: '#0b121c', borderRadius: '8px' }}>
           <div style={{ marginBottom: '8px' }}>
             <strong>Jelszó:</strong>
@@ -973,7 +1018,7 @@ const PasswordStrengthTaskRenderer = ({ task, payload, onSuccess, onFailure }) =
                 setFeedback(null)
               }}
             />
-            <span style={{ fontSize: '14px', fontWeight: 600 }}>Erős jelszó</span>
+            <span style={{ fontSize: '14px', fontWeight: 600 }}>Megfelel a követelményeknek</span>
           </label>
           <label
             style={{
@@ -1002,7 +1047,7 @@ const PasswordStrengthTaskRenderer = ({ task, payload, onSuccess, onFailure }) =
                 setFeedback(null)
               }}
             />
-            <span style={{ fontSize: '14px', fontWeight: 600 }}>Gyenge jelszó</span>
+            <span style={{ fontSize: '14px', fontWeight: 600 }}>Nem felel meg a követelménynek</span>
           </label>
         </div>
         {feedback && (
@@ -1036,7 +1081,7 @@ const PasswordStrengthTaskRenderer = ({ task, payload, onSuccess, onFailure }) =
 }
 
 // Default Task Renderer (szöveges input)
-const DefaultTaskRenderer = ({ task, payload, onSuccess, onFailure }) => {
+const DefaultTaskRenderer = ({ task, payload, taskStory, taskLabel, onSuccess, onFailure }) => {
   const [solved, setSolved] = useState(false)
 
   const handleCheck = (value, normalize) => {
@@ -1058,8 +1103,13 @@ const DefaultTaskRenderer = ({ task, payload, onSuccess, onFailure }) => {
   return (
     <div className="grid2">
       <div className="card">
-        <h3>Feladat</h3>
-        {payload.intro && <p className="muted">{payload.intro}</p>}
+        {taskLabel && <h3>{taskLabel}</h3>}
+        {taskStory && (
+          <p className="muted" style={{ whiteSpace: 'pre-line', marginTop: taskLabel ? '8px' : '0' }}>
+            {taskStory.text}
+          </p>
+        )}
+        {payload.intro && <p className="muted" style={{ marginTop: taskStory ? '12px' : (taskLabel ? '8px' : '0') }}>{payload.intro}</p>}
         <p className="muted">{payload.instructions}</p>
         {payload.hint && (
           <div className="hint" style={{marginTop:'12px'}}>

@@ -407,7 +407,19 @@ const Aurora = () => {
             <p id="levelsDesc">{data.levels?.desc || ''}</p>
             <div className="levels-grid" id="levelsGrid">
               {(data.levels?.cards || []).map((card) => {
-                const isUnlocked = card.n <= highestCompleted + 1 || (card.n === 1 && !card.locked)
+                // A 3. kártya ne legyen automatikusan feloldva, ha csak a 2-es pálya van teljesítve
+                const isUgy2Completed = highestCompleted >= 2
+                const isUgy3 = card.n === 3
+                // Speciális eset: ha a 3. kártya és a 2-es pálya teljesítve van, akkor ne legyen feloldva
+                let isUnlocked
+                if (isUgy3 && isUgy2Completed) {
+                  // A 3. kártya ne legyen feloldva, ha csak a 2-es pálya van teljesítve
+                  isUnlocked = false
+                } else {
+                  isUnlocked = card.n <= highestCompleted + 1 || (card.n === 1 && !card.locked)
+                }
+                const showDecember6 = isUgy3 && isUgy2Completed && !isUnlocked
+                
                 return isUnlocked ? (
                   <Link
                     key={card.n}
@@ -419,11 +431,47 @@ const Aurora = () => {
                     <div className="case-title">{card.title}</div>
                   </Link>
                 ) : (
-                  <div key={card.n} className="level-card" aria-disabled="true">
+                  <div 
+                    key={card.n} 
+                    className="level-card" 
+                    aria-disabled={!showDecember6}
+                    style={{ 
+                      position: 'relative',
+                      filter: showDecember6 ? 'none' : 'grayscale(1) opacity(0.8)'
+                    }}
+                  >
                     <span className="level-label">Ügy #{card.n}</span>
                     <img src={card.img} alt={`Ügy ${card.n}`} loading="lazy" />
                     <div className="case-title">{card.title}</div>
-                    <span className="coming" aria-label="Zárolt">🔒</span>
+                    {showDecember6 && (
+                      <div 
+                        className="december-6-notice"
+                        style={{
+                          position: 'absolute',
+                          bottom: '8px',
+                          left: '8px',
+                          right: '8px',
+                          background: 'rgba(0, 229, 255, 0.2)',
+                          border: '1px solid rgba(0, 229, 255, 0.5)',
+                          borderRadius: '8px',
+                          padding: '10px 14px',
+                          fontSize: '13px',
+                          color: '#00e5ff',
+                          textAlign: 'center',
+                          fontFamily: 'Rajdhani, Inter, sans-serif',
+                          fontWeight: 600,
+                          backdropFilter: 'blur(6px)',
+                          zIndex: 10,
+                          boxShadow: '0 4px 12px rgba(0, 229, 255, 0.2)',
+                          letterSpacing: '0.3px'
+                        }}
+                      >
+                        December 6-án, este 7 órakor nyílik
+                      </div>
+                    )}
+                    {!showDecember6 && (
+                      <span className="coming" aria-label="Zárolt">🔒</span>
+                    )}
                   </div>
                 )
               })}

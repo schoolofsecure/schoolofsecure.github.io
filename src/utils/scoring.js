@@ -46,8 +46,7 @@ export const RANKS = [
     minLevel: 1,
     maxLevel: 2,
     minPoints: 0,
-    description: 'Első lépések a kibernyomozásban',
-    icon: '🔍'
+    description: 'Első lépések a kibernyomozásban'
   },
   {
     id: 'junior',
@@ -55,8 +54,7 @@ export const RANKS = [
     minLevel: 3,
     maxLevel: 4,
     minPoints: 100,
-    description: 'Tapasztalatot szerzel a nyomok követésében',
-    icon: '🕵️'
+    description: 'Tapasztalatot szerzel a nyomok követésében'
   },
   {
     id: 'detective',
@@ -64,8 +62,7 @@ export const RANKS = [
     minLevel: 5,
     maxLevel: 6,
     minPoints: 250,
-    description: 'Megbízható tag a csapatban',
-    icon: '🕵️‍♂️'
+    description: 'Megbízható tag a csapatban'
   },
   {
     id: 'senior',
@@ -73,8 +70,7 @@ export const RANKS = [
     minLevel: 7,
     maxLevel: 8,
     minPoints: 450,
-    description: 'Tapasztalt szakértő vagy',
-    icon: '🕵️‍♀️'
+    description: 'Tapasztalt szakértő vagy'
   },
   {
     id: 'specialist',
@@ -82,8 +78,7 @@ export const RANKS = [
     minLevel: 9,
     maxLevel: 10,
     minPoints: 700,
-    description: 'A hálózati biztonság mestere',
-    icon: '🎯'
+    description: 'A hálózati biztonság mestere'
   },
   {
     id: 'master',
@@ -91,8 +86,7 @@ export const RANKS = [
     minLevel: 11,
     maxLevel: 12,
     minPoints: 1000,
-    description: 'A legmagasabb szintű kibernyomozó',
-    icon: '👑'
+    description: 'A legmagasabb szintű kibernyomozó'
   }
 ]
 
@@ -301,7 +295,7 @@ export function checkAchievements(stats) {
 export function generateLevelCompletionFeedback({ totalPoints, rank, bonuses, nextLevel }) {
   let feedback = `Gratulálunk! Teljesítetted a pályát!\n\n`
   feedback += `Összes pontszám: ${totalPoints} pont\n`
-  feedback += `Rang: ${rank.icon} ${rank.name}\n\n`
+  feedback += `Rang: ${rank.name}\n\n`
   
   if (bonuses.length > 0) {
     feedback += `Bónuszok:\n`

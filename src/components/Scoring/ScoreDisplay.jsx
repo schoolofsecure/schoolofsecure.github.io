@@ -31,7 +31,6 @@ const ScoreDisplay = () => {
           color: 'var(--muted)'
         }}
       >
-        <span style={{ fontSize: '16px' }}>{currentRank.icon}</span>
         <strong style={{ fontFamily: 'Rajdhani, Inter, sans-serif', letterSpacing: '0.4px' }}>
           {currentRank.name}
         </strong>

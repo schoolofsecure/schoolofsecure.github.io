@@ -32,12 +32,12 @@ Minden pálya után pálya-specifikus bónusz jár:
 
 A 12 pálya 6 rangra van osztva:
 
-1. **Nyomozó-újonc** (🔍) - Pálya 1-2, 0+ pont
-2. **Junior nyomozó** (🕵️) - Pálya 3-4, 100+ pont
-3. **Nyomozó** (🕵️‍♂️) - Pálya 5-6, 250+ pont
-4. **Senior nyomozó** (🕵️‍♀️) - Pálya 7-8, 450+ pont
-5. **Hálózat-specialista** (🎯) - Pálya 9-10, 700+ pont
-6. **Mester nyomozó** (👑) - Pálya 11-12, 1000+ pont
+1. **Nyomozó-újonc** - Pálya 1-2, 0+ pont
+2. **Junior nyomozó** - Pálya 3-4, 100+ pont
+3. **Nyomozó** - Pálya 5-6, 250+ pont
+4. **Senior nyomozó** - Pálya 7-8, 450+ pont
+5. **Hálózat-specialista** - Pálya 9-10, 700+ pont
+6. **Mester nyomozó** - Pálya 11-12, 1000+ pont
 
 ### 3. Achievement-ek
 

@@ -222,28 +222,17 @@ export function calculateLevelScore({ level, totalTasks, completedTasks, errors,
 }
 
 /**
- * Rang meghatározása pontok és pálya alapján
- * @param {number} totalPoints - Összes pontszám
+ * Rang meghatározása pálya alapján
+ * @param {number} totalPoints - Összes pontszám (nem használjuk, csak kompatibilitás miatt)
  * @param {number} currentLevel - Jelenlegi pálya
  * @returns {Object} - Rang információ
  */
 export function getRank(totalPoints, currentLevel) {
-  // Először a pálya alapján
-  let rank = RANKS.find(r => currentLevel >= r.minLevel && currentLevel <= r.maxLevel)
+  // Csak a pálya alapján határozzuk meg a rangot
+  const rank = RANKS.find(r => currentLevel >= r.minLevel && currentLevel <= r.maxLevel)
   
-  // Ha nincs találat, vagy a pontok alapján magasabb rang jár
-  const pointsBasedRank = RANKS.slice().reverse().find(r => totalPoints >= r.minPoints)
-  
-  if (pointsBasedRank && (!rank || pointsBasedRank.minPoints > rank.minPoints)) {
-    rank = pointsBasedRank
-  }
-  
-  // Ha még mindig nincs, akkor az első rang
-  if (!rank) {
-    rank = RANKS[0]
-  }
-  
-  return rank
+  // Ha nincs találat, akkor az első rang
+  return rank || RANKS[0]
 }
 
 /**

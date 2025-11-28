@@ -20,6 +20,8 @@ export const ScoringProvider = ({ children }) => {
   const [levelStats, setLevelStats] = useState({}) // { level: { points, errors, timeSpent, completed } }
   const [perfectStreak, setPerfectStreak] = useState(0)
   const [showPointAnimation, setShowPointAnimation] = useState(null) // { points: number } | null
+  const [showRankBadge, setShowRankBadge] = useState(null) // { rank: object } | null
+  const [showLevelCompletion, setShowLevelCompletion] = useState(null) // { levelName: string, rank: object, totalPoints: number } | null
   
   // Betöltés Firebase-ből (ha be van jelentkezve)
   useEffect(() => {
@@ -35,7 +37,7 @@ export const ScoringProvider = ({ children }) => {
           setAchievements(data.achievements || [])
           setLevelStats(data.levelStats || {})
           setPerfectStreak(data.perfectStreak || 0)
-          updateRank(data.totalPoints || 0, data.highestLevel || 1)
+          updateRank(data.totalPoints || 0, data.highestLevel || 1, true) // skipAnimation: true betöltéskor
         } catch (e) {
           console.warn('Nem sikerült betölteni a pontozást:', e)
         }
@@ -54,7 +56,7 @@ export const ScoringProvider = ({ children }) => {
         setAchievements(data.achievements || [])
         setLevelStats(data.levelStats || {})
         setPerfectStreak(data.perfectStreak || 0)
-        updateRank(data.totalPoints || 0, data.highestLevel || 1)
+        updateRank(data.totalPoints || 0, data.highestLevel || 1, true) // skipAnimation: true betöltéskor
       } catch (e) {
         console.warn('Nem sikerült betölteni a pontozást:', e)
       }
@@ -70,10 +72,17 @@ export const ScoringProvider = ({ children }) => {
     }
   }
   
-  const updateRank = (points, level) => {
-    const rank = getRank(points, level)
-    setCurrentRank(rank)
-    return rank
+  const updateRank = (points, level, skipAnimation = false) => {
+    const newRank = getRank(points, level)
+    
+    // Ellenőrizzük, hogy új rangot ért-e el (csak ha nem az első betöltés)
+    if (!skipAnimation && currentRank && currentRank.id && currentRank.id !== newRank.id) {
+      // Új rang! Animáció triggerelése
+      setShowRankBadge({ rank: newRank })
+    }
+    
+    setCurrentRank(newRank)
+    return newRank
   }
   
   /**
@@ -162,6 +171,29 @@ export const ScoringProvider = ({ children }) => {
     // Rang frissítése
     const rank = updateRank(newTotal, level)
     
+    // Pálya neve meghatározása
+    const levelNames = {
+      1: 'A Titkosított Adatcsomag',
+      2: 'A Hamisított Archívum',
+      3: 'A Kézbesítetlen Üzenet',
+      4: 'A Hiányzó Idővonal',
+      5: 'A Rejtett Metaadat',
+      6: 'A Szivárgó Port',
+      7: 'A Kettős Identitás',
+      8: 'A Törött Kulcs',
+      9: 'A Megszakított Átvitel',
+      10: 'A Phantom‑Profil',
+      11: 'A Lopott Árnyékfiók',
+      12: 'A Főkolompos'
+    }
+    
+    // Összegző animáció triggerelése
+    setShowLevelCompletion({
+      levelName: levelNames[level] || `Ügy #${level}`,
+      rank,
+      totalPoints: newTotal
+    })
+    
     // Mentés
     const dataToSave = {
       totalPoints: newTotal,
@@ -227,7 +259,11 @@ export const ScoringProvider = ({ children }) => {
         getLevelStats,
         getStats,
         showPointAnimation,
-        setShowPointAnimation
+        setShowPointAnimation,
+        showRankBadge,
+        setShowRankBadge,
+        showLevelCompletion,
+        setShowLevelCompletion
       }}
     >
       {children}

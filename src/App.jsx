@@ -3,6 +3,8 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { AuthProvider } from './contexts/AuthContext'
 import { ScoringProvider, useScoring } from './contexts/ScoringContext'
 import PointAnimation from './components/Scoring/PointAnimation'
+import RankBadgeAnimation from './components/Scoring/RankBadgeAnimation'
+import LevelCompletionSummary from './components/Scoring/LevelCompletionSummary'
 import Landing from './pages/Landing'
 import Aurora from './pages/Aurora'
 import Privacy from './pages/Privacy'
@@ -22,7 +24,14 @@ import TaskPreviewList from './pages/task-preview'
 //import Ugy12 from './pages/ugy12'
 
 function AppContent() {
-  const { showPointAnimation, setShowPointAnimation } = useScoring()
+  const { 
+    showPointAnimation, 
+    setShowPointAnimation, 
+    showRankBadge, 
+    setShowRankBadge,
+    showLevelCompletion,
+    setShowLevelCompletion
+  } = useScoring()
 
   return (
     <>
@@ -53,6 +62,20 @@ function AppContent() {
         <PointAnimation
           points={showPointAnimation.points}
           onComplete={() => setShowPointAnimation(null)}
+        />
+      )}
+      {showRankBadge && (
+        <RankBadgeAnimation
+          rank={showRankBadge.rank}
+          onComplete={() => setShowRankBadge(null)}
+        />
+      )}
+      {showLevelCompletion && (
+        <LevelCompletionSummary
+          levelName={showLevelCompletion.levelName}
+          rank={showLevelCompletion.rank}
+          totalPoints={showLevelCompletion.totalPoints}
+          onComplete={() => setShowLevelCompletion(null)}
         />
       )}
     </>

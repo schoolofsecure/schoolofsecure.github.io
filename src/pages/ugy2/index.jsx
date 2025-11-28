@@ -63,7 +63,7 @@ const TASK_STORIES = {
   },
   SECURITY_DECISION: {
     title: 'Nyomok mérlegelése',
-    text: `A rendszer jelzi, hogy a támadó létrehozott egy „kézfogás-alagutát”.
+    text: `A rendszer jelzi, hogy a támadó létrehozott egy „kézfogás-alagutat”.
     Azonnal lekapcsolod, vagy megfigyeled, hogy több információt gyűjts?
     A döntésed hatással lesz arra, mihez fér hozzá a támadó – és te mire jössz rá.`
   }
@@ -267,9 +267,9 @@ const Ugy2 = () => {
           <div className="card" style={{ marginTop: '20px', animation: 'fadeIn .3s ease both' }}>
             {currentLevel === 2 ? (
               <>
-                <h3 style={{ marginTop: 0 }}>✅ Pálya teljesítve</h3>
-                <p className="muted" style={{ marginBottom: '16px' }}>
-                  Gratulálunk! A harmadik pálya <strong>december 6-án, este 7 órakor nyílik</strong>.
+                <h3 style={{ marginTop: 0, color: '#00e5ff', fontFamily: 'Rajdhani, Inter, sans-serif', fontSize: '20px', fontWeight: 700 }}>Ügy teljesítve</h3>
+                <p className="muted" style={{ marginBottom: '16px', lineHeight: '1.6' }}>
+                  Gratulálunk! A harmadik ügy <strong>december 6-án, este 7 órakor nyílik</strong>.
                 </p>
                 <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
                   <Link

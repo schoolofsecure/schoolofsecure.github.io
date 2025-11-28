@@ -89,6 +89,17 @@ export const ScoringProvider = ({ children }) => {
    * Feladat pontozása
    */
   const scoreTask = ({ difficulty, isCorrect, level, timeSpent = null }) => {
+    // Ellenőrizzük, hogy a pálya már teljesítve van-e
+    const levelStat = levelStats[level]
+    if (levelStat && levelStat.completed) {
+      // Ha a pálya már teljesítve van, ne pontozzuk újra
+      return {
+        points: 0,
+        feedback: '',
+        isCorrect
+      }
+    }
+    
     const result = calculateTaskScore({ difficulty, isCorrect, level, timeSpent })
     
     // Animáció triggerelése (helyes és helytelen válasz esetén is)
@@ -115,6 +126,45 @@ export const ScoringProvider = ({ children }) => {
    * Pálya befejezési pontozás
    */
   const scoreLevel = ({ level, totalTasks, completedTasks, errors, timeSpent, allCluesCorrect }) => {
+    // Ellenőrizzük, hogy a pálya már teljesítve van-e
+    const existingLevelStat = levelStats[level]
+    if (existingLevelStat && existingLevelStat.completed) {
+      // Ha a pálya már teljesítve van, ne pontozzuk újra
+      // De mégis mutassuk az összegző animációt (csak pontszám változás nélkül)
+      const rank = updateRank(totalPoints, level)
+      const levelNames = {
+        1: 'A Titkosított Adatcsomag',
+        2: 'A Hamisított Archívum',
+        3: 'A Kézbesítetlen Üzenet',
+        4: 'A Hiányzó Idővonal',
+        5: 'A Rejtett Metaadat',
+        6: 'A Szivárgó Port',
+        7: 'A Kettős Identitás',
+        8: 'A Törött Kulcs',
+        9: 'A Megszakított Átvitel',
+        10: 'A Phantom‑Profil',
+        11: 'A Lopott Árnyékfiók',
+        12: 'A Főkolompos'
+      }
+      
+      setShowLevelCompletion({
+        levelName: levelNames[level] || `Ügy #${level}`,
+        rank,
+        totalPoints: totalPoints
+      })
+      
+      return {
+        totalPoints: 0,
+        bonuses: [],
+        taskPoints: 0,
+        errorPenalty: 0,
+        levelBonus: 0,
+        rank,
+        feedback: 'Pálya újrajátszva - pontszám nem változott.',
+        newAchievements: []
+      }
+    }
+    
     const result = calculateLevelScore({
       level,
       totalTasks,

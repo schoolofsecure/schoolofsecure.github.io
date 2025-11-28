@@ -17,10 +17,21 @@ const ALL_TASK_TYPES = [
 const DIFFICULTIES = ['easy', 'medium', 'hard']
 const BASE_SEED = 12345
 
+// Variációk száma típusonként easy módban
+const EASY_VARIATIONS = {
+  'PASSWORD_STRENGTH': 3, // password1, Cyber2024, Secret123
+  'SOCIAL_ENGINEERING': 2, // urgent-message, tech-support-request
+  'FIREWALL': 2, // museum-kiosk, sensor-gateway
+  'SECURITY_DECISION': 3, // 3 különböző helyzet
+  'PHISHING': 2, // 2 email template
+  // Egyéb típusoknál 1 variáció
+}
+
 const TaskPreviewList = () => {
   const [previews, setPreviews] = useState({})
   const [selectedType, setSelectedType] = useState(null)
   const [selectedDifficulty, setSelectedDifficulty] = useState('easy')
+  const [selectedVariation, setSelectedVariation] = useState(0)
 
   useEffect(() => {
     const generated = {}
@@ -28,14 +39,30 @@ const TaskPreviewList = () => {
     ALL_TASK_TYPES.forEach((type, typeIndex) => {
       generated[type] = {}
       DIFFICULTIES.forEach((difficulty, diffIndex) => {
-        const seed = BASE_SEED + typeIndex * 100 + diffIndex * 10
-        Random.setSeed(seed)
-        const task = TaskFactory.createRandomTask(difficulty, [type], 2, diffIndex + 1)
-        task.generate()
-        generated[type][difficulty] = {
-          seed,
-          task
+        const variationTarget = difficulty === 'easy' ? (EASY_VARIATIONS[type] || 1) : 1
+        const variations = []
+        const seen = new Set()
+        let attempt = 0
+
+        while (variations.length < variationTarget && attempt < variationTarget * 5) {
+          const seed = BASE_SEED + typeIndex * 1000 + diffIndex * 100 + attempt * 10
+          Random.setSeed(seed)
+          const task = TaskFactory.createRandomTask(difficulty, [type], 2, diffIndex + 1)
+          task.generate()
+          const signature = JSON.stringify({ payload: task.payload, solution: task.solution })
+
+          if (!seen.has(signature)) {
+            seen.add(signature)
+            variations.push({
+              seed,
+              task,
+              variationIndex: variations.length
+            })
+          }
+          attempt++
         }
+
+        generated[type][difficulty] = variations
       })
     })
 
@@ -44,10 +71,10 @@ const TaskPreviewList = () => {
     Random.resetSeed()
   }, [])
 
-  const current =
-    selectedType && previews[selectedType]
-      ? previews[selectedType][selectedDifficulty]
-      : null
+  const currentVariations = selectedType && previews[selectedType]
+    ? previews[selectedType][selectedDifficulty] || []
+    : []
+  const current = currentVariations[selectedVariation] || null
 
   return (
     <div className="container">
@@ -63,7 +90,7 @@ const TaskPreviewList = () => {
           <h1 style={{ margin: '10px 0 4px' }}>Feladattípusok előnézete</h1>
           <p>
             Válassz feladattípust, majd nehézségi szintet: minden kombinációhoz seedelt, fix feladatot mutatunk
-            megoldással együtt.
+            megoldással együtt. Easy módban az összes variáció megjelenik.
           </p>
         </NarrativeBlock>
 
@@ -83,6 +110,7 @@ const TaskPreviewList = () => {
                 onClick={() => {
                   setSelectedType(type)
                   setSelectedDifficulty('easy')
+                  setSelectedVariation(0)
                 }}
                 style={{ textAlign: 'left', padding: '10px' }}
               >
@@ -101,16 +129,38 @@ const TaskPreviewList = () => {
                   key={diff}
                   type="button"
                   className={selectedDifficulty === diff ? 'btn' : 'btn-ghost'}
-                  onClick={() => setSelectedDifficulty(diff)}
+                  onClick={() => {
+                  setSelectedDifficulty(diff)
+                  setSelectedVariation(0)
+                }}
                 >
                   {diff}
                 </button>
               ))}
             </div>
 
+            {currentVariations.length > 1 && (
+              <div style={{ marginBottom: '16px' }}>
+                <h4 style={{ fontSize: '14px', marginBottom: '8px' }}>Variációk ({currentVariations.length})</h4>
+                <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+                  {currentVariations.map((variation, index) => (
+                    <button
+                      key={index}
+                      type="button"
+                      className={selectedVariation === index ? 'btn' : 'btn-ghost'}
+                      onClick={() => setSelectedVariation(index)}
+                      style={{ fontSize: '12px', padding: '6px 12px' }}
+                    >
+                      Variáció {index + 1}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+
             {current && (
               <>
-                <TaskCard title={`${selectedType} – ${selectedDifficulty}`}>
+                <TaskCard title={`${selectedType} – ${selectedDifficulty}${currentVariations.length > 1 ? ` (Variáció ${selectedVariation + 1})` : ''}`}>
                   <TaskRenderer
                     task={current.task}
                     onSuccess={() => {}}
@@ -123,6 +173,7 @@ const TaskPreviewList = () => {
                   <div style={{ fontSize: '12px', fontFamily: 'monospace' }}>
                     <div><strong>Seed:</strong> {current.seed}</div>
                     <div><strong>ID:</strong> {current.task.id}</div>
+                    <div><strong>Variáció:</strong> {current.variationIndex + 1} / {currentVariations.length}</div>
                     {current.task.solution && (
                       <div style={{ marginTop: '8px', padding: '8px', background: 'rgba(0,229,255,0.1)', borderRadius: '4px' }}>
                         <strong>Megoldás:</strong> {JSON.stringify(current.task.solution)}

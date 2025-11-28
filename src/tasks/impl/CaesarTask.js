@@ -72,9 +72,9 @@ export class CaesarTask extends BaseTask {
     
     // Fix narratíva minden CaesarTask-nál
     const narrative = {
-      intro: 'Az éjszaka leple alatt a rendszer mélyén rejtett nyomok várnak. A monitorok remegő fényében gyanús aktivitás jelei bukkannak fel.',
-      task: 'A képernyőn furcsa karakterek villognak, mintha valaki sietve rejtette volna el az üzenetet. Fejtsd meg a titkosított üzenetet, hogy megtudd az első nyomot a küldetésedhez.',
-      hint: 'Gondolj az ábécére, és képzeld el, hogy minden betű egy kicsit előrébb vagy hátrébb lép a sorban. A szóközök és írásjelek nem változnak.'
+        intro: 'Az éjszaka leple alatt a rendszer mélyén rejtett nyomok várnak. A monitorok remegő fényében gyanús aktivitás jelei bukkannak fel.',
+        task: 'A képernyőn furcsa karakterek villognak, mintha valaki sietve rejtette volna el az üzenetet. Fejtsd meg a titkosított üzenetet, hogy megtudd az első nyomot a küldetésedhez.',
+        hint: 'Gondolj az ábécére, és képzeld el, hogy minden betű egy kicsit előrébb vagy hátrébb lép a sorban. A szóközök és írásjelek nem változnak.'
     }
     const ciphertext = CaesarTask.encode(plaintext, shift)
     this.solution = plaintext.toUpperCase().replace(/\s+/g, ' ')

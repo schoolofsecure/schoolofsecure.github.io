@@ -13,9 +13,9 @@ const EMAIL_TEMPLATES = {
     {
       email: {
         from: 'security@aurorapay-alert.com',
-        fromName: 'AuroraPay Biztonsági Csapat',
-        subject: 'Sürgős: Fiókod biztonsági riasztás',
-        body: `Tisztelt Ügyfelünk,
+      fromName: 'AuroraPay Biztonsági Csapat',
+      subject: 'Sürgős: Fiókod biztonsági riasztás',
+      body: `Tisztelt Ügyfelünk,
 
 A fiókjához gyanús bejelentkezési kísérletet észleltünk. A fiók biztonsága érdekében azonnali intézkedésre van szükség.
 
@@ -28,7 +28,7 @@ Segítség: support.aurorapay.com/help
 
 Üdvözlettel,
 AuroraPay Biztonsági Csapat`
-      },
+    },
       elements: [
         { id: 'spoofed-domain', text: 'Feladó címe security@aurorapay-alert.com, nem a hivatalos aurorapay.com domain.', suspicious: true },
         { id: 'short-link', text: 'Rövidített link: bit.ly/paypal-secure-verify.', suspicious: true },
@@ -41,9 +41,9 @@ AuroraPay Biztonsági Csapat`
     {
       email: {
         from: 'support@orbitmall-billing.com',
-        fromName: 'OrbitMall Piac',
-        subject: 'Rendelés visszaigazolás',
-        body: `Kedves Vásárló,
+      fromName: 'OrbitMall Piac',
+      subject: 'Rendelés visszaigazolás',
+      body: `Kedves Vásárló,
 
 Köszönjük a rendelését! A rendelés részletei a csatolmányban találhatók.
 
@@ -70,9 +70,9 @@ OrbitMall csapat`
     {
       email: {
         from: 'noreply@vaultsecure-alert.eu',
-        fromName: 'VaultSecure Ügyfélszolgálat',
-        subject: 'Fontos: Fiók frissítés szükséges',
-        body: `Tisztelt Ügyfelünk,
+      fromName: 'VaultSecure Ügyfélszolgálat',
+      subject: 'Fontos: Fiók frissítés szükséges',
+      body: `Tisztelt Ügyfelünk,
 
 A rendszerünkben frissítés történt. A fiókja eléréséhez kérjük, frissítse az adatait.
 
@@ -86,7 +86,7 @@ Az azonosításhoz kérjük, jelentkezzen be és erősítse meg jelenlegi jelsza
 
 Üdvözlettel,
 BankSecure Csapat`
-      },
+    },
       elements: [
         { id: 'spoofed-domain', text: 'Feladó címe noreply@vaultsecure-alert.eu, eltér a hivatalos domain-től.', suspicious: true },
         { id: 'link-mismatch', text: 'A link a vaultsecure-support.com oldalra mutat, nem a hivatalos portálra.', suspicious: true },
@@ -99,10 +99,10 @@ BankSecure Csapat`
     },
     {
       email: {
-        from: 'alerts@dynarchive.org',
-        fromName: 'DynArchive Rendszergazda',
-        subject: 'Azonnali cselekvés szükséges',
-        body: `Tisztelt Felhasználó,
+      from: 'alerts@dynarchive.org',
+      fromName: 'DynArchive Rendszergazda',
+      subject: 'Azonnali cselekvés szükséges',
+      body: `Tisztelt Felhasználó,
 
 A rendszerünkben kritikus biztonsági incidens történt. Azonnali cselekvésre van szükség.
 
@@ -131,10 +131,10 @@ Rendszergazda`
   hard: [
     {
       email: {
-        from: 'finance@heliostat-solutions.ch',
-        fromName: 'Heliostat Treasury',
-        subject: 'Re: Sürgős könyvelési audit',
-        body: `Sziasztok,
+      from: 'finance@heliostat-solutions.ch',
+      fromName: 'Heliostat Treasury',
+      subject: 'Re: Sürgős könyvelési audit',
+      body: `Sziasztok,
 
 Holnap zárjuk az auditot, ezért a mellékelt makrókat tartalmazó Excelben kell visszaigazolnotok az utalásokat.
 
@@ -145,7 +145,7 @@ Válasz: külön címre (treasury.control@consultant-mail.com)
 
 Üdv,
 „Ivett" – külsős könyvvizsgáló`
-      },
+    },
       elements: [
         { id: 'macro-attachment', text: 'Makrókat tartalmazó Excel megnyitására szólít fel.', suspicious: true },
         { id: 'ext-link', text: 'Külső fájlmegosztó link: skybox-share.com/redir?id=0A12-FAKE-SHARE.', suspicious: true },
@@ -159,10 +159,10 @@ Válasz: külön címre (treasury.control@consultant-mail.com)
     },
     {
       email: {
-        from: 'incident@sentinel-grid.io',
-        fromName: 'Sentinel OnCall',
-        subject: 'KRITIKUS: VPN kulcs kompromittálódott',
-        body: `On-call csapat,
+      from: 'incident@sentinel-grid.io',
+      fromName: 'Sentinel OnCall',
+      subject: 'KRITIKUS: VPN kulcs kompromittálódott',
+      body: `On-call csapat,
 
 A VPN kulcsaink kiszivárogtak – azonnali rotáció szükséges.
 
@@ -236,9 +236,9 @@ export class PhishingRecognitionTask extends BaseTask {
     // Email template választása
     // Fix narratíva minden PhishingRecognitionTask-nál
     const narrative = {
-      intro: 'A kommunikációs csatornákon keresztül érkező jelek várnak elemzésre. A rendszer riasztásai egyre gyakoribbá válnak.',
-      task: 'Egy gyanús email érkezett a rendszerbe. Elemezd az üzenetet és azonosítsd azokat az elemeket, amelyek adathalászatra utalnak.',
-      hint: 'Figyeld meg a domain neveket, a megszólításokat, a linkeket és a nyelvhasználatot. A phishing üzenetek gyakran sürgetnek és gyanús linkeket tartalmaznak.'
+        intro: 'A kommunikációs csatornákon keresztül érkező jelek várnak elemzésre. A rendszer riasztásai egyre gyakoribbá válnak.',
+        task: 'Egy gyanús email érkezett a rendszerbe. Elemezd az üzenetet és azonosítsd azokat az elemeket, amelyek adathalászatra utalnak.',
+        hint: 'Figyeld meg a domain neveket, a megszólításokat, a linkeket és a nyelvhasználatot. A phishing üzenetek gyakran sürgetnek és gyanús linkeket tartalmaznak.'
     }
     this.solution = solution
     

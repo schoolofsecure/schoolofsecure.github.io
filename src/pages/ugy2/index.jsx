@@ -63,7 +63,7 @@ Engedélyezd a látogatók által használt webes protokollokat, de tartsd zárv
     title: 'Kurátori csali levél',
     text: `Egy kurátor postaládájában gyanús üzenet jelent meg, amely állítólag a belső technikai osztálytól érkezett.
 
-A logok szerint az éjszakai támadó küldhette, hogy megszerezze a bejelentkezési adatait.
+    A logok szerint az éjszakai támadó küldhette, hogy megszerezze a bejelentkezési adatait.
 
 Csak akkor állíthatod le az akciót, ha felismered a rejtett jeleket.
 

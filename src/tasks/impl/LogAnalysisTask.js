@@ -58,9 +58,9 @@ export class LogAnalysisTask extends BaseTask {
     
     // Fix narratíva minden LogAnalysisTask-nál
     const narrative = {
-      intro: 'Ahogy a rendszer biztonsági szerverszobájába lépsz, a levegő vibrál. A ventilátorok túl gyorsan pörögnek, a monitorokon pedig remegő sorok futnak.',
-      task: 'A technikusok szerint valaki éjjel hozzáfért a rendszerhez és „kitisztította" a nyomait. Csakhogy a hacker amatőr hibát vétett: hátrahagyott egy félbehagyott logfájlt, amelyben a fontos részeket ugyan törölte, de egy mintát nem tudott eltakarni.',
-      hint: 'Figyeld a kulcs-érték párokat. Minden érték vezető karaktere fontos a következő feladathoz. Gyűjtsd össze ezeket a karaktereket, és rakd össze a jelszót!'
+        intro: 'Ahogy a rendszer biztonsági szerverszobájába lépsz, a levegő vibrál. A ventilátorok túl gyorsan pörögnek, a monitorokon pedig remegő sorok futnak.',
+        task: 'A technikusok szerint valaki éjjel hozzáfért a rendszerhez és „kitisztította" a nyomait. Csakhogy a hacker amatőr hibát vétett: hátrahagyott egy félbehagyott logfájlt, amelyben a fontos részeket ugyan törölte, de egy mintát nem tudott eltakarni.',
+        hint: 'Figyeld a kulcs-érték párokat. Minden érték vezető karaktere fontos a következő feladathoz. Gyűjtsd össze ezeket a karaktereket, és rakd össze a jelszót!'
     }
     this.solution = anomalies.sort((a, b) => a - b)
     

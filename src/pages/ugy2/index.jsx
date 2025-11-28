@@ -169,16 +169,19 @@ const Ugy2 = () => {
   const handleCompletion = async () => {
     markDone(tasks.length - 1)
     
-    // Pálya pontozása
-    const timeSpent = Math.floor((Date.now() - levelStartTimeRef.current) / 1000)
-    const result = scoreLevel({
-      level: currentLevel,
-      totalTasks,
-      completedTasks: completedCount + 1,
-      errors,
-      timeSpent,
-      allCluesCorrect: errors === 0
-    })
+    // Pálya pontozása (csak bejelentkezés után)
+    let result = { feedback: '' }
+    if (isAuthenticated) {
+      const timeSpent = Math.floor((Date.now() - levelStartTimeRef.current) / 1000)
+      result = scoreLevel({
+        level: currentLevel,
+        totalTasks,
+        completedTasks: completedCount + 1,
+        errors,
+        timeSpent,
+        allCluesCorrect: errors === 0
+      })
+    }
     
     // Visszajelzés megjelenítése
     setTaskFeedback(result.feedback)
@@ -195,14 +198,17 @@ const Ugy2 = () => {
   const handleTaskSuccess = (taskIndex) => {
     const task = tasks[taskIndex]
     if (task) {
-      // Feladat pontozása
-      const timeSpent = taskIndex > 0 ? Math.floor((Date.now() - levelStartTimeRef.current) / (taskIndex + 1) / 1000) : null
-      const result = scoreTask({
-        difficulty: task.difficulty || 'easy',
-        isCorrect: true,
-        level: currentLevel,
-        timeSpent
-      })
+      // Feladat pontozása (csak bejelentkezés után)
+      let result = { feedback: '' }
+      if (isAuthenticated) {
+        const timeSpent = taskIndex > 0 ? Math.floor((Date.now() - levelStartTimeRef.current) / (taskIndex + 1) / 1000) : null
+        result = scoreTask({
+          difficulty: task.difficulty || 'easy',
+          isCorrect: true,
+          level: currentLevel,
+          timeSpent
+        })
+      }
       
       // Visszajelzés megjelenítése
       setTaskFeedback(result.feedback)
@@ -220,12 +226,15 @@ const Ugy2 = () => {
   const handleTaskFailure = () => {
     const task = tasks[step]
     if (task) {
-      // Hibázás pontozása
-      const result = scoreTask({
-        difficulty: task.difficulty || 'easy',
-        isCorrect: false,
-        level: currentLevel
-      })
+      // Hibázás pontozása (csak bejelentkezés után)
+      let result = { feedback: '' }
+      if (isAuthenticated) {
+        result = scoreTask({
+          difficulty: task.difficulty || 'easy',
+          isCorrect: false,
+          level: currentLevel
+        })
+      }
       
       // Visszajelzés megjelenítése
       setTaskFeedback(result.feedback)

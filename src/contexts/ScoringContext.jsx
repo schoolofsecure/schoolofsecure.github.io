@@ -13,7 +13,7 @@ export const useScoring = () => {
 }
 
 export const ScoringProvider = ({ children }) => {
-  const { user, isAuthenticated } = useAuth()
+  const { user, isAuthenticated, loadScoringData: authLoadScoringData, saveScoringData: authSaveScoringData } = useAuth()
   const [totalPoints, setTotalPoints] = useState(50)
   const [currentRank, setCurrentRank] = useState(null)
   const [achievements, setAchievements] = useState([])
@@ -23,58 +23,53 @@ export const ScoringProvider = ({ children }) => {
   const [showRankBadge, setShowRankBadge] = useState(null) // { rank: object } | null
   const [showLevelCompletion, setShowLevelCompletion] = useState(null) // { levelName: string, rank: object, totalPoints: number } | null
   
-  // Betöltés Firebase-ből (ha be van jelentkezve)
+  // Betöltés Firebase-ből (csak bejelentkezés után)
   useEffect(() => {
     if (isAuthenticated && user) {
       loadScoringData()
     } else {
-      // Ha nincs bejelentkezve, localStorage-ból (ha van)
-      const saved = localStorage.getItem('cyber_scoring')
-      if (saved) {
-        try {
-          const data = JSON.parse(saved)
-          setTotalPoints(data.totalPoints || 50)
-          setAchievements(data.achievements || [])
-          setLevelStats(data.levelStats || {})
-          setPerfectStreak(data.perfectStreak || 0)
-          updateRank(data.totalPoints || 50, data.highestLevel || 1, true) // skipAnimation: true betöltéskor
-        } catch (e) {
-          console.warn('Nem sikerült betölteni a pontozást:', e)
-        }
-      } else {
-        // Ha nincs mentett adat, kezdjünk 50 ponttal
-        updateRank(50, 1, true)
-      }
+      // Bejelentkezés nélkül ne inicializáljon scoring-ot
+      setTotalPoints(50)
+      setCurrentRank(null)
+      setAchievements([])
+      setLevelStats({})
+      setPerfectStreak(0)
     }
   }, [isAuthenticated, user])
   
   const loadScoringData = async () => {
-    // TODO: Firebase-ből betöltés
-    // Most localStorage-ból
-    const saved = localStorage.getItem(`cyber_scoring_${user?.uid}`)
-    if (saved) {
-      try {
-        const data = JSON.parse(saved)
+    if (!isAuthenticated || !user) {
+      return
+    }
+    
+    try {
+      const data = await authLoadScoringData()
+      if (data) {
         setTotalPoints(data.totalPoints || 50)
         setAchievements(data.achievements || [])
         setLevelStats(data.levelStats || {})
         setPerfectStreak(data.perfectStreak || 0)
         updateRank(data.totalPoints || 50, data.highestLevel || 1, true) // skipAnimation: true betöltéskor
-      } catch (e) {
-        console.warn('Nem sikerült betölteni a pontozást:', e)
+      } else {
+        // Ha nincs mentett adat, kezdjünk 50 ponttal
+        updateRank(50, 1, true)
       }
-    } else {
-      // Ha nincs mentett adat, kezdjünk 50 ponttal
+    } catch (e) {
+      console.warn('Nem sikerült betölteni a pontozást:', e)
+      // Hiba esetén is inicializáljuk az alapértelmezett értékekkel
       updateRank(50, 1, true)
     }
   }
   
   const saveScoringData = async (data) => {
-    if (isAuthenticated && user) {
-      // TODO: Firebase-be mentés
-      localStorage.setItem(`cyber_scoring_${user.uid}`, JSON.stringify(data))
-    } else {
-      localStorage.setItem('cyber_scoring', JSON.stringify(data))
+    if (!isAuthenticated || !user) {
+      return
+    }
+    
+    try {
+      await authSaveScoringData(data)
+    } catch (e) {
+      console.warn('Nem sikerült menteni a pontozást:', e)
     }
   }
   
@@ -95,6 +90,15 @@ export const ScoringProvider = ({ children }) => {
    * Feladat pontozása
    */
   const scoreTask = ({ difficulty, isCorrect, level, timeSpent = null }) => {
+    // Csak bejelentkezés után működik
+    if (!isAuthenticated || !user) {
+      return {
+        points: 0,
+        feedback: '',
+        isCorrect
+      }
+    }
+    
     // Ellenőrizzük, hogy a pálya már teljesítve van-e
     const levelStat = levelStats[level]
     if (levelStat && levelStat.completed) {
@@ -132,6 +136,20 @@ export const ScoringProvider = ({ children }) => {
    * Pálya befejezési pontozás
    */
   const scoreLevel = ({ level, totalTasks, completedTasks, errors, timeSpent, allCluesCorrect }) => {
+    // Csak bejelentkezés után működik
+    if (!isAuthenticated || !user) {
+      return {
+        totalPoints: 0,
+        bonuses: [],
+        taskPoints: 0,
+        errorPenalty: 0,
+        levelBonus: 0,
+        rank: null,
+        feedback: 'Bejelentkezés szükséges a pontozáshoz.',
+        newAchievements: []
+      }
+    }
+    
     // Ellenőrizzük, hogy a pálya már teljesítve van-e
     const existingLevelStat = levelStats[level]
     if (existingLevelStat && existingLevelStat.completed) {

@@ -150,6 +150,87 @@ export const AuthProvider = ({ children }) => {
     }
   }
 
+  const saveScoringData = async (scoringData) => {
+    try {
+      if (!user) {
+        throw new Error('Előbb jelentkezz be a mentéshez.')
+      }
+      if (!user.emailVerified) {
+        throw new Error('Csak megerősített e-maillel lehet menteni. Ellenőrizd a postaládád.')
+      }
+      if (!scoringData) {
+        throw new Error('Hiányznak a scoring adatok.')
+      }
+      const ref = doc(db, 'users', user.uid, 'scoring', 'data')
+      await setDoc(ref, {
+        ...scoringData,
+        updatedAt: serverTimestamp()
+      }, { merge: true })
+      return { success: true }
+    } catch (error) {
+      console.warn('Scoring mentés hiba:', error)
+      return { success: false, message: error?.message || 'Mentés sikertelen' }
+    }
+  }
+
+  const loadScoringData = async () => {
+    try {
+      if (!user || !user.emailVerified) {
+        return null
+      }
+      const ref = doc(db, 'users', user.uid, 'scoring', 'data')
+      const snap = await getDoc(ref)
+      if (snap.exists()) {
+        const data = snap.data()
+        // Eltávolítjuk az updatedAt mezőt, mert az nem kell a state-hez
+        const { updatedAt, ...scoringData } = data
+        return scoringData
+      }
+      return null
+    } catch (error) {
+      console.warn('Scoring betöltés hiba:', error)
+      return null
+    }
+  }
+
+  const getRetroPromptSeen = async () => {
+    try {
+      if (!user || !user.emailVerified) {
+        return false
+      }
+      const ref = doc(db, 'users', user.uid, 'preferences', 'data')
+      const snap = await getDoc(ref)
+      if (snap.exists()) {
+        const data = snap.data()
+        return data.retroPromptSeen === true
+      }
+      return false
+    } catch (error) {
+      console.warn('Retro prompt seen check error:', error)
+      return false
+    }
+  }
+
+  const setRetroPromptSeen = async () => {
+    try {
+      if (!user) {
+        throw new Error('Előbb jelentkezz be a mentéshez.')
+      }
+      if (!user.emailVerified) {
+        throw new Error('Csak megerősített e-maillel lehet menteni. Ellenőrizd a postaládád.')
+      }
+      const ref = doc(db, 'users', user.uid, 'preferences', 'data')
+      await setDoc(ref, {
+        retroPromptSeen: true,
+        updatedAt: serverTimestamp()
+      }, { merge: true })
+      return { success: true }
+    } catch (error) {
+      console.warn('Retro prompt seen mentés hiba:', error)
+      return { success: false, message: error?.message || 'Mentés sikertelen' }
+    }
+  }
+
   const value = {
     user,
     loading,
@@ -159,6 +240,10 @@ export const AuthProvider = ({ children }) => {
     saveLevelCompletion,
     checkMissionCompletion,
     getHighestCompletedLevel,
+    saveScoringData,
+    loadScoringData,
+    getRetroPromptSeen,
+    setRetroPromptSeen,
     isAuthenticated: !!user && user.emailVerified
   }
 

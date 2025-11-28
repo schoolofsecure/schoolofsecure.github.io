@@ -1,5 +1,6 @@
 import React from 'react'
 import { useScoring } from '../../contexts/ScoringContext'
+import { useAuth } from '../../contexts/AuthContext'
 
 /**
  * Pontszám és rang megjelenítő komponens
@@ -7,8 +8,10 @@ import { useScoring } from '../../contexts/ScoringContext'
  */
 const ScoreDisplay = () => {
   const { totalPoints, currentRank } = useScoring()
+  const { isAuthenticated } = useAuth()
   
-  if (!currentRank) {
+  // Csak bejelentkezés után jelenjen meg
+  if (!isAuthenticated || !currentRank) {
     return null
   }
   

@@ -5,7 +5,7 @@ import '../index.css'
 import '../styles/aurora.css'
 
 const Aurora = () => {
-  const { loginWithEmail, registerWithEmail, isAuthenticated, user, saveLevelCompletion, checkMissionCompletion, getHighestCompletedLevel, logout } = useAuth()
+  const { loginWithEmail, registerWithEmail, isAuthenticated, user, saveLevelCompletion, checkMissionCompletion, getHighestCompletedLevel, logout, getRetroPromptSeen, setRetroPromptSeen } = useAuth()
   const [data, setData] = useState(null)
   const [unlocked, setUnlocked] = useState(false)
   const [showLevels, setShowLevels] = useState(false)
@@ -57,8 +57,8 @@ const Aurora = () => {
       if (isAuthenticated && user) {
         setUnlocked(true)
         
-        // Ellenőrizzük, hogy ez az első bejelentkezés-e
-        const hasSeenPrompt = localStorage.getItem(`retro_prompt_seen_${user.uid}`)
+        // Ellenőrizzük, hogy ez az első bejelentkezés-e (Firebase-ből)
+        const hasSeenPrompt = await getRetroPromptSeen()
         
         // Ellenőrizzük a mission teljesítését Firebase-ből
         const completed = await checkMissionCompletion()
@@ -91,7 +91,7 @@ const Aurora = () => {
     }
     
     checkMission()
-  }, [isAuthenticated, checkMissionCompletion, user])
+  }, [isAuthenticated, checkMissionCompletion, getRetroPromptSeen, user])
 
   const handleGateSubmit = async (e) => {
     e.preventDefault()
@@ -152,8 +152,8 @@ const Aurora = () => {
       if (!ugy1Result?.success) {
         throw new Error(ugy1Result?.message || 'Nem sikerült rögzíteni az első ügyet.')
       }
-      // Jelöljük meg, hogy látta a promptot
-      localStorage.setItem(`retro_prompt_seen_${user.uid}`, 'true')
+      // Jelöljük meg, hogy látta a promptot (Firebase-ben)
+      await setRetroPromptSeen()
       setMissionCompleted(true)
       setRetroPromptDismissed(true)
       setShowMission(false)
@@ -168,10 +168,10 @@ const Aurora = () => {
     }
   }
 
-  const handleRetroDismiss = () => {
+  const handleRetroDismiss = async () => {
     if (!user) return
-    // Jelöljük meg, hogy látta a promptot, még akkor is, ha "Nem"-et válaszolt
-    localStorage.setItem(`retro_prompt_seen_${user.uid}`, 'true')
+    // Jelöljük meg, hogy látta a promptot, még akkor is, ha "Nem"-et válaszolt (Firebase-ben)
+    await setRetroPromptSeen()
     setRetroPromptDismissed(true)
   }
 

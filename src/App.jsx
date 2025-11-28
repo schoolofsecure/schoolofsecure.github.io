@@ -1,6 +1,6 @@
 import React from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import { AuthProvider } from './contexts/AuthContext'
+import { AuthProvider, useAuth } from './contexts/AuthContext'
 import { ScoringProvider, useScoring } from './contexts/ScoringContext'
 import PointAnimation from './components/Scoring/PointAnimation'
 import RankBadgeAnimation from './components/Scoring/RankBadgeAnimation'
@@ -24,6 +24,7 @@ import TaskPreviewList from './pages/task-preview'
 //import Ugy12 from './pages/ugy12'
 
 function AppContent() {
+  const { isAuthenticated } = useAuth()
   const { 
     showPointAnimation, 
     setShowPointAnimation, 
@@ -62,19 +63,19 @@ function AppContent() {
           <Route path="/ugy12" element={<Ugy12 />} />*/}
         </Routes>
       </BrowserRouter>
-      {showPointAnimation && (
+      {isAuthenticated && showPointAnimation && (
         <PointAnimation
           points={showPointAnimation.points}
           onComplete={() => setShowPointAnimation(null)}
         />
       )}
-      {showRankBadge && (
+      {isAuthenticated && showRankBadge && (
         <RankBadgeAnimation
           rank={showRankBadge.rank}
           onComplete={() => setShowRankBadge(null)}
         />
       )}
-      {showLevelCompletion && (
+      {isAuthenticated && showLevelCompletion && (
         <LevelCompletionSummary
           levelName={showLevelCompletion.levelName}
           rank={showLevelCompletion.rank}

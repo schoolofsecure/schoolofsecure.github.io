@@ -110,16 +110,19 @@ const Ugy1 = () => {
   const handleCompletion = async () => {
     markDone(4);
     
-    // Pálya pontozása
-    const timeSpent = Math.floor((Date.now() - levelStartTimeRef.current) / 1000);
-    const result = scoreLevel({
-      level: 1,
-      totalTasks: 5,
-      completedTasks: 5,
-      errors,
-      timeSpent,
-      allCluesCorrect: errors === 0
-    });
+    // Pálya pontozása (csak bejelentkezés után)
+    let result = { feedback: '' };
+    if (isAuthenticated) {
+      const timeSpent = Math.floor((Date.now() - levelStartTimeRef.current) / 1000);
+      result = scoreLevel({
+        level: 1,
+        totalTasks: 5,
+        completedTasks: 5,
+        errors,
+        timeSpent,
+        allCluesCorrect: errors === 0
+      });
+    }
     
     // Visszajelzés megjelenítése
     setTaskFeedback(result.feedback);
@@ -134,14 +137,17 @@ const Ugy1 = () => {
   };
   
   const handleTaskSuccess = (taskIndex, difficulty = 'easy') => {
-    // Feladat pontozása
-    const timeSpent = taskIndex > 0 ? Math.floor((Date.now() - levelStartTimeRef.current) / (taskIndex + 1) / 1000) : null;
-    const result = scoreTask({
-      difficulty,
-      isCorrect: true,
-      level: 1,
-      timeSpent
-    });
+    // Feladat pontozása (csak bejelentkezés után)
+    let result = { feedback: '' };
+    if (isAuthenticated) {
+      const timeSpent = taskIndex > 0 ? Math.floor((Date.now() - levelStartTimeRef.current) / (taskIndex + 1) / 1000) : null;
+      result = scoreTask({
+        difficulty,
+        isCorrect: true,
+        level: 1,
+        timeSpent
+      });
+    }
     
     // Visszajelzés megjelenítése
     setTaskFeedback(result.feedback);
@@ -156,12 +162,15 @@ const Ugy1 = () => {
   };
   
   const handleTaskFailure = (difficulty = 'easy') => {
-    // Hibázás pontozása
-    const result = scoreTask({
-      difficulty,
-      isCorrect: false,
-      level: 1
-    });
+    // Hibázás pontozása (csak bejelentkezés után)
+    let result = { feedback: '' };
+    if (isAuthenticated) {
+      result = scoreTask({
+        difficulty,
+        isCorrect: false,
+        level: 1
+      });
+    }
     
     // Visszajelzés megjelenítése
     setTaskFeedback(result.feedback);

@@ -293,16 +293,6 @@ const Ugy1 = () => {
                     </div>
                   </details>
                 </div>
-                <div style={{marginTop:'16px', paddingTop:'16px', borderTop:'1px solid rgba(207,230,255,0.2)', display:'flex', gap:'8px', flexWrap:'wrap'}}>
-                  <button 
-                    className="btn-ghost" 
-                    onClick={() => { markDone(0); setTimeout(next, 200); }}
-                    style={{fontSize:'13px', padding:'8px 14px', cursor:'pointer', fontWeight:600, borderColor:'rgba(0,229,255,0.4)'}}
-                    title="Fejlesztői mód: feladat megoldása és következő"
-                  >
-                    ✅ Megoldás + Következő
-                  </button>
-                </div>
               </div>
             </div>
           </TaskCard>
@@ -356,16 +346,6 @@ const Ugy1 = () => {
                       (Magyarázat: a „kulcs‑érték pár" olyan forma, mint „Név=Secure" – a bal oldal a kulcs, a jobb oldal az érték.)
                     </p>
                   </details>
-                </div>
-                <div style={{marginTop:'16px', paddingTop:'16px', borderTop:'1px solid rgba(207,230,255,0.2)', display:'flex', gap:'8px', flexWrap:'wrap'}}>
-                  <button 
-                    className="btn-ghost" 
-                    onClick={() => { markDone(1); setTimeout(next, 200); }}
-                    style={{fontSize:'13px', padding:'8px 14px', cursor:'pointer', fontWeight:600, borderColor:'rgba(0,229,255,0.4)'}}
-                    title="Fejlesztői mód: feladat megoldása és következő"
-                  >
-                    ✅ Megoldás + Következő
-                  </button>
                 </div>
               </div>
             </div>
@@ -422,16 +402,6 @@ Minden percben egyetlen percet gondolok rád,
                     </p>
                   </details>
                 </div>
-                <div style={{marginTop:'16px', paddingTop:'16px', borderTop:'1px solid rgba(207,230,255,0.2)', display:'flex', gap:'8px', flexWrap:'wrap'}}>
-                  <button 
-                    className="btn-ghost" 
-                    onClick={() => { markDone(2); setTimeout(next, 200); }}
-                    style={{fontSize:'13px', padding:'8px 14px', cursor:'pointer', fontWeight:600, borderColor:'rgba(0,229,255,0.4)'}}
-                    title="Fejlesztői mód: feladat megoldása és következő"
-                  >
-                    ✅ Megoldás + Következő
-                  </button>
-                </div>
               </div>
             </div>
           </TaskCard>
@@ -486,16 +456,6 @@ Minden percben egyetlen percet gondolok rád,
                       Minden szó első betűje számot rejt. Figyeld a rácsban elrejtett kulcsszavakat, így juthatsz a következő kódhoz.
                     </p>
                   </details>
-                </div>
-                <div style={{marginTop:'16px', paddingTop:'16px', borderTop:'1px solid rgba(207,230,255,0.2)', display:'flex', gap:'8px', flexWrap:'wrap'}}>
-                  <button 
-                    className="btn-ghost" 
-                    onClick={() => { markDone(3); setTimeout(next, 200); }}
-                    style={{fontSize:'13px', padding:'8px 14px', cursor:'pointer', fontWeight:600, borderColor:'rgba(0,229,255,0.4)'}}
-                    title="Fejlesztői mód: feladat megoldása és következő"
-                  >
-                    ✅ Megoldás + Következő
-                  </button>
                 </div>
               </div>
             </div>

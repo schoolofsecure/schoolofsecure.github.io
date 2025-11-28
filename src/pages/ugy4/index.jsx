@@ -271,17 +271,6 @@ const Ugy4 = () => {
                     </p>
                   </details>
                 </div>
-                {/* Fejlesztői gombok */}
-                <div style={{marginTop:'16px', paddingTop:'16px', borderTop:'1px solid rgba(207,230,255,0.2)', display:'flex', gap:'8px', flexWrap:'wrap'}}>
-                  <button 
-                    className="btn-ghost" 
-                    onClick={() => { markDone(0); setTimeout(next, 200); }}
-                    style={{fontSize:'13px', padding:'8px 14px', cursor:'pointer', fontWeight:600, borderColor:'rgba(0,229,255,0.4)'}}
-                    title="Fejlesztői mód: feladat megoldása és következő"
-                  >
-                    ✅ Megoldás + Következő
-                  </button>
-                </div>
               </div>
             </div>
           </TaskCard>

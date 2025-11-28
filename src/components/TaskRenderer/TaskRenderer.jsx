@@ -165,18 +165,6 @@ const CaesarTaskRenderer = ({ task, payload, taskStory, taskLabel, onSuccess, on
         />
         {imageSrc && <div className="task-note"><PerfImg className="task-ill" src={imageSrc} alt="Illusztráció" width="280" height="280" priority /></div>}
         <HintDetails text={payload.hint} />
-        {!solved && (
-          <div style={{marginTop:'16px', paddingTop:'16px', borderTop:'1px solid rgba(207,230,255,0.2)', display:'flex', gap:'8px', flexWrap:'wrap'}}>
-            <button 
-              className="btn-ghost" 
-              onClick={handleDevSkip}
-              style={{fontSize:'13px', padding:'8px 14px', cursor:'pointer', fontWeight:600, borderColor:'rgba(0,229,255,0.4)'}}
-              title="Fejlesztői mód: feladat megoldása és következő"
-            >
-              ✅ Megoldás + Következő
-            </button>
-          </div>
-        )}
       </div>
     </div>
   )
@@ -236,18 +224,6 @@ const VigenereTaskRenderer = ({ task, payload, taskStory, taskLabel, onSuccess, 
         />
         {imageSrc && <div className="task-note"><PerfImg className="task-ill" src={imageSrc} alt="Illusztráció" width="280" height="280" priority /></div>}
         <HintDetails text={payload.hint} />
-        {!solved && (
-          <div style={{marginTop:'16px', paddingTop:'16px', borderTop:'1px solid rgba(207,230,255,0.2)', display:'flex', gap:'8px', flexWrap:'wrap'}}>
-            <button 
-              className="btn-ghost" 
-              onClick={handleDevSkip}
-              style={{fontSize:'13px', padding:'8px 14px', cursor:'pointer', fontWeight:600, borderColor:'rgba(0,229,255,0.4)'}}
-              title="Fejlesztői mód: feladat megoldása és következő"
-            >
-              ✅ Megoldás + Következő
-            </button>
-          </div>
-        )}
       </div>
     </div>
   )
@@ -360,18 +336,6 @@ const PhishingTaskRenderer = ({ task, payload, taskStory, taskLabel, onSuccess, 
         </div>
         {imageSrc && <div className="task-note"><PerfImg className="task-ill" src={imageSrc} alt="Illusztráció" width="280" height="280" priority /></div>}
         <HintDetails text={payload.hint} />
-        {!solved && (
-          <div style={{marginTop:'16px', paddingTop:'16px', borderTop:'1px solid rgba(207,230,255,0.2)', display:'flex', gap:'8px', flexWrap:'wrap'}}>
-            <button 
-              className="btn-ghost" 
-              onClick={handleDevSkip}
-              style={{fontSize:'13px', padding:'8px 14px', cursor:'pointer', fontWeight:600, borderColor:'rgba(0,229,255,0.4)'}}
-              title="Fejlesztői mód: feladat megoldása és következő"
-            >
-              ✅ Megoldás + Következő
-            </button>
-          </div>
-        )}
       </div>
     </div>
   )
@@ -484,18 +448,6 @@ const LogAnalysisTaskRenderer = ({ task, payload, taskStory, taskLabel, onSucces
         </div>
         {imageSrc && <div className="task-note"><PerfImg className="task-ill" src={imageSrc} alt="Illusztráció" width="280" height="280" priority /></div>}
         <HintDetails text={payload.hint} />
-        {!solved && (
-          <div style={{marginTop:'16px', paddingTop:'16px', borderTop:'1px solid rgba(207,230,255,0.2)', display:'flex', gap:'8px', flexWrap:'wrap'}}>
-            <button 
-              className="btn-ghost" 
-              onClick={handleDevSkip}
-              style={{fontSize:'13px', padding:'8px 14px', cursor:'pointer', fontWeight:600, borderColor:'rgba(0,229,255,0.4)'}}
-              title="Fejlesztői mód: feladat megoldása és következő"
-            >
-              ✅ Megoldás + Következő
-            </button>
-          </div>
-        )}
       </div>
     </div>
   )
@@ -605,18 +557,6 @@ const IconMemoryTaskRenderer = ({ task, payload, taskStory, taskLabel, onSuccess
         </div>
         {imageSrc && <div className="task-note"><PerfImg className="task-ill" src={imageSrc} alt="Illusztráció" width="280" height="280" priority /></div>}
         <HintDetails text={payload.hint} />
-        {!solved && (
-          <div style={{marginTop:'16px', paddingTop:'16px', borderTop:'1px solid rgba(207,230,255,0.2)', display:'flex', gap:'8px', flexWrap:'wrap'}}>
-            <button 
-              className="btn-ghost" 
-              onClick={handleDevSkip}
-              style={{fontSize:'13px', padding:'8px 14px', cursor:'pointer', fontWeight:600, borderColor:'rgba(0,229,255,0.4)'}}
-              title="Fejlesztői mód: feladat megoldása és következő"
-            >
-              ✅ Megoldás + Következő
-            </button>
-          </div>
-        )}
       </div>
     </div>
   )
@@ -711,18 +651,6 @@ const SocialEngineeringTaskRenderer = ({ task, payload, taskStory, taskLabel, on
         </div>
         {imageSrc && <div className="task-note"><PerfImg className="task-ill" src={imageSrc} alt="Illusztráció" width="280" height="280" priority /></div>}
         <HintDetails text={payload.hint} />
-        {!solved && (
-          <div style={{ marginTop: '16px', paddingTop: '16px', borderTop: '1px solid rgba(207,230,255,0.2)', display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-            <button
-              className="btn-ghost"
-              onClick={handleDevSkip}
-              style={{ fontSize: '13px', padding: '8px 14px', cursor: 'pointer', fontWeight: 600, borderColor: 'rgba(0,229,255,0.4)' }}
-              title="Fejlesztői mód: feladat megoldása és következő"
-            >
-              ✅ Megoldás + Következő
-            </button>
-          </div>
-        )}
       </div>
     </div>
   )
@@ -849,18 +777,6 @@ const FirewallTaskRenderer = ({ task, payload, taskStory, taskLabel, onSuccess, 
         </div>
         {imageSrc && <div className="task-note"><PerfImg className="task-ill" src={imageSrc} alt="Illusztráció" width="280" height="280" priority /></div>}
         <HintDetails text={payload.hint} />
-        {!solved && (
-          <div style={{ marginTop: '16px', paddingTop: '16px', borderTop: '1px solid rgba(207,230,255,0.2)', display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-            <button
-              className="btn-ghost"
-              onClick={handleDevSkip}
-              style={{ fontSize: '13px', padding: '8px 14px', cursor: 'pointer', fontWeight: 600, borderColor: 'rgba(0,229,255,0.4)' }}
-              title="Fejlesztői mód: feladat megoldása és következő"
-            >
-              ✅ Megoldás + Következő
-            </button>
-          </div>
-        )}
       </div>
     </div>
   )
@@ -967,18 +883,6 @@ const SecurityDecisionTaskRenderer = ({ task, payload, taskStory, taskLabel, onS
           </button>
         </div>
         {imageSrc && <div className="task-note"><PerfImg className="task-ill" src={imageSrc} alt="Illusztráció" width="280" height="280" priority /></div>}
-        {!solved && (
-          <div style={{ marginTop: '16px', paddingTop: '16px', borderTop: '1px solid rgba(207,230,255,0.2)', display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-            <button
-              className="btn-ghost"
-              onClick={handleDevSkip}
-              style={{ fontSize: '13px', padding: '8px 14px', cursor: 'pointer', fontWeight: 600, borderColor: 'rgba(0,229,255,0.4)' }}
-              title="Fejlesztői mód: feladat megoldása és következő"
-            >
-              ✅ Megoldás + Következő
-            </button>
-          </div>
-        )}
       </div>
     </div>
   )
@@ -1113,18 +1017,6 @@ const PasswordStrengthTaskRenderer = ({ task, payload, taskStory, taskLabel, onS
         </div>
         {imageSrc && <div className="task-note"><PerfImg className="task-ill" src={imageSrc} alt="Illusztráció" width="280" height="280" priority /></div>}
         <HintDetails text={payload.hint} />
-        {!solved && (
-          <div style={{ marginTop: '16px', paddingTop: '16px', borderTop: '1px solid rgba(207,230,255,0.2)', display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-            <button
-              className="btn-ghost"
-              onClick={handleDevSkip}
-              style={{ fontSize: '13px', padding: '8px 14px', cursor: 'pointer', fontWeight: 600, borderColor: 'rgba(0,229,255,0.4)' }}
-              title="Fejlesztői mód: feladat megoldása és következő"
-            >
-              ✅ Megoldás + Következő
-            </button>
-          </div>
-        )}
       </div>
     </div>
   )
@@ -1187,18 +1079,6 @@ const DefaultTaskRenderer = ({ task, payload, taskStory, taskLabel, onSuccess, o
               <summary>Súgó megnyitása</summary>
               <p className="muted" style={{margin:'8px 0 0'}}>{payload.hint}</p>
             </details>
-          </div>
-        )}
-        {!solved && (
-          <div style={{marginTop:'16px', paddingTop:'16px', borderTop:'1px solid rgba(207,230,255,0.2)', display:'flex', gap:'8px', flexWrap:'wrap'}}>
-            <button 
-              className="btn-ghost" 
-              onClick={handleDevSkip}
-              style={{fontSize:'13px', padding:'8px 14px', cursor:'pointer', fontWeight:600, borderColor:'rgba(0,229,255,0.4)'}}
-              title="Fejlesztői mód: feladat megoldása és következő"
-            >
-              ✅ Megoldás + Következő
-            </button>
           </div>
         )}
       </div>

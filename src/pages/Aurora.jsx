@@ -5,7 +5,7 @@ import '../index.css'
 import '../styles/aurora.css'
 
 const Aurora = () => {
-  const { loginWithEmail, registerWithEmail, isAuthenticated, user, saveLevelCompletion, checkMissionCompletion, getHighestCompletedLevel } = useAuth()
+  const { loginWithEmail, registerWithEmail, isAuthenticated, user, saveLevelCompletion, checkMissionCompletion, getHighestCompletedLevel, logout } = useAuth()
   const [data, setData] = useState(null)
   const [unlocked, setUnlocked] = useState(false)
   const [showLevels, setShowLevels] = useState(false)
@@ -261,6 +261,41 @@ const Aurora = () => {
           <div className="brand-badge">CM</div>
           <div className="brand-title">CyberMystery</div>
         </Link>
+        {isAuthenticated && user && (
+          <button
+            onClick={async () => {
+              const result = await logout()
+              if (result.success) {
+                setUnlocked(false)
+                setShowLevels(false)
+                setShowMission(false)
+              }
+            }}
+            style={{
+              marginLeft: 'auto',
+              padding: '8px 16px',
+              fontSize: '13px',
+              background: 'rgba(255,255,255,0.05)',
+              border: '1px solid rgba(207,230,255,0.2)',
+              color: 'var(--muted)',
+              borderRadius: '6px',
+              cursor: 'pointer',
+              fontFamily: 'Rajdhani, Inter, sans-serif',
+              fontWeight: 500,
+              transition: 'all 0.2s'
+            }}
+            onMouseEnter={(e) => {
+              e.target.style.background = 'rgba(255,255,255,0.1)'
+              e.target.style.color = '#cfe6ff'
+            }}
+            onMouseLeave={(e) => {
+              e.target.style.background = 'rgba(255,255,255,0.05)'
+              e.target.style.color = 'var(--muted)'
+            }}
+          >
+            Kijelentkezés
+          </button>
+        )}
       </header>
 
       {!unlocked && (

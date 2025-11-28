@@ -83,7 +83,7 @@ const Ugy1 = () => {
   const [step, setStep] = useState(0); // 0..4
   const [done, setDone] = useState([false,false,false,false,false]);
   const [showArchive, setShowArchive] = useState(false);
-  const { saveLevelCompletion, isAuthenticated } = useAuth();
+  const { saveLevelCompletion, isAuthenticated, logout } = useAuth();
   const { scoreTask, scoreLevel } = useScoring();
   const [errors, setErrors] = useState(0);
   const [taskFeedback, setTaskFeedback] = useState('');
@@ -177,6 +177,36 @@ const Ugy1 = () => {
           <div className="brand-badge">CM</div>
           <div>A múzeum éjszakája – Ügy #1</div>
         </Link>
+        {isAuthenticated && (
+          <button
+            onClick={async () => {
+              await logout()
+            }}
+            style={{
+              marginLeft: 'auto',
+              padding: '8px 16px',
+              fontSize: '13px',
+              background: 'rgba(255,255,255,0.05)',
+              border: '1px solid rgba(207,230,255,0.2)',
+              color: 'var(--muted)',
+              borderRadius: '6px',
+              cursor: 'pointer',
+              fontFamily: 'Rajdhani, Inter, sans-serif',
+              fontWeight: 500,
+              transition: 'all 0.2s'
+            }}
+            onMouseEnter={(e) => {
+              e.target.style.background = 'rgba(255,255,255,0.1)'
+              e.target.style.color = '#cfe6ff'
+            }}
+            onMouseLeave={(e) => {
+              e.target.style.background = 'rgba(255,255,255,0.05)'
+              e.target.style.color = 'var(--muted)'
+            }}
+          >
+            Kijelentkezés
+          </button>
+        )}
       </header>
       <ScoreDisplay />
       {taskFeedback && (

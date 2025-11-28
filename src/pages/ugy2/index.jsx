@@ -198,11 +198,16 @@ const Ugy2 = () => {
 
   const currentTask = tasks[step]
 
-  // Ellenőrizzük, hogy elérkezett-e december 6, este 7 óra
-  const isLevel3Unlocked = useMemo(() => {
-    const now = new Date()
-    const unlockDate = new Date('2024-12-06T19:00:00') // December 6, 7 PM
-    return now >= unlockDate
+  const [isLevel3Unlocked, setIsLevel3Unlocked] = useState(false)
+
+  useEffect(() => {
+    const unlockDate = new Date('2025-12-06T19:00:00+01:00')
+    const updateUnlock = () => {
+      setIsLevel3Unlocked(new Date() >= unlockDate)
+    }
+    updateUnlock()
+    const interval = setInterval(updateUnlock, 60000)
+    return () => clearInterval(interval)
   }, [])
 
   return (

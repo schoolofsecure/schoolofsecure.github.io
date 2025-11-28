@@ -44,8 +44,12 @@ function AppContent() {
           <Route path="/privacy" element={<Privacy />} />
           <Route path="/ugy1" element={<Ugy1 />} />
           <Route path="/ugy2" element={<Ugy2 />} />
+          {import.meta.env.DEV && (
+            <>
           <Route path="/qa-debug" element={<QADebugPanel />} />
           <Route path="/task-preview" element={<TaskPreviewList />} />
+            </>
+          )}
           {/*<Route path="/ugy3" element={<Ugy3 />} />
           <Route path="/ugy4" element={<Ugy4 />} />
           <Route path="/ugy5" element={<Ugy5 />} />

@@ -64,26 +64,12 @@ export class VigenereTask extends BaseTask {
     if (this.payload) return this.payload
     const { plaintext, key, levelNumber, slot } = this.parameters
     
-    // Narratív szövegek variációi
-    const narratives = [
-      {
-        intro: 'A hálózat mélyén titkosított adatok rejtőznek. A biztonsági rendszer riasztásai egyre gyakoribbá válnak.',
-        task: 'A Vigenère-kóddal titkosított üzenet a rendszer mélyén rejtőzik. Fejtsd meg a kulcsot és olvasd el a rejtett információt.',
-        hint: 'A Vigenère-kód egy kulcsszó alapján működik. Minden betűhöz a kulcs megfelelő betűjét használja az eltoláshoz.'
-      },
-      {
-        intro: 'A logfájlok között elrejtett üzenetek várnak a megfejtésre. A rendszer mindig hagy nyomokat, csak meg kell találnod őket.',
-        task: 'Egy komplex titkosítási módszerrel kódolt üzenet került elő. A Vigenère-kód kulcsát kell megtalálnod a dekódoláshoz.',
-        hint: 'Gondold végig, milyen mintázatokat keresel. A kulcs gyakran a legváratlanabb helyen bukkan fel.'
-      },
-      {
-        intro: 'Az éjszaka leple alatt a rendszer mélyén rejtett nyomok várnak. A monitorok remegő fényében gyanús aktivitás jelei bukkannak fel.',
-        task: 'A titkosított üzenetek mögött rejtett információkat kell feltárnod. A Vigenère-kód egy régi, de még mindig használt titkosítási módszer.',
-        hint: 'Figyeld a részleteket, mert ott rejlik a megoldás. A Vigenère-kód kulcsa egy szó vagy rövid kifejezés.'
-      }
-    ]
-    
-    const narrative = Random.choice(narratives)
+    // Fix narratíva minden VigenereTask-nál
+    const narrative = {
+      intro: 'A hálózat mélyén titkosított adatok rejtőznek. A biztonsági rendszer riasztásai egyre gyakoribbá válnak.',
+      task: 'A Vigenère-kóddal titkosított üzenet a rendszer mélyén rejtőzik. Fejtsd meg a kulcsot és olvasd el a rejtett információt.',
+      hint: 'A Vigenère-kód egy kulcsszó alapján működik. Minden betűhöz a kulcs megfelelő betűjét használja az eltoláshoz.'
+    }
     const ciphertext = VigenereTask.encode(plaintext, key)
     this.solution = plaintext.toUpperCase().replace(/[^A-Z]/g, '')
     

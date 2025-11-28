@@ -56,26 +56,12 @@ export class LogAnalysisTask extends BaseTask {
     if (this.payload) return this.payload
     const { rows, anomalies, levelNumber, slot } = this.parameters
     
-    // Narratív szövegek variációi
-    const narratives = [
-      {
-        intro: 'Ahogy a rendszer biztonsági szerverszobájába lépsz, a levegő vibrál. A ventilátorok túl gyorsan pörögnek, a monitorokon pedig remegő sorok futnak.',
-        task: 'A technikusok szerint valaki éjjel hozzáfért a rendszerhez és „kitisztította" a nyomait. Csakhogy a hacker amatőr hibát vétett: hátrahagyott egy félbehagyott logfájlt, amelyben a fontos részeket ugyan törölte, de egy mintát nem tudott eltakarni.',
-        hint: 'Figyeld a kulcs-érték párokat. Minden érték vezető karaktere fontos a következő feladathoz. Gyűjtsd össze ezeket a karaktereket, és rakd össze a jelszót!'
-      },
-      {
-        intro: 'A monitorok remegő fényében gyanús aktivitás jelei bukkannak fel. A logfájlok között elrejtett üzenetek várnak a megfejtésre.',
-        task: 'A rendszer logfájljában gyanús bejegyzések találhatók. Elemezd a sorokat és azonosítsd azokat, amelyek rendellenes aktivitást jeleznek.',
-        hint: 'A gyanús bejegyzések gyakran rendellenes IP-címeket, időbélyegeket vagy műveleteket tartalmaznak. Figyeld a részleteket!'
-      },
-      {
-        intro: 'A biztonsági rendszer riasztásai egyre gyakoribbá válnak. A hálózat mélyén titkosított adatok rejtőznek.',
-        task: 'A rendszer naplófájljában gyanús mintázatok bukkannak fel. Válaszd ki azokat a log sorokat, amelyek potenciális biztonsági incidensre utalnak.',
-        hint: 'Ne siess, alaposan elemezd az adatokat. A rendszer mindig hagy nyomokat, csak meg kell találnod őket.'
-      }
-    ]
-    
-    const narrative = Random.choice(narratives)
+    // Fix narratíva minden LogAnalysisTask-nál
+    const narrative = {
+      intro: 'Ahogy a rendszer biztonsági szerverszobájába lépsz, a levegő vibrál. A ventilátorok túl gyorsan pörögnek, a monitorokon pedig remegő sorok futnak.',
+      task: 'A technikusok szerint valaki éjjel hozzáfért a rendszerhez és „kitisztította" a nyomait. Csakhogy a hacker amatőr hibát vétett: hátrahagyott egy félbehagyott logfájlt, amelyben a fontos részeket ugyan törölte, de egy mintát nem tudott eltakarni.',
+      hint: 'Figyeld a kulcs-érték párokat. Minden érték vezető karaktere fontos a következő feladathoz. Gyűjtsd össze ezeket a karaktereket, és rakd össze a jelszót!'
+    }
     this.solution = anomalies.sort((a, b) => a - b)
     
     this.payload = {

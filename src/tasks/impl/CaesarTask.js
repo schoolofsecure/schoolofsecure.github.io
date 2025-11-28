@@ -70,26 +70,12 @@ export class CaesarTask extends BaseTask {
     if (this.payload) return this.payload
     const { plaintext, shift, levelNumber, slot } = this.parameters
     
-    // Narratív szövegek variációi
-    const narratives = [
-      {
-        intro: 'Az éjszaka leple alatt a rendszer mélyén rejtett nyomok várnak. A monitorok remegő fényében gyanús aktivitás jelei bukkannak fel.',
-        task: 'A képernyőn furcsa karakterek villognak, mintha valaki sietve rejtette volna el az üzenetet. Fejtsd meg a titkosított üzenetet, hogy megtudd az első nyomot a küldetésedhez.',
-        hint: 'Gondolj az ábécére, és képzeld el, hogy minden betű egy kicsit előrébb vagy hátrébb lép a sorban. A szóközök és írásjelek nem változnak.'
-      },
-      {
-        intro: 'A hálózat mélyén titkosított adatok rejtőznek. A biztonsági rendszer riasztásai egyre gyakoribbá válnak.',
-        task: 'A titkosított üzenetek mögött rejtett információkat kell feltárnod. A kijelző felvillan, a sorok villogni kezdenek… minden karakter egy újabb nyomot rejt.',
-        hint: 'Próbáld kibogozni a titkos üzenetet, amely el van rejtve a karakterek között. A Caesar-kód egyszerű eltolást használ.'
-      },
-      {
-        intro: 'A logfájlok között elrejtett üzenetek várnak a megfejtésre. A rendszer mindig hagy nyomokat, csak meg kell találnod őket.',
-        task: 'Elemezd a rendelkezésre álló adatokat és keresd meg a gyanús mintákat. A titkosított hálózaton tovább jutsz, és a következő bizonyíték vár.',
-        hint: 'Figyeld a részleteket, mert ott rejlik a megoldás. A kulcs gyakran a legváratlanabb helyen bukkan fel.'
-      }
-    ]
-    
-    const narrative = Random.choice(narratives)
+    // Fix narratíva minden CaesarTask-nál
+    const narrative = {
+      intro: 'Az éjszaka leple alatt a rendszer mélyén rejtett nyomok várnak. A monitorok remegő fényében gyanús aktivitás jelei bukkannak fel.',
+      task: 'A képernyőn furcsa karakterek villognak, mintha valaki sietve rejtette volna el az üzenetet. Fejtsd meg a titkosított üzenetet, hogy megtudd az első nyomot a küldetésedhez.',
+      hint: 'Gondolj az ábécére, és képzeld el, hogy minden betű egy kicsit előrébb vagy hátrébb lép a sorban. A szóközök és írásjelek nem változnak.'
+    }
     const ciphertext = CaesarTask.encode(plaintext, shift)
     this.solution = plaintext.toUpperCase().replace(/\s+/g, ' ')
     

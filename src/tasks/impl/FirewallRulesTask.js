@@ -27,7 +27,7 @@ const FIREWALL_SCENARIOS = [
     difficulty: 'easy',
     intro: 'A mozgásérzékelők egy DNS-alapú címkiszolgálón keresztül kommunikálnak, az üzemeltetői felület pedig HTTPS-en érhető el.',
     instructions: 'Tedd lehetővé, hogy a gateway DNS-lekérdezéseket és HTTPS kapcsolatokat indítson, de blokkolj minden e-mail kimenetet, hogy ne használhassák spamre.',
-    hint: 'UDP 53 és TCP 443 szükséges, SMTP port nem.',
+    hint: 'Csak azok a protokollok legyenek nyitva, amelyeket a kioszk a webes tartalom megjelenítéséhez feltétlenül használ. A levelezéssel kapcsolatos portokat viszont ebben a környezetben általában nem szükséges engedélyezni.',
     allow: ['DNS', 'HTTPS'],
     deny: ['SMTP']
   },

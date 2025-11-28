@@ -4,28 +4,28 @@ import { Random } from '../utils/random'
 const SCENARIOS = {
   easy: [
     {
-      id: 'phone-it',
-      title: 'Telefonos „IT” hívás',
-      text: 'Egy AuroraSec nevű „IT technikus” telefonon a VPN jelszavadat kéri, hogy frissítést telepítsen.',
+      id: 'urgent-message',
+      title: 'Sürgős üzenet',
+      text: 'A hangvétele személyes, sietős, és segítséget kér. A rendszerlogok szerint a küldő helyéről már korábban is érkeztek gyanús próbálkozások.',
       actions: [
-        { id: 'share_creds', label: 'Megadom a jelszót, hogy gyorsan végezzen.' },
-        { id: 'refuse_report', label: 'Elutasítom és jelzem a SOC-nak.' },
-        { id: 'later', label: 'Megígérem, hogy később írásban elküldöm.' }
+        { id: 'help_immediately', label: 'Azonnal segítek, mert sürgős a helyzet.' },
+        { id: 'verify_report', label: 'Ellenőrzöm a küldő azonosítóját és jelentést teszek a biztonsági csapatnak.' },
+        { id: 'forward_colleague', label: 'Továbbítom egy kollégának, hogy ő döntsön.' }
       ],
-      correctAction: 'refuse_report',
-      explanation: 'Az IT sosem kér jelszót telefonon; azonnal jelenteni kell.'
+      correctAction: 'verify_report',
+      explanation: 'Gyanús üzeneteket mindig ellenőrizni kell, különösen ha a küldő helyéről korábban is érkeztek gyanús próbálkozások.'
     },
     {
-      id: 'tailgate',
-      title: 'Beengednél valakit?',
-      text: 'Az irodába érve egy idegen kér, hogy tartsd neki az ajtót, mert „ott felejtette a belépőkártyát”.',
+      id: 'tech-support-request',
+      title: 'Technikai támogatás kérés',
+      text: 'Azonnali hozzáférésre van szükségük a rendszerhez. A kérés személyes hangvételű és sürgeti a választ.',
       actions: [
-        { id: 'let_in', label: 'Beengedem, nehogy kint maradjon.' },
-        { id: 'deny_security', label: 'Megkérem, várja meg a recepciót és hívom a biztonságot.' },
-        { id: 'ask_name', label: 'Megkérdezem a nevét, de azért beengedem.' }
+        { id: 'grant_access', label: 'Megadom a hozzáférést, mert a technikai osztály kéri.' },
+        { id: 'verify_ticket', label: 'Ellenőrzöm, hogy van-e hivatalos ticket, és csak akkor adok hozzáférést.' },
+        { id: 'ignore', label: 'Figyelmen kívül hagyom, biztos spam.' }
       ],
-      correctAction: 'deny_security',
-      explanation: 'Ismeretleneket kártya nélkül nem szabad beengedni, inkább kísérjük a recepciónak.'
+      correctAction: 'verify_ticket',
+      explanation: 'Minden hozzáférési kérést hivatalos ticket rendszeren keresztül kell kezelni, nem személyes üzeneteken.'
     }
   ],
   medium: [

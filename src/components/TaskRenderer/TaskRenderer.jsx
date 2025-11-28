@@ -104,8 +104,8 @@ const CaesarTaskRenderer = ({ task, payload, taskStory, taskLabel, onSuccess, on
             {taskStory.text}
           </p>
         )}
-        {payload.intro && <p className="muted" style={{ marginTop: taskStory ? '12px' : (taskLabel ? '8px' : '0') }}>{payload.intro}</p>}
-        <p className="muted">{payload.instructions}</p>
+        {!taskStory && payload.intro && <p className="muted" style={{ marginTop: taskLabel ? '8px' : '0' }}>{payload.intro}</p>}
+        <p className="muted" style={{ marginTop: (taskStory || payload.intro) ? '12px' : (taskLabel ? '8px' : '0') }}>{payload.instructions}</p>
         <div className="statusline">
           <code style={{fontSize:'16px', letterSpacing:'2px', wordBreak:'break-all'}}>
             {payload.ciphertext}
@@ -169,8 +169,8 @@ const VigenereTaskRenderer = ({ task, payload, taskStory, taskLabel, onSuccess, 
             {taskStory.text}
           </p>
         )}
-        {payload.intro && <p className="muted" style={{ marginTop: taskStory ? '12px' : (taskLabel ? '8px' : '0') }}>{payload.intro}</p>}
-        <p className="muted">{payload.instructions}</p>
+        {!taskStory && payload.intro && <p className="muted" style={{ marginTop: taskLabel ? '8px' : '0' }}>{payload.intro}</p>}
+        <p className="muted" style={{ marginTop: (taskStory || payload.intro) ? '12px' : (taskLabel ? '8px' : '0') }}>{payload.instructions}</p>
         <div className="statusline">
           <code style={{fontSize:'16px', letterSpacing:'2px', wordBreak:'break-all'}}>
             {payload.ciphertext}
@@ -250,8 +250,8 @@ const PhishingTaskRenderer = ({ task, payload, taskStory, taskLabel, onSuccess, 
             {taskStory.text}
           </p>
         )}
-        {payload.intro && <p className="muted" style={{ marginTop: taskStory ? '12px' : (taskLabel ? '8px' : '0') }}>{payload.intro}</p>}
-        <p className="muted">{payload.instructions}</p>
+        {!taskStory && payload.intro && <p className="muted" style={{ marginTop: taskLabel ? '8px' : '0' }}>{payload.intro}</p>}
+        <p className="muted" style={{ marginTop: (taskStory || payload.intro) ? '12px' : (taskLabel ? '8px' : '0') }}>{payload.instructions}</p>
         {payload.email && (
           <div className="statusline" style={{ marginTop: '16px', padding: '16px', background: '#0b121c', borderRadius: '8px', border: '1px solid rgba(207,230,255,0.2)' }}>
             <div style={{ marginBottom: '12px', paddingBottom: '12px', borderBottom: '1px solid rgba(207,230,255,0.1)' }}>
@@ -373,8 +373,8 @@ const LogAnalysisTaskRenderer = ({ task, payload, taskStory, taskLabel, onSucces
             {taskStory.text}
           </p>
         )}
-        {payload.intro && <p className="muted" style={{ marginTop: taskStory ? '12px' : (taskLabel ? '8px' : '0') }}>{payload.intro}</p>}
-        <p className="muted">{payload.instructions}</p>
+        {!taskStory && payload.intro && <p className="muted" style={{ marginTop: taskLabel ? '8px' : '0' }}>{payload.intro}</p>}
+        <p className="muted" style={{ marginTop: (taskStory || payload.intro) ? '12px' : (taskLabel ? '8px' : '0') }}>{payload.instructions}</p>
       </div>
       <div className="card">
         <h3>Log sorok</h3>
@@ -496,8 +496,8 @@ const IconMemoryTaskRenderer = ({ task, payload, onSuccess, onFailure }) => {
             {taskStory.text}
           </p>
         )}
-        {payload.intro && <p className="muted" style={{ marginTop: taskStory ? '12px' : (taskLabel ? '8px' : '0') }}>{payload.intro}</p>}
-        <p className="muted">{payload.instructions}</p>
+        {!taskStory && payload.intro && <p className="muted" style={{ marginTop: taskLabel ? '8px' : '0' }}>{payload.intro}</p>}
+        <p className="muted" style={{ marginTop: (taskStory || payload.intro) ? '12px' : (taskLabel ? '8px' : '0') }}>{payload.instructions}</p>
       </div>
       <div className="card">
         <h3>Ikonok</h3>
@@ -618,8 +618,8 @@ const SocialEngineeringTaskRenderer = ({ task, payload, taskStory, taskLabel, on
             {taskStory.text}
           </p>
         )}
-        {payload.intro && <p className="muted" style={{ marginTop: taskStory ? '12px' : (taskLabel ? '8px' : '0') }}>{payload.intro}</p>}
-        <p className="muted">{payload.instructions}</p>
+        {!taskStory && payload.intro && <p className="muted" style={{ marginTop: taskLabel ? '8px' : '0' }}>{payload.intro}</p>}
+        <p className="muted" style={{ marginTop: (taskStory || payload.intro) ? '12px' : (taskLabel ? '8px' : '0') }}>{payload.instructions}</p>
       </div>
       <div className="card">
         <h3>Válaszok</h3>
@@ -745,8 +745,8 @@ const FirewallTaskRenderer = ({ task, payload, taskStory, taskLabel, onSuccess, 
             </p>
           </>
         )}
-        {payload.intro && <p className="muted" style={{ marginTop: taskStory ? '12px' : '0' }}>{payload.intro}</p>}
-        <p className="muted">{payload.instructions}</p>
+        {!taskStory && payload.intro && <p className="muted" style={{ marginTop: '0' }}>{payload.intro}</p>}
+        <p className="muted" style={{ marginTop: (taskStory || payload.intro) ? '12px' : (taskLabel ? '8px' : '0') }}>{payload.instructions}</p>
       </div>
       <div className="card">
         <h3>Szolgáltatások</h3>
@@ -865,14 +865,13 @@ const SecurityDecisionTaskRenderer = ({ task, payload, taskStory, taskLabel, onS
           </p>
         )}
         <p className="muted" style={{ marginTop: taskStory ? '12px' : (taskLabel ? '8px' : '0') }}>{payload.instructions}</p>
-        <HintDetails text={payload.hint} />
       </div>
       <div className="card">
-        <h3>Helyzetek</h3>
+        <h3>Döntési helyzetek</h3>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
           {payload.scenarios?.map((scenario, scenarioIndex) => (
             <div key={scenarioIndex} style={{ padding: '12px', border: '1px solid rgba(207,230,255,0.2)', borderRadius: '8px' }}>
-              <strong style={{ display: 'block', marginBottom: '6px' }}>{scenario.title || `Szituáció ${scenarioIndex + 1}`}</strong>
+              <strong style={{ display: 'block', marginBottom: '6px' }}>{scenario.title || `${scenarioIndex + 1}. helyzet`}</strong>
               <p className="muted" style={{ marginBottom: '10px', whiteSpace: 'pre-line' }}>{scenario.scenario || scenario.text}</p>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
                 {scenario.options?.map((option, optionIndex) => (
@@ -908,7 +907,8 @@ const SecurityDecisionTaskRenderer = ({ task, payload, taskStory, taskLabel, onS
               : 'Nem minden döntés felel meg a protokollnak. Gondold át, milyen bizonyíték kell a jegyzőkönyvbe.'}
           </div>
         )}
-        <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
+        {payload.hint && <HintDetails text={payload.hint} />}
+        <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', marginTop: payload.hint ? '12px' : '0' }}>
           <button
             className="btn"
             type="button"
@@ -966,7 +966,7 @@ const PasswordStrengthTaskRenderer = ({ task, payload, taskStory, taskLabel, onS
             {taskStory.text}
           </p>
         )}
-        {payload.intro && <p className="muted" style={{ marginTop: taskStory ? '12px' : (taskLabel ? '8px' : '0') }}>{payload.intro}</p>}
+        {!taskStory && payload.intro && <p className="muted" style={{ marginTop: taskLabel ? '8px' : '0' }}>{payload.intro}</p>}
         <div className="statusline" style={{ marginTop: '12px', padding: '12px', background: '#0b121c', borderRadius: '8px' }}>
           <div style={{ marginBottom: '8px' }}>
             <strong>Jelszó:</strong>
@@ -1109,8 +1109,8 @@ const DefaultTaskRenderer = ({ task, payload, taskStory, taskLabel, onSuccess, o
             {taskStory.text}
           </p>
         )}
-        {payload.intro && <p className="muted" style={{ marginTop: taskStory ? '12px' : (taskLabel ? '8px' : '0') }}>{payload.intro}</p>}
-        <p className="muted">{payload.instructions}</p>
+        {!taskStory && payload.intro && <p className="muted" style={{ marginTop: taskLabel ? '8px' : '0' }}>{payload.intro}</p>}
+        <p className="muted" style={{ marginTop: (taskStory || payload.intro) ? '12px' : (taskLabel ? '8px' : '0') }}>{payload.instructions}</p>
         {payload.hint && (
           <div className="hint" style={{marginTop:'12px'}}>
             <details>

@@ -14,7 +14,7 @@ const TASK_LABELS = {
   XOR: 'Villanó bitek',
   HASH_MISMATCH: 'Elcsúszott ujjlenyomat',
   ICON_MEMORY: 'Szimbólum-memória',
-  PASSWORD_STRENGTH: 'Admin jelszó audit',
+  PASSWORD_STRENGTH: 'Gyanús jelszóváltoztatás',
   PHISHING: 'Kurátori csali levél',
   URL_TRUST: 'Kapuhivatkozás vizsgálat',
   LOG_ANALYSIS: 'Éjjeli logvadászat',
@@ -35,37 +35,67 @@ const getTaskTitle = (task, index) => {
   return `${index + 1}. feladat`
 }
 
-const EPISODE_NAME = 'Éjszakai rendszerkapcsolat létesítése'
+const EPISODE_NAME = 'Éjféli kézfogás'
 
 const TASK_STORIES = {
   PASSWORD_STRENGTH: {
-    title: 'Admin jelszó audit',
-    text: `A rendszer egyik adminfiókja gyanús jelszóváltoztatási kérelmet küldött be.
-    A kérelmet pont akkor adták le, amikor az ismeretlen „rendszerkapcsolat létesítése” kapcsolat megjelent.
-    Döntened kell, hogy a javasolt jelszó megfelel-e a követelményeknek, vagy a támadó próbál gyenge autentikációt becsempészni.`
+    title: 'Gyanús jelszóváltoztatás',
+    text: `A rendszer egyik adminfiókja szokatlan jelszóváltoztatási kérelmet küldött be.
+
+A kérelem pont akkor érkezett, amikor az ismeretlen „rendszerkapcsolat létesítése” riasztás aktiválódott.
+
+Most rajtad a sor, hogy dönts:
+
+A javasolt jelszó megfelel-e a biztonsági követelményeknek, vagy a támadó próbál gyenge autentikációt becsempészni a rendszerbe.
+
+Válaszd ki a legbiztonságosabb döntést, hogy megakadályozd a támadót a további hozzáférésben.`
   },
   FIREWALL: {
     title: 'Rendszerkapcsolat-vadász tűzfal',
-    text: `A tűzfal naplója szerint pár külső cím hirtelen „engedélyezett” állapotba került.
-    Ha rosszul zárod le a szabályt, fontos érzékelők némulhatnak el, de ha nyitva hagyod, a támadó tartós hozzáférést kap.`
+    text: `A tűzfal naplója szerint néhány külső cím váratlanul „engedélyezett” állapotba került.
+    Ha rosszul zárod le a szabályt, a múzeum fontos érzékelői némulhatnak el – de ha nyitva hagyod, a támadó tartós hozzáférést szerezhet.
+
+A látogatói webkioszkot ideiglenesen leválasztották a belső hálóról, de továbbra is kiszolgálja a digitális tárlat webes felületét.
+
+Engedélyezd a látogatók által használt webes protokollokat, de tartsd zárva az admin SSH‑csatornát, hogy a kioszkot kívülről ne lehessen módosítani.`
   },
   PHISHING: {
     title: 'Kurátori csali levél',
-    text: `Egy kurátor postaládájában gyanús üzenet jelent meg a belső technikai osztály nevében.
-    A logok szerint az éjszakai támadó küldhette, hogy megszerezze a bejelentkezési adatait.
-    Csak akkor állíthatod le az akciót, ha felismered a rejtett jeleket.`
+    text: `Egy kurátor postaládájában gyanús üzenet jelent meg, amely állítólag a belső technikai osztálytól érkezett.
+
+A logok szerint az éjszakai támadó küldhette, hogy megszerezze a bejelentkezési adatait.
+
+Csak akkor állíthatod le az akciót, ha felismered a rejtett jeleket.
+
+A logfájlok között elrejtett üzenetek várnak a megfejtésre. A rendszer mindig hagy nyomokat – csak meg kell találnod őket.
+
+Egy felhasználó gyanús e-mailt jelentett.
+
+Elemezd az üzenet tartalmát, és azonosítsd a phishing jellemzőket, hogy megakadályozd a támadást.`
   },
   SOCIAL_ENGINEERING: {
     title: 'Beszivárgó kérés',
-    text: `Egy személyes hangvételű üzenet szerint a küldő a múzeum technikusa, aki sürgősen segítséget kér.
-    Valójában ez lehet a támadó kísérlete, hogy benned találjon új belépési pontot.
-    Elemezd a kérést, és dönts, hogy valós-e vagy manipulatív.`
+    text: `Egy sürgős üzenet érkezett – állítólag a múzeum egyik technikusától. A hangvétele személyes, sietős, és segítséget kér.
+
+De valami nem stimmel. A szóhasználat furcsa, a rendszerlogok pedig azt mutatják, hogy a küldő helyéről már korábban is érkeztek gyanús próbálkozások. Lehet, hogy ez csak egy újabb kísérlet arra, hogy rajtad keresztül jusson be a hálózatba.
+
+Vizsgáld meg az üzenetet, elemezd a kérését, és döntsd el:
+
+valódi segítségkérésről van szó, vagy csak egy manipulatív próbálkozás?
+
+Válaszd ki azt a reakciót, amelyik megfelel a biztonsági protokollnak.`
   },
   SECURITY_DECISION: {
     title: 'Nyomok mérlegelése',
-    text: `A rendszer jelzi, hogy a támadó létrehozott egy „rendszerkapcsolat-alagutat”.
-    Azonnal lekapcsolod, vagy megfigyeled, hogy több információt gyűjts?
-    A döntésed hatással lesz arra, mihez fér hozzá a támadó – és te mire jössz rá.`
+    text: `A rendszer riaszt: a támadó létrehozott egy rejtett rendszerkapcsolat‑alagutat.
+
+Most rajtad a sor, hogy dönts:
+
+– Azonnal lekapcsolod, ezzel megakadályozva, hogy tovább haladjon?
+
+– Vagy megfigyeled a műveletet, hogy több információt gyűjts róla – vállalva a kockázatot, hogy közben mélyebbre juthat?
+
+Minden választásod hatással lesz arra, mihez fér hozzá a támadó, és arra is, te mennyit derítesz ki a módszereiről.`
   }
 }
 
@@ -215,7 +245,7 @@ const Ugy2 = () => {
       <header>
         <Link to="/" className="brand" aria-label="CyberMystery – Vissza a főoldalra">
           <div className="brand-badge">CM</div>
-          <div>Éjszakai rendszerkapcsolat létesítése – Ügy #{currentLevel}</div>
+          <div>Éjféli kézfogás – Ügy #{currentLevel}</div>
         </Link>
       </header>
       <ScoreDisplay />
@@ -238,8 +268,8 @@ const Ugy2 = () => {
       )}
 
       <main>
-        <NarrativeBlock badge="Éjszakai rendszerkapcsolat létesítése">
-          <h1 style={{ margin: '10px 0 4px' }}>Éjszakai rendszerkapcsolat létesítése – Ügy #{currentLevel}</h1>
+        <NarrativeBlock badge="Éjféli kézfogás">
+          <h1 style={{ margin: '10px 0 4px' }}>Éjféli kézfogás – Ügy #{currentLevel}</h1>
           <p>
             A múzeum csendje most valahogy nyugtalanítóbb, mint előző éjjel. A kamera-rendszer továbbra is akadozik,
             a hálózati térkép pedig ismeretlen kapcsolatokat mutat – olyanokat, amelyeknek nem kellene létezniük.

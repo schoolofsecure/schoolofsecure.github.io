@@ -198,6 +198,13 @@ const Ugy2 = () => {
 
   const currentTask = tasks[step]
 
+  // Ellenőrizzük, hogy elérkezett-e december 6, este 7 óra
+  const isLevel3Unlocked = useMemo(() => {
+    const now = new Date()
+    const unlockDate = new Date('2024-12-06T19:00:00') // December 6, 7 PM
+    return now >= unlockDate
+  }, [])
+
   return (
     <div className="container">
       <header>
@@ -250,75 +257,83 @@ const Ugy2 = () => {
         ) : (
           <TaskCard title={getTaskTitle(currentTask, step)}>
             {currentTask ? (
-              <TaskRenderer
-                task={currentTask}
-                taskStory={TASK_STORIES[currentTask.type]}
-                taskLabel={TASK_LABELS[currentTask.type]}
-                onSuccess={() => handleTaskSuccess(step)}
-                onFailure={handleTaskFailure}
-              />
+              <>
+                <TaskRenderer
+                  task={currentTask}
+                  taskStory={TASK_STORIES[currentTask.type]}
+                  taskLabel={TASK_LABELS[currentTask.type]}
+                  onSuccess={() => handleTaskSuccess(step)}
+                  onFailure={handleTaskFailure}
+                />
+                {completedCount === tasks.length && tasks.length > 0 && currentLevel === 2 && (
+                  <div className="grid2" style={{ marginTop: '16px' }}>
+                    <div></div>
+                    <div className="card" style={{ animation: 'fadeIn .3s ease both' }}>
+                      <h3 style={{ marginTop: 0, color: '#00e5ff', fontFamily: 'Rajdhani, Inter, sans-serif', fontSize: '18px', fontWeight: 700 }}>Ügy teljesítve</h3>
+                      <p className="muted" style={{ marginBottom: '16px', lineHeight: '1.6', fontSize: '14px' }}>
+                        Gratulálunk! A harmadik ügy <strong>december 6-án, este 7 órakor nyílik</strong>.
+                      </p>
+                      <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
+                        <Link
+                          to="/aurora"
+                          style={{
+                            fontSize: '12px',
+                            color: 'var(--muted)',
+                            textDecoration: 'underline',
+                            textUnderlineOffset: '4px',
+                            padding: '4px 0'
+                          }}
+                        >
+                          Vissza az ügyekhez
+                        </Link>
+                        {isLevel3Unlocked ? (
+                          <Link
+                            className="btn"
+                            to="/ugy3"
+                            style={{
+                              textDecoration: 'none',
+                              display: 'inline-flex',
+                              justifyContent: 'center',
+                              alignItems: 'center',
+                              textAlign: 'center',
+                              minWidth: '0',
+                              padding: '10px 18px',
+                              fontSize: '13px'
+                            }}
+                          >
+                            Tovább a harmadik ügyre →
+                          </Link>
+                        ) : (
+                          <button
+                            className="btn"
+                            disabled
+                            style={{
+                              opacity: 0.5,
+                              cursor: 'not-allowed',
+                              display: 'inline-flex',
+                              justifyContent: 'center',
+                              alignItems: 'center',
+                              textAlign: 'center',
+                              minWidth: '0',
+                              padding: '10px 18px',
+                              fontSize: '13px',
+                              background: 'rgba(0, 229, 255, 0.2)',
+                              border: '1px solid rgba(0, 229, 255, 0.3)',
+                              color: 'rgba(0, 229, 255, 0.5)'
+                            }}
+                          >
+                            Tovább a harmadik ügyre →
+                          </button>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </>
             ) : (
               <p className="muted">Aktív feladat betöltése...</p>
             )}
           </TaskCard>
-        )}
-
-        {completedCount === tasks.length && tasks.length > 0 && (
-          <div className="card" style={{ marginTop: '20px', animation: 'fadeIn .3s ease both' }}>
-            {currentLevel === 2 ? (
-              <>
-                <h3 style={{ marginTop: 0, color: '#00e5ff', fontFamily: 'Rajdhani, Inter, sans-serif', fontSize: '20px', fontWeight: 700 }}>Ügy teljesítve</h3>
-                <p className="muted" style={{ marginBottom: '16px', lineHeight: '1.6' }}>
-                  Gratulálunk! A harmadik ügy <strong>december 6-án, este 7 órakor nyílik</strong>.
-                </p>
-                <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
-                  <Link
-                    to="/aurora"
-                    style={{
-                      fontSize: '12px',
-                      color: 'var(--muted)',
-                      textDecoration: 'underline',
-                      textUnderlineOffset: '4px',
-                      padding: '4px 0'
-                    }}
-                  >
-                    Vissza az ügyekhez
-                  </Link>
-                </div>
-              </>
-            ) : (
-              <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
-                <Link
-                  to="/aurora"
-                  style={{
-                    fontSize: '12px',
-                    color: 'var(--muted)',
-                    textDecoration: 'underline',
-                    textUnderlineOffset: '4px',
-                    padding: '4px 0'
-                  }}
-                >
-                  Vissza az ügyekhez
-                </Link>
-                <Link
-                  className="btn"
-                  to={`/ugy${currentLevel + 1}`}
-                  style={{
-                    textDecoration: 'none',
-                    display: 'inline-flex',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    textAlign: 'center',
-                    minWidth: '0',
-                    padding: '10px 18px',
-                    fontSize: '13px'
-                  }}
-                >
-                  Tovább a következő ügyre
-                </Link>
-              </div>
-            )}
-          </div>
         )}
       </main>
     </div>

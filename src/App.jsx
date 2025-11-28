@@ -35,7 +35,7 @@ function AppContent() {
 
   return (
     <>
-      <BrowserRouter>
+        <BrowserRouter>
         <div className="scanlines" aria-hidden="true"></div>
         <div className="grid-overlay" aria-hidden="true"></div>
         <Routes>

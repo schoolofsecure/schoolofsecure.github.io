@@ -508,7 +508,7 @@ const Aurora = () => {
                       </div>
                     )}
                     {!showDecember6 && (
-                      <span className="coming" aria-label="Zárolt">🔒</span>
+                    <span className="coming" aria-label="Zárolt">🔒</span>
                     )}
                   </div>
                 )

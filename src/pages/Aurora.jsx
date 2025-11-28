@@ -438,7 +438,11 @@ const Aurora = () => {
                 return isUnlocked ? (
                   <Link
                     key={card.n}
-                    to={card.href || (card.n === 1 ? '/ugy1' : `/ugy${card.n}`)}
+                    to={
+                      card.href && card.href !== '#'
+                        ? card.href
+                        : (card.n === 1 ? '/ugy1' : `/ugy${card.n}`)
+                    }
                     className="level-card"
                     style={{
                       position: 'relative'

@@ -14,7 +14,7 @@ export const useScoring = () => {
 
 export const ScoringProvider = ({ children }) => {
   const { user, isAuthenticated } = useAuth()
-  const [totalPoints, setTotalPoints] = useState(0)
+  const [totalPoints, setTotalPoints] = useState(50)
   const [currentRank, setCurrentRank] = useState(null)
   const [achievements, setAchievements] = useState([])
   const [levelStats, setLevelStats] = useState({}) // { level: { points, errors, timeSpent, completed } }
@@ -33,14 +33,17 @@ export const ScoringProvider = ({ children }) => {
       if (saved) {
         try {
           const data = JSON.parse(saved)
-          setTotalPoints(data.totalPoints || 0)
+          setTotalPoints(data.totalPoints || 50)
           setAchievements(data.achievements || [])
           setLevelStats(data.levelStats || {})
           setPerfectStreak(data.perfectStreak || 0)
-          updateRank(data.totalPoints || 0, data.highestLevel || 1, true) // skipAnimation: true betöltéskor
+          updateRank(data.totalPoints || 50, data.highestLevel || 1, true) // skipAnimation: true betöltéskor
         } catch (e) {
           console.warn('Nem sikerült betölteni a pontozást:', e)
         }
+      } else {
+        // Ha nincs mentett adat, kezdjünk 50 ponttal
+        updateRank(50, 1, true)
       }
     }
   }, [isAuthenticated, user])
@@ -52,14 +55,17 @@ export const ScoringProvider = ({ children }) => {
     if (saved) {
       try {
         const data = JSON.parse(saved)
-        setTotalPoints(data.totalPoints || 0)
+        setTotalPoints(data.totalPoints || 50)
         setAchievements(data.achievements || [])
         setLevelStats(data.levelStats || {})
         setPerfectStreak(data.perfectStreak || 0)
-        updateRank(data.totalPoints || 0, data.highestLevel || 1, true) // skipAnimation: true betöltéskor
+        updateRank(data.totalPoints || 50, data.highestLevel || 1, true) // skipAnimation: true betöltéskor
       } catch (e) {
         console.warn('Nem sikerült betölteni a pontozást:', e)
       }
+    } else {
+      // Ha nincs mentett adat, kezdjünk 50 ponttal
+      updateRank(50, 1, true)
     }
   }
   

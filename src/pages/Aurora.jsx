@@ -410,12 +410,15 @@ const Aurora = () => {
                 // A 3. kártya ne legyen automatikusan feloldva, ha csak a 2-es pálya van teljesítve
                 const isUgy2Completed = highestCompleted >= 2
                 const isUgy3 = card.n === 3
+                const isCompleted = card.n <= highestCompleted
+                
                 // Speciális eset: ha a 3. kártya és a 2-es pálya teljesítve van, akkor ne legyen feloldva
                 let isUnlocked
                 if (isUgy3 && isUgy2Completed) {
                   // A 3. kártya ne legyen feloldva, ha csak a 2-es pálya van teljesítve
                   isUnlocked = false
                 } else {
+                  // Minden pálya elérhető, ha már teljesítve van, vagy a következő pálya
                   isUnlocked = card.n <= highestCompleted + 1 || (card.n === 1 && !card.locked)
                 }
                 const showDecember6 = isUgy3 && isUgy2Completed && !isUnlocked
@@ -425,10 +428,33 @@ const Aurora = () => {
                     key={card.n}
                     to={card.href || (card.n === 1 ? '/ugy1' : `/ugy${card.n}`)}
                     className="level-card"
+                    style={{
+                      position: 'relative'
+                    }}
                   >
                     <span className="level-label">Ügy #{card.n}</span>
                     <img src={card.img} alt={`Ügy ${card.n}`} loading="lazy" />
                     <div className="case-title">{card.title}</div>
+                    {isCompleted && (
+                      <div 
+                        style={{
+                          position: 'absolute',
+                          top: '8px',
+                          right: '8px',
+                          background: 'rgba(51, 255, 153, 0.15)',
+                          border: '1px solid rgba(51, 255, 153, 0.4)',
+                          borderRadius: '6px',
+                          padding: '4px 8px',
+                          fontSize: '11px',
+                          color: '#33ff99',
+                          fontFamily: 'Rajdhani, Inter, sans-serif',
+                          fontWeight: 600,
+                          letterSpacing: '0.3px'
+                        }}
+                      >
+                        ✓ Teljesítve
+                      </div>
+                    )}
                   </Link>
                 ) : (
                   <div 

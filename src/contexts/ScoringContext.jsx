@@ -19,6 +19,7 @@ export const ScoringProvider = ({ children }) => {
   const [achievements, setAchievements] = useState([])
   const [levelStats, setLevelStats] = useState({}) // { level: { points, errors, timeSpent, completed } }
   const [perfectStreak, setPerfectStreak] = useState(0)
+  const [showPointAnimation, setShowPointAnimation] = useState(null) // { points: number } | null
   
   // Betöltés Firebase-ből (ha be van jelentkezve)
   useEffect(() => {
@@ -82,6 +83,8 @@ export const ScoringProvider = ({ children }) => {
     const result = calculateTaskScore({ difficulty, isCorrect, level, timeSpent })
     
     if (isCorrect) {
+      // Animáció triggerelése
+      setShowPointAnimation({ points: result.points })
       setTotalPoints(prev => {
         const newTotal = prev + result.points
         updateRank(newTotal, level)
@@ -221,7 +224,9 @@ export const ScoringProvider = ({ children }) => {
         scoreTask,
         scoreLevel,
         getLevelStats,
-        getStats
+        getStats,
+        showPointAnimation,
+        setShowPointAnimation
       }}
     >
       {children}

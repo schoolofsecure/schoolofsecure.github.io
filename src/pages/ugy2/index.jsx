@@ -37,12 +37,21 @@ const getTaskTitle = (task, index) => {
 
 const EPISODE_NAME = 'Éjféli kézfogás'
 
+// Képek hozzárendelése a feladattípusokhoz
+const TASK_IMAGES = {
+  PASSWORD_STRENGTH: '/images/2b.jpg',
+  FIREWALL: '/images/2e.jpg',
+  PHISHING: '/images/2c.jpg',
+  SOCIAL_ENGINEERING: '/images/2a.jpg',
+  SECURITY_DECISION: '/images/2d.jpg'
+}
+
 const TASK_STORIES = {
   PASSWORD_STRENGTH: {
     title: 'Gyanús jelszóváltoztatás',
     text: `A rendszer egyik adminfiókja szokatlan jelszóváltoztatási kérelmet küldött be.
 
-A kérelem pont akkor érkezett, amikor az ismeretlen „rendszerkapcsolat létesítése” riasztás aktiválódott.
+A kérelem pont akkor érkezett, amikor az ismeretlen „rendszerkapcsolat létesítése" riasztás aktiválódott.
 
 Most rajtad a sor, hogy dönts:
 
@@ -297,6 +306,7 @@ const Ugy2 = () => {
                   task={currentTask}
                   taskStory={TASK_STORIES[currentTask.type]}
                   taskLabel={TASK_LABELS[currentTask.type]}
+                  imageSrc={TASK_IMAGES[currentTask.type]}
                   onSuccess={() => handleTaskSuccess(step)}
                   onFailure={handleTaskFailure}
                 />

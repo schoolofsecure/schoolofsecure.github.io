@@ -46,15 +46,15 @@ const TaskPreviewList = () => {
 
         while (variations.length < variationTarget && attempt < variationTarget * 5) {
           const seed = BASE_SEED + typeIndex * 1000 + diffIndex * 100 + attempt * 10
-          Random.setSeed(seed)
-          const task = TaskFactory.createRandomTask(difficulty, [type], 2, diffIndex + 1)
-          task.generate()
+        Random.setSeed(seed)
+        const task = TaskFactory.createRandomTask(difficulty, [type], 2, diffIndex + 1)
+        task.generate()
           const signature = JSON.stringify({ payload: task.payload, solution: task.solution })
 
           if (!seen.has(signature)) {
             seen.add(signature)
             variations.push({
-              seed,
+          seed,
               task,
               variationIndex: variations.length
             })

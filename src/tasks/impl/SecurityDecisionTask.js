@@ -11,7 +11,7 @@ const DECISIONS = [
   {
     title: 'Gyanús hálózati forgalom',
     scenario: 'Gyanús hálózati forgalmat észlelsz egy belső szerverről külső címekre.',
-    options: ['Azonnal lekapcsolod a szervert', 'Isolálod a hálózatban és megfigyeled a forgalmat', 'Vársz, hátha megszűnik magától'],
+    options: ['Azonnal lekapcsolod a szervert', 'Izolálod a hálózatban és megfigyeled a forgalmat', 'Vársz, hátha megszűnik magától'],
     correctIndex: 1
   },
   {

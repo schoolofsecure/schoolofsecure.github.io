@@ -1,11 +1,52 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import ChallengeInput from '../Ugy1/ChallengeInput'
+
+// Kis teljesítmény-optimalizáció: késleltetett képbetöltés IntersectionObserverrel
+const PLACEHOLDER = 'data:image/gif;base64,R0lGODlhAQABAAAAACw=';
+function PerfImg({ src, alt, className, width, height, priority }){
+  const ref = useRef(null);
+  useEffect(()=>{
+    const img = ref.current;
+    if(!img) return;
+    let loaded = false;
+    function loadReal(){
+      if(loaded) return;
+      loaded = true;
+      const real = img.getAttribute('data-src');
+      if(real){ img.src = real; }
+    }
+    if('IntersectionObserver' in window){
+      const io = new IntersectionObserver((entries)=>{
+        entries.forEach(e=>{ if(e.isIntersecting) { loadReal(); io.disconnect(); } });
+      }, { rootMargin: '200px 0px' });
+      io.observe(img);
+      return () => { try { io.disconnect(); } catch(_){} };
+    } else {
+      loadReal();
+    }
+  }, []);
+  return (
+    <img
+      ref={ref}
+      className={className}
+      src={PLACEHOLDER}
+      data-src={src}
+      alt={alt}
+      loading="lazy"
+      decoding="async"
+      fetchPriority={priority ? 'high' : 'low'}
+      width={width}
+      height={height}
+      style={{ backgroundColor:'#0f1621' }}
+    />
+  );
+}
 
 /**
  * Univerzális Task renderer komponens, ami a dinamikusan generált feladatokat jeleníti meg.
  * A Task objektum type mezője alapján választja ki a megfelelő renderelési módot.
  */
-const TaskRenderer = ({ task, taskStory, taskLabel, onSuccess, onFailure }) => {
+const TaskRenderer = ({ task, taskStory, taskLabel, onSuccess, onFailure, imageSrc }) => {
   if (!task || !task.payload) {
     return <div className="card"><p className="muted">Feladat betöltése...</p></div>
   }
@@ -14,38 +55,38 @@ const TaskRenderer = ({ task, taskStory, taskLabel, onSuccess, onFailure }) => {
 
   switch (type) {
     case 'CAESAR':
-      return <CaesarTaskRenderer task={task} payload={payload} taskStory={taskStory} taskLabel={taskLabel} onSuccess={onSuccess} onFailure={onFailure} />
+      return <CaesarTaskRenderer task={task} payload={payload} taskStory={taskStory} taskLabel={taskLabel} onSuccess={onSuccess} onFailure={onFailure} imageSrc={imageSrc} />
     
     case 'VIGENERE':
-      return <VigenereTaskRenderer task={task} payload={payload} taskStory={taskStory} taskLabel={taskLabel} onSuccess={onSuccess} onFailure={onFailure} />
+      return <VigenereTaskRenderer task={task} payload={payload} taskStory={taskStory} taskLabel={taskLabel} onSuccess={onSuccess} onFailure={onFailure} imageSrc={imageSrc} />
     
     case 'PHISHING':
-      return <PhishingTaskRenderer task={task} payload={payload} taskStory={taskStory} taskLabel={taskLabel} onSuccess={onSuccess} onFailure={onFailure} />
+      return <PhishingTaskRenderer task={task} payload={payload} taskStory={taskStory} taskLabel={taskLabel} onSuccess={onSuccess} onFailure={onFailure} imageSrc={imageSrc} />
     
     case 'LOG_ANALYSIS':
-      return <LogAnalysisTaskRenderer task={task} payload={payload} taskStory={taskStory} taskLabel={taskLabel} onSuccess={onSuccess} onFailure={onFailure} />
+      return <LogAnalysisTaskRenderer task={task} payload={payload} taskStory={taskStory} taskLabel={taskLabel} onSuccess={onSuccess} onFailure={onFailure} imageSrc={imageSrc} />
     
     case 'ICON_MEMORY':
-      return <IconMemoryTaskRenderer task={task} payload={payload} taskStory={taskStory} taskLabel={taskLabel} onSuccess={onSuccess} onFailure={onFailure} />
+      return <IconMemoryTaskRenderer task={task} payload={payload} taskStory={taskStory} taskLabel={taskLabel} onSuccess={onSuccess} onFailure={onFailure} imageSrc={imageSrc} />
     
     case 'PASSWORD_STRENGTH':
-      return <PasswordStrengthTaskRenderer task={task} payload={payload} taskStory={taskStory} taskLabel={taskLabel} onSuccess={onSuccess} onFailure={onFailure} />
+      return <PasswordStrengthTaskRenderer task={task} payload={payload} taskStory={taskStory} taskLabel={taskLabel} onSuccess={onSuccess} onFailure={onFailure} imageSrc={imageSrc} />
     
     case 'XOR':
     case 'HASH_MISMATCH':
     case 'URL_TRUST':
     case 'SOCIAL_ENGINEERING':
-      return <SocialEngineeringTaskRenderer task={task} payload={payload} taskStory={taskStory} taskLabel={taskLabel} onSuccess={onSuccess} onFailure={onFailure} />
+      return <SocialEngineeringTaskRenderer task={task} payload={payload} taskStory={taskStory} taskLabel={taskLabel} onSuccess={onSuccess} onFailure={onFailure} imageSrc={imageSrc} />
     
     case 'FIREWALL':
-      return <FirewallTaskRenderer task={task} payload={payload} taskStory={taskStory} taskLabel={taskLabel} onSuccess={onSuccess} onFailure={onFailure} />
+      return <FirewallTaskRenderer task={task} payload={payload} taskStory={taskStory} taskLabel={taskLabel} onSuccess={onSuccess} onFailure={onFailure} imageSrc={imageSrc} />
     
     case 'MISCONFIG':
     case 'RISKY_PERMISSION':
-      return <DefaultTaskRenderer task={task} payload={payload} taskStory={taskStory} taskLabel={taskLabel} onSuccess={onSuccess} onFailure={onFailure} />
+      return <DefaultTaskRenderer task={task} payload={payload} taskStory={taskStory} taskLabel={taskLabel} onSuccess={onSuccess} onFailure={onFailure} imageSrc={imageSrc} />
     
     case 'SECURITY_DECISION':
-      return <SecurityDecisionTaskRenderer task={task} payload={payload} taskStory={taskStory} taskLabel={taskLabel} onSuccess={onSuccess} onFailure={onFailure} />
+      return <SecurityDecisionTaskRenderer task={task} payload={payload} taskStory={taskStory} taskLabel={taskLabel} onSuccess={onSuccess} onFailure={onFailure} imageSrc={imageSrc} />
     
     case 'CRYPTO_PUZZLE':
     case 'PSEUDOCODE_BUG':
@@ -54,7 +95,7 @@ const TaskRenderer = ({ task, taskStory, taskLabel, onSuccess, onFailure }) => {
     case 'ATTACK_SCENARIO':
     case 'ZERO_DAY':
       // Alapértelmezett renderelés szöveges inputtal
-      return <DefaultTaskRenderer task={task} payload={payload} taskStory={taskStory} taskLabel={taskLabel} onSuccess={onSuccess} onFailure={onFailure} />
+      return <DefaultTaskRenderer task={task} payload={payload} taskStory={taskStory} taskLabel={taskLabel} onSuccess={onSuccess} onFailure={onFailure} imageSrc={imageSrc} />
     
     default:
       return <div className="card"><p className="muted">Ismeretlen feladattípus: {type}</p></div>
@@ -74,7 +115,7 @@ const HintDetails = ({ text }) => {
 }
 
 // Caesar Task Renderer
-const CaesarTaskRenderer = ({ task, payload, taskStory, taskLabel, onSuccess, onFailure }) => {
+const CaesarTaskRenderer = ({ task, payload, taskStory, taskLabel, onSuccess, onFailure, imageSrc }) => {
   const [feedback, setFeedback] = useState(null)
   const [solved, setSolved] = useState(false)
 
@@ -122,6 +163,7 @@ const CaesarTaskRenderer = ({ task, payload, taskStory, taskLabel, onSuccess, on
           onSuccess={onSuccess}
           onFailure={onFailure}
         />
+        {imageSrc && <div className="task-note"><PerfImg className="task-ill" src={imageSrc} alt="Illusztráció" width="280" height="280" priority /></div>}
         <HintDetails text={payload.hint} />
         {!solved && (
           <div style={{marginTop:'16px', paddingTop:'16px', borderTop:'1px solid rgba(207,230,255,0.2)', display:'flex', gap:'8px', flexWrap:'wrap'}}>
@@ -141,7 +183,7 @@ const CaesarTaskRenderer = ({ task, payload, taskStory, taskLabel, onSuccess, on
 }
 
 // Vigenère Task Renderer
-const VigenereTaskRenderer = ({ task, payload, taskStory, taskLabel, onSuccess, onFailure }) => {
+const VigenereTaskRenderer = ({ task, payload, taskStory, taskLabel, onSuccess, onFailure, imageSrc }) => {
   const [solved, setSolved] = useState(false)
 
   const handleCheck = (value, normalize) => {
@@ -192,6 +234,7 @@ const VigenereTaskRenderer = ({ task, payload, taskStory, taskLabel, onSuccess, 
           onSuccess={onSuccess}
           onFailure={onFailure}
         />
+        {imageSrc && <div className="task-note"><PerfImg className="task-ill" src={imageSrc} alt="Illusztráció" width="280" height="280" priority /></div>}
         <HintDetails text={payload.hint} />
         {!solved && (
           <div style={{marginTop:'16px', paddingTop:'16px', borderTop:'1px solid rgba(207,230,255,0.2)', display:'flex', gap:'8px', flexWrap:'wrap'}}>
@@ -211,7 +254,7 @@ const VigenereTaskRenderer = ({ task, payload, taskStory, taskLabel, onSuccess, 
 }
 
 // Phishing Task Renderer
-const PhishingTaskRenderer = ({ task, payload, taskStory, taskLabel, onSuccess, onFailure }) => {
+const PhishingTaskRenderer = ({ task, payload, taskStory, taskLabel, onSuccess, onFailure, imageSrc }) => {
   const [selectedIds, setSelectedIds] = useState([])
   const [feedback, setFeedback] = useState(null)
   const [solved, setSolved] = useState(false)
@@ -315,6 +358,7 @@ const PhishingTaskRenderer = ({ task, payload, taskStory, taskLabel, onSuccess, 
             Ellenőrzés
           </button>
         </div>
+        {imageSrc && <div className="task-note"><PerfImg className="task-ill" src={imageSrc} alt="Illusztráció" width="280" height="280" priority /></div>}
         <HintDetails text={payload.hint} />
         {!solved && (
           <div style={{marginTop:'16px', paddingTop:'16px', borderTop:'1px solid rgba(207,230,255,0.2)', display:'flex', gap:'8px', flexWrap:'wrap'}}>
@@ -334,7 +378,7 @@ const PhishingTaskRenderer = ({ task, payload, taskStory, taskLabel, onSuccess, 
 }
 
 // Log Analysis Task Renderer
-const LogAnalysisTaskRenderer = ({ task, payload, taskStory, taskLabel, onSuccess, onFailure }) => {
+const LogAnalysisTaskRenderer = ({ task, payload, taskStory, taskLabel, onSuccess, onFailure, imageSrc }) => {
   const [selectedRows, setSelectedRows] = useState([])
   const [feedback, setFeedback] = useState(null)
   const [solved, setSolved] = useState(false)
@@ -438,6 +482,7 @@ const LogAnalysisTaskRenderer = ({ task, payload, taskStory, taskLabel, onSucces
             </button>
           )}
         </div>
+        {imageSrc && <div className="task-note"><PerfImg className="task-ill" src={imageSrc} alt="Illusztráció" width="280" height="280" priority /></div>}
         <HintDetails text={payload.hint} />
         {!solved && (
           <div style={{marginTop:'16px', paddingTop:'16px', borderTop:'1px solid rgba(207,230,255,0.2)', display:'flex', gap:'8px', flexWrap:'wrap'}}>
@@ -457,7 +502,7 @@ const LogAnalysisTaskRenderer = ({ task, payload, taskStory, taskLabel, onSucces
 }
 
 // Icon Memory Task Renderer
-const IconMemoryTaskRenderer = ({ task, payload, onSuccess, onFailure }) => {
+const IconMemoryTaskRenderer = ({ task, payload, taskStory, taskLabel, onSuccess, onFailure, imageSrc }) => {
   const [selectedIds, setSelectedIds] = useState([])
   const [feedback, setFeedback] = useState(null)
   const [solved, setSolved] = useState(false)
@@ -558,6 +603,7 @@ const IconMemoryTaskRenderer = ({ task, payload, onSuccess, onFailure }) => {
             </button>
           )}
         </div>
+        {imageSrc && <div className="task-note"><PerfImg className="task-ill" src={imageSrc} alt="Illusztráció" width="280" height="280" priority /></div>}
         <HintDetails text={payload.hint} />
         {!solved && (
           <div style={{marginTop:'16px', paddingTop:'16px', borderTop:'1px solid rgba(207,230,255,0.2)', display:'flex', gap:'8px', flexWrap:'wrap'}}>
@@ -577,7 +623,7 @@ const IconMemoryTaskRenderer = ({ task, payload, onSuccess, onFailure }) => {
 }
 
 // Social Engineering Task Renderer
-const SocialEngineeringTaskRenderer = ({ task, payload, taskStory, taskLabel, onSuccess, onFailure }) => {
+const SocialEngineeringTaskRenderer = ({ task, payload, taskStory, taskLabel, onSuccess, onFailure, imageSrc }) => {
   const [choices, setChoices] = useState({})
   const [feedback, setFeedback] = useState(null)
   const [solved, setSolved] = useState(false)
@@ -663,6 +709,7 @@ const SocialEngineeringTaskRenderer = ({ task, payload, taskStory, taskLabel, on
             Ellenőrzés
           </button>
         </div>
+        {imageSrc && <div className="task-note"><PerfImg className="task-ill" src={imageSrc} alt="Illusztráció" width="280" height="280" priority /></div>}
         <HintDetails text={payload.hint} />
         {!solved && (
           <div style={{ marginTop: '16px', paddingTop: '16px', borderTop: '1px solid rgba(207,230,255,0.2)', display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
@@ -682,7 +729,7 @@ const SocialEngineeringTaskRenderer = ({ task, payload, taskStory, taskLabel, on
 }
 
 // Firewall Task Renderer
-const FirewallTaskRenderer = ({ task, payload, taskStory, taskLabel, onSuccess, onFailure }) => {
+const FirewallTaskRenderer = ({ task, payload, taskStory, taskLabel, onSuccess, onFailure, imageSrc }) => {
   const [rules, setRules] = useState({})
   const [feedback, setFeedback] = useState(null)
   const [solved, setSolved] = useState(false)
@@ -800,6 +847,7 @@ const FirewallTaskRenderer = ({ task, payload, taskStory, taskLabel, onSuccess, 
             Ellenőrzés
           </button>
         </div>
+        {imageSrc && <div className="task-note"><PerfImg className="task-ill" src={imageSrc} alt="Illusztráció" width="280" height="280" priority /></div>}
         <HintDetails text={payload.hint} />
         {!solved && (
           <div style={{ marginTop: '16px', paddingTop: '16px', borderTop: '1px solid rgba(207,230,255,0.2)', display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
@@ -819,7 +867,7 @@ const FirewallTaskRenderer = ({ task, payload, taskStory, taskLabel, onSuccess, 
 }
 
 // Security Decision Task Renderer
-const SecurityDecisionTaskRenderer = ({ task, payload, taskStory, taskLabel, onSuccess, onFailure }) => {
+const SecurityDecisionTaskRenderer = ({ task, payload, taskStory, taskLabel, onSuccess, onFailure, imageSrc }) => {
   const [answers, setAnswers] = useState([])
   const [feedback, setFeedback] = useState(null)
   const [solved, setSolved] = useState(false)
@@ -918,6 +966,7 @@ const SecurityDecisionTaskRenderer = ({ task, payload, taskStory, taskLabel, onS
             Ellenőrzés
           </button>
         </div>
+        {imageSrc && <div className="task-note"><PerfImg className="task-ill" src={imageSrc} alt="Illusztráció" width="280" height="280" priority /></div>}
         {!solved && (
           <div style={{ marginTop: '16px', paddingTop: '16px', borderTop: '1px solid rgba(207,230,255,0.2)', display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
             <button
@@ -936,7 +985,7 @@ const SecurityDecisionTaskRenderer = ({ task, payload, taskStory, taskLabel, onS
 }
 
 // Password Strength Task Renderer
-const PasswordStrengthTaskRenderer = ({ task, payload, taskStory, taskLabel, onSuccess, onFailure }) => {
+const PasswordStrengthTaskRenderer = ({ task, payload, taskStory, taskLabel, onSuccess, onFailure, imageSrc }) => {
   const [selectedAnswer, setSelectedAnswer] = useState(null)
   const [feedback, setFeedback] = useState(null)
   const [solved, setSolved] = useState(false)
@@ -1062,6 +1111,7 @@ const PasswordStrengthTaskRenderer = ({ task, payload, taskStory, taskLabel, onS
             Ellenőrzés
           </button>
         </div>
+        {imageSrc && <div className="task-note"><PerfImg className="task-ill" src={imageSrc} alt="Illusztráció" width="280" height="280" priority /></div>}
         <HintDetails text={payload.hint} />
         {!solved && (
           <div style={{ marginTop: '16px', paddingTop: '16px', borderTop: '1px solid rgba(207,230,255,0.2)', display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
@@ -1081,7 +1131,7 @@ const PasswordStrengthTaskRenderer = ({ task, payload, taskStory, taskLabel, onS
 }
 
 // Default Task Renderer (szöveges input)
-const DefaultTaskRenderer = ({ task, payload, taskStory, taskLabel, onSuccess, onFailure }) => {
+const DefaultTaskRenderer = ({ task, payload, taskStory, taskLabel, onSuccess, onFailure, imageSrc }) => {
   const [solved, setSolved] = useState(false)
 
   const handleCheck = (value, normalize) => {
@@ -1130,6 +1180,7 @@ const DefaultTaskRenderer = ({ task, payload, taskStory, taskLabel, onSuccess, o
           onSuccess={onSuccess}
           onFailure={onFailure}
         />
+        {imageSrc && <div className="task-note"><PerfImg className="task-ill" src={imageSrc} alt="Illusztráció" width="280" height="280" priority /></div>}
         {payload.hint && (
           <div className="hint" style={{marginTop:'12px'}}>
             <details>

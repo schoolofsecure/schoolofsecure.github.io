@@ -54,8 +54,11 @@ const Aurora = () => {
   // Firebase auth állapot figyelése és unlock logika
   useEffect(() => {
     const checkMission = async () => {
-      if (isAuthenticated) {
+      if (isAuthenticated && user) {
         setUnlocked(true)
+        
+        // Ellenőrizzük, hogy ez az első bejelentkezés-e
+        const hasSeenPrompt = localStorage.getItem(`retro_prompt_seen_${user.uid}`)
         
         // Ellenőrizzük a mission teljesítését Firebase-ből
         const completed = await checkMissionCompletion()
@@ -65,9 +68,16 @@ const Aurora = () => {
         if (completed) {
           setShowLevels(true)
           setShowMission(false)
+          setRetroPromptDismissed(true)
         } else {
           setShowLevels(false)
           setShowMission(true)
+          // Csak az első bejelentkezéskor jelenjen meg a prompt
+          if (!hasSeenPrompt) {
+            setRetroPromptDismissed(false)
+          } else {
+            setRetroPromptDismissed(true)
+          }
         }
       } else {
         // Ha nincs bejelentkezve, akkor zárolva marad
@@ -75,20 +85,13 @@ const Aurora = () => {
         setShowLevels(false)
         setShowMission(false)
         setMissionCompleted(false)
+        setRetroPromptDismissed(true)
+        setRetroError('')
       }
     }
     
     checkMission()
-  }, [isAuthenticated, checkMissionCompletion])
-
-  useEffect(() => {
-    if (isAuthenticated) {
-      setRetroPromptDismissed(false)
-    } else {
-      setRetroPromptDismissed(true)
-      setRetroError('')
-    }
-  }, [isAuthenticated])
+  }, [isAuthenticated, checkMissionCompletion, user])
 
   const handleGateSubmit = async (e) => {
     e.preventDefault()
@@ -137,7 +140,7 @@ const Aurora = () => {
   }
 
   const handleRetroCompletionClaim = async () => {
-    if (!isAuthenticated) return
+    if (!isAuthenticated || !user) return
     setRetroSaving(true)
     setRetroError('')
     try {
@@ -149,6 +152,8 @@ const Aurora = () => {
       if (!ugy1Result?.success) {
         throw new Error(ugy1Result?.message || 'Nem sikerült rögzíteni az első ügyet.')
       }
+      // Jelöljük meg, hogy látta a promptot
+      localStorage.setItem(`retro_prompt_seen_${user.uid}`, 'true')
       setMissionCompleted(true)
       setRetroPromptDismissed(true)
       setShowMission(false)
@@ -161,6 +166,13 @@ const Aurora = () => {
     } finally {
       setRetroSaving(false)
     }
+  }
+
+  const handleRetroDismiss = () => {
+    if (!user) return
+    // Jelöljük meg, hogy látta a promptot, még akkor is, ha "Nem"-et válaszolt
+    localStorage.setItem(`retro_prompt_seen_${user.uid}`, 'true')
+    setRetroPromptDismissed(true)
   }
 
   const handleEntrySubmit = async () => {
@@ -346,7 +358,7 @@ const Aurora = () => {
                   <button
                     className="btn-ghost"
                     type="button"
-                    onClick={() => setRetroPromptDismissed(true)}
+                    onClick={handleRetroDismiss}
                   >
                     Nem, most fogom megoldani
                   </button>

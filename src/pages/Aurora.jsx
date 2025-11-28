@@ -5,7 +5,7 @@ import '../index.css'
 import '../styles/aurora.css'
 
 const Aurora = () => {
-  const { loginWithEmail, registerWithEmail, isAuthenticated, user, saveLevelCompletion, checkMissionCompletion, getHighestCompletedLevel, logout, getRetroPromptSeen, setRetroPromptSeen } = useAuth()
+  const { loginWithEmail, registerWithEmail, sendPasswordReset, isAuthenticated, user, saveLevelCompletion, checkMissionCompletion, getHighestCompletedLevel, logout, getRetroPromptSeen, setRetroPromptSeen } = useAuth()
   const [data, setData] = useState(null)
   const [unlocked, setUnlocked] = useState(false)
   const [showLevels, setShowLevels] = useState(false)
@@ -15,6 +15,7 @@ const Aurora = () => {
   const [password, setPassword] = useState('')
   const [gateError, setGateError] = useState('')
   const [registrationSuccess, setRegistrationSuccess] = useState(false)
+  const [passwordResetMessage, setPasswordResetMessage] = useState('')
   const [entryCode, setEntryCode] = useState('')
   const [entryStatus, setEntryStatus] = useState('')
   const [entryStatusType, setEntryStatusType] = useState('')
@@ -136,6 +137,25 @@ const Aurora = () => {
     } catch (error) {
       setGateError(error.message || 'Regisztráció sikertelen.')
       setRegistrationSuccess(false)
+    }
+  }
+
+  const handlePasswordReset = async () => {
+    if (!email.trim()) {
+      setPasswordResetMessage('Írj be egy e-mail címet a jelszó emlékeztetőhöz.')
+      return
+    }
+    
+    setPasswordResetMessage('')
+    setGateError('')
+    
+    try {
+      await sendPasswordReset(email)
+      // Biztonsági okokból mindig ugyanazt az üzenetet mutatjuk
+      setPasswordResetMessage('Ha a fenti e-mail cím megtalálható az adatbázisunkban, akkor kiküldtünk egy jelszó emlékeztető e-mailt. Ellenőrizd a postaládádat.')
+    } catch (error) {
+      // Biztonsági okokból mindig ugyanazt az üzenetet mutatjuk
+      setPasswordResetMessage('Ha a fenti e-mail cím megtalálható az adatbázisunkban, akkor kiküldtünk egy jelszó emlékeztető e-mailt. Ellenőrizd a postaládádat.')
     }
   }
 
@@ -315,6 +335,7 @@ const Aurora = () => {
                   setEmail(e.target.value)
                   setGateError('')
                   setRegistrationSuccess(false)
+                  setPasswordResetMessage('')
                 }}
                 style={{marginBottom: '10px'}}
               />
@@ -332,9 +353,22 @@ const Aurora = () => {
                 }}
                 style={{marginBottom: '10px'}}
               />
-              <div style={{display: 'flex', gap: '10px', flexWrap: 'wrap'}}>
+              <div style={{display: 'flex', gap: '10px', flexWrap: 'nowrap', alignItems: 'center'}}>
                 <button className="btn" type="submit">Bejelentkezés</button>
                 <button className="btn-ghost" type="button" onClick={handleRegister}>Regisztráció</button>
+                <button 
+                  className="btn-ghost" 
+                  type="button" 
+                  onClick={handlePasswordReset}
+                  disabled={!email.trim()}
+                  style={{
+                    opacity: email.trim() ? 1 : 0.5,
+                    cursor: email.trim() ? 'pointer' : 'not-allowed',
+                    whiteSpace: 'nowrap'
+                  }}
+                >
+                  Jelszó emlékeztető
+                </button>
               </div>
             </form>
             {registrationSuccess && (
@@ -349,6 +383,19 @@ const Aurora = () => {
               }}>
                 ✓ Sikeres regisztráció! Küldtünk egy megerősítő e-mailt az <strong>{email}</strong> címre.<br />
                 Ellenőrizd a postaládádat, majd jelentkezz be a jelszóval, miután megerősítetted az e-mailt.
+              </div>
+            )}
+            {passwordResetMessage && (
+              <div style={{
+                marginTop: '10px',
+                padding: '12px',
+                background: 'rgba(51, 255, 153, 0.1)',
+                border: '1px solid rgba(51, 255, 153, 0.3)',
+                borderRadius: '8px',
+                color: 'var(--ok)',
+                fontSize: '14px'
+              }}>
+                {passwordResetMessage}
               </div>
             )}
             {gateError && <div className="error" id="err" style={{marginTop: '10px'}}>{gateError}</div>}

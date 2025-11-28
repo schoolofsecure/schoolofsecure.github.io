@@ -5,6 +5,7 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   sendEmailVerification,
+  sendPasswordResetEmail,
   signOut,
   onAuthStateChanged
 } from 'firebase/auth'
@@ -92,6 +93,26 @@ export const AuthProvider = ({ children }) => {
       return { success: true, message: 'Kijelentkeztél.' }
     } catch (error) {
       return { success: false, message: error?.message || 'Kijelentkezés sikertelen' }
+    }
+  }
+
+  const sendPasswordReset = async (email) => {
+    try {
+      if (!email || !email.trim()) {
+        throw new Error('Adj meg egy e-mail címet.')
+      }
+      await sendPasswordResetEmail(auth, email.trim())
+      return { success: true, message: 'Jelszó emlékeztető e-mail elküldve. Ellenőrizd a postaládádat.' }
+    } catch (error) {
+      let errorMessage = 'Nem sikerült elküldeni a jelszó emlékeztető e-mailt.'
+      if (error.code === 'auth/user-not-found') {
+        errorMessage = 'Ezzel az e-mail címmel nincs regisztrált fiók.'
+      } else if (error.code === 'auth/invalid-email') {
+        errorMessage = 'Érvénytelen e-mail cím.'
+      } else if (error.message) {
+        errorMessage = error.message
+      }
+      return { success: false, message: errorMessage }
     }
   }
 
@@ -237,6 +258,7 @@ export const AuthProvider = ({ children }) => {
     registerWithEmail,
     loginWithEmail,
     logout,
+    sendPasswordReset,
     saveLevelCompletion,
     checkMissionCompletion,
     getHighestCompletedLevel,

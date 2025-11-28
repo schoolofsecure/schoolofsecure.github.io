@@ -47,9 +47,9 @@
 - A 2. pálya most fix easy feladatlistából dolgozik (Password Strength, Firewall, Phishing, Social Engineering, Security Decision), de a sorrend minden betöltéskor keveredik, így ugyanazok a típusok változatos sorrendben jelennek meg.
 - Ennek célja, hogy az első pálya után stabil, mégis nem monoton gyakorló szakasz következzen.
 
-### 2025-11-27 — Éjszakai kézfogás narratíva
+### 2025-11-27 — Éjszakai rendszerkapcsolat létesítése narratíva
 - **Fájl:** `src/pages/ugy2/index.jsx`
-- Új epizódcím (Éjszakai kézfogás) és narratív leírás került az oldal tetejére, valamint minden feladathoz külön történetblokk tartozik, hogy a játékos jobban értse, miért fontos az adott kihívás.
+- Új epizódcím (Éjszakai rendszerkapcsolat létesítése) és narratív leírás került az oldal tetejére, valamint minden feladathoz külön történetblokk tartozik, hogy a játékos jobban értse, miért fontos az adott kihívás.
 
 ### 2025-11-27 — Duplikált feladattípusok tiltása
 - **Fájl:** `src/tasks/LevelGenerator.js`

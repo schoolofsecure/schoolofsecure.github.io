@@ -520,7 +520,7 @@ Minden percben egyetlen percet gondolok rád,
                           fontSize:'13px'
                         }}
                       >
-                        Tovább az Éjféli kézfogásra
+                        Tovább az Éjféli rendszerkapcsolat létesítésére
                       </Link>
                     </div>
                   </div>

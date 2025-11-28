@@ -19,7 +19,7 @@ const TASK_LABELS = {
   URL_TRUST: 'Kapuhivatkozás vizsgálat',
   LOG_ANALYSIS: 'Éjjeli logvadászat',
   SOCIAL_ENGINEERING: 'Beszivárgó kérés',
-  FIREWALL: 'Kézfogás-vadász tűzfal',
+  FIREWALL: 'Rendszerkapcsolat-vadász tűzfal',
   MISCONFIG: 'Rejtett konfigurációs hiba',
   RISKY_PERMISSION: 'Veszélyes engedélykérés',
   SECURITY_DECISION: 'Nyomok mérlegelése',
@@ -35,17 +35,17 @@ const getTaskTitle = (task, index) => {
   return `${index + 1}. feladat`
 }
 
-const EPISODE_NAME = 'Éjszakai kézfogás'
+const EPISODE_NAME = 'Éjszakai rendszerkapcsolat létesítése'
 
 const TASK_STORIES = {
   PASSWORD_STRENGTH: {
     title: 'Admin jelszó audit',
     text: `A rendszer egyik adminfiókja gyanús jelszóváltoztatási kérelmet küldött be.
-    A kérelmet pont akkor adták le, amikor az ismeretlen „kézfogás” kapcsolat megjelent.
+    A kérelmet pont akkor adták le, amikor az ismeretlen „rendszerkapcsolat létesítése” kapcsolat megjelent.
     Döntened kell, hogy a javasolt jelszó megfelel-e a követelményeknek, vagy a támadó próbál gyenge autentikációt becsempészni.`
   },
   FIREWALL: {
-    title: 'Kézfogás-vadász tűzfal',
+    title: 'Rendszerkapcsolat-vadász tűzfal',
     text: `A tűzfal naplója szerint pár külső cím hirtelen „engedélyezett” állapotba került.
     Ha rosszul zárod le a szabályt, fontos érzékelők némulhatnak el, de ha nyitva hagyod, a támadó tartós hozzáférést kap.`
   },
@@ -63,7 +63,7 @@ const TASK_STORIES = {
   },
   SECURITY_DECISION: {
     title: 'Nyomok mérlegelése',
-    text: `A rendszer jelzi, hogy a támadó létrehozott egy „kézfogás-alagutat”.
+    text: `A rendszer jelzi, hogy a támadó létrehozott egy „rendszerkapcsolat-alagutat”.
     Azonnal lekapcsolod, vagy megfigyeled, hogy több információt gyűjts?
     A döntésed hatással lesz arra, mihez fér hozzá a támadó – és te mire jössz rá.`
   }
@@ -215,7 +215,7 @@ const Ugy2 = () => {
       <header>
         <Link to="/" className="brand" aria-label="CyberMystery – Vissza a főoldalra">
           <div className="brand-badge">CM</div>
-          <div>Éjszakai kézfogás – Ügy #{currentLevel}</div>
+          <div>Éjszakai rendszerkapcsolat létesítése – Ügy #{currentLevel}</div>
         </Link>
       </header>
       <ScoreDisplay />
@@ -238,14 +238,14 @@ const Ugy2 = () => {
       )}
 
       <main>
-        <NarrativeBlock badge="Éjszakai kézfogás">
-          <h1 style={{ margin: '10px 0 4px' }}>Éjszakai kézfogás – Ügy #{currentLevel}</h1>
+        <NarrativeBlock badge="Éjszakai rendszerkapcsolat létesítése">
+          <h1 style={{ margin: '10px 0 4px' }}>Éjszakai rendszerkapcsolat létesítése – Ügy #{currentLevel}</h1>
           <p>
             A múzeum csendje most valahogy nyugtalanítóbb, mint előző éjjel. A kamera-rendszer továbbra is akadozik,
             a hálózati térkép pedig ismeretlen kapcsolatokat mutat – olyanokat, amelyeknek nem kellene létezniük.
           </p>
           <p>
-            Úgy tűnik, az éjszakai behatoló nem csak a gépeket érintette, hanem lassan kézfogást próbál kialakítani a teljes infrastruktúrával.
+            Úgy tűnik, az éjszakai behatoló nem csak a gépeket érintette, hanem lassan próbál behatolni a teljes rendszerbe.
             Ha sikerül neki mélyebbre jutnia, a múzeum rendszereinek titkai pillanatok alatt kiszivároghatnak. Rajtad múlik, hogy visszaverd a támadást.
           </p>
         </NarrativeBlock>

@@ -82,9 +82,10 @@ export const ScoringProvider = ({ children }) => {
   const scoreTask = ({ difficulty, isCorrect, level, timeSpent = null }) => {
     const result = calculateTaskScore({ difficulty, isCorrect, level, timeSpent })
     
+    // Animáció triggerelése (helyes és helytelen válasz esetén is)
+    setShowPointAnimation({ points: result.points })
+    
     if (isCorrect) {
-      // Animáció triggerelése
-      setShowPointAnimation({ points: result.points })
       setTotalPoints(prev => {
         const newTotal = prev + result.points
         updateRank(newTotal, level)

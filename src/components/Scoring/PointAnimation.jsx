@@ -2,10 +2,12 @@ import React, { useEffect, useState } from 'react'
 
 /**
  * Duolingo-stílusú pontanimáció komponens
- * A képernyő közepén jelenik meg animálva, amikor egy feladatot helyesen teljesítenek
+ * A képernyő közepén jelenik meg animálva, amikor egy feladatot helyesen vagy helytelenül teljesítenek
  */
 const PointAnimation = ({ points, onComplete }) => {
   const [isVisible, setIsVisible] = useState(false)
+  const isNegative = points < 0
+  const displayPoints = Math.abs(points)
 
   useEffect(() => {
     // Rövid késleltetés az animáció indításához
@@ -24,7 +26,16 @@ const PointAnimation = ({ points, onComplete }) => {
     }
   }, [isVisible, onComplete])
 
-  if (!points || points <= 0) return null
+  if (!points || points === 0) return null
+
+  // Szín és stílus meghatározása
+  const backgroundColor = isNegative
+    ? 'linear-gradient(135deg, rgba(255, 82, 82, 0.98) 0%, rgba(220, 38, 38, 0.98) 100%)'
+    : 'linear-gradient(135deg, rgba(0, 229, 255, 0.98) 0%, rgba(0, 180, 255, 0.98) 100%)'
+  
+  const boxShadow = isNegative
+    ? '0 12px 40px rgba(255, 82, 82, 0.5), 0 0 0 4px rgba(255, 82, 82, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.3)'
+    : '0 12px 40px rgba(0, 229, 255, 0.5), 0 0 0 4px rgba(0, 229, 255, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.3)'
 
   return (
     <div
@@ -43,7 +54,7 @@ const PointAnimation = ({ points, onComplete }) => {
     >
       <div
         style={{
-          background: 'linear-gradient(135deg, rgba(0, 229, 255, 0.98) 0%, rgba(0, 180, 255, 0.98) 100%)',
+          background: backgroundColor,
           color: '#ffffff',
           padding: '24px 48px',
           borderRadius: '20px',
@@ -51,13 +62,13 @@ const PointAnimation = ({ points, onComplete }) => {
           fontWeight: 700,
           fontFamily: 'Rajdhani, Inter, sans-serif',
           textAlign: 'center',
-          boxShadow: '0 12px 40px rgba(0, 229, 255, 0.5), 0 0 0 4px rgba(0, 229, 255, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.3)',
+          boxShadow: boxShadow,
           letterSpacing: '3px',
           textShadow: '0 2px 12px rgba(0, 0, 0, 0.4)',
           whiteSpace: 'nowrap',
         }}
       >
-        +{points} pont
+        {isNegative ? '-' : '+'}{displayPoints} pont
       </div>
     </div>
   )

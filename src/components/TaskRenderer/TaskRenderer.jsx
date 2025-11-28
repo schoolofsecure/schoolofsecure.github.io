@@ -312,7 +312,7 @@ const PhishingTaskRenderer = ({ task, payload, taskStory, taskLabel, onSuccess, 
         )}
         <div style={{display:'flex', gap:'10px', flexWrap:'wrap'}}>
           <button className="btn" type="button" onClick={handleSubmit} disabled={solved}>
-            {solved ? 'Feladat teljesítve' : 'Ellenőrzés'}
+            Ellenőrzés
           </button>
         </div>
         <HintDetails text={payload.hint} />
@@ -423,7 +423,7 @@ const LogAnalysisTaskRenderer = ({ task, payload, taskStory, taskLabel, onSucces
         )}
         <div style={{display:'flex', gap:'10px', flexWrap:'wrap'}}>
           <button className="btn" type="button" onClick={handleSubmit} disabled={solved}>
-            {solved ? 'Feladat teljesítve' : 'Ellenőrzés'}
+            Ellenőrzés
           </button>
           {!solved && (
             <button
@@ -543,7 +543,7 @@ const IconMemoryTaskRenderer = ({ task, payload, onSuccess, onFailure }) => {
         )}
         <div style={{display:'flex', gap:'10px', flexWrap:'wrap'}}>
           <button className="btn" type="button" onClick={handleSubmit} disabled={solved}>
-            {solved ? 'Feladat teljesítve' : 'Ellenőrzés'}
+            Ellenőrzés
           </button>
           {!solved && (
             <button
@@ -660,7 +660,7 @@ const SocialEngineeringTaskRenderer = ({ task, payload, taskStory, taskLabel, on
         )}
         <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
           <button className="btn" type="button" onClick={handleSubmit} disabled={solved}>
-            {solved ? 'Feladat teljesítve' : 'Ellenőrzés'}
+            Ellenőrzés
           </button>
         </div>
         <HintDetails text={payload.hint} />
@@ -797,7 +797,7 @@ const FirewallTaskRenderer = ({ task, payload, taskStory, taskLabel, onSuccess, 
         )}
         <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
           <button className="btn" type="button" onClick={handleSubmit} disabled={solved}>
-            {solved ? 'Feladat teljesítve' : 'Ellenőrzés'}
+            Ellenőrzés
           </button>
         </div>
         <HintDetails text={payload.hint} />
@@ -915,7 +915,7 @@ const SecurityDecisionTaskRenderer = ({ task, payload, taskStory, taskLabel, onS
             onClick={handleSubmit}
             disabled={solved || answers.some(ans => ans === null)}
           >
-            {solved ? 'Feladat teljesítve' : 'Ellenőrzés'}
+            Ellenőrzés
           </button>
         </div>
         {!solved && (
@@ -1059,7 +1059,7 @@ const PasswordStrengthTaskRenderer = ({ task, payload, taskStory, taskLabel, onS
         )}
         <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
           <button className="btn" type="button" onClick={handleSubmit} disabled={selectedAnswer === null || solved}>
-            {solved ? 'Feladat teljesítve' : 'Ellenőrzés'}
+            Ellenőrzés
           </button>
         </div>
         <HintDetails text={payload.hint} />

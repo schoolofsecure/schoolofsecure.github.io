@@ -346,7 +346,7 @@ const Ugy2 = () => {
                               fontSize: '13px'
                             }}
                           >
-                            Tovább a harmadik ügyre →
+                            Tovább az Árnyak Ösvényére →
                           </Link>
                         ) : (
                           <button
@@ -367,7 +367,7 @@ const Ugy2 = () => {
                               color: 'rgba(0, 229, 255, 0.5)'
                             }}
                           >
-                            Tovább a harmadik ügyre →
+                            Tovább az Árnyak Ösvényére →
                           </button>
                         )}
                       </div>

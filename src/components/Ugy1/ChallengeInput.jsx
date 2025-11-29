@@ -1,5 +1,6 @@
-/** global React */
-const normalizeText = (s) => {
+import React, { useState } from 'react'
+
+export const normalizeText = (s) => {
   return (s || '')
     .toString()
     .normalize('NFD')
@@ -10,12 +11,24 @@ const normalizeText = (s) => {
     .toUpperCase();
 };
 
-const ChallengeInput = ({ placeholder = 'válasz…', onCheck, okText = 'Helyes!', errText = 'Nem egészen – próbáld újra.' }) => {
-  const [value, setValue] = React.useState('');
-  const [status, setStatus] = React.useState(null); // 'ok' | 'err' | null
+const ChallengeInput = ({
+  placeholder = 'válasz…',
+  onCheck,
+  okText = 'Helyes!',
+  errText = 'Nem egészen – próbáld újra.',
+  onSuccess,
+  onFailure
+}) => {
+  const [value, setValue] = useState('');
+  const [status, setStatus] = useState(null); // 'ok' | 'err' | null
   const onSubmit = () => {
     const res = onCheck ? onCheck(value, normalizeText) : false;
     setStatus(res ? 'ok' : 'err');
+    if (res) {
+      onSuccess && onSuccess();
+    } else {
+      onFailure && onFailure();
+    }
   };
   return (
     <div>
@@ -32,6 +45,6 @@ const ChallengeInput = ({ placeholder = 'válasz…', onCheck, okText = 'Helyes!
   );
 };
 
-window.ChallengeInput = ChallengeInput;
+export default ChallengeInput
 
 

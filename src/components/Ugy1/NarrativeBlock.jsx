@@ -1,4 +1,5 @@
-/** global React */
+import React from 'react'
+
 const NarrativeBlock = ({ badge = 'Ügy 1', children }) => {
   return (
     <div className="narr" role="article" aria-label="Bevezető">
@@ -8,6 +9,6 @@ const NarrativeBlock = ({ badge = 'Ügy 1', children }) => {
   );
 };
 
-window.NarrativeBlock = NarrativeBlock;
+export default NarrativeBlock
 
 

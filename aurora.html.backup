@@ -1,0 +1,1050 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>CyberMystery – 1. pálya (belépés szükséges)</title>
+    <meta name="description" content="CyberMystery – 1. pálya. Jelszóval védett belépés és 5 feladat helykitöltővel." />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet" />
+
+    <style>
+        :root {
+            --bg: #0b0f14;
+            --panel: #101820;
+            --ink: #cfe6ff;
+            --muted: #94a3b8;
+            --neon: #00e5ff;
+            --neon-2: #7c3aed;
+            --accent: #21ffc3;
+            --danger: #ff3b6b;
+            --ok: #33ff99;
+        }
+        html, body { height: 100%; }
+        body {
+            margin: 0;
+            background: radial-gradient(1200px 800px at 70% -10%, #0d1320 0%, #0b0f14 45%, #06090d 100%),
+                        linear-gradient(180deg, rgba(16,24,32,0.6), rgba(16,24,32,0.1));
+            color: var(--ink);
+            font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, 'Helvetica Neue', Arial, sans-serif;
+            -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility;
+        }
+        .container { width: min(1100px, 92vw); margin: 0 auto; position: relative; z-index: 2; }
+        header { padding: 20px 0; display: flex; align-items: center; justify-content: space-between; }
+        .brand { display: flex; align-items: center; gap: 12px; color: var(--ink); text-decoration: none; }
+        .brand-badge {
+            width: 36px; height: 36px; border-radius: 8px; display: grid; place-items: center;
+            background: linear-gradient(135deg, var(--neon), var(--neon-2));
+            box-shadow: 0 0 20px rgba(0,229,255,0.45), inset 0 0 12px rgba(33,255,195,0.35);
+            font-family: Rajdhani, Inter, sans-serif; font-weight: 700; color: #051018;
+        }
+        .brand-title { font-weight: 700; letter-spacing: .5px; }
+
+        .gate {
+            position: fixed; inset: 0; display: grid; place-items: center; z-index: 10;
+            background: linear-gradient(180deg, rgba(5,12,20,0.85), rgba(5,12,20,0.92));
+            backdrop-filter: blur(6px);
+        }
+        .gate-card {
+            width: min(520px, 92vw);
+            background: linear-gradient(180deg, #0d141d, #0a0f17);
+            border: 1px solid rgba(207,230,255,0.12);
+            border-radius: 16px; padding: 18px;
+            box-shadow: 0 14px 30px rgba(0,0,0,0.45), inset 0 0 80px rgba(124,58,237,0.06);
+        }
+        .gate-card h1 {
+            margin: 0 0 8px; font-family: Rajdhani, Inter, sans-serif;
+            font-size: clamp(22px, 3.6vw, 30px);
+        }
+        .gate-card p { margin: 6px 0 12px; color: var(--muted); }
+        .gate-form { display: grid; grid-template-columns: 1fr auto; gap: 10px; }
+        .input {
+            height: 48px; border-radius: 10px; border: 1px solid rgba(207,230,255,0.22);
+            background: #0f1621; color: var(--ink); padding: 12px 14px; font-size: 16px;
+        }
+        .btn {
+            display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+            height: 52px; padding: 0 18px; border-radius: 12px; text-decoration: none;
+            font-weight: 800; letter-spacing: .2px; cursor: pointer; font-size: 16px;
+            background: linear-gradient(135deg, var(--neon), var(--accent));
+            color: #051018; box-shadow: 0 10px 24px rgba(0,229,255,0.28), 0 2px 0 rgba(7,19,27,0.35);
+            border: 1px solid rgba(0,229,255,0.5);
+        }
+        .error { color: var(--danger); font-size: 13px; min-height: 18px; }
+
+        .panel {
+            margin: 14px 0; padding: 16px;
+            background: #0f1621; border: 1px solid rgba(207,230,255,0.08);
+            border-radius: 14px;
+        }
+        .panel h2 { margin: 0 0 8px; font-family: Rajdhani, Inter, sans-serif; font-size: 20px; }
+        .tasks { margin: 0; padding-left: 18px; line-height: 1.8; color: var(--ink); }
+        /* Interaktív feladatlista */
+        .tasklist { list-style: none; margin: 8px 0 0; padding: 0; }
+        .task {
+            display: grid; grid-template-columns: auto 1fr; gap: 10px; align-items: start;
+            padding: 10px 12px; margin: 8px 0;
+            background: #0f1621; border: 1px solid rgba(207,230,255,0.12); border-radius: 12px;
+            transition: border-color .2s ease, box-shadow .2s ease, background .2s ease;
+            cursor: pointer;
+        }
+        .task:hover { background: #101a27; }
+        .task.active {
+            border-color: rgba(0,229,255,0.6);
+            box-shadow: 0 0 0 3px rgba(0,229,255,0.15), 0 8px 20px rgba(0,0,0,0.35);
+        }
+        .task.completed { opacity: .85; }
+        .task .chk { width: 18px; height: 18px; accent-color: var(--neon); margin-top: 2px; }
+        .task .task-text { color: var(--ink); line-height: 1.6; }
+        .task.completed .task-text { color: var(--muted); text-decoration: line-through; }
+        .task .meta { display: inline-block; margin-left: 6px; font-size: 12px; color: var(--muted); }
+
+        /* Kérdés-alapú belépő (középre helyezett kérdés-válasz UI) */
+        .quiz {
+            position: fixed; inset: 0; display: none; place-items: center; z-index: 9;
+            background: linear-gradient(180deg, rgba(5,12,20,0.75), rgba(5,12,20,0.85));
+            backdrop-filter: blur(6px);
+        }
+        .quiz-card {
+            width: min(640px, 92vw);
+            background: linear-gradient(180deg, #0d141d, #0a0f17);
+            border: 1px solid rgba(207,230,255,0.12);
+            border-radius: 16px; padding: 18px;
+            box-shadow: 0 14px 30px rgba(0,0,0,0.45), inset 0 0 80px rgba(124,58,237,0.06);
+        }
+        .quiz-head { display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:8px; }
+        .quiz-progress { font-size:12px; color:var(--muted); }
+        .quiz-q { margin:0 0 10px; font-family: Rajdhani, Inter, sans-serif; font-size: clamp(18px, 3.2vw, 22px); }
+        .quiz-timer { font-size:12px; color: var(--ink); background:#0f1621; border:1px solid rgba(207,230,255,0.12); padding:6px 8px; border-radius:8px; transition: all .2s ease; }
+        .quiz-timer.urgent { color: var(--danger); border-color: rgba(255,59,107,0.6); box-shadow: 0 0 0 3px rgba(255,59,107,0.15); animation: pulse 0.8s ease-in-out infinite; font-weight: 700; }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.06); }
+            100% { transform: scale(1); }
+        }
+        .choices { display:grid; gap:10px; }
+        .choice {
+            display: inline-flex; align-items: center; gap: 10px; padding: 12px 14px; border-radius: 12px;
+            background: #0f1621; color: var(--ink); border: 1px solid rgba(207,230,255,0.12); cursor: pointer;
+            text-align: left; transition: background .2s ease, border-color .2s ease, transform .06s ease;
+        }
+        .choice:hover { background:#101a27; }
+        .choice.correct { border-color: rgba(33,255,195,0.6); box-shadow: 0 0 0 2px rgba(33,255,195,0.18); }
+        .choice.wrong { border-color: rgba(255,59,107,0.6); box-shadow: 0 0 0 2px rgba(255,59,107,0.18); }
+        .quiz-actions { display:flex; justify-content:flex-end; gap:10px; margin-top:10px; }
+        .btn-primary { background: linear-gradient(135deg, var(--neon), var(--accent)); color: #07131b; box-shadow: 0 10px 24px rgba(0,229,255,0.25); border: 1px solid rgba(0,229,255,0.5); }
+        .btn-ghost { background: transparent; color: var(--ink); border: 1px solid rgba(207,230,255,0.18); padding: 10px 12px; border-radius: 10px; cursor: pointer; }
+        .quiz-note { margin-top:6px; font-size:12px; color:var(--muted); }
+
+        /* Szintválasztó rács (képhelyek) */
+        .levels-grid { display:grid; grid-template-columns: repeat(4, 1fr); gap:12px; }
+        .level-card {
+            position: relative; background:#0f1621; border:1px solid rgba(207,230,255,0.12); border-radius:12px;
+            aspect-ratio: 16 / 10; display:grid; place-items:center; color:var(--muted); text-decoration:none;
+        }
+        .level-card { overflow:hidden; }
+        .level-card img { width:100%; height:100%; object-fit:cover; display:block; }
+        .level-card:hover { background:#101a27; }
+        .level-card[aria-disabled="true"] { filter: grayscale(1) opacity(.8); cursor:not-allowed; }
+        .level-label { position:absolute; left:8px; top:8px; font-size:12px; color:var(--ink); background:rgba(0,229,255,0.12); border:1px solid rgba(0,229,255,0.3); border-radius:999px; padding:3px 8px; }
+        .coming { position:absolute; right:8px; bottom:8px; font-size:12px; color:var(--muted); }
+        .case-title{
+            position:absolute; left:50%; top:50%; transform: translate(-50%, -50%);
+            max-width:86%; text-align:center; padding:6px 10px; border-radius:12px;
+            color:#e6f6ff; background: rgba(11, 18, 28, 0.55);
+            border:1px solid rgba(207,230,255,0.22);
+            box-shadow: 0 6px 18px rgba(0,0,0,0.35), inset 0 0 24px rgba(0,229,255,0.06);
+            font-family: Rajdhani, Inter, sans-serif; letter-spacing:.3px; font-weight:700;
+            text-shadow: 0 0 10px rgba(0,229,255,0.35);
+        }
+        .muted { color: var(--muted); }
+
+        @media (max-width: 560px) {
+            .gate-form { grid-template-columns: 1fr; }
+            .btn { height: 48px; }
+        }
+        /* Intro – designos hero blokk a kezdő szinthez */
+        .intro-hero{
+            position:relative; padding:24px; border-radius:18px; overflow:hidden;
+            background:
+                radial-gradient(800px 300px at 110% -10%, rgba(0,229,255,0.12), transparent 60%),
+                radial-gradient(600px 260px at -10% 120%, rgba(33,255,195,0.10), transparent 60%),
+                #0f1621;
+            border:1px solid rgba(207,230,255,0.10);
+        }
+        .intro-hero::before{
+            content:''; position:absolute; inset:-2px; border-radius:20px;
+            background: conic-gradient(from 180deg at 50% 50%, rgba(0,229,255,.25), rgba(33,255,195,.25), rgba(0,229,255,.25));
+            filter: blur(24px); opacity:.25; pointer-events:none;
+        }
+        .intro-hero .gridline{
+            position:absolute; inset:0;
+            background:
+                linear-gradient(transparent 23px, rgba(207,230,255,.06) 24px),
+                linear-gradient(90deg, transparent 23px, rgba(207,230,255,.06) 24px);
+            background-size: 24px 24px;
+            mask-image: radial-gradient(1200px 500px at 70% -10%, #000 55%, transparent 80%);
+            pointer-events:none;
+        }
+        .intro-hero .badge{
+            display:inline-flex; align-items:center; gap:8px; padding:6px 10px; border-radius:999px;
+            background: rgba(0,229,255,0.12); color:var(--neon); border:1px solid rgba(0,229,255,0.35);
+            font-weight:700; font-size:12px; letter-spacing:.4px;
+        }
+        .intro-hero h2{ margin:10px 0 6px; font-family: Rajdhani, Inter, sans-serif; font-size:26px; letter-spacing:.4px; }
+        .intro-hero p.lead{ color:var(--muted); margin:0 0 10px; }
+        .intro-hero .chips{ display:flex; flex-wrap:wrap; gap:8px; margin-top:8px; }
+        .intro-hero .chip{
+            background:#101b2a; border:1px solid rgba(207,230,255,.18); color:#b9d6ff;
+            border-radius:999px; padding:6px 10px; font-size:12px;
+        }
+        .intro-hero .accent-line{
+            position:absolute; right:-60px; top:10px; width:180px; height:2px;
+            background:linear-gradient(90deg, transparent, var(--neon)); opacity:.5; transform: rotate(25deg);
+        }
+        .intro-hero .accent-line.b{
+            top:auto; bottom:18px; right:-40px; transform: rotate(-18deg);
+            background:linear-gradient(90deg, transparent, var(--accent));
+        }
+        /* Neon flicker/glow effektek a belépő protokollhoz */
+        @keyframes neonFlicker {
+            0%, 19%, 21%, 23%, 80%, 100% { opacity: 1; text-shadow: 0 0 6px rgba(0,229,255,.35), 0 0 18px rgba(33,255,195,.20); }
+            20%, 22% { opacity: .65; text-shadow: 0 0 2px rgba(0,229,255,.2), 0 0 8px rgba(33,255,195,.12); }
+            81% { opacity: .85; }
+        }
+        .neon-flicker { animation: neonFlicker 2.8s infinite; }
+        @keyframes caretBlink { 0%, 49% { opacity: 1; } 50%, 100% { opacity: 0; } }
+        .caret::after { content:'▌'; margin-left:4px; color: var(--neon); animation: caretBlink 1s step-end infinite; }
+        .status-ok { color: var(--ok); }
+        .status-err { color: var(--danger); }
+        /* ——— Komponensek a feladatokhoz (kezdőlap stílusával egyező) ——— */
+        .cm-surface{
+            position:relative; background:#0f1621; border:1px solid rgba(207,230,255,0.10); border-radius:16px; padding:18px;
+            box-shadow: 0 10px 24px rgba(0,0,0,0.35), inset 0 0 60px rgba(0,229,255,0.05);
+            overflow:hidden;
+        }
+        .cm-surface::after{
+            content:''; position:absolute; inset:0; pointer-events:none; opacity:.06;
+            background:
+                radial-gradient(800px 300px at 110% -10%, rgba(0,229,255,0.4), transparent 60%),
+                radial-gradient(600px 260px at -10% 120%, rgba(33,255,195,0.35), transparent 60%);
+            mix-blend-mode: screen;
+        }
+        .cm-badge{ display:inline-flex; align-items:center; gap:8px; padding:6px 10px; border-radius:999px;
+            background: rgba(0,229,255,0.12); color:var(--neon); border:1px solid rgba(0,229,255,0.35);
+            font-weight:700; font-size:12px; letter-spacing:.4px; }
+        .cm-title{ font-family: Rajdhani, Inter, sans-serif; margin:8px 0 4px; font-size:22px; letter-spacing:.3px; }
+        .cm-story{ color:var(--muted); line-height:1.8; margin:0 0 10px; }
+        .cm-grid{ display:grid; grid-template-columns: 1.1fr .9fr; gap:14px; }
+        @media (max-width: 900px){ .cm-grid{ grid-template-columns: 1fr; } }
+        .cm-card{ position:relative; background:#0d141d; border:1px solid rgba(207,230,255,0.12); border-radius:14px; padding:14px; }
+        .cm-card h3{ margin:0 0 8px; font-family: Rajdhani, Inter, sans-serif; font-size:18px; }
+        .cm-puzzle{ color:var(--ink); line-height:1.7; }
+        .cm-input{ display:grid; grid-template-columns: 1fr auto; gap:10px; }
+        .cm-statusline{ margin-top:10px; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+            font-size:12px; color:#9fb6d3; background:#0b121c; border:1px solid rgba(207,230,255,0.10); border-radius:10px; padding:8px 10px; }
+        .cm-hint details{ background:#0f1621; border:1px dashed rgba(207,230,255,0.18); border-radius:10px; padding:8px 10px; }
+        .cm-hint summary{ cursor:pointer; color:var(--ink); font-weight:600; }
+        .cm-chips{ display:flex; gap:8px; flex-wrap:wrap; margin-top:8px; }
+        .cm-chip{ background:#101b2a; border:1px solid rgba(207,230,255,.18); color:#b9d6ff; border-radius:999px; padding:6px 10px; font-size:12px; }
+    </style>
+</head>
+<body>
+    <script>
+        (function(){
+            var isMobile = (window.matchMedia && window.matchMedia('(max-width: 800px)').matches) ||
+                           /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+            if(!isMobile) return;
+            var style = document.createElement('style');
+            style.textContent = `
+                .mobile-block{position:fixed;inset:0;display:grid;place-items:center;background:
+                    radial-gradient(1200px 800px at 70% -10%, #0d1320 0%, #0b0f14 45%, #06090d 100%),
+                    linear-gradient(180deg, rgba(16,24,32,0.6), rgba(16,24,32,0.1)); z-index:9999}
+                .mb-panel{width:min(640px,92vw);background:#0f1621;border:1px solid rgba(207,230,255,0.12);
+                    border-radius:16px;padding:18px;box-shadow:0 14px 30px rgba(0,0,0,.45)}
+                .mb-panel h1{margin:0 0 6px;font-family: Inter, system-ui, sans-serif;font-size:22px}
+                .mb-panel p{margin:6px 0;color:#94a3b8;line-height:1.7}
+                .mb-emoji{font-size:28px;margin-bottom:6px}
+                .mb-actions{display:flex;gap:10px;margin-top:10px;flex-wrap:wrap}
+                .btn-ghost{background:transparent;color:#cfe6ff;border:1px solid rgba(207,230,255,0.18);padding:10px 12px;border-radius:10px;text-decoration:none}
+                .btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;padding:12px 16px;border-radius:12px;text-decoration:none;font-weight:800;letter-spacing:.2px;cursor:pointer;font-size:16px;background: linear-gradient(135deg, #00e5ff, #21ffc3); color:#051018; border:1px solid rgba(0,229,255,0.5);}
+            `;
+            document.head.appendChild(style);
+            document.body.innerHTML = `
+                <div class="mobile-block">
+                  <div class="mb-panel">
+                    <div class="mb-emoji">📱</div>
+                    <h1>Mobilnézet nem támogatott</h1>
+                    <p>A játék jelenlegi verziója nem támogatja a mobilnézetet, bizonyos elemek hibásan jelenhetnek meg vagy nem működnek megfelelően.</p>
+                    <p>Kérjük, használd asztali gépen vagy laptopon a zavartalan élményhez.</p>
+                    <p>Dolgozunk a mobilalkalmazáson, és amint elkészül, értesítést küldünk róla.</p>
+                    <p>Köszönjük a türelmed és a kitartásod!</p>
+                    <div class="mb-actions">
+                      <a class="btn" href="/">Vissza a főoldalra</a>
+                      <a class="btn-ghost" href="/privacy.html">Adatkezelés</a>
+                    </div>
+                  </div>
+                </div>
+            `;
+        })();
+    </script>
+    <div class="container">
+        <header>
+            <a href="/" class="brand" aria-label="CyberMystery – Vissza a főoldalra">
+                <div class="brand-badge">CM</div>
+                <div class="brand-title">CyberMystery</div>
+            </a>
+        </header>
+
+        <main id="content" aria-live="polite" style="filter: blur(6px); pointer-events: none; user-select: none;">
+            <section id="introPanel" class="panel intro-hero">
+                <div class="gridline"></div>
+                <span class="badge">Kezdő szint</span>
+                <h2>Bevezető a művelethez</h2>
+                <p class="lead">„Secure”: Ez a belépő pálya. Rövid, kérdés‑alapú bemelegítés – hogy a következő szinten már otthon legyél a nyomokban.</p>
+                <p class="muted" style="margin:0 0 6px;">
+                    Éjszaka van. A hálózati forgalom elcsendesedett, csak a logok pulzálnak ritmusra. 
+                    <strong>Secure</strong> üzenete érkezik: „Újonc, ha be akarsz lépni a műveletbe, 
+                    előbb bizonyítanod kell. Ez egy beugró teszt – gyors, pontos döntésekkel tudsz továbblépni.”
+                </p>
+                <p class="muted" style="margin:0 0 10px;">
+                    Válaszd ki minden kérdésnél a legjobb választ. Ha jól döntesz, a rendszer azonnal a következő 
+                    feladatra ugrik. Tévedés esetén visszajelzést kapsz, és újra próbálkozhatsz.
+                </p>
+                <div class="chips" aria-hidden="true">
+                    <span class="chip">alapok</span>
+                    <span class="chip">jó gyakorlatok</span>
+                    <span class="chip">OSINT</span>
+                    <span class="chip">Wi‑Fi védelem</span>
+                    <span class="chip">mentések</span>
+                </div>
+                <div class="accent-line"></div>
+                <div class="accent-line b"></div>
+                <button id="startQuizBtn" class="btn" type="button">Kezdd el a játékot</button>
+            </section>
+            <!-- Komponens-alapú feladat UI (minta) -->
+            <section id="missionPanel" class="panel cm-surface" style="margin-top:14px;">
+                <span class="cm-badge">Küldetés 1</span>
+                <h2 class="cm-title">Belépő protokoll</h2>
+                <p class="cm-story">Az ügynöki terminál éled. A háttérben logok peregnek, a kijelző sarkában halvány neonvonal pulzál.</p>
+                <p class="cm-story">Secure csak ennyit ír: „Első lépés: igazold, hogy figyelsz a részletekre.”</p>
+                <div class="cm-grid">
+                    <div class="cm-card">
+                        <h3>Protokoll terminál</h3>
+                        <div class="cm-puzzle">
+                            Egy rövid kódrészlet villan fel a képernyőn:<br />
+                            <code id="entryCode" class="neon-flicker" style="background:#0b121c; border:1px solid rgba(207,230,255,.12); padding:2px 6px; border-radius:6px;">ACCCESS‑LEVEL: NOVICE_01</code><br />
+                            Vedd észre a hibát, majd add meg a helyes ellenőrző szót (csak betűk/számok, kötőjel).
+                        </div>
+                        <div id="entryStatus" class="cm-statusline caret" aria-live="polite">[status] READY — várakozás a bevitelre…</div>
+                    </div>
+                    <div class="cm-card">
+                        <h3>Válasz</h3>
+                        <div class="cm-input">
+                            <input id="entryInput" class="input" type="text" placeholder="ellenőrző szó…" aria-label="ellenőrző szó" />
+                            <button id="entryBtn" class="btn" type="button">Beküldés</button>
+                        </div>
+                        <div class="cm-hint" style="margin-top:10px;">
+                            <details>
+                                <summary>Súgó megnyitása</summary>
+                                <p class="muted" style="margin:8px 0 0;">Figyeld meg: az egyik betűből túl sok van,
+                                    és nem minden karakter megengedett. Használj csak betűket, számokat és kötőjelet.</p>
+                                <div class="cm-chips" aria-hidden="true">
+                                    <span class="cm-chip">ACCESS-LEVEL</span>
+                                    <span class="cm-chip">NOVICE-01</span>
+                                    <span class="cm-chip">ENTRY</span>
+                                </div>
+                            </details>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section id="levelsPanel" class="panel" style="display:none;">
+                <h2>Válaszd ki az ügyet</h2>
+                <p class="muted" style="margin:0 0 8px;">Minden ügy megnyitásáról értesítést küldünk.</p>
+                <div id="levelsGrid" class="levels-grid" aria-label="Szintek">
+                    <a id="level1Link" href="/ugy1.html" class="level-card" style="text-decoration:none;">
+                        <span class="level-label">Ügy #1</span>
+                        <img src="/images/1.jpg" alt="1. pálya" loading="lazy" width="1280" height="800" decoding="async" />
+                        <div class="case-title">A Titkosított Adatcsomag</div>
+                    </a>
+                    <a id="level2Link" href="/ugy2.html" class="level-card" style="text-decoration:none; display:none;" aria-disabled="true">
+                        <span class="level-label">Ügy #2</span>
+                        <img src="/images/2.jpg" alt="2. pálya" loading="lazy" width="1280" height="800" decoding="async" />
+                        <div class="case-title">A Hamisított Archívum</div>
+                    </a>
+                    <div id="level2Card" class="level-card" aria-disabled="true">
+                        <span class="level-label">Ügy #2</span>
+                        <span class="coming" aria-label="Zárolt">🔒</span>
+                        <div class="case-title">A Hamisított Archívum</div>
+                    </div>
+                    <div class="level-card" aria-disabled="true"><span class="level-label">Ügy #3</span><span class="coming" aria-label="Zárolt">🔒</span><div class="case-title">A Kézbesítetlen Üzenet</div></div>
+                    <div class="level-card" aria-disabled="true"><span class="level-label">Ügy #4</span><span class="coming" aria-label="Zárolt">🔒</span><div class="case-title">A Hiányzó Idővonal</div></div>
+                    <div class="level-card" aria-disabled="true"><span class="level-label">Ügy #5</span><span class="coming" aria-label="Zárolt">🔒</span><div class="case-title">A Rejtett Metaadat</div></div>
+                    <div class="level-card" aria-disabled="true"><span class="level-label">Ügy #6</span><span class="coming" aria-label="Zárolt">🔒</span><div class="case-title">A Szivárgó Port</div></div>
+                    <div class="level-card" aria-disabled="true"><span class="level-label">Ügy #7</span><span class="coming" aria-label="Zárolt">🔒</span><div class="case-title">A Kettős Identitás</div></div>
+                    <div class="level-card" aria-disabled="true"><span class="level-label">Ügy #8</span><span class="coming" aria-label="Zárolt">🔒</span><div class="case-title">A Törött Kulcs</div></div>
+                    <div class="level-card" aria-disabled="true"><span class="level-label">Ügy #9</span><span class="coming" aria-label="Zárolt">🔒</span><div class="case-title">A Megszakított Átvitel</div></div>
+                    <div class="level-card" aria-disabled="true"><span class="level-label">Ügy #10</span><span class="coming" aria-label="Zárolt">🔒</span><div class="case-title">A Phantom‑Profil</div></div>
+                    <div class="level-card" aria-disabled="true"><span class="level-label">Ügy #11</span><span class="coming" aria-label="Zárolt">🔒</span><div class="case-title">A Lopott Árnyékfiók</div></div>
+                    <div class="level-card" aria-disabled="true"><span class="level-label">Ügy #12</span><span class="coming" aria-label="Zárolt">🔒</span><div class="case-title">A Főkolompos</div></div>
+                </div>
+            </section>
+            <section id="tasksPanel" class="panel" style="display:none;">
+                <h2>1. pálya – Helyszín: Bevezető nyomok</h2>
+                <p class="muted" style="margin:0 0 6px;">Az alábbi feladatok jelenleg helykitöltők. A végleges kihívásokat később illesztjük be.</p>
+                <ul class="tasklist" aria-label="Feladatok listája">
+                    <li class="task" data-task-id="1">
+                        <input class="chk" type="checkbox" aria-label="Feladat 1 kész" />
+                        <div class="task-text">Feladat 1 – Helykitöltő (rejtett minták felismerése). <span class="meta">(kijelölés után automatikus ugrás)</span></div>
+                    </li>
+                    <li class="task" data-task-id="2">
+                        <input class="chk" type="checkbox" aria-label="Feladat 2 kész" />
+                        <div class="task-text">Feladat 2 – Helykitöltő (idővonal összeállítása logokból).</div>
+                    </li>
+                    <li class="task" data-task-id="3">
+                        <input class="chk" type="checkbox" aria-label="Feladat 3 kész" />
+                        <div class="task-text">Feladat 3 – Helykitöltő (OSINT: domainlenyomat felismerése).</div>
+                    </li>
+                    <li class="task" data-task-id="4">
+                        <input class="chk" type="checkbox" aria-label="Feladat 4 kész" />
+                        <div class="task-text">Feladat 4 – Helykitöltő (kódrészletből kulcs kivonása).</div>
+                    </li>
+                    <li class="task" data-task-id="5">
+                        <input class="chk" type="checkbox" aria-label="Feladat 5 kész" />
+                        <div class="task-text">Feladat 5 – Helykitöltő (döntési fa elemzése).</div>
+                    </li>
+                </ul>
+            </section>
+
+            <section id="briefPanel" class="panel" style="display:none;">
+                <h2>Brief</h2>
+                <p class="muted">Itt lesz az első történetszál rövid leírása, a nyomok fogalma és a célok. A dizájn és a tipográfia a nyitóoldaléval összhangban marad.</p>
+            </section>
+            <section id="outroPanel" class="panel" style="display:none;">
+                <h2>Gratulálunk!</h2>
+                <p class="muted" style="margin:0 0 6px;">Sikeresen teljesítetted a kezdő szint kérdéssorát. A 2. pálya mostantól elérhető a szintválasztóban.</p>
+                <div style="display:flex; gap:10px; flex-wrap:wrap;">
+                    <a class="btn" href="/" style="text-decoration:none;">Vissza a főoldalra</a>
+                    <a id="goLevel2Btn" class="btn" href="/night-owl.html" style="text-decoration:none;">Tovább a 2. pályára</a>
+                    <button id="backToLevelsBtn" class="btn" type="button">Vissza a szintekhez</button>
+                    <button id="restartBtn" class="btn" type="button" title="Kezd újra a kérdéssor elejétől">Újrakezdés</button>
+                    <button id="restartAllBtn" class="btn" type="button" title="Kezd újra a legelejéről (belépést is)">Újrakezdés a legelejéről</button>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Jelszó kapu -->
+    <div id="gate" class="gate" role="dialog" aria-modal="true" aria-labelledby="gateTitle">
+        <div class="gate-card">
+            <h1 id="gateTitle">Belépés szükséges</h1>
+            <p class="muted">Add meg a belépési kulcsot a pálya megnyitásához.</p>
+            <form id="gateForm" class="gate-form" autocomplete="off">
+                <input id="pass" class="input" type="password" inputmode="text" placeholder="Belépési kulcs" aria-label="Belépési kulcs" />
+                <button class="btn" type="submit">Belépés</button>
+            </form>
+            <div id="err" class="error" role="alert" aria-live="polite"></div>
+            <p class="muted" style="margin:8px 0 0;">Tipp: a kulcsot a toborzó üzenet vagy a játékmester adja meg.</p>
+        </div>
+    </div>
+
+    <!-- Kérdés-alapú belépő (helyes válasz -> következő) -->
+    <div id="quiz" class="quiz" role="dialog" aria-modal="true" aria-labelledby="quizTitle" hidden>
+        <div class="quiz-card">
+            <div class="quiz-head">
+                <h2 id="quizTitle" class="quiz-q" style="margin:0;">Kérdés</h2>
+                <div style="display:flex; align-items:center; gap:8px;">
+                    <div id="quizTimer" class="quiz-timer" aria-live="polite">20s</div>
+                    <div id="quizProgress" class="quiz-progress">1 / 5</div>
+                </div>
+            </div>
+            <div id="choices" class="choices" role="group" aria-label="Válaszlehetőségek"></div>
+            <div class="quiz-actions">
+                <button id="skipBtn" class="btn-ghost" type="button" title="Kihagy (fejlesztési célból)">Kihagy</button>
+                <button id="nextBtn" class="btn btn-primary" type="button" disabled>Tovább</button>
+            </div>
+            <div class="quiz-note">Válaszd ki a helyes választ. Helyes találat után automatikusan továbblép.</div>
+        </div>
+    </div>
+
+    <script>
+        (function(){
+            const FORM = document.getElementById('gateForm');
+            const INPUT = document.getElementById('pass');
+            const ERR = document.getElementById('err');
+            const GATE = document.getElementById('gate');
+            const CONTENT = document.getElementById('content');
+            const INTRO = document.getElementById('introPanel');
+            const LEVELS = document.getElementById('levelsPanel');
+            const OUTRO = document.getElementById('outroPanel');
+            const TASKS = document.getElementById('tasksPanel');
+            const BRIEF = document.getElementById('briefPanel');
+            const START = document.getElementById('startQuizBtn');
+            const RESTART = document.getElementById('restartBtn');
+            const RESTART_ALL = document.getElementById('restartAllBtn');
+            const LEVEL1_LINK = document.getElementById('level1Link');
+            const BACK_TO_LEVELS = document.getElementById('backToLevelsBtn');
+            const QUIZ = document.getElementById('quiz');
+            // Belépő protokoll elemek
+            const ENTRY_INPUT = document.getElementById('entryInput');
+            const ENTRY_BTN = document.getElementById('entryBtn');
+            const ENTRY_STATUS = document.getElementById('entryStatus');
+            const ENTRY_CODE = document.getElementById('entryCode');
+            const MISSION = document.getElementById('missionPanel');
+
+            // Alap belépési kulcs (később cserélhető): CM-ACCESS-2025
+            // FIGYELEM: statikus oldalon a védelem csak könnyű obfuszkáció.
+            const PASS_PLAIN = 'kriptográfia';
+
+            // Kérdéssor (helykitöltő, könnyen cserélhető)
+            const QUESTIONS = [
+                { q: 'Mi a „kétlépcsős azonosítás” fő előnye?', options: ['Gyorsabb bejelentkezés', 'Extra biztonsági réteg', 'Kevesebb jelszó szükséges', 'Offline használat'], a: 1 },
+                { q: 'Melyik jó gyakorlat biztonsági kérdésekre?', options: ['Valódi tények megadása', 'Kitalált, de konzisztens válaszok', 'Ugyanaz minden oldalon', 'Kihagyás'], a: 1 },
+                { q: 'Mit jelent az OSINT?', options: ['Open Source Intelligence', 'Operating System Integration', 'Online Secure Interface', 'Offline Static Intel'], a: 0 },
+                { q: 'Mit tegyél a Wi‑Fi hálózattal?', options: ['Nyitva hagyod', 'Csak vendégnek adsz jelszót', 'Titkosítod és erős jelszót adsz', 'Elrejted az SSID-t, minden más mindegy'], a: 2 },
+                { q: 'Mi az offline mentés egyik előnye?', options: ['Gyorsabb internet', 'Áramfogyasztás csökkentése', 'Zsarolóvírusok ellen védettebb', 'Kevesebb tárhely kell'], a: 2 }
+            ];
+            const SS_QUIZ_IDX = 'cm_lvl1_quiz_idx';
+            const SS_QUIZ_DONE = 'cm_lvl1_quiz_done';
+            const STORAGE_DONE = 'cm_lvl1_done_tasks';
+            const STORAGE_CURR = 'cm_lvl1_current_task';
+            // 48h logika eltávolítva a kérést követve
+
+            function setVisibility(el, show){
+                if(!el) return;
+                el.style.display = show ? '' : 'none';
+            }
+            function updateLevelAccess(){
+                // Ha a js/app.js dinamikusan betöltötte a pályákat, akkor azokat kezeljük
+                const grid = document.getElementById('levelsGrid');
+                if(grid && grid.children.length > 0){
+                    // Dinamikusan betöltött pályák - újraellenőrizzük és frissítjük
+                    const levelsData = window.auroraData?.levels?.cards;
+                    if(levelsData && Array.isArray(levelsData)){
+                        // Keressük meg a legmagasabb teljesített ügy számát
+                        let highestCompleted = 0;
+                        try {
+                            // Az első pálya ellenőrzése - mindkét módon ellenőrizzük
+                            const ugy1EntryOk = sessionStorage.getItem('cm_lvl1_entry_ok') === '1';
+                            const ugy1Completed = localStorage.getItem('ugy1_completed') === 'true';
+                            if(ugy1EntryOk || ugy1Completed) highestCompleted = 1;
+                            
+                            // További pályák ellenőrzése (2-12)
+                            for(let i = 2; i <= 12; i++){
+                                const ugyDone = localStorage.getItem(`ugy${i}_completed`) === 'true';
+                                if(ugyDone) highestCompleted = i;
+                            }
+                        } catch(e){ /* ignore */ }
+                        
+                        grid.innerHTML = '';
+                        levelsData.forEach((card, index)=>{
+                            // Feloldjuk az összes pályát a legmagasabb teljesített ügyig
+                            let isUnlocked = false;
+                            
+                            // Ha a pálya száma kisebb vagy egyenlő a legmagasabb teljesített üggyel, feloldjuk
+                            if(card.n <= highestCompleted){
+                                isUnlocked = true;
+                            }
+                            
+                            // Az első pálya mindig aktív, ha nincs zárolva
+                            if(card.n === 1 && !card.locked){
+                                isUnlocked = true;
+                            }
+                            
+                            const a = document.createElement(isUnlocked ? 'a' : 'div');
+                            if(isUnlocked){
+                                a.href = card.href || (card.n === 1 ? '/ugy1.html' : `/ugy${card.n}.html`);
+                                a.className = 'level-card';
+                                a.style.textDecoration = 'none';
+                            } else {
+                                a.className = 'level-card';
+                                a.setAttribute('aria-disabled','true');
+                            }
+                            a.innerHTML = `
+                                <span class="level-label">Ügy #${card.n}</span>
+                                <img src="${card.img}" alt="Ügy ${card.n}" loading="lazy" />
+                                <div class="case-title">${card.title}</div>
+                                ${!isUnlocked ? '<span class="coming" aria-label="Zárolt">🔒</span>' : ''}
+                            `;
+                            grid.appendChild(a);
+                        });
+                        return;
+                    }
+                }
+                
+                // Fallback: statikus pályák kezelése (régi módszer)
+                let ugy1Completed = false;
+                try {
+                    ugy1Completed = sessionStorage.getItem('cm_lvl1_entry_ok') === '1' ||
+                                   localStorage.getItem('ugy1_completed') === 'true';
+                } catch(e){}
+                
+                let card = document.getElementById('level2Card');
+                let link = document.getElementById('level2Link');
+                
+                if(ugy1Completed){
+                    if(card) card.style.display = 'none';
+                    if(link){
+                        link.style.display = '';
+                        link.setAttribute('aria-disabled', 'false');
+                        link.removeAttribute('aria-disabled');
+                    }
+                } else {
+                    if(card) card.style.display = '';
+                    if(link) link.style.display = 'none';
+                }
+            }
+            function clearProgress(){
+                try {
+                    sessionStorage.removeItem(SS_QUIZ_DONE);
+                    sessionStorage.removeItem(SS_QUIZ_IDX);
+                    sessionStorage.removeItem(STORAGE_DONE);
+                    sessionStorage.removeItem(STORAGE_CURR);
+                } catch(e){}
+            }
+            function resetAll(includeGate){
+                // Reset all progress
+                clearProgress();
+                // Hide quiz if visible
+                if(QUIZ){ QUIZ.style.display = 'none'; QUIZ.hidden = true; }
+                // Panels: back to intro
+                setVisibility(OUTRO, false);
+                setVisibility(TASKS, false);
+                setVisibility(BRIEF, false);
+                setVisibility(INTRO, true);
+                if(includeGate){
+                    try { sessionStorage.removeItem('cm_lvl1_unlocked'); } catch(e){}
+                    // Re-enable gate and blur content
+                    if(GATE){ GATE.style.display = 'grid'; }
+                    if(CONTENT){
+                        CONTENT.style.filter = 'blur(6px)';
+                        CONTENT.style.pointerEvents = 'none';
+                        CONTENT.style.userSelect = 'none';
+                    }
+                }
+                // Scroll to top for clean start
+                try { window.scrollTo({ top: 0, behavior: 'smooth' }); } catch(e){ window.scrollTo(0,0); }
+            }
+
+            function loadQuizIndex(){
+                let i = 0;
+                try { i = parseInt(sessionStorage.getItem(SS_QUIZ_IDX) || '0', 10); } catch(e){}
+                if(Number.isNaN(i)) i = 0;
+                return Math.max(0, Math.min(i, QUESTIONS.length - 1));
+            }
+            function saveQuizIndex(i){
+                try { sessionStorage.setItem(SS_QUIZ_IDX, String(i)); } catch(e){}
+            }
+            function finishQuiz(){
+                if(QUIZ){ QUIZ.style.display = 'none'; QUIZ.hidden = true; }
+                try { sessionStorage.setItem(SS_QUIZ_DONE, '1'); } catch(e){}
+                // Mutasd a lezáró panelt, rejtsd a listát/briefet
+                setVisibility(INTRO, false);
+                setVisibility(TASKS, false);
+                setVisibility(BRIEF, false);
+                setVisibility(OUTRO, true);
+                // Aktiváld a 2. pályát a szintválasztóban
+                updateLevelAccess();
+            }
+            function renderQuestion(idx){
+                const title = document.getElementById('quizTitle');
+                const progress = document.getElementById('quizProgress');
+                const timerEl = document.getElementById('quizTimer');
+                const choices = document.getElementById('choices');
+                const nextBtn = document.getElementById('nextBtn');
+                const skipBtn = document.getElementById('skipBtn');
+                if(!choices || !title || !progress || !nextBtn) return;
+                const data = QUESTIONS[idx];
+                title.textContent = data.q;
+                progress.textContent = (idx + 1) + ' / ' + QUESTIONS.length;
+                choices.innerHTML = '';
+                nextBtn.disabled = true;
+                let selected = -1;
+                // Per‑kérdés visszaszámláló (csak vizuális feszültség)
+                let secs = 20;
+                let tId;
+                const renderTimer = () => {
+                    if(!timerEl) return;
+                    timerEl.textContent = 'Idő: ' + secs + 's';
+                    if(secs <= 5){
+                        timerEl.classList.add('urgent');
+                        timerEl.setAttribute('aria-live','assertive');
+                    } else {
+                        timerEl.classList.remove('urgent');
+                        timerEl.setAttribute('aria-live','polite');
+                    }
+                };
+                renderTimer();
+                tId = setInterval(() => {
+                    secs = Math.max(0, secs - 1);
+                    renderTimer();
+                    if(secs === 0){
+                        // idő lejárt – nem tiltunk, csak jelezzük
+                        clearInterval(tId);
+                    }
+                }, 1000);
+                const clearTimer = () => { try { clearInterval(tId); } catch(_){} };
+                data.options.forEach((opt, i) => {
+                    const btn = document.createElement('button');
+                    btn.type = 'button';
+                    btn.className = 'choice';
+                    btn.textContent = opt;
+                    btn.setAttribute('data-idx', String(i));
+                    btn.addEventListener('click', () => {
+                        // reset jelölések
+                        Array.from(choices.children).forEach(ch => ch.classList.remove('correct','wrong'));
+                        selected = i;
+                        if(i === data.a){
+                            btn.classList.add('correct');
+                            clearTimer();
+                            nextBtn.disabled = false;
+                            // automatikus továbblépés kis késleltetéssel
+                            setTimeout(() => {
+                                let ni = idx + 1;
+                                if(ni >= QUESTIONS.length){
+                                    finishQuiz();
+                                } else {
+                                    saveQuizIndex(ni);
+                                    renderQuestion(ni);
+                                }
+                            }, 600);
+                        } else {
+                            btn.classList.add('wrong');
+                        }
+                    });
+                    choices.appendChild(btn);
+                });
+                nextBtn.onclick = () => {
+                    if(selected === data.a){
+                        clearTimer();
+                        let ni = idx + 1;
+                        if(ni >= QUESTIONS.length){
+                            finishQuiz();
+                        } else {
+                            saveQuizIndex(ni);
+                            renderQuestion(ni);
+                        }
+                    }
+                };
+                if(skipBtn){
+                    skipBtn.onclick = () => {
+                        clearTimer();
+                        let ni = idx + 1;
+                        if(ni >= QUESTIONS.length){
+                            finishQuiz();
+                        } else {
+                            saveQuizIndex(ni);
+                            renderQuestion(ni);
+                        }
+                    };
+                }
+            }
+            function startQuiz(reset){
+                if(!QUIZ) return;
+                if(reset){
+                    try {
+                        sessionStorage.removeItem(SS_QUIZ_DONE);
+                        sessionStorage.setItem(SS_QUIZ_IDX, '0');
+                    } catch(e){}
+                }
+                QUIZ.hidden = false;
+                QUIZ.style.display = 'grid';
+                renderQuestion(loadQuizIndex());
+            }
+
+            function unlock(){
+                GATE.style.display = 'none';
+                CONTENT.style.filter = 'none';
+                CONTENT.style.pointerEvents = 'auto';
+                CONTENT.style.userSelect = 'auto';
+                try { sessionStorage.setItem('cm_lvl1_unlocked', '1'); } catch(e){}
+                // Belépés után először a belépő protokoll (intro/mission) látszódjon
+                const entryOk = (function(){ try { return sessionStorage.getItem('cm_lvl1_entry_ok') === '1'; } catch(e){ return false; } })();
+                // Csak belépő protokoll legyen, amíg nincs kész
+                setVisibility(LEVELS, !!entryOk);
+                setVisibility(INTRO, false);
+                setVisibility(MISSION, !entryOk);
+                setVisibility(OUTRO, false);
+                setVisibility(TASKS, false);
+                setVisibility(BRIEF, false);
+                if(START){
+                    START.onclick = () => {
+                        setVisibility(INTRO, false);
+                        startQuiz(true);
+                    };
+                }
+                // Az Ügy #1 kártya most közvetlenül az /ugy1.html oldalra navigál – ne akadályozzuk meg a kattintást.
+                if(RESTART){
+                    RESTART.onclick = () => {
+                        clearProgress();
+                        setVisibility(OUTRO, false);
+                        setVisibility(INTRO, true);
+                        startQuiz(true);
+                    };
+                }
+                if(RESTART_ALL){
+                    RESTART_ALL.onclick = () => {
+                        resetAll(true);
+                    };
+                }
+                // Belépő protokoll események
+                function setEntryStatus(ok, text){
+                    if(!ENTRY_STATUS) return;
+                    ENTRY_STATUS.classList.remove('status-ok','status-err');
+                    ENTRY_STATUS.classList.add(ok ? 'status-ok' : 'status-err');
+                    ENTRY_STATUS.textContent = text;
+                }
+                function showLevelsAfterEntry(){
+                    setVisibility(INTRO, false);
+                    setVisibility(MISSION, false);
+                    setVisibility(LEVELS, true);
+                    try { window.scrollTo({ top: 0, behavior: 'smooth' }); } catch(_) {}
+                    // 2. pálya elérésének frissítése (később a kvíz aktiválja)
+                    updateLevelAccess();
+                }
+                function completeEntry(){
+                    try { sessionStorage.setItem('cm_lvl1_entry_ok','1'); } catch(e){}
+                    setEntryStatus(true, '[status] ACCESS GRANTED — belépő protokoll teljesítve.');
+                    if(ENTRY_CODE){ ENTRY_CODE.textContent = 'ACCESS‑LEVEL: NOVICE-01'; ENTRY_CODE.classList.add('neon-flicker'); }
+                    setTimeout(showLevelsAfterEntry, 600);
+                }
+                function handleEntry(){
+                    if(!ENTRY_INPUT) return;
+                    const v = (ENTRY_INPUT.value || '').trim();
+                    const allowed = /^[A-Za-z0-9-]+$/;
+                    const expected = 'ACCESS-LEVEL-NOVICE-01';
+                    if(!v){
+                        setEntryStatus(false, '[status] HIBA — üres bevitel.');
+                        return;
+                    }
+                    if(!allowed.test(v)){
+                        setEntryStatus(false, '[status] HIBA — csak betűk, számok és kötőjel engedélyezett.');
+                        return;
+                    }
+                    if(v.toUpperCase() === expected){
+                        completeEntry();
+                    } else {
+                        setEntryStatus(false, '[status] ACCESS DENIED — ellenőrizd az „ACCESS” írásmódját és a kötőjeleket.');
+                    }
+                }
+                if(ENTRY_BTN){ ENTRY_BTN.onclick = handleEntry; }
+                if(ENTRY_INPUT){
+                    ENTRY_INPUT.addEventListener('keydown', (e)=>{
+                        if(e.key === 'Enter'){ e.preventDefault(); handleEntry(); }
+                    });
+                }
+            }
+            // Ellenőrizzük, hogy van-e már teljesített pálya - ha igen, automatikusan unlock
+            let hasCompletedLevel = false;
+            try {
+                // Az első pálya ellenőrzése
+                const ugy1EntryOk = sessionStorage.getItem('cm_lvl1_entry_ok') === '1';
+                const ugy1Completed = localStorage.getItem('ugy1_completed') === 'true';
+                if(ugy1EntryOk || ugy1Completed) hasCompletedLevel = true;
+                
+                // További pályák ellenőrzése (2-12)
+                for(let i = 2; i <= 12; i++){
+                    const ugyDone = localStorage.getItem(`ugy${i}_completed`) === 'true';
+                    if(ugyDone) { hasCompletedLevel = true; break; }
+                }
+            } catch(e){ /* ignore */ }
+            
+            // Ha van teljesített pálya vagy már unlock volt, akkor automatikusan unlock
+            try {
+                if(sessionStorage.getItem('cm_lvl1_unlocked') === '1' || hasCompletedLevel){ 
+                    unlock(); 
+                    // Ha van teljesített pálya, akkor azonnal mutassuk a pályákat
+                    if(hasCompletedLevel){
+                        setVisibility(INTRO, false);
+                        setVisibility(LEVELS, true);
+                    }
+                } 
+            } catch(e){}
+
+            FORM.addEventListener('submit', function(e){
+                e.preventDefault();
+                const v = (INPUT.value || '').trim();
+                if(!v){
+                    ERR.textContent = 'Írj be a belépési kulcsot.';
+                    INPUT.focus();
+                    return;
+                }
+                if(v === PASS_PLAIN){
+                    unlock();
+                } else {
+                    ERR.textContent = 'Helytelen kulcs. Próbáld újra.';
+                    INPUT.focus();
+                }
+            });
+        })();
+        // Interaktív feladatlista – kijelölés és automatikus továbbugrás
+        (function(){
+            const STORAGE_DONE = 'cm_lvl1_done_tasks';
+            const STORAGE_CURR = 'cm_lvl1_current_task';
+            const tasks = Array.from(document.querySelectorAll('.tasklist .task'));
+            if(!tasks.length) return;
+
+            function loadState(){
+                let done = [];
+                let curr = 0;
+                try {
+                    done = JSON.parse(sessionStorage.getItem(STORAGE_DONE) || '[]');
+                    curr = parseInt(sessionStorage.getItem(STORAGE_CURR) || '0', 10);
+                    if(Number.isNaN(curr)) curr = 0;
+                } catch(e){}
+                return { done, curr };
+            }
+            function saveState(done, curr){
+                try {
+                    sessionStorage.setItem(STORAGE_DONE, JSON.stringify(done));
+                    sessionStorage.setItem(STORAGE_CURR, String(curr));
+                } catch(e){}
+            }
+            function firstIncompleteIndex(done){
+                for(let i=0;i<tasks.length;i++){
+                    const id = tasks[i].dataset.taskId;
+                    if(!done.includes(id)) return i;
+                }
+                return tasks.length - 1;
+            }
+            function applyState(){
+                const { done, curr } = loadState();
+                tasks.forEach((li, idx) => {
+                    const id = li.dataset.taskId;
+                    const checked = done.includes(id);
+                    const box = li.querySelector('.chk');
+                    li.classList.toggle('completed', checked);
+                    li.classList.toggle('active', idx === curr);
+                    li.setAttribute('aria-current', idx === curr ? 'step' : 'false');
+                    if(box) box.checked = checked;
+                });
+            }
+            function goTo(index, smooth=true){
+                const { done } = loadState();
+                const clamped = Math.max(0, Math.min(index, tasks.length - 1));
+                saveState(done, clamped);
+                applyState();
+                const el = tasks[clamped];
+                if(el){
+                    el.scrollIntoView({ behavior: smooth ? 'smooth' : 'auto', block: 'center' });
+                    const box = el.querySelector('.chk');
+                    if(box) box.focus({ preventScroll: true });
+                }
+            }
+            function completeAndNext(li){
+                const { done, curr } = loadState();
+                const id = li.dataset.taskId;
+                if(!done.includes(id)) done.push(id);
+                let nextIdx = curr;
+                // next not completed
+                for(let i=curr+1;i<tasks.length;i++){
+                    const nid = tasks[i].dataset.taskId;
+                    if(!done.includes(nid)){ nextIdx = i; break; }
+                    nextIdx = i;
+                }
+                saveState(done, nextIdx);
+                applyState();
+                goTo(nextIdx);
+            }
+            // Event bindings
+            tasks.forEach((li, idx) => {
+                const box = li.querySelector('.chk');
+                // clicking row toggles checkbox
+                li.addEventListener('click', (e) => {
+                    if(e.target === box) return; // default change handler will run
+                    if(box){
+                        box.checked = !box.checked;
+                        box.dispatchEvent(new Event('change', { bubbles: true }));
+                    }
+                });
+                if(box){
+                    box.addEventListener('change', () => {
+                        if(box.checked){
+                            completeAndNext(li);
+                        } else {
+                            // unchecked: mark as not done and set current here
+                            const state = loadState();
+                            const id = li.dataset.taskId;
+                            state.done = state.done.filter(x => x !== id);
+                            saveState(state.done, idx);
+                            applyState();
+                        }
+                    });
+                    box.addEventListener('keydown', (e) => {
+                        if(e.key === 'Enter' || e.key === ' '){
+                            e.preventDefault();
+                            box.checked = !box.checked;
+                            box.dispatchEvent(new Event('change', { bubbles: true }));
+                        }
+                    });
+                }
+            });
+            // Initialize state
+            const state = loadState();
+            if(!tasks.length) return;
+            // If state empty, set current to first incomplete
+            if(!state.done || !Array.isArray(state.done)) state.done = [];
+            let startIdx = typeof state.curr === 'number' ? state.curr : 0;
+            if(startIdx < 0 || startIdx >= tasks.length){
+                startIdx = firstIncompleteIndex(state.done);
+            }
+            saveState(state.done, startIdx);
+            applyState();
+            // Ensure active task in view on load
+            goTo(startIdx, false);
+        })();
+    </script>
+    <script>
+        // Staggered lazy loading for level thumbnails to speed first render
+        (function(){
+            var ric = window.requestIdleCallback || function(cb){ return setTimeout(cb, 50); };
+            function initStagger(){
+                var grid = document.querySelector('.levels-grid');
+                if(!grid) return;
+                var imgs = Array.prototype.slice.call(grid.querySelectorAll('img'));
+                if(!imgs.length) return;
+                var placeholder = 'data:image/gif;base64,R0lGODlhAQABAAAAACw=';
+                // Mark sources and lower priority for all except the first visible
+                imgs.forEach(function(img, i){
+                    var real = img.getAttribute('src');
+                    if(!real) return;
+                    img.dataset.src = real;
+                    img.setAttribute('decoding','async');
+                    if(i === 0){
+                        img.setAttribute('fetchpriority','high');
+                    } else {
+                        img.setAttribute('fetchpriority','low');
+                        img.setAttribute('loading','lazy');
+                        img.src = placeholder;
+                    }
+                });
+                var idx = 1; // first already visible
+                function loadNext(){
+                    if(idx >= imgs.length) return;
+                    var img = imgs[idx++];
+                    var real = img && img.dataset ? img.dataset.src : null;
+                    if(!img || !real){ return ric(loadNext); }
+                    img.addEventListener('load', function(){ ric(loadNext); }, { once: true });
+                    img.src = real;
+                }
+                // Start loading a couple after idle to avoid network burst
+                ric(function(){ loadNext(); loadNext(); });
+            }
+            if(document.readyState === 'loading'){ 
+                document.addEventListener('DOMContentLoaded', function(){
+                    initStagger();
+                    // Frissítsük a pályák állapotát betöltéskor
+                    setTimeout(updateLevelAccess, 500);
+                }); 
+            }
+            else { 
+                initStagger();
+                setTimeout(updateLevelAccess, 500);
+            }
+        })();
+    </script>
+</body>
+</html>

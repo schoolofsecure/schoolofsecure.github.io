@@ -1,9 +1,9 @@
 {
   "gate": {
     "title": "Belépés szükséges",
-    "desc": "Add meg a belépési kulcsot a pálya megnyitásához.",
+    "desc": "",
     "placeholder": "Belépési kulcs",
-    "hint": "Tipp: a kulcsot a toborzó üzenet vagy a játékmester adja meg.",
+    "hint": "",
     "pass": "kriptográfia"
   },
   "intro": {
@@ -24,7 +24,7 @@
     "rightTitle": "Válasz",
     "inputPlaceholder": "ellenőrző szó…",
     "hintTitle": "Súgó megnyitása",
-    "hintText": "Egy extra „C” betű csúszott be a „ACCESS” szóba. Tipp: csak a javasolt karaktereket használd.",
+    "hintText": "Figyeld meg: az egyik betűből túl sok van, és nem minden karakter megengedett. Használj csak betűket, számokat és kötőjelet.",
     "hintChips": ["ACCESS-LEVEL","NOVICE-01","ENTRY"],
     "expected": "ACCESS-LEVEL-NOVICE-01",
     "statusOk": "[status] ACCESS GRANTED — belépő protokoll teljesítve.",
@@ -34,9 +34,9 @@
   },
   "levels": {
     "title": "Válaszd ki az ügyet",
-    "desc": "Minden ügy megnyitásáról értesítést küldünk.",
+    "desc": "",
     "cards": [
-      { "n": 1, "title": "A Titkosított Adatcsomag", "img": "/images/1.jpg", "href": "/ugy1.html", "locked": false },
+      { "n": 1, "title": "A Titkosított Adatcsomag", "img": "/images/1.jpg", "href": "/ugy1", "locked": false },
       { "n": 2, "title": "A Hamisított Archívum", "img": "/images/2.jpg", "href": "#", "locked": true },
       { "n": 3, "title": "A Kézbesítetlen Üzenet", "img": "/images/3.jpg", "href": "#", "locked": true },
       { "n": 4, "title": "A Hiányzó Idővonal", "img": "/images/4.jpg", "href": "#", "locked": true },

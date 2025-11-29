@@ -10,7 +10,7 @@ const Landing = () => {
   const [showGdprHoverHint, setShowGdprHoverHint] = useState(false)
   const [authPanelOpen, setAuthPanelOpen] = useState(false)
   const [authMode, setAuthMode] = useState('login')
-  const { user, registerWithEmail, loginWithEmail, logout } = useAuth()
+  const { user, loading, registerWithEmail, loginWithEmail, logout } = useAuth()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const navigate = useNavigate()
@@ -31,6 +31,12 @@ const Landing = () => {
     fontWeight: 600,
     padding: '0 20px'
   }
+
+  useEffect(() => {
+    if (!loading && user && user.emailVerified) {
+      navigate('/aurora', { replace: true })
+    }
+  }, [loading, user, navigate])
 
   useEffect(() => {
     try {

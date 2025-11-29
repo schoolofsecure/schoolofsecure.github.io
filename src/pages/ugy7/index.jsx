@@ -404,7 +404,7 @@ const Ugy7 = () => {
                 {done[4] && (
                   <div className="card" style={{marginTop:'10px', animation:'fadeIn .3s ease both'}}>
                     <div style={{display:'flex', gap:'10px', marginTop:'8px', flexWrap:'wrap'}}>
-                      <a className="btn" href="/aurora.html">Vissza az ügyekhez</a>
+                      <a className="btn" href="/aurora">Vissza az ügyekhez</a>
                       <a className="btn-ghost" href="/ugy6.html" style={{textDecoration:'none'}}>Előző ügy</a>
                       <a className="btn-ghost" href="/ugy8.html?start=1" style={{textDecoration:'none'}}>Következő ügy</a>
                     </div>

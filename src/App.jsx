@@ -1,5 +1,5 @@
 import React from 'react'
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { AuthProvider, useAuth } from './contexts/AuthContext'
 import { ScoringProvider, useScoring } from './contexts/ScoringContext'
 import PointAnimation from './components/Scoring/PointAnimation'
@@ -42,6 +42,7 @@ function AppContent() {
         <Routes>
           <Route path="/" element={<Landing />} />
           <Route path="/aurora" element={<Aurora />} />
+          <Route path="/aurora.html" element={<Navigate to="/aurora" replace />} />
           <Route path="/privacy" element={<Privacy />} />
           <Route path="/ugy1" element={<Ugy1 />} />
           <Route path="/ugy2" element={<Ugy2 />} />

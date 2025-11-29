@@ -190,7 +190,7 @@ const App = () => {
             <div style={{display:'flex', gap:'12px', justifyContent:'center', flexWrap:'wrap'}}>
               <a className="btn" href="/ugy1.html">Első pálya</a>
               <a className="btn" href="/ugy2.html">Második pálya</a>
-              <a className="btn-ghost" href="/aurora.html">Ügyek áttekintése</a>
+              <a className="btn-ghost" href="/aurora">Ügyek áttekintése</a>
             </div>
             {/* Fejlesztői gomb - zárolás feloldása */}
             <div style={{marginTop:'24px', paddingTop:'24px', borderTop:'1px solid rgba(207,230,255,0.1)'}}>
@@ -401,7 +401,7 @@ const App = () => {
                 {done[4] && (
                   <div className="card" style={{marginTop:'10px', animation:'fadeIn .3s ease both'}}>
                     <div style={{display:'flex', gap:'10px', marginTop:'8px', flexWrap:'wrap'}}>
-                      <a className="btn" href="/aurora.html">Vissza az ügyekhez</a>
+                      <a className="btn" href="/aurora">Vissza az ügyekhez</a>
                       <a className="btn-ghost" href="/ugy9.html" style={{textDecoration:'none'}}>Előző ügy</a>
                       <a className="btn-ghost" href="/ugy11.html?start=1" style={{textDecoration:'none'}}>Következő ügy</a>
                     </div>

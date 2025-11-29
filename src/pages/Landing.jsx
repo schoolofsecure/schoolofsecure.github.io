@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
 import '../index.css'
 
@@ -13,6 +13,7 @@ const Landing = () => {
   const { user, registerWithEmail, loginWithEmail, logout } = useAuth()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const navigate = useNavigate()
 
   const authStatusText = user
     ? user.emailVerified
@@ -81,6 +82,7 @@ const Landing = () => {
     alert(result.message)
     if (result.success) {
       setAuthPanelOpen(false)
+      navigate('/aurora')
     }
   }
 

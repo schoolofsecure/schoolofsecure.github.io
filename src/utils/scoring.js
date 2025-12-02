@@ -148,6 +148,7 @@ export function calculateTaskScore({ difficulty, isCorrect, level, timeSpent = n
   if (isCorrect) {
     feedback = `Helyes döntés! +${points} pont, a hacker nyomai közelebb kerülnek a feltáráshoz.`
   } else {
+    // Minden helytelen válasz -5 pont
     feedback = `Figyelj jobban! ${points} pont, de még mindig nyomozhatsz tovább.`
   }
   

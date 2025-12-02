@@ -3,19 +3,19 @@ import '../index.css'
 
 const Privacy = () => {
   const [revealedEmails, setRevealedEmails] = useState(false)
-  const emails = ['schoolofsecure@gmail.com', 'secure@schoolofsecure.com']
+  const emails = ['secure@schoolofsecure.com']
 
   return (
     <div className="container">
       <div className="card">
         <h1 id="adatkezeles">Adatkezelési tájékoztató</h1>
-        <p className="muted">Utolsó frissítés: 2025-01-01</p>
+        <p className="muted">Utolsó frissítés: 2025. december 2.</p>
         <span className="pill">GDPR kompatibilis</span>
 
         <div className="grid" style={{marginTop:'14px'}}>
           <section className="section">
             <h2>1. Adatkezelő</h2>
-            <p>Az interaktív nyomozós krimi (kiberbiztonság témában) jelentkezéseinek és kommunikációjának kezelője: <strong>Papp‑Kovács Erika</strong> (adatkezelő). Elérhetőség: 
+            <p>Az interaktív nyomozós krimi (kiberbiztonság témában) adatkezelője: <strong>Papp‑Kovács Erika</strong> (adatkezelő). Elérhetőség: 
               {revealedEmails ? (
                 <span>
                   {emails.map((email, i) => (
@@ -31,7 +31,7 @@ const Privacy = () => {
                   onClick={() => setRevealedEmails(true)}
                   style={{cursor: 'pointer', textDecoration: 'underline'}}
                 >
-                  [e‑mail címek megjelenítése]
+                  [e‑mail cím megjelenítése]
                 </span>
               )}
             </p>
@@ -47,7 +47,7 @@ const Privacy = () => {
           <section className="section">
             <h2>3. Adatkezelés célja és jogalapja</h2>
             <ul>
-              <li>Játékhoz kapcsolódó kommunikáció, feladványok küldése (hozzájárulás – GDPR 6. cikk (1) a)).</li>
+              <li>Bejelentkezés a játékhoz, felhasználói fiók kezelése (hozzájárulás – GDPR 6. cikk (1) a)).</li>
               <li>Rendszerbiztonság és hibakeresés (jogos érdek – GDPR 6. cikk (1) f)).</li>
             </ul>
           </section>
@@ -55,7 +55,7 @@ const Privacy = () => {
           <section className="section">
             <h2>4. Megőrzési idő</h2>
             <ul>
-              <li>Feliratkozási adatok: a visszavonásig, de legfeljebb 24 hónap.</li>
+              <li>Felhasználói fiók adatok: a visszavonásig, de legfeljebb 24 hónap.</li>
               <li>Technikai naplók: legfeljebb 90 nap.</li>
             </ul>
           </section>
@@ -63,8 +63,7 @@ const Privacy = () => {
           <section className="section">
             <h2>5. Adatfeldolgozók, adattovábbítás</h2>
             <ul>
-              <li>Google Forms (feliratkozások gyűjtése).</li>
-              <li>E‑mail szolgáltató a feladványok kiküldéséhez.</li>
+              <li>Google Firebase (Authentication) – a bejelentkezéshez és adattároláshoz.</li>
             </ul>
             <p>Harmadik országba irányuló adattovábbítás esetén az EU megfelelőségi határozata vagy megfelelő garanciák biztosítottak.</p>
           </section>
@@ -108,7 +107,7 @@ const Privacy = () => {
                   onClick={() => setRevealedEmails(true)}
                   style={{cursor: 'pointer', textDecoration: 'underline'}}
                 >
-                  [e‑mail címek megjelenítése]
+                  [e‑mail cím megjelenítése]
                 </span>
               )}
             </p>
@@ -116,7 +115,7 @@ const Privacy = () => {
 
           <section className="section">
             <h2>10. Hatály</h2>
-            <p>Jelen tájékoztató az interaktív nyomozós krimi játék (kiberbiztonság témában) landing oldalára és kommunikációjára vonatkozik. Változás esetén a módosított verzió lép hatályba a közzétételtől.</p>
+            <p>Jelen tájékoztató az interaktív nyomozós krimi játék (kiberbiztonság témában) játékára és webalkalmazására vonatkozik. Változás esetén a módosított verzió lép hatályba a közzétételtől.</p>
           </section>
         </div>
         <p className="footer">© 2025 CyberMystery – Adatkezelési tájékoztató</p>

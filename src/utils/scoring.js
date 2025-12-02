@@ -141,15 +141,12 @@ export const ACHIEVEMENTS = {
  * @returns {Object} - Pontok és visszajelzés
  */
 export function calculateTaskScore({ difficulty, isCorrect, level, timeSpent = null }) {
-  const basePoints = isCorrect ? SCORING.TASK_COMPLETE : SCORING.TASK_FAILURE
-  const multiplier = SCORING.DIFFICULTY_MULTIPLIER[difficulty] || 1.0
-  const points = Math.round(basePoints * multiplier)
+  // Minden helyes válasz +10 pont, nehézségtől függetlenül
+  const points = isCorrect ? SCORING.TASK_COMPLETE : SCORING.TASK_FAILURE
   
   let feedback = ''
   if (isCorrect) {
-    const levelBonus = SCORING.LEVEL_BONUS[level] || 0
-    const totalPoints = points + (levelBonus > 0 ? Math.round(levelBonus / 5) : 0)
-    feedback = `Helyes döntés! +${totalPoints} pont, a hacker nyomai közelebb kerülnek a feltáráshoz.`
+    feedback = `Helyes döntés! +${points} pont, a hacker nyomai közelebb kerülnek a feltáráshoz.`
   } else {
     feedback = `Figyelj jobban! ${points} pont, de még mindig nyomozhatsz tovább.`
   }

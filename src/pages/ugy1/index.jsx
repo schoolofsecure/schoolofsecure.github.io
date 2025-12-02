@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useEffect, useRef } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../../contexts/AuthContext'
 import { useScoring } from '../../contexts/ScoringContext'
 import NarrativeBlock from '../../components/Ugy1/NarrativeBlock'
@@ -83,6 +83,7 @@ const Ugy1 = () => {
   const [step, setStep] = useState(0); // 0..4
   const [done, setDone] = useState([false,false,false,false,false]);
   const [showArchive, setShowArchive] = useState(false);
+  const navigate = useNavigate();
   const { saveLevelCompletion, isAuthenticated, logout } = useAuth();
   const { scoreTask, scoreLevel } = useScoring();
   const [errors, setErrors] = useState(0);
@@ -189,7 +190,10 @@ const Ugy1 = () => {
         {isAuthenticated && (
           <button
             onClick={async () => {
-              await logout()
+              const result = await logout()
+              if (result.success) {
+                navigate('/')
+              }
             }}
             style={{
               marginLeft: 'auto',

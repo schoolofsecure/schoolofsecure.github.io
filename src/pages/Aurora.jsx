@@ -289,6 +289,7 @@ const Aurora = () => {
                 setUnlocked(false)
                 setShowLevels(false)
                 setShowMission(false)
+                navigate('/')
               }
             }}
             style={{

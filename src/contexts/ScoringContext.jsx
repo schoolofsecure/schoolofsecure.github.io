@@ -14,7 +14,7 @@ export const useScoring = () => {
 
 export const ScoringProvider = ({ children }) => {
   const { user, isAuthenticated, loadScoringData: authLoadScoringData, saveScoringData: authSaveScoringData } = useAuth()
-  const [totalPoints, setTotalPoints] = useState(50)
+  const [totalPoints, setTotalPoints] = useState(0)
   const [currentRank, setCurrentRank] = useState(null)
   const [achievements, setAchievements] = useState([])
   const [levelStats, setLevelStats] = useState({}) // { level: { points, errors, timeSpent, completed } }
@@ -29,14 +29,38 @@ export const ScoringProvider = ({ children }) => {
       loadScoringData()
     } else {
       // Bejelentkezés nélkül ne inicializáljon scoring-ot
-      setTotalPoints(50)
+      setTotalPoints(0)
       setCurrentRank(null)
       setAchievements([])
       setLevelStats({})
       setPerfectStreak(0)
     }
   }, [isAuthenticated, user])
-  
+
+  // Automatikus mentés, amikor változnak az adatok (debounce-zva)
+  useEffect(() => {
+    if (!isAuthenticated || !user) {
+      return
+    }
+    
+    // Debounce - ne mentse túl gyakran
+    const timeoutId = setTimeout(() => {
+      const highestLevel = Object.keys(levelStats).length > 0 
+        ? Math.max(...Object.keys(levelStats).map(Number))
+        : 1
+      
+      saveScoringData({
+        totalPoints,
+        achievements,
+        levelStats,
+        perfectStreak,
+        highestLevel
+      })
+    }, 2000) // 2 másodperc késleltetés
+    
+    return () => clearTimeout(timeoutId)
+  }, [totalPoints, achievements, levelStats, perfectStreak, isAuthenticated, user])
+
   const loadScoringData = async () => {
     if (!isAuthenticated || !user) {
       return
@@ -44,23 +68,35 @@ export const ScoringProvider = ({ children }) => {
     
     try {
       const data = await authLoadScoringData()
-      if (data && data.totalPoints !== undefined && data.totalPoints !== null) {
-        // Ha van érvényes totalPoints (akár 0 is), használjuk azt
-        setTotalPoints(data.totalPoints)
+      if (data) {
+        let pointsToUse = 0 // Alapértelmezett
+        
+        if (data.totalPoints !== undefined && data.totalPoints !== null) {
+          // Ha van totalPoints, használjuk azt
+          pointsToUse = data.totalPoints
+        } else if (data.levelStats && Object.keys(data.levelStats).length > 0) {
+          // Ha nincs totalPoints, de van levelStats, számoljuk ki
+          // 0-ról indulunk, majd hozzáadjuk a pályák pontszámait
+          pointsToUse = Object.values(data.levelStats).reduce((sum, stat) => {
+            return sum + (stat.points || 0)
+          }, 0)
+        }
+        
+        setTotalPoints(pointsToUse)
         setAchievements(data.achievements || [])
         setLevelStats(data.levelStats || {})
         setPerfectStreak(data.perfectStreak || 0)
-        updateRank(data.totalPoints, data.highestLevel || 1, true) // skipAnimation: true betöltéskor
+        updateRank(pointsToUse, data.highestLevel || 1, true) // skipAnimation: true betöltéskor
       } else {
-        // Ha nincs mentett adat, kezdjünk 50 ponttal
-        setTotalPoints(50)
-        updateRank(50, 1, true)
+        // Ha nincs mentett adat, kezdjünk 0 ponttal
+        setTotalPoints(0)
+        updateRank(0, 1, true)
       }
     } catch (e) {
       console.warn('Nem sikerült betölteni a pontozást:', e)
       // Hiba esetén is inicializáljuk az alapértelmezett értékekkel
-      setTotalPoints(50)
-      updateRank(50, 1, true)
+      setTotalPoints(0)
+      updateRank(0, 1, true)
     }
   }
   

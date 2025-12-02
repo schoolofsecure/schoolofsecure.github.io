@@ -44,19 +44,22 @@ export const ScoringProvider = ({ children }) => {
     
     try {
       const data = await authLoadScoringData()
-      if (data) {
-        setTotalPoints(data.totalPoints || 50)
+      if (data && data.totalPoints !== undefined && data.totalPoints !== null) {
+        // Ha van érvényes totalPoints (akár 0 is), használjuk azt
+        setTotalPoints(data.totalPoints)
         setAchievements(data.achievements || [])
         setLevelStats(data.levelStats || {})
         setPerfectStreak(data.perfectStreak || 0)
-        updateRank(data.totalPoints || 50, data.highestLevel || 1, true) // skipAnimation: true betöltéskor
+        updateRank(data.totalPoints, data.highestLevel || 1, true) // skipAnimation: true betöltéskor
       } else {
         // Ha nincs mentett adat, kezdjünk 50 ponttal
+        setTotalPoints(50)
         updateRank(50, 1, true)
       }
     } catch (e) {
       console.warn('Nem sikerült betölteni a pontozást:', e)
       // Hiba esetén is inicializáljuk az alapértelmezett értékekkel
+      setTotalPoints(50)
       updateRank(50, 1, true)
     }
   }
@@ -234,6 +237,22 @@ export const ScoringProvider = ({ children }) => {
     }
     
     const newAchievements = checkAchievements(stats)
+    
+    // Frissített értékek kiszámítása a mentéshez
+    const updatedLevelStats = {
+      ...levelStats,
+      [level]: levelStat
+    }
+    const updatedPerfectStreak = errors === 0 ? perfectStreak + 1 : 0
+    const updatedAchievements = newAchievements.length > 0
+      ? (() => {
+          const existing = achievements.map(a => a.id)
+          const unique = newAchievements.filter(a => !existing.includes(a.id))
+          return [...achievements, ...unique]
+        })()
+      : achievements
+    
+    // State frissítések
     if (newAchievements.length > 0) {
       setAchievements(prev => {
         const existing = prev.map(a => a.id)
@@ -268,12 +287,12 @@ export const ScoringProvider = ({ children }) => {
       totalPoints: newTotal
     })
     
-    // Mentés
+    // Mentés - frissített értékekkel
     const dataToSave = {
       totalPoints: newTotal,
-      achievements: [...achievements, ...newAchievements],
-      levelStats: { ...levelStats, [level]: levelStat },
-      perfectStreak: errors === 0 ? perfectStreak + 1 : 0,
+      achievements: updatedAchievements,
+      levelStats: updatedLevelStats,
+      perfectStreak: updatedPerfectStreak,
       highestLevel: level
     }
     saveScoringData(dataToSave)

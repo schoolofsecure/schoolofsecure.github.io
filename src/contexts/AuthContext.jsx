@@ -64,7 +64,17 @@ export const AuthProvider = ({ children }) => {
       await signOut(auth)
       return { success: true, message: 'Sikeres regisztráció! Küldtünk egy megerősítő e-mailt. Ellenőrizd a postaládádat.' }
     } catch (error) {
-      return { success: false, message: error?.message || 'Regisztráció sikertelen' }
+      let errorMessage = 'Regisztráció sikertelen.'
+      if (error.code === 'auth/email-already-in-use') {
+        errorMessage = 'Ha a megerősítő e-mail nem érkezik meg, próbálj meg bejelentkezni a fiókodba.'
+      } else if (error.code === 'auth/invalid-email') {
+        errorMessage = 'Érvénytelen e-mail cím.'
+      } else if (error.code === 'auth/weak-password') {
+        errorMessage = 'A jelszó túl gyenge. Használj legalább 6 karaktert.'
+      } else if (error.message) {
+        errorMessage = error.message
+      }
+      return { success: false, message: errorMessage }
     }
   }
 

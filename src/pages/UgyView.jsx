@@ -524,22 +524,26 @@ const UgyView = () => {
                                 {config.nextLevelText} →
                               </button>
                             ) : levelNum === 3 && config.nextLevelRoute ? (
-                              <Link
+                              <button
                                 className="btn"
-                                to={config.nextLevelRoute}
+                                disabled
                                 style={{
-                                  textDecoration: 'none',
+                                  opacity: 0.5,
+                                  cursor: 'not-allowed',
                                   display: 'inline-flex',
                                   justifyContent: 'center',
                                   alignItems: 'center',
                                   textAlign: 'center',
                                   minWidth: '0',
                                   padding: '10px 18px',
-                                  fontSize: '13px'
+                                  fontSize: '13px',
+                                  background: 'rgba(0, 229, 255, 0.2)',
+                                  border: '1px solid rgba(0, 229, 255, 0.3)',
+                                  color: 'rgba(0, 229, 255, 0.5)'
                                 }}
                               >
                                 {config.nextLevelText} →
-                              </Link>
+                              </button>
                             ) : null}
                           </div>
                         </div>
@@ -603,22 +607,45 @@ const UgyView = () => {
                             Vissza az ügyekhez
                           </Link>
                           {config.nextLevelRoute && (
-                            <Link
-                              className="btn"
-                              to={config.nextLevelRoute}
-                              style={{
-                                textDecoration:'none',
-                                display:'inline-flex',
-                                justifyContent:'center',
-                                alignItems:'center',
-                                textAlign:'center',
-                                minWidth:'0',
-                                padding:'10px 18px',
-                                fontSize:'13px'
-                              }}
-                            >
-                              {config.nextLevelText}
-                            </Link>
+                            levelNum === 3 ? (
+                              <button
+                                className="btn"
+                                disabled
+                                style={{
+                                  opacity: 0.5,
+                                  cursor: 'not-allowed',
+                                  display: 'inline-flex',
+                                  justifyContent: 'center',
+                                  alignItems: 'center',
+                                  textAlign: 'center',
+                                  minWidth: '0',
+                                  padding: '10px 18px',
+                                  fontSize: '13px',
+                                  background: 'rgba(0, 229, 255, 0.2)',
+                                  border: '1px solid rgba(0, 229, 255, 0.3)',
+                                  color: 'rgba(0, 229, 255, 0.5)'
+                                }}
+                              >
+                                {config.nextLevelText}
+                              </button>
+                            ) : (
+                              <Link
+                                className="btn"
+                                to={config.nextLevelRoute}
+                                style={{
+                                  textDecoration:'none',
+                                  display:'inline-flex',
+                                  justifyContent:'center',
+                                  alignItems:'center',
+                                  textAlign:'center',
+                                  minWidth:'0',
+                                  padding:'10px 18px',
+                                  fontSize:'13px'
+                                }}
+                              >
+                                {config.nextLevelText}
+                              </Link>
+                            )
                           )}
                         </div>
                       </div>
@@ -678,22 +705,45 @@ const UgyView = () => {
                             Vissza az ügyekhez
                           </Link>
                           {config.nextLevelRoute && (
-                            <Link
-                              className="btn"
-                              to={config.nextLevelRoute}
-                              style={{
-                                textDecoration:'none',
-                                display:'inline-flex',
-                                justifyContent:'center',
-                                alignItems:'center',
-                                textAlign:'center',
-                                minWidth:'0',
-                                padding:'10px 18px',
-                                fontSize:'13px'
-                              }}
-                            >
-                              {config.nextLevelText}
-                            </Link>
+                            levelNum === 3 ? (
+                              <button
+                                className="btn"
+                                disabled
+                                style={{
+                                  opacity: 0.5,
+                                  cursor: 'not-allowed',
+                                  display: 'inline-flex',
+                                  justifyContent: 'center',
+                                  alignItems: 'center',
+                                  textAlign: 'center',
+                                  minWidth: '0',
+                                  padding: '10px 18px',
+                                  fontSize: '13px',
+                                  background: 'rgba(0, 229, 255, 0.2)',
+                                  border: '1px solid rgba(0, 229, 255, 0.3)',
+                                  color: 'rgba(0, 229, 255, 0.5)'
+                                }}
+                              >
+                                {config.nextLevelText}
+                              </button>
+                            ) : (
+                              <Link
+                                className="btn"
+                                to={config.nextLevelRoute}
+                                style={{
+                                  textDecoration:'none',
+                                  display:'inline-flex',
+                                  justifyContent:'center',
+                                  alignItems:'center',
+                                  textAlign:'center',
+                                  minWidth:'0',
+                                  padding:'10px 18px',
+                                  fontSize:'13px'
+                                }}
+                              >
+                                {config.nextLevelText}
+                              </Link>
+                            )
                           )}
                         </div>
                       </div>

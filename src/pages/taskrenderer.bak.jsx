@@ -74,6 +74,7 @@ const TaskRenderer = ({ task, taskStory, taskLabel, onSuccess, onFailure, imageS
     
     case 'XOR':
     case 'HASH_MISMATCH':
+    case 'URL_TRUST':
     case 'SOCIAL_ENGINEERING':
       return <SocialEngineeringTaskRenderer task={task} payload={payload} taskStory={taskStory} taskLabel={taskLabel} onSuccess={onSuccess} onFailure={onFailure} imageSrc={imageSrc} />
     
@@ -100,6 +101,8 @@ const TaskRenderer = ({ task, taskStory, taskLabel, onSuccess, onFailure, imageS
     
     case 'CRYPTO_PUZZLE':
     case 'PSEUDOCODE_BUG':
+    case 'NETWORK_ANOMALY':
+    case 'EMAIL_HEADER':
     case 'ATTACK_SCENARIO':
     case 'ZERO_DAY':
       // Alapértelmezett renderelés szöveges inputtal
@@ -122,28 +125,6 @@ const HintDetails = ({ text }) => {
   )
 }
 
-// Fejlesztői skip gomb
-const DevSkipButton = ({ onSkip, disabled }) => {
-  return (
-    <button
-      className="btn-ghost"
-      type="button"
-      onClick={onSkip}
-      disabled={disabled}
-      style={{
-        fontSize: '11px',
-        padding: '4px 8px',
-        opacity: 0.6,
-        borderColor: 'rgba(207,230,255,0.1)',
-        color: 'var(--muted)'
-      }}
-      title="Fejlesztői mód: feladat kihagyása"
-    >
-      ⏭️ Skip
-    </button>
-  )
-}
-
 // Caesar Task Renderer
 const CaesarTaskRenderer = ({ task, payload, taskStory, taskLabel, onSuccess, onFailure, imageSrc }) => {
   const [feedback, setFeedback] = useState(null)
@@ -152,7 +133,12 @@ const CaesarTaskRenderer = ({ task, payload, taskStory, taskLabel, onSuccess, on
   const handleCheck = (value, normalize) => {
     const isValid = task.validate(value)
     setFeedback(isValid ? 'ok' : 'err')
-    // onSuccess-t a ChallengeInput kezeli az onSuccess prop-on keresztül
+    if (isValid) {
+      setSolved(true)
+      onSuccess?.()
+    } else {
+      onFailure?.()
+    }
     return isValid
   }
 
@@ -188,9 +174,6 @@ const CaesarTaskRenderer = ({ task, payload, taskStory, taskLabel, onSuccess, on
           onSuccess={onSuccess}
           onFailure={onFailure}
         />
-        <div style={{ marginTop: '8px', display: 'flex', justifyContent: 'flex-end' }}>
-          <DevSkipButton onSkip={handleDevSkip} disabled={solved} />
-        </div>
         {imageSrc && <div className="task-note"><PerfImg className="task-ill" src={imageSrc} alt="Illusztráció" width="280" height="280" priority /></div>}
         <HintDetails text={payload.hint} />
       </div>
@@ -204,7 +187,12 @@ const VigenereTaskRenderer = ({ task, payload, taskStory, taskLabel, onSuccess, 
 
   const handleCheck = (value, normalize) => {
     const isValid = task.validate(value)
-    // onSuccess-t a ChallengeInput kezeli az onSuccess prop-on keresztül
+    if (isValid) {
+      setSolved(true)
+      onSuccess?.()
+    } else {
+      onFailure?.()
+    }
     return isValid
   }
 
@@ -245,9 +233,6 @@ const VigenereTaskRenderer = ({ task, payload, taskStory, taskLabel, onSuccess, 
           onSuccess={onSuccess}
           onFailure={onFailure}
         />
-        <div style={{ marginTop: '8px', display: 'flex', justifyContent: 'flex-end' }}>
-          <DevSkipButton onSkip={handleDevSkip} disabled={solved} />
-        </div>
         {imageSrc && <div className="task-note"><PerfImg className="task-ill" src={imageSrc} alt="Illusztráció" width="280" height="280" priority /></div>}
         <HintDetails text={payload.hint} />
       </div>
@@ -355,11 +340,10 @@ const PhishingTaskRenderer = ({ task, payload, taskStory, taskLabel, onSuccess, 
               : 'Nem stimmel minden jelölés. Gondold végig, melyik mező tényleg gyanús.'}
           </div>
         )}
-        <div style={{display:'flex', gap:'10px', flexWrap:'wrap', alignItems:'center'}}>
+        <div style={{display:'flex', gap:'10px', flexWrap:'wrap'}}>
           <button className="btn" type="button" onClick={handleSubmit} disabled={solved}>
             Ellenőrzés
           </button>
-          <DevSkipButton onSkip={handleDevSkip} disabled={solved} />
         </div>
         {imageSrc && <div className="task-note"><PerfImg className="task-ill" src={imageSrc} alt="Illusztráció" width="280" height="280" priority /></div>}
         <HintDetails text={payload.hint} />
@@ -456,7 +440,7 @@ const LogAnalysisTaskRenderer = ({ task, payload, taskStory, taskLabel, onSucces
               : 'Nem stimmel minden jelölés. Gondold végig, melyik sor tényleg gyanús.'}
           </div>
         )}
-        <div style={{display:'flex', gap:'10px', flexWrap:'wrap', alignItems:'center'}}>
+        <div style={{display:'flex', gap:'10px', flexWrap:'wrap'}}>
           <button className="btn" type="button" onClick={handleSubmit} disabled={solved}>
             Ellenőrzés
           </button>
@@ -472,7 +456,6 @@ const LogAnalysisTaskRenderer = ({ task, payload, taskStory, taskLabel, onSucces
               Jelölések törlése
             </button>
           )}
-          <DevSkipButton onSkip={handleDevSkip} disabled={solved} />
         </div>
         {imageSrc && <div className="task-note"><PerfImg className="task-ill" src={imageSrc} alt="Illusztráció" width="280" height="280" priority /></div>}
         <HintDetails text={payload.hint} />
@@ -566,7 +549,7 @@ const IconMemoryTaskRenderer = ({ task, payload, taskStory, taskLabel, onSuccess
               : 'Nem stimmel minden jelölés. Gondold végig, melyik ikon jelenti a kockázatot.'}
           </div>
         )}
-        <div style={{display:'flex', gap:'10px', flexWrap:'wrap', alignItems:'center'}}>
+        <div style={{display:'flex', gap:'10px', flexWrap:'wrap'}}>
           <button className="btn" type="button" onClick={handleSubmit} disabled={solved}>
             Ellenőrzés
           </button>
@@ -582,7 +565,6 @@ const IconMemoryTaskRenderer = ({ task, payload, taskStory, taskLabel, onSuccess
               Jelölések törlése
             </button>
           )}
-          <DevSkipButton onSkip={handleDevSkip} disabled={solved} />
         </div>
         {imageSrc && <div className="task-note"><PerfImg className="task-ill" src={imageSrc} alt="Illusztráció" width="280" height="280" priority /></div>}
         <HintDetails text={payload.hint} />
@@ -673,11 +655,10 @@ const SocialEngineeringTaskRenderer = ({ task, payload, taskStory, taskLabel, on
               : 'Nem minden reakció felelt meg a protokollnak. Gondold át újra a lépéseket.'}
           </div>
         )}
-        <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', alignItems:'center' }}>
+        <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
           <button className="btn" type="button" onClick={handleSubmit} disabled={solved}>
             Ellenőrzés
           </button>
-          <DevSkipButton onSkip={handleDevSkip} disabled={solved} />
         </div>
         {imageSrc && <div className="task-note"><PerfImg className="task-ill" src={imageSrc} alt="Illusztráció" width="280" height="280" priority /></div>}
         <HintDetails text={payload.hint} />
@@ -800,11 +781,10 @@ const FirewallTaskRenderer = ({ task, payload, taskStory, taskLabel, onSuccess, 
               : 'Nem stimmel. Ellenőrizd, mely szolgáltatásoknak kell menniük és melyeket kell zárni.'}
           </div>
         )}
-        <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', alignItems:'center' }}>
+        <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
           <button className="btn" type="button" onClick={handleSubmit} disabled={solved}>
             Ellenőrzés
           </button>
-          <DevSkipButton onSkip={handleDevSkip} disabled={solved} />
         </div>
         {imageSrc && <div className="task-note"><PerfImg className="task-ill" src={imageSrc} alt="Illusztráció" width="280" height="280" priority /></div>}
         <HintDetails text={payload.hint} />
@@ -903,7 +883,7 @@ const SecurityDecisionTaskRenderer = ({ task, payload, taskStory, taskLabel, onS
           </div>
         )}
         {payload.hint && <HintDetails text={payload.hint} />}
-        <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', marginTop: payload.hint ? '12px' : '0', alignItems:'center' }}>
+        <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', marginTop: payload.hint ? '12px' : '0' }}>
           <button
             className="btn"
             type="button"
@@ -912,7 +892,6 @@ const SecurityDecisionTaskRenderer = ({ task, payload, taskStory, taskLabel, onS
           >
             Ellenőrzés
           </button>
-          <DevSkipButton onSkip={handleDevSkip} disabled={solved} />
         </div>
         {imageSrc && <div className="task-note"><PerfImg className="task-ill" src={imageSrc} alt="Illusztráció" width="280" height="280" priority /></div>}
       </div>
@@ -1042,11 +1021,10 @@ const PasswordStrengthTaskRenderer = ({ task, payload, taskStory, taskLabel, onS
               : 'Nem stimmel. Gondold végig, mely követelmények teljesülnek és melyek nem.'}
           </div>
         )}
-        <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', alignItems:'center' }}>
+        <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
           <button className="btn" type="button" onClick={handleSubmit} disabled={selectedAnswer === null || solved}>
             Ellenőrzés
           </button>
-          <DevSkipButton onSkip={handleDevSkip} disabled={solved} />
         </div>
         {imageSrc && <div className="task-note"><PerfImg className="task-ill" src={imageSrc} alt="Illusztráció" width="280" height="280" priority /></div>}
         <HintDetails text={payload.hint} />
@@ -1081,11 +1059,6 @@ const MisconfigTaskRenderer = ({ task, payload, taskStory, taskLabel, onSuccess,
     }
   }
 
-  const handleDevSkip = () => {
-    setSolved(true)
-    onSuccess?.()
-  }
-
   return (
     <div className="grid2">
       <div className="card">
@@ -1095,7 +1068,7 @@ const MisconfigTaskRenderer = ({ task, payload, taskStory, taskLabel, onSuccess,
             {taskStory.text}
           </p>
         )}
-        <p className="muted" style={{ marginTop: (taskStory ? '12px' : (taskLabel ? '8px' : '0')) }}>{payload.instructions || ''}</p>
+        <p className="muted" style={{ marginTop: (taskStory ? '12px' : (taskLabel ? '8px' : '0')) }}>{payload.instructions}</p>
       </div>
       <div className="card">
         <h3>Konfiguráció</h3>
@@ -1126,11 +1099,10 @@ const MisconfigTaskRenderer = ({ task, payload, taskStory, taskLabel, onSuccess,
               : 'Nem stimmel. Gondold végig, mely sorok tartalmazzák a hibás beállításokat.'}
           </div>
         )}
-        <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', alignItems:'center' }}>
+        <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
           <button className="btn" type="button" onClick={handleSubmit} disabled={solved}>
             Ellenőrzés
           </button>
-          <DevSkipButton onSkip={handleDevSkip} disabled={solved} />
         </div>
         {imageSrc && <div className="task-note"><PerfImg className="task-ill" src={imageSrc} alt="Illusztráció" width="280" height="280" priority /></div>}
         <HintDetails text={payload.hint} />
@@ -1165,11 +1137,6 @@ const NetworkAnomalyTaskRenderer = ({ task, payload, taskStory, taskLabel, onSuc
     }
   }
 
-  const handleDevSkip = () => {
-    setSolved(true)
-    onSuccess?.()
-  }
-
   return (
     <div className="grid2">
       <div className="card">
@@ -1179,7 +1146,7 @@ const NetworkAnomalyTaskRenderer = ({ task, payload, taskStory, taskLabel, onSuc
             {taskStory.text}
           </p>
         )}
-        <p className="muted" style={{ marginTop: (taskStory ? '12px' : (taskLabel ? '8px' : '0')) }}>{payload.instructions || ''}</p>
+        <p className="muted" style={{ marginTop: (taskStory ? '12px' : (taskLabel ? '8px' : '0')) }}>{payload.instructions}</p>
       </div>
       <div className="card">
         <h3>Hálózati forgalom</h3>
@@ -1224,11 +1191,10 @@ const NetworkAnomalyTaskRenderer = ({ task, payload, taskStory, taskLabel, onSuc
               : 'Nem stimmel. Gondold végig, mely forgalmi sorok jelentenek anomáliát.'}
           </div>
         )}
-        <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', alignItems:'center' }}>
+        <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
           <button className="btn" type="button" onClick={handleSubmit} disabled={solved}>
             Ellenőrzés
           </button>
-          <DevSkipButton onSkip={handleDevSkip} disabled={solved} />
         </div>
         {imageSrc && <div className="task-note"><PerfImg className="task-ill" src={imageSrc} alt="Illusztráció" width="280" height="280" priority /></div>}
         <HintDetails text={payload.hint} />
@@ -1270,11 +1236,6 @@ const EmailHeaderTaskRenderer = ({ task, payload, taskStory, taskLabel, onSucces
     }
   }
 
-  const handleDevSkip = () => {
-    setSolved(true)
-    onSuccess?.()
-  }
-
   return (
     <div className="grid2">
       <div className="card">
@@ -1284,7 +1245,7 @@ const EmailHeaderTaskRenderer = ({ task, payload, taskStory, taskLabel, onSucces
             {taskStory.text}
           </p>
         )}
-        <p className="muted" style={{ marginTop: (taskStory ? '12px' : (taskLabel ? '8px' : '0')) }}>{payload.instructions || ''}</p>
+        <p className="muted" style={{ marginTop: (taskStory ? '12px' : (taskLabel ? '8px' : '0')) }}>{payload.instructions}</p>
         {payload.header && (
           <div style={{ marginTop: '16px', padding: '16px', background: '#0b121c', borderRadius: '8px', border: '1px solid rgba(207,230,255,0.2)' }}>
             <div style={{ marginBottom: '12px', paddingBottom: '12px', borderBottom: '1px solid rgba(207,230,255,0.1)' }}>
@@ -1348,11 +1309,10 @@ const EmailHeaderTaskRenderer = ({ task, payload, taskStory, taskLabel, onSucces
               : 'Nem stimmel. Gondold végig, mely jelek jelentenek problémát.'}
           </div>
         )}
-        <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', alignItems:'center' }}>
+        <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
           <button className="btn" type="button" onClick={handleSubmit} disabled={solved}>
             Ellenőrzés
           </button>
-          <DevSkipButton onSkip={handleDevSkip} disabled={solved} />
         </div>
         {imageSrc && <div className="task-note"><PerfImg className="task-ill" src={imageSrc} alt="Illusztráció" width="280" height="280" priority /></div>}
         <HintDetails text={payload.hint} />
@@ -1387,11 +1347,6 @@ const UrlTrustTaskRenderer = ({ task, payload, taskStory, taskLabel, onSuccess, 
     }
   }
 
-  const handleDevSkip = () => {
-    setSolved(true)
-    onSuccess?.()
-  }
-
   return (
     <div className="grid2">
       <div className="card">
@@ -1401,7 +1356,7 @@ const UrlTrustTaskRenderer = ({ task, payload, taskStory, taskLabel, onSuccess, 
             {taskStory.text}
           </p>
         )}
-        <p className="muted" style={{ marginTop: (taskStory ? '12px' : (taskLabel ? '8px' : '0')) }}>{payload.instructions || ''}</p>
+        <p className="muted" style={{ marginTop: (taskStory ? '12px' : (taskLabel ? '8px' : '0')) }}>{payload.instructions}</p>
       </div>
       <div className="card">
         <h3>URL-ek</h3>
@@ -1440,11 +1395,10 @@ const UrlTrustTaskRenderer = ({ task, payload, taskStory, taskLabel, onSuccess, 
               : 'Nem stimmel. Gondold végig, mely URL-ek gyanúsak vagy hamisak.'}
           </div>
         )}
-        <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', alignItems:'center' }}>
+        <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
           <button className="btn" type="button" onClick={handleSubmit} disabled={solved}>
             Ellenőrzés
           </button>
-          <DevSkipButton onSkip={handleDevSkip} disabled={solved} />
         </div>
         {imageSrc && <div className="task-note"><PerfImg className="task-ill" src={imageSrc} alt="Illusztráció" width="280" height="280" priority /></div>}
         <HintDetails text={payload.hint} />
@@ -1479,11 +1433,6 @@ const RiskyPermissionTaskRenderer = ({ task, payload, taskStory, taskLabel, onSu
     }
   }
 
-  const handleDevSkip = () => {
-    setSolved(true)
-    onSuccess?.()
-  }
-
   return (
     <div className="grid2">
       <div className="card">
@@ -1493,7 +1442,7 @@ const RiskyPermissionTaskRenderer = ({ task, payload, taskStory, taskLabel, onSu
             {taskStory.text}
           </p>
         )}
-        <p className="muted" style={{ marginTop: (taskStory ? '12px' : (taskLabel ? '8px' : '0')) }}>{payload.instructions || ''}</p>
+        <p className="muted" style={{ marginTop: (taskStory ? '12px' : (taskLabel ? '8px' : '0')) }}>{payload.instructions}</p>
       </div>
       <div className="card">
         <h3>Engedélyek</h3>
@@ -1532,11 +1481,10 @@ const RiskyPermissionTaskRenderer = ({ task, payload, taskStory, taskLabel, onSu
               : 'Nem stimmel. Gondold végig, mely engedélyek túlzottan kockázatosak.'}
           </div>
         )}
-        <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', alignItems:'center' }}>
+        <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
           <button className="btn" type="button" onClick={handleSubmit} disabled={solved}>
             Ellenőrzés
           </button>
-          <DevSkipButton onSkip={handleDevSkip} disabled={solved} />
         </div>
         {imageSrc && <div className="task-note"><PerfImg className="task-ill" src={imageSrc} alt="Illusztráció" width="280" height="280" priority /></div>}
         <HintDetails text={payload.hint} />
@@ -1551,7 +1499,12 @@ const DefaultTaskRenderer = ({ task, payload, taskStory, taskLabel, onSuccess, o
 
   const handleCheck = (value, normalize) => {
     const isValid = task.validate(value)
-    // onSuccess-t a ChallengeInput kezeli az onSuccess prop-on keresztül
+    if (isValid) {
+      setSolved(true)
+      onSuccess?.()
+    } else {
+      onFailure?.()
+    }
     return isValid
   }
 
@@ -1590,9 +1543,6 @@ const DefaultTaskRenderer = ({ task, payload, taskStory, taskLabel, onSuccess, o
           onSuccess={onSuccess}
           onFailure={onFailure}
         />
-        <div style={{ marginTop: '8px', display: 'flex', justifyContent: 'flex-end' }}>
-          <DevSkipButton onSkip={handleDevSkip} disabled={solved} />
-        </div>
         {imageSrc && <div className="task-note"><PerfImg className="task-ill" src={imageSrc} alt="Illusztráció" width="280" height="280" priority /></div>}
         {payload.hint && (
           <div className="hint" style={{marginTop:'12px'}}>

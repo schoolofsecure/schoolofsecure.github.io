@@ -388,35 +388,64 @@ const UgyView = () => {
           <div>{config.headerTitle}</div>
         </Link>
         {isAuthenticated && (
-          <Link
-            to="/profile"
-            style={{
-              marginLeft: 'auto',
-              padding: '8px 16px',
-              fontSize: '13px',
-              background: 'rgba(255,255,255,0.05)',
-              border: '1px solid rgba(207,230,255,0.2)',
-              color: 'var(--muted)',
-              borderRadius: '6px',
-              cursor: 'pointer',
-              fontFamily: 'Rajdhani, Inter, sans-serif',
-              fontWeight: 500,
-              transition: 'all 0.2s',
-              textDecoration: 'none',
-              display: 'inline-flex',
-              alignItems: 'center'
-            }}
-            onMouseEnter={(e) => {
-              e.target.style.background = 'rgba(255,255,255,0.1)';
-              e.target.style.color = '#cfe6ff';
-            }}
-            onMouseLeave={(e) => {
-              e.target.style.background = 'rgba(255,255,255,0.05)';
-              e.target.style.color = 'var(--muted)';
-            }}
-          >
-            Profil
-          </Link>
+          <div style={{ marginLeft: 'auto', display: 'flex', gap: '10px', alignItems: 'center' }}>
+            <Link
+              to="/profile"
+              style={{
+                padding: '8px 16px',
+                fontSize: '13px',
+                background: 'rgba(255,255,255,0.05)',
+                border: '1px solid rgba(207,230,255,0.2)',
+                color: 'var(--muted)',
+                borderRadius: '6px',
+                cursor: 'pointer',
+                fontFamily: 'Rajdhani, Inter, sans-serif',
+                fontWeight: 500,
+                transition: 'all 0.2s',
+                textDecoration: 'none',
+                display: 'inline-flex',
+                alignItems: 'center'
+              }}
+              onMouseEnter={(e) => {
+                e.target.style.background = 'rgba(255,255,255,0.1)';
+                e.target.style.color = '#cfe6ff';
+              }}
+              onMouseLeave={(e) => {
+                e.target.style.background = 'rgba(255,255,255,0.05)';
+                e.target.style.color = 'var(--muted)';
+              }}
+            >
+              Profil
+            </Link>
+            <button
+              onClick={async () => {
+                const result = await logout();
+                if (result.success) {
+                  navigate('/');
+                }
+              }}
+              style={{
+                padding: '6px 12px',
+                fontSize: '11px',
+                background: 'transparent',
+                border: 'none',
+                color: 'rgba(207,230,255,0.6)',
+                borderRadius: '6px',
+                cursor: 'pointer',
+                fontFamily: 'Rajdhani, Inter, sans-serif',
+                fontWeight: 400,
+                transition: 'all 0.2s'
+              }}
+              onMouseEnter={(e) => {
+                e.target.style.color = 'rgba(207,230,255,0.9)';
+              }}
+              onMouseLeave={(e) => {
+                e.target.style.color = 'rgba(207,230,255,0.6)';
+              }}
+            >
+              Kijelentkezés
+            </button>
+          </div>
         )}
       </header>
       <ScoreDisplay />

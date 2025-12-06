@@ -6,7 +6,7 @@ import { PerfImg } from '../PerfImg'
  * Univerzális Task renderer komponens, ami a dinamikusan generált feladatokat jeleníti meg.
  * A Task objektum type mezője alapján választja ki a megfelelő renderelési módot.
  */
-const TaskRenderer = ({ task, taskStory, taskLabel, onSuccess, onFailure, imageSrc }) => {
+const TaskRenderer = ({ task, taskStory, taskLabel, onSuccess, onFailure, imageSrc, showDevSkip = false }) => {
   if (!task || !task.payload) {
     return <div className="card"><p className="muted">Feladat betöltése...</p></div>
   }
@@ -15,55 +15,55 @@ const TaskRenderer = ({ task, taskStory, taskLabel, onSuccess, onFailure, imageS
 
   switch (type) {
     case 'CAESAR':
-      return <CaesarTaskRenderer task={task} payload={payload} taskStory={taskStory} taskLabel={taskLabel} onSuccess={onSuccess} onFailure={onFailure} imageSrc={imageSrc} />
+      return <CaesarTaskRenderer task={task} payload={payload} taskStory={taskStory} taskLabel={taskLabel} onSuccess={onSuccess} onFailure={onFailure} imageSrc={imageSrc} showDevSkip={showDevSkip} />
     
     case 'VIGENERE':
-      return <VigenereTaskRenderer task={task} payload={payload} taskStory={taskStory} taskLabel={taskLabel} onSuccess={onSuccess} onFailure={onFailure} imageSrc={imageSrc} />
+      return <VigenereTaskRenderer task={task} payload={payload} taskStory={taskStory} taskLabel={taskLabel} onSuccess={onSuccess} onFailure={onFailure} imageSrc={imageSrc} showDevSkip={showDevSkip} />
     
     case 'PHISHING':
-      return <PhishingTaskRenderer task={task} payload={payload} taskStory={taskStory} taskLabel={taskLabel} onSuccess={onSuccess} onFailure={onFailure} imageSrc={imageSrc} />
+      return <PhishingTaskRenderer task={task} payload={payload} taskStory={taskStory} taskLabel={taskLabel} onSuccess={onSuccess} onFailure={onFailure} imageSrc={imageSrc} showDevSkip={showDevSkip} />
     
     case 'LOG_ANALYSIS':
-      return <LogAnalysisTaskRenderer task={task} payload={payload} taskStory={taskStory} taskLabel={taskLabel} onSuccess={onSuccess} onFailure={onFailure} imageSrc={imageSrc} />
+      return <LogAnalysisTaskRenderer task={task} payload={payload} taskStory={taskStory} taskLabel={taskLabel} onSuccess={onSuccess} onFailure={onFailure} imageSrc={imageSrc} showDevSkip={showDevSkip} />
     
     case 'ICON_MEMORY':
-      return <IconMemoryTaskRenderer task={task} payload={payload} taskStory={taskStory} taskLabel={taskLabel} onSuccess={onSuccess} onFailure={onFailure} imageSrc={imageSrc} />
+      return <IconMemoryTaskRenderer task={task} payload={payload} taskStory={taskStory} taskLabel={taskLabel} onSuccess={onSuccess} onFailure={onFailure} imageSrc={imageSrc} showDevSkip={showDevSkip} />
     
     case 'PASSWORD_STRENGTH':
-      return <PasswordStrengthTaskRenderer task={task} payload={payload} taskStory={taskStory} taskLabel={taskLabel} onSuccess={onSuccess} onFailure={onFailure} imageSrc={imageSrc} />
+      return <PasswordStrengthTaskRenderer task={task} payload={payload} taskStory={taskStory} taskLabel={taskLabel} onSuccess={onSuccess} onFailure={onFailure} imageSrc={imageSrc} showDevSkip={showDevSkip} />
     
     case 'XOR':
     case 'HASH_MISMATCH':
     case 'SOCIAL_ENGINEERING':
-      return <SocialEngineeringTaskRenderer task={task} payload={payload} taskStory={taskStory} taskLabel={taskLabel} onSuccess={onSuccess} onFailure={onFailure} imageSrc={imageSrc} />
+      return <SocialEngineeringTaskRenderer task={task} payload={payload} taskStory={taskStory} taskLabel={taskLabel} onSuccess={onSuccess} onFailure={onFailure} imageSrc={imageSrc} showDevSkip={showDevSkip} />
     
     case 'FIREWALL':
-      return <FirewallTaskRenderer task={task} payload={payload} taskStory={taskStory} taskLabel={taskLabel} onSuccess={onSuccess} onFailure={onFailure} imageSrc={imageSrc} />
+      return <FirewallTaskRenderer task={task} payload={payload} taskStory={taskStory} taskLabel={taskLabel} onSuccess={onSuccess} onFailure={onFailure} imageSrc={imageSrc} showDevSkip={showDevSkip} />
     
     case 'MISCONFIG':
-      return <MisconfigTaskRenderer task={task} payload={payload} taskStory={taskStory} taskLabel={taskLabel} onSuccess={onSuccess} onFailure={onFailure} imageSrc={imageSrc} />
+      return <MisconfigTaskRenderer task={task} payload={payload} taskStory={taskStory} taskLabel={taskLabel} onSuccess={onSuccess} onFailure={onFailure} imageSrc={imageSrc} showDevSkip={showDevSkip} />
     
     case 'NETWORK_ANOMALY':
-      return <NetworkAnomalyTaskRenderer task={task} payload={payload} taskStory={taskStory} taskLabel={taskLabel} onSuccess={onSuccess} onFailure={onFailure} imageSrc={imageSrc} />
+      return <NetworkAnomalyTaskRenderer task={task} payload={payload} taskStory={taskStory} taskLabel={taskLabel} onSuccess={onSuccess} onFailure={onFailure} imageSrc={imageSrc} showDevSkip={showDevSkip} />
     
     case 'EMAIL_HEADER':
-      return <EmailHeaderTaskRenderer task={task} payload={payload} taskStory={taskStory} taskLabel={taskLabel} onSuccess={onSuccess} onFailure={onFailure} imageSrc={imageSrc} />
+      return <EmailHeaderTaskRenderer task={task} payload={payload} taskStory={taskStory} taskLabel={taskLabel} onSuccess={onSuccess} onFailure={onFailure} imageSrc={imageSrc} showDevSkip={showDevSkip} />
     
     case 'URL_TRUST':
-      return <UrlTrustTaskRenderer task={task} payload={payload} taskStory={taskStory} taskLabel={taskLabel} onSuccess={onSuccess} onFailure={onFailure} imageSrc={imageSrc} />
+      return <UrlTrustTaskRenderer task={task} payload={payload} taskStory={taskStory} taskLabel={taskLabel} onSuccess={onSuccess} onFailure={onFailure} imageSrc={imageSrc} showDevSkip={showDevSkip} />
     
     case 'RISKY_PERMISSION':
-      return <RiskyPermissionTaskRenderer task={task} payload={payload} taskStory={taskStory} taskLabel={taskLabel} onSuccess={onSuccess} onFailure={onFailure} imageSrc={imageSrc} />
+      return <RiskyPermissionTaskRenderer task={task} payload={payload} taskStory={taskStory} taskLabel={taskLabel} onSuccess={onSuccess} onFailure={onFailure} imageSrc={imageSrc} showDevSkip={showDevSkip} />
     
     case 'SECURITY_DECISION':
-      return <SecurityDecisionTaskRenderer task={task} payload={payload} taskStory={taskStory} taskLabel={taskLabel} onSuccess={onSuccess} onFailure={onFailure} imageSrc={imageSrc} />
+      return <SecurityDecisionTaskRenderer task={task} payload={payload} taskStory={taskStory} taskLabel={taskLabel} onSuccess={onSuccess} onFailure={onFailure} imageSrc={imageSrc} showDevSkip={showDevSkip} />
     
     case 'CRYPTO_PUZZLE':
     case 'PSEUDOCODE_BUG':
     case 'ATTACK_SCENARIO':
     case 'ZERO_DAY':
       // Alapértelmezett renderelés szöveges inputtal
-      return <DefaultTaskRenderer task={task} payload={payload} taskStory={taskStory} taskLabel={taskLabel} onSuccess={onSuccess} onFailure={onFailure} imageSrc={imageSrc} />
+      return <DefaultTaskRenderer task={task} payload={payload} taskStory={taskStory} taskLabel={taskLabel} onSuccess={onSuccess} onFailure={onFailure} imageSrc={imageSrc} showDevSkip={showDevSkip} />
     
     default:
       return <div className="card"><p className="muted">Ismeretlen feladattípus: {type}</p></div>
@@ -115,11 +115,11 @@ const TaskLeftSide = ({ taskLabel, taskStory, payload, children }) => (
 )
 
 // Közös wrapper a jobb oldali részhez
-const TaskRightSide = ({ title, imageSrc, hint, children, devSkip }) => (
+const TaskRightSide = ({ title, imageSrc, hint, children, devSkip, showDevSkip = false }) => (
   <div className="card">
     {title && <h3>{title}</h3>}
     {children}
-    {devSkip && (
+    {devSkip && showDevSkip && (
       <div style={{ marginTop: '8px', display: 'flex', justifyContent: 'flex-end' }}>
         {devSkip}
       </div>
@@ -130,7 +130,7 @@ const TaskRightSide = ({ title, imageSrc, hint, children, devSkip }) => (
 )
 
 // Caesar Task Renderer
-const CaesarTaskRenderer = ({ task, payload, taskStory, taskLabel, onSuccess, onFailure, imageSrc }) => {
+const CaesarTaskRenderer = ({ task, payload, taskStory, taskLabel, onSuccess, onFailure, imageSrc, showDevSkip = false }) => {
   const [solved, setSolved] = useState(false)
   const handleCheck = (value) => task.validate(value)
   const handleDevSkip = () => { setSolved(true); onSuccess?.() }
@@ -142,7 +142,7 @@ const CaesarTaskRenderer = ({ task, payload, taskStory, taskLabel, onSuccess, on
           <code style={{fontSize:'16px', letterSpacing:'2px', wordBreak:'break-all'}}>{payload.ciphertext}</code>
         </div>
       </TaskLeftSide>
-      <TaskRightSide title="Válasz" imageSrc={imageSrc} hint={payload.hint} devSkip={<DevSkipButton onSkip={handleDevSkip} disabled={solved} />}>
+      <TaskRightSide title="Válasz" imageSrc={imageSrc} hint={payload.hint} devSkip={<DevSkipButton onSkip={handleDevSkip} disabled={solved} />} showDevSkip={showDevSkip}>
         <ChallengeInput
           key={task?.id || 'caesar'}
           placeholder="dekódolt üzenet…"
@@ -158,7 +158,7 @@ const CaesarTaskRenderer = ({ task, payload, taskStory, taskLabel, onSuccess, on
 }
 
 // Vigenère Task Renderer
-const VigenereTaskRenderer = ({ task, payload, taskStory, taskLabel, onSuccess, onFailure, imageSrc }) => {
+const VigenereTaskRenderer = ({ task, payload, taskStory, taskLabel, onSuccess, onFailure, imageSrc, showDevSkip = false }) => {
   const [solved, setSolved] = useState(false)
   const handleCheck = (value) => task.validate(value)
   const handleDevSkip = () => { setSolved(true); onSuccess?.() }
@@ -171,7 +171,7 @@ const VigenereTaskRenderer = ({ task, payload, taskStory, taskLabel, onSuccess, 
         </div>
         {payload.key && <p className="muted" style={{marginTop:'8px', fontSize:'13px'}}>Kulcs: <code>{payload.key}</code></p>}
       </TaskLeftSide>
-      <TaskRightSide title="Válasz" imageSrc={imageSrc} hint={payload.hint} devSkip={<DevSkipButton onSkip={handleDevSkip} disabled={solved} />}>
+      <TaskRightSide title="Válasz" imageSrc={imageSrc} hint={payload.hint} devSkip={<DevSkipButton onSkip={handleDevSkip} disabled={solved} />} showDevSkip={showDevSkip}>
         <ChallengeInput
           key={task?.id || 'vigenere'}
           placeholder="dekódolt üzenet…"
@@ -187,7 +187,7 @@ const VigenereTaskRenderer = ({ task, payload, taskStory, taskLabel, onSuccess, 
 }
 
 // Phishing Task Renderer
-const PhishingTaskRenderer = ({ task, payload, taskStory, taskLabel, onSuccess, onFailure, imageSrc }) => {
+const PhishingTaskRenderer = ({ task, payload, taskStory, taskLabel, onSuccess, onFailure, imageSrc, showDevSkip = false }) => {
   const [selectedIds, setSelectedIds] = useState([])
   const [feedback, setFeedback] = useState(null)
   const [solved, setSolved] = useState(false)
@@ -290,7 +290,7 @@ const PhishingTaskRenderer = ({ task, payload, taskStory, taskLabel, onSuccess, 
           <button className="btn" type="button" onClick={handleSubmit} disabled={solved}>
             Ellenőrzés
           </button>
-          <DevSkipButton onSkip={handleDevSkip} disabled={solved} />
+          {showDevSkip && <DevSkipButton onSkip={handleDevSkip} disabled={solved} />}
         </div>
         {imageSrc && <div className="task-note"><PerfImg className="task-ill" src={imageSrc} alt="Illusztráció" width="280" height="280" priority /></div>}
         <HintDetails text={payload.hint} />
@@ -300,7 +300,7 @@ const PhishingTaskRenderer = ({ task, payload, taskStory, taskLabel, onSuccess, 
 }
 
 // Log Analysis Task Renderer
-const LogAnalysisTaskRenderer = ({ task, payload, taskStory, taskLabel, onSuccess, onFailure, imageSrc }) => {
+const LogAnalysisTaskRenderer = ({ task, payload, taskStory, taskLabel, onSuccess, onFailure, imageSrc, showDevSkip = false }) => {
   const [selectedRows, setSelectedRows] = useState([])
   const [feedback, setFeedback] = useState(null)
   const [solved, setSolved] = useState(false)
@@ -403,7 +403,7 @@ const LogAnalysisTaskRenderer = ({ task, payload, taskStory, taskLabel, onSucces
               Jelölések törlése
             </button>
           )}
-          <DevSkipButton onSkip={handleDevSkip} disabled={solved} />
+          {showDevSkip && <DevSkipButton onSkip={handleDevSkip} disabled={solved} />}
         </div>
         {imageSrc && <div className="task-note"><PerfImg className="task-ill" src={imageSrc} alt="Illusztráció" width="280" height="280" priority /></div>}
         <HintDetails text={payload.hint} />
@@ -413,7 +413,7 @@ const LogAnalysisTaskRenderer = ({ task, payload, taskStory, taskLabel, onSucces
 }
 
 // Icon Memory Task Renderer
-const IconMemoryTaskRenderer = ({ task, payload, taskStory, taskLabel, onSuccess, onFailure, imageSrc }) => {
+const IconMemoryTaskRenderer = ({ task, payload, taskStory, taskLabel, onSuccess, onFailure, imageSrc, showDevSkip = false }) => {
   const [selectedIds, setSelectedIds] = useState([])
   const [feedback, setFeedback] = useState(null)
   const [solved, setSolved] = useState(false)
@@ -513,7 +513,7 @@ const IconMemoryTaskRenderer = ({ task, payload, taskStory, taskLabel, onSuccess
               Jelölések törlése
             </button>
           )}
-          <DevSkipButton onSkip={handleDevSkip} disabled={solved} />
+          {showDevSkip && <DevSkipButton onSkip={handleDevSkip} disabled={solved} />}
         </div>
         {imageSrc && <div className="task-note"><PerfImg className="task-ill" src={imageSrc} alt="Illusztráció" width="280" height="280" priority /></div>}
         <HintDetails text={payload.hint} />
@@ -523,7 +523,7 @@ const IconMemoryTaskRenderer = ({ task, payload, taskStory, taskLabel, onSuccess
 }
 
 // Social Engineering Task Renderer
-const SocialEngineeringTaskRenderer = ({ task, payload, taskStory, taskLabel, onSuccess, onFailure, imageSrc }) => {
+const SocialEngineeringTaskRenderer = ({ task, payload, taskStory, taskLabel, onSuccess, onFailure, imageSrc, showDevSkip = false }) => {
   const [choices, setChoices] = useState({})
   const [feedback, setFeedback] = useState(null)
   const [solved, setSolved] = useState(false)
@@ -608,7 +608,7 @@ const SocialEngineeringTaskRenderer = ({ task, payload, taskStory, taskLabel, on
           <button className="btn" type="button" onClick={handleSubmit} disabled={solved}>
             Ellenőrzés
           </button>
-          <DevSkipButton onSkip={handleDevSkip} disabled={solved} />
+          {showDevSkip && <DevSkipButton onSkip={handleDevSkip} disabled={solved} />}
         </div>
         {imageSrc && <div className="task-note"><PerfImg className="task-ill" src={imageSrc} alt="Illusztráció" width="280" height="280" priority /></div>}
         <HintDetails text={payload.hint} />
@@ -618,7 +618,7 @@ const SocialEngineeringTaskRenderer = ({ task, payload, taskStory, taskLabel, on
 }
 
 // Firewall Task Renderer
-const FirewallTaskRenderer = ({ task, payload, taskStory, taskLabel, onSuccess, onFailure, imageSrc }) => {
+const FirewallTaskRenderer = ({ task, payload, taskStory, taskLabel, onSuccess, onFailure, imageSrc, showDevSkip = false }) => {
   const [rules, setRules] = useState({})
   const [feedback, setFeedback] = useState(null)
   const [solved, setSolved] = useState(false)
@@ -735,7 +735,7 @@ const FirewallTaskRenderer = ({ task, payload, taskStory, taskLabel, onSuccess, 
           <button className="btn" type="button" onClick={handleSubmit} disabled={solved}>
             Ellenőrzés
           </button>
-          <DevSkipButton onSkip={handleDevSkip} disabled={solved} />
+          {showDevSkip && <DevSkipButton onSkip={handleDevSkip} disabled={solved} />}
         </div>
         {imageSrc && <div className="task-note"><PerfImg className="task-ill" src={imageSrc} alt="Illusztráció" width="280" height="280" priority /></div>}
         <HintDetails text={payload.hint} />
@@ -745,7 +745,7 @@ const FirewallTaskRenderer = ({ task, payload, taskStory, taskLabel, onSuccess, 
 }
 
 // Security Decision Task Renderer
-const SecurityDecisionTaskRenderer = ({ task, payload, taskStory, taskLabel, onSuccess, onFailure, imageSrc }) => {
+const SecurityDecisionTaskRenderer = ({ task, payload, taskStory, taskLabel, onSuccess, onFailure, imageSrc, showDevSkip = false }) => {
   const [answers, setAnswers] = useState([])
   const [feedback, setFeedback] = useState(null)
   const [solved, setSolved] = useState(false)
@@ -843,7 +843,7 @@ const SecurityDecisionTaskRenderer = ({ task, payload, taskStory, taskLabel, onS
           >
             Ellenőrzés
           </button>
-          <DevSkipButton onSkip={handleDevSkip} disabled={solved} />
+          {showDevSkip && <DevSkipButton onSkip={handleDevSkip} disabled={solved} />}
         </div>
         {imageSrc && <div className="task-note"><PerfImg className="task-ill" src={imageSrc} alt="Illusztráció" width="280" height="280" priority /></div>}
       </div>
@@ -852,7 +852,7 @@ const SecurityDecisionTaskRenderer = ({ task, payload, taskStory, taskLabel, onS
 }
 
 // Password Strength Task Renderer
-const PasswordStrengthTaskRenderer = ({ task, payload, taskStory, taskLabel, onSuccess, onFailure, imageSrc }) => {
+const PasswordStrengthTaskRenderer = ({ task, payload, taskStory, taskLabel, onSuccess, onFailure, imageSrc, showDevSkip = false }) => {
   const [selectedAnswer, setSelectedAnswer] = useState(null)
   const [feedback, setFeedback] = useState(null)
   const [solved, setSolved] = useState(false)
@@ -977,7 +977,7 @@ const PasswordStrengthTaskRenderer = ({ task, payload, taskStory, taskLabel, onS
           <button className="btn" type="button" onClick={handleSubmit} disabled={selectedAnswer === null || solved}>
             Ellenőrzés
           </button>
-          <DevSkipButton onSkip={handleDevSkip} disabled={solved} />
+          {showDevSkip && <DevSkipButton onSkip={handleDevSkip} disabled={solved} />}
         </div>
         {imageSrc && <div className="task-note"><PerfImg className="task-ill" src={imageSrc} alt="Illusztráció" width="280" height="280" priority /></div>}
         <HintDetails text={payload.hint} />
@@ -987,7 +987,7 @@ const PasswordStrengthTaskRenderer = ({ task, payload, taskStory, taskLabel, onS
 }
 
 // Misconfig Task Renderer
-const MisconfigTaskRenderer = ({ task, payload, taskStory, taskLabel, onSuccess, onFailure, imageSrc }) => {
+const MisconfigTaskRenderer = ({ task, payload, taskStory, taskLabel, onSuccess, onFailure, imageSrc, showDevSkip = false }) => {
   const [selectedLines, setSelectedLines] = useState([])
   const [feedback, setFeedback] = useState(null)
   const [solved, setSolved] = useState(false)
@@ -1061,7 +1061,7 @@ const MisconfigTaskRenderer = ({ task, payload, taskStory, taskLabel, onSuccess,
           <button className="btn" type="button" onClick={handleSubmit} disabled={solved}>
             Ellenőrzés
           </button>
-          <DevSkipButton onSkip={handleDevSkip} disabled={solved} />
+          {showDevSkip && <DevSkipButton onSkip={handleDevSkip} disabled={solved} />}
         </div>
         {imageSrc && <div className="task-note"><PerfImg className="task-ill" src={imageSrc} alt="Illusztráció" width="280" height="280" priority /></div>}
         <HintDetails text={payload.hint} />
@@ -1071,7 +1071,7 @@ const MisconfigTaskRenderer = ({ task, payload, taskStory, taskLabel, onSuccess,
 }
 
 // Network Anomaly Task Renderer
-const NetworkAnomalyTaskRenderer = ({ task, payload, taskStory, taskLabel, onSuccess, onFailure, imageSrc }) => {
+const NetworkAnomalyTaskRenderer = ({ task, payload, taskStory, taskLabel, onSuccess, onFailure, imageSrc, showDevSkip = false }) => {
   const [selectedRows, setSelectedRows] = useState([])
   const [feedback, setFeedback] = useState(null)
   const [solved, setSolved] = useState(false)
@@ -1161,7 +1161,7 @@ const NetworkAnomalyTaskRenderer = ({ task, payload, taskStory, taskLabel, onSuc
           <button className="btn" type="button" onClick={handleSubmit} disabled={solved}>
             Ellenőrzés
           </button>
-          <DevSkipButton onSkip={handleDevSkip} disabled={solved} />
+          {showDevSkip && <DevSkipButton onSkip={handleDevSkip} disabled={solved} />}
         </div>
         {imageSrc && <div className="task-note"><PerfImg className="task-ill" src={imageSrc} alt="Illusztráció" width="280" height="280" priority /></div>}
         <HintDetails text={payload.hint} />
@@ -1171,7 +1171,7 @@ const NetworkAnomalyTaskRenderer = ({ task, payload, taskStory, taskLabel, onSuc
 }
 
 // Email Header Task Renderer
-const EmailHeaderTaskRenderer = ({ task, payload, taskStory, taskLabel, onSuccess, onFailure, imageSrc }) => {
+const EmailHeaderTaskRenderer = ({ task, payload, taskStory, taskLabel, onSuccess, onFailure, imageSrc, showDevSkip = false }) => {
   const [selectedIssues, setSelectedIssues] = useState([])
   const [feedback, setFeedback] = useState(null)
   const [solved, setSolved] = useState(false)
@@ -1282,7 +1282,7 @@ const EmailHeaderTaskRenderer = ({ task, payload, taskStory, taskLabel, onSucces
           <button className="btn" type="button" onClick={handleSubmit} disabled={solved}>
             Ellenőrzés
           </button>
-          <DevSkipButton onSkip={handleDevSkip} disabled={solved} />
+          {showDevSkip && <DevSkipButton onSkip={handleDevSkip} disabled={solved} />}
         </div>
         {imageSrc && <div className="task-note"><PerfImg className="task-ill" src={imageSrc} alt="Illusztráció" width="280" height="280" priority /></div>}
         <HintDetails text={payload.hint} />
@@ -1292,7 +1292,7 @@ const EmailHeaderTaskRenderer = ({ task, payload, taskStory, taskLabel, onSucces
 }
 
 // URL Trust Task Renderer
-const UrlTrustTaskRenderer = ({ task, payload, taskStory, taskLabel, onSuccess, onFailure, imageSrc }) => {
+const UrlTrustTaskRenderer = ({ task, payload, taskStory, taskLabel, onSuccess, onFailure, imageSrc, showDevSkip = false }) => {
   const [selectedUrls, setSelectedUrls] = useState([])
   const [feedback, setFeedback] = useState(null)
   const [solved, setSolved] = useState(false)
@@ -1376,7 +1376,7 @@ const UrlTrustTaskRenderer = ({ task, payload, taskStory, taskLabel, onSuccess, 
           <button className="btn" type="button" onClick={handleSubmit} disabled={solved}>
             Ellenőrzés
           </button>
-          <DevSkipButton onSkip={handleDevSkip} disabled={solved} />
+          {showDevSkip && <DevSkipButton onSkip={handleDevSkip} disabled={solved} />}
         </div>
         {imageSrc && <div className="task-note"><PerfImg className="task-ill" src={imageSrc} alt="Illusztráció" width="280" height="280" priority /></div>}
         <HintDetails text={payload.hint} />
@@ -1386,7 +1386,7 @@ const UrlTrustTaskRenderer = ({ task, payload, taskStory, taskLabel, onSuccess, 
 }
 
 // Risky Permission Task Renderer
-const RiskyPermissionTaskRenderer = ({ task, payload, taskStory, taskLabel, onSuccess, onFailure, imageSrc }) => {
+const RiskyPermissionTaskRenderer = ({ task, payload, taskStory, taskLabel, onSuccess, onFailure, imageSrc, showDevSkip = false }) => {
   const [selectedPerms, setSelectedPerms] = useState([])
   const [feedback, setFeedback] = useState(null)
   const [solved, setSolved] = useState(false)
@@ -1470,7 +1470,7 @@ const RiskyPermissionTaskRenderer = ({ task, payload, taskStory, taskLabel, onSu
           <button className="btn" type="button" onClick={handleSubmit} disabled={solved}>
             Ellenőrzés
           </button>
-          <DevSkipButton onSkip={handleDevSkip} disabled={solved} />
+          {showDevSkip && <DevSkipButton onSkip={handleDevSkip} disabled={solved} />}
         </div>
         {imageSrc && <div className="task-note"><PerfImg className="task-ill" src={imageSrc} alt="Illusztráció" width="280" height="280" priority /></div>}
         <HintDetails text={payload.hint} />
@@ -1480,7 +1480,7 @@ const RiskyPermissionTaskRenderer = ({ task, payload, taskStory, taskLabel, onSu
 }
 
 // Default Task Renderer (szöveges input)
-const DefaultTaskRenderer = ({ task, payload, taskStory, taskLabel, onSuccess, onFailure, imageSrc }) => {
+const DefaultTaskRenderer = ({ task, payload, taskStory, taskLabel, onSuccess, onFailure, imageSrc, showDevSkip = false }) => {
   const [solved, setSolved] = useState(false)
 
   const handleCheck = (value, normalize) => {
@@ -1525,9 +1525,11 @@ const DefaultTaskRenderer = ({ task, payload, taskStory, taskLabel, onSuccess, o
           onSuccess={onSuccess}
           onFailure={onFailure}
         />
-        <div style={{ marginTop: '8px', display: 'flex', justifyContent: 'flex-end' }}>
-          <DevSkipButton onSkip={handleDevSkip} disabled={solved} />
-        </div>
+        {showDevSkip && (
+          <div style={{ marginTop: '8px', display: 'flex', justifyContent: 'flex-end' }}>
+            <DevSkipButton onSkip={handleDevSkip} disabled={solved} />
+          </div>
+        )}
         {imageSrc && <div className="task-note"><PerfImg className="task-ill" src={imageSrc} alt="Illusztráció" width="280" height="280" priority /></div>}
         {payload.hint && (
           <div className="hint" style={{marginTop:'12px'}}>

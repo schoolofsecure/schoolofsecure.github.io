@@ -291,22 +291,6 @@ const UgyView = () => {
               <Link className="btn" to="/ugy2">Második pálya</Link>
               <Link className="btn-ghost" to="/aurora">Ügyek áttekintése</Link>
             </div>
-            {/* Fejlesztői gomb - zárolás feloldása */}
-            <div style={{marginTop:'24px', paddingTop:'24px', borderTop:'1px solid rgba(207,230,255,0.1)'}}>
-              <button 
-                className="btn-ghost" 
-                onClick={() => setPreviousLocked(false)}
-                style={{
-                  fontSize:'13px',
-                  padding:'8px 16px',
-                  opacity:0.7,
-                  cursor:'pointer'
-                }}
-                title="Fejlesztői mód: zárolás feloldása"
-              >
-                🔓 Fejlesztői mód: zárolás feloldása
-              </button>
-            </div>
           </div>
         </main>
       </div>
@@ -334,24 +318,6 @@ const UgyView = () => {
             <div style={{display:'flex', gap:'12px', justifyContent:'center', flexWrap:'wrap'}}>
               <Link className="btn" to="/aurora">Ügyek áttekintése</Link>
             </div>
-            {/* Fejlesztői gomb - csak ügy 3 esetén */}
-            {levelNum === 3 && (
-              <div style={{marginTop:'24px', paddingTop:'24px', borderTop:'1px solid rgba(207,230,255,0.1)'}}>
-                <button 
-                  className="btn-ghost" 
-                  onClick={() => setDevModeActive(true)}
-                  style={{
-                    fontSize:'13px',
-                    padding:'8px 16px',
-                    opacity:0.7,
-                    cursor:'pointer'
-                  }}
-                  title="Fejlesztői mód: pálya megtekintése"
-                >
-                  🔓 Fejlesztői mód: pálya megtekintése
-                </button>
-              </div>
-            )}
           </div>
         </main>
       </div>
@@ -482,6 +448,7 @@ const UgyView = () => {
                       imageSrc={config.taskImages?.[currentTask.type]}
                       onSuccess={() => handleTaskSuccess(step)}
                       onFailure={handleTaskFailure}
+                      showDevSkip={levelNum > 3}
                     />
                     {completedCount === tasks.length && tasks.length > 0 && (levelNum === 2 || levelNum === 3) && (
                       <div className="grid2" style={{ marginTop: '16px' }}>
@@ -526,48 +493,26 @@ const UgyView = () => {
                                 {config.nextLevelText} →
                               </Link>
                             ) : levelNum === 2 ? (
-                              <>
-                                <button
-                                  className="btn"
-                                  disabled
-                                  style={{
-                                    opacity: 0.5,
-                                    cursor: 'not-allowed',
-                                    display: 'inline-flex',
-                                    justifyContent: 'center',
-                                    alignItems: 'center',
-                                    textAlign: 'center',
-                                    minWidth: '0',
-                                    padding: '10px 18px',
-                                    fontSize: '13px',
-                                    background: 'rgba(0, 229, 255, 0.2)',
-                                    border: '1px solid rgba(0, 229, 255, 0.3)',
-                                    color: 'rgba(0, 229, 255, 0.5)'
-                                  }}
-                                >
-                                  {config.nextLevelText} →
-                                </button>
-                                <Link
-                                  className="btn-ghost"
-                                  to="/ugy3"
-                                  style={{
-                                    textDecoration: 'none',
-                                    display: 'inline-flex',
-                                    justifyContent: 'center',
-                                    alignItems: 'center',
-                                    textAlign: 'center',
-                                    minWidth: '0',
-                                    padding: '8px 14px',
-                                    fontSize: '11px',
-                                    opacity: 0.6,
-                                    borderColor: 'rgba(207,230,255,0.1)',
-                                    color: 'var(--muted)'
-                                  }}
-                                  title="Fejlesztői mód: zárolás kihagyása"
-                                >
-                                  ⏭️ Skip zárolás
-                                </Link>
-                              </>
+                              <button
+                                className="btn"
+                                disabled
+                                style={{
+                                  opacity: 0.5,
+                                  cursor: 'not-allowed',
+                                  display: 'inline-flex',
+                                  justifyContent: 'center',
+                                  alignItems: 'center',
+                                  textAlign: 'center',
+                                  minWidth: '0',
+                                  padding: '10px 18px',
+                                  fontSize: '13px',
+                                  background: 'rgba(0, 229, 255, 0.2)',
+                                  border: '1px solid rgba(0, 229, 255, 0.3)',
+                                  color: 'rgba(0, 229, 255, 0.5)'
+                                }}
+                              >
+                                {config.nextLevelText} →
+                              </button>
                             ) : levelNum === 3 && config.nextLevelRoute ? (
                               <button
                                 className="btn"
@@ -626,16 +571,6 @@ const UgyView = () => {
                         </button>
                       </div>
                     )}
-                    <div style={{marginTop:'16px', paddingTop:'16px', borderTop:'1px solid rgba(207,230,255,0.2)', display:'flex', gap:'8px', flexWrap:'wrap'}}>
-                      <button 
-                        className="btn-ghost" 
-                        onClick={handleCompletion}
-                        style={{fontSize:'13px', padding:'8px 14px', cursor:'pointer', fontWeight:600, borderColor:'rgba(0,229,255,0.4)'}}
-                        title="Fejlesztői mód: feladat megoldása"
-                      >
-                        ✅ Megoldás
-                      </button>
-                    </div>
                     {done[step] && (
                       <div className="card" style={{marginTop:'10px', animation:'fadeIn .3s ease both'}}>
                         <div style={{display:'flex', gap:'10px', marginTop:'8px', flexWrap:'wrap'}}>
@@ -712,24 +647,6 @@ const UgyView = () => {
                       errText={currentStaticTask.errText || "Nem egészen – próbáld újra."}
                       onFailure={() => handleTaskFailure(currentStaticTask.difficulty)}
                     />
-                    <div style={{ marginTop: '8px', display: 'flex', justifyContent: 'flex-end' }}>
-                      <button
-                        className="btn-ghost"
-                        type="button"
-                        onClick={() => handleTaskSuccess(step, currentStaticTask.difficulty)}
-                        disabled={done[step]}
-                        style={{
-                          fontSize: '11px',
-                          padding: '4px 8px',
-                          opacity: 0.6,
-                          borderColor: 'rgba(207,230,255,0.1)',
-                          color: 'var(--muted)'
-                        }}
-                        title="Fejlesztői mód: feladat kihagyása"
-                      >
-                        ⏭️ Skip
-                      </button>
-                    </div>
                     {config.images && config.images[step] && (
                       <div className="task-note">
                         <PerfImg 

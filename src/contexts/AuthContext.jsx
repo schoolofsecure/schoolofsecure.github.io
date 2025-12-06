@@ -7,13 +7,17 @@ import {
   sendEmailVerification,
   sendPasswordResetEmail,
   signOut,
-  onAuthStateChanged
+  onAuthStateChanged,
+  deleteUser
 } from 'firebase/auth'
 import {
   getFirestore,
   doc,
   setDoc,
   getDoc,
+  deleteDoc,
+  collection,
+  getDocs,
   serverTimestamp
 } from 'firebase/firestore'
 
@@ -274,6 +278,48 @@ export const AuthProvider = ({ children }) => {
     }
   }
 
+  const deleteAccount = async () => {
+    try {
+      if (!user) {
+        throw new Error('Nincs bejelentkezve felhasználó.')
+      }
+      
+      const userId = user.uid
+      
+      // Firestore adatok törlése
+      try {
+        // Completions törlése
+        const completionsRef = collection(db, 'users', userId, 'completions')
+        const completionsSnap = await getDocs(completionsRef)
+        const completionsPromises = completionsSnap.docs.map(doc => deleteDoc(doc.ref))
+        await Promise.all(completionsPromises)
+        
+        // Scoring törlése
+        const scoringRef = doc(db, 'users', userId, 'scoring', 'data')
+        await deleteDoc(scoringRef).catch(() => {}) // Ha nincs, ne dobjon hibát
+        
+        // Preferences törlése
+        const preferencesRef = doc(db, 'users', userId, 'preferences', 'data')
+        await deleteDoc(preferencesRef).catch(() => {}) // Ha nincs, ne dobjon hibát
+      } catch (firestoreError) {
+        console.warn('Firestore törlés hiba (folytatjuk):', firestoreError)
+      }
+      
+      // Firebase Auth user törlése
+      await deleteUser(auth.currentUser)
+      
+      return { success: true, message: 'Fiók sikeresen törölve.' }
+    } catch (error) {
+      let errorMessage = 'Fiók törlése sikertelen.'
+      if (error.code === 'auth/requires-recent-login') {
+        errorMessage = 'Biztonsági okokból újra be kell jelentkezned a törlés előtt.'
+      } else if (error.message) {
+        errorMessage = error.message
+      }
+      return { success: false, message: errorMessage }
+    }
+  }
+
   const value = {
     user,
     loading,
@@ -289,6 +335,7 @@ export const AuthProvider = ({ children }) => {
     loadScoringData,
     getRetroPromptSeen,
     setRetroPromptSeen,
+    deleteAccount,
     isAuthenticated: !!user && user.emailVerified
   }
 

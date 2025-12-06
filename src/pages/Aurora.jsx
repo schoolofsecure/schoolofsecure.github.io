@@ -282,16 +282,8 @@ const Aurora = () => {
           <div className="brand-title">CyberMystery</div>
         </Link>
         {isAuthenticated && user && (
-          <button
-            onClick={async () => {
-              const result = await logout()
-              if (result.success) {
-                setUnlocked(false)
-                setShowLevels(false)
-                setShowMission(false)
-                navigate('/')
-              }
-            }}
+          <Link
+            to="/profile"
             style={{
               marginLeft: 'auto',
               padding: '8px 16px',
@@ -303,7 +295,10 @@ const Aurora = () => {
               cursor: 'pointer',
               fontFamily: 'Rajdhani, Inter, sans-serif',
               fontWeight: 500,
-              transition: 'all 0.2s'
+              transition: 'all 0.2s',
+              textDecoration: 'none',
+              display: 'inline-flex',
+              alignItems: 'center'
             }}
             onMouseEnter={(e) => {
               e.target.style.background = 'rgba(255,255,255,0.1)'
@@ -314,8 +309,8 @@ const Aurora = () => {
               e.target.style.color = 'var(--muted)'
             }}
           >
-            Kijelentkezés
-          </button>
+            Profil
+          </Link>
         )}
       </header>
 

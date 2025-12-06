@@ -8,6 +8,7 @@ import LevelCompletionSummary from './components/Scoring/LevelCompletionSummary'
 import Landing from './pages/Landing'
 import Aurora from './pages/Aurora'
 import Privacy from './pages/Privacy'
+import Profile from './pages/Profile'
 import UgyView from './pages/UgyView'
 import QADebugPanel from './pages/qa-debug'
 import TaskPreviewList from './pages/task-preview'
@@ -34,6 +35,7 @@ function AppContent() {
           <Route path="/aurora" element={<Aurora />} />
           <Route path="/aurora.html" element={<Navigate to="/aurora" replace />} />
           <Route path="/privacy" element={<Privacy />} />
+          <Route path="/profile" element={<Profile />} />
           <Route path="/ugy1" element={<UgyView />} />
           <Route path="/ugy2" element={<UgyView />} />
           <Route path="/ugy3" element={<UgyView />} />

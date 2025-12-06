@@ -174,20 +174,21 @@ const Landing = () => {
               </>
             )}
             {user && (
-              <button
-                type="button"
+              <Link
+                to="/profile"
                 className="btn-secondary"
                 style={{
                   ...baseAuthBtnStyle,
                   border: '1px solid rgba(207,230,255,0.3)',
-                  background: 'rgba(255,255,255,0.04)'
+                  background: 'rgba(255,255,255,0.04)',
+                  textDecoration: 'none',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  justifyContent: 'center'
                 }}
-                onClick={() => setAuthPanelOpen((open) => !open)}
-                aria-expanded={authPanelOpen}
-                aria-controls="authPanel"
               >
                 Profil
-              </button>
+              </Link>
             )}
           </div>
           {authPanelOpen && (

@@ -388,13 +388,8 @@ const UgyView = () => {
           <div>{config.headerTitle}</div>
         </Link>
         {isAuthenticated && (
-          <button
-            onClick={async () => {
-              const result = await logout();
-              if (result.success) {
-                navigate('/');
-              }
-            }}
+          <Link
+            to="/profile"
             style={{
               marginLeft: 'auto',
               padding: '8px 16px',
@@ -406,7 +401,10 @@ const UgyView = () => {
               cursor: 'pointer',
               fontFamily: 'Rajdhani, Inter, sans-serif',
               fontWeight: 500,
-              transition: 'all 0.2s'
+              transition: 'all 0.2s',
+              textDecoration: 'none',
+              display: 'inline-flex',
+              alignItems: 'center'
             }}
             onMouseEnter={(e) => {
               e.target.style.background = 'rgba(255,255,255,0.1)';
@@ -417,8 +415,8 @@ const UgyView = () => {
               e.target.style.color = 'var(--muted)';
             }}
           >
-            Kijelentkezés
-          </button>
+            Profil
+          </Link>
         )}
       </header>
       <ScoreDisplay />

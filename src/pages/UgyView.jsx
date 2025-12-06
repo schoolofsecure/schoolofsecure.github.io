@@ -11,6 +11,7 @@ import { WordSearchMount, MatchTable, ArchiveModal } from '../components/Ugy1/Sp
 import { ugyConfigs } from './ugyConfigs.jsx'
 import { LevelGenerator } from '../tasks'
 import { PerfImg } from '../components/PerfImg'
+import { logger } from '../utils/logger'
 import '../styles/ugy1.css'
 
 // Ellenőrzés: az előző pályák teljesítve vannak-e (Firebase-ből)
@@ -26,25 +27,11 @@ async function checkPreviousCompleted(level, checkLevelCompleted) {
     }
     return true;
   } catch(e) {
-    console.warn('checkPreviousCompleted error:', e);
+    logger.warn('checkPreviousCompleted error:', e);
     return false;
   }
 }
 
-// Állapot betöltése localStorage-ból
-function loadProgress(storageKey) {
-  if (!storageKey) return { step: 0, done: [false, false, false, false, false] };
-  try {
-    const saved = localStorage.getItem(storageKey);
-    if (saved) {
-      const { step, done } = JSON.parse(saved);
-      return { step: step || 0, done: done || [false, false, false, false, false] };
-    }
-  } catch(e) {
-    console.warn('Nem sikerült betölteni az állapotot:', e);
-  }
-  return { step: 0, done: [false, false, false, false, false] };
-}
 
 const UgyView = () => {
   const location = useLocation();
@@ -63,7 +50,7 @@ const UgyView = () => {
       <div className="container">
         <main>
           <div className="card">
-            <p className="muted">Ismeretlen ügy: {ugyNumber}</p>
+            <p className="muted">Ismeretlen ügy: {levelNum || '?'}</p>
           </div>
         </main>
       </div>
@@ -84,7 +71,7 @@ const UgyView = () => {
   // Ugy3 zárolás
   const [previousLocked, setPreviousLocked] = useState(false);
   
-  // Ugy2 unlock dátum
+  // Ugy2 unlock dátum (csak akkor inicializáljuk, ha van unlockDate)
   const [isLevel3Unlocked, setIsLevel3Unlocked] = useState(false);
 
   // Betöltés: állapot visszaállítása és előző pályák ellenőrzése
@@ -110,10 +97,6 @@ const UgyView = () => {
       if (startFromBeginning) {
         savedStep = 0;
         savedDone = Array(config.totalTasks).fill(false);
-      } else if (config.storageKey) {
-        const loaded = loadProgress(config.storageKey);
-        savedStep = loaded.step || 0;
-        savedDone = loaded.done || Array(config.totalTasks).fill(false);
       }
       
       // Dinamikus feladatok generálása (ugy2)
@@ -187,19 +170,15 @@ const UgyView = () => {
     img.src = config.images[step + 1];
   }, [step, config.images]);
 
-  // Mentés minden változásnál (ugy3)
+  // Mentés Firebase-be (csak bejelentkezés után)
   useEffect(() => {
-    if (config.storageKey) {
-      try {
-        localStorage.setItem(config.storageKey, JSON.stringify({ step, done }));
-        if (isAuthenticated) {
-          saveLevelCompletion(`ugy${levelNum}`).catch(console.warn);
-        }
-      } catch(e) {
-        console.warn('Nem sikerült menteni az állapotot:', e);
+    if (isAuthenticated) {
+      // Debounce: csak akkor mentünk, ha a pálya teljesítve van
+      if (completedCount === config.totalTasks) {
+          saveLevelCompletion(`ugy${levelNum}`).catch((e) => logger.warn('Level completion save error:', e));
       }
     }
-  }, [step, done, isAuthenticated, saveLevelCompletion, config.storageKey, levelNum]);
+  }, [completedCount, config.totalTasks, isAuthenticated, saveLevelCompletion, levelNum]);
 
   const next = () => setStep(s => Math.min(s + 1, config.totalTasks - 1));
   const markDone = (i) => setDone(d => { const nd = [...d]; nd[i] = true; return nd; });
@@ -238,7 +217,7 @@ const UgyView = () => {
         await saveLevelCompletion(`ugy${levelNum}`);
       }
     } catch(e) {
-      console.warn(`Nem sikerült menteni a(z) ${levelNum}. pályát:`, e);
+      logger.warn(`Nem sikerült menteni a(z) ${levelNum}. pályát:`, e);
     }
   };
 

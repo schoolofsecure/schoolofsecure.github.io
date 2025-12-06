@@ -10,6 +10,8 @@ import Aurora from './pages/Aurora'
 import Privacy from './pages/Privacy'
 import Profile from './pages/Profile'
 import UgyView from './pages/UgyView'
+import NotFound from './pages/NotFound'
+import ErrorBoundary from './components/ErrorBoundary'
 import QADebugPanel from './pages/qa-debug'
 import TaskPreviewList from './pages/task-preview'
 
@@ -54,16 +56,7 @@ function AppContent() {
           <Route path="/task-preview" element={<TaskPreviewList />} />
             </>
           )}
-          {/*<Route path="/ugy3" element={<Ugy3 />} />
-          <Route path="/ugy4" element={<Ugy4 />} />
-          <Route path="/ugy5" element={<Ugy5 />} />
-          <Route path="/ugy6" element={<Ugy6 />} />
-          <Route path="/ugy7" element={<Ugy7 />} />
-          <Route path="/ugy8" element={<Ugy8 />} />
-          <Route path="/ugy9" element={<Ugy9 />} />
-          <Route path="/ugy10" element={<Ugy10 />} />
-          <Route path="/ugy11" element={<Ugy11 />} />
-          <Route path="/ugy12" element={<Ugy12 />} />*/}
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
       {isAuthenticated && showPointAnimation && (
@@ -92,11 +85,13 @@ function AppContent() {
 
 function App() {
   return (
-    <AuthProvider>
-      <ScoringProvider>
-        <AppContent />
-      </ScoringProvider>
-    </AuthProvider>
+    <ErrorBoundary>
+      <AuthProvider>
+        <ScoringProvider>
+          <AppContent />
+        </ScoringProvider>
+      </AuthProvider>
+    </ErrorBoundary>
   )
 }
 

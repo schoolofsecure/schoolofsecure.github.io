@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react'
 import { useAuth } from './AuthContext'
 import { calculateTaskScore, calculateLevelScore, getRank, checkAchievements, generateLevelCompletionFeedback } from '../utils/scoring'
+import { logger } from '../utils/logger'
 
 const ScoringContext = createContext()
 
@@ -93,7 +94,7 @@ export const ScoringProvider = ({ children }) => {
         updateRank(0, 1, true)
       }
     } catch (e) {
-      console.warn('Nem sikerült betölteni a pontozást:', e)
+      logger.warn('Nem sikerült betölteni a pontozást:', e)
       // Hiba esetén is inicializáljuk az alapértelmezett értékekkel
       setTotalPoints(0)
       updateRank(0, 1, true)
@@ -108,7 +109,7 @@ export const ScoringProvider = ({ children }) => {
     try {
       await authSaveScoringData(data)
     } catch (e) {
-      console.warn('Nem sikerült menteni a pontozást:', e)
+      logger.warn('Nem sikerült menteni a pontozást:', e)
     }
   }
   

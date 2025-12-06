@@ -20,6 +20,8 @@ import {
   getDocs,
   serverTimestamp
 } from 'firebase/firestore'
+import { logger } from '../utils/logger'
+import { sanitizeErrorMessage } from '../utils/sanitize'
 
 const firebaseConfig = {
   apiKey: "AIzaSyBTWS3GAmBjYOJB9FO6TvLKZKKg8HgqhAs",
@@ -75,8 +77,8 @@ export const AuthProvider = ({ children }) => {
         errorMessage = 'Érvénytelen e-mail cím.'
       } else if (error.code === 'auth/weak-password') {
         errorMessage = 'A jelszó túl gyenge. Használj legalább 6 karaktert.'
-      } else if (error.message) {
-        errorMessage = error.message
+      } else {
+        errorMessage = sanitizeErrorMessage(error)
       }
       return { success: false, message: errorMessage }
     }
@@ -97,7 +99,7 @@ export const AuthProvider = ({ children }) => {
       }
       return { success: true, message: 'Sikeres bejelentkezés!' }
     } catch (error) {
-      return { success: false, message: error?.message || 'Bejelentkezés sikertelen' }
+      return { success: false, message: sanitizeErrorMessage(error) || 'Bejelentkezés sikertelen' }
     }
   }
 
@@ -106,7 +108,7 @@ export const AuthProvider = ({ children }) => {
       await signOut(auth)
       return { success: true, message: 'Kijelentkeztél.' }
     } catch (error) {
-      return { success: false, message: error?.message || 'Kijelentkezés sikertelen' }
+      return { success: false, message: sanitizeErrorMessage(error) || 'Kijelentkezés sikertelen' }
     }
   }
 
@@ -123,8 +125,8 @@ export const AuthProvider = ({ children }) => {
         errorMessage = 'Ezzel az e-mail címmel nincs regisztrált fiók.'
       } else if (error.code === 'auth/invalid-email') {
         errorMessage = 'Érvénytelen e-mail cím.'
-      } else if (error.message) {
-        errorMessage = error.message
+      } else {
+        errorMessage = sanitizeErrorMessage(error)
       }
       return { success: false, message: errorMessage }
     }
@@ -145,7 +147,7 @@ export const AuthProvider = ({ children }) => {
       await setDoc(ref, { levelId: String(levelId), completedAt: serverTimestamp() }, { merge: true })
       return { success: true, message: `Pálya mentve: ${levelId}` }
     } catch (error) {
-      return { success: false, message: error?.message || 'Mentés sikertelen' }
+      return { success: false, message: sanitizeErrorMessage(error) || 'Mentés sikertelen' }
     }
   }
 
@@ -156,7 +158,7 @@ export const AuthProvider = ({ children }) => {
       const snap = await getDoc(ref)
       return snap.exists()
     } catch (error) {
-      console.warn('Mission completion check error:', error)
+      logger.warn('Mission completion check error:', error)
       return false
     }
   }
@@ -168,7 +170,7 @@ export const AuthProvider = ({ children }) => {
       const snap = await getDoc(ref)
       return snap.exists()
     } catch (error) {
-      console.warn('Level completion check error:', error)
+      logger.warn('Level completion check error:', error)
       return false
     }
   }
@@ -192,7 +194,7 @@ export const AuthProvider = ({ children }) => {
       }
       return highest
     } catch (error) {
-      console.warn('Highest completed level check error:', error)
+      logger.warn('Highest completed level check error:', error)
       return 0
     }
   }
@@ -215,8 +217,8 @@ export const AuthProvider = ({ children }) => {
       }, { merge: true })
       return { success: true }
     } catch (error) {
-      console.warn('Scoring mentés hiba:', error)
-      return { success: false, message: error?.message || 'Mentés sikertelen' }
+      logger.warn('Scoring mentés hiba:', error)
+      return { success: false, message: sanitizeErrorMessage(error) || 'Mentés sikertelen' }
     }
   }
 
@@ -235,7 +237,7 @@ export const AuthProvider = ({ children }) => {
       }
       return null
     } catch (error) {
-      console.warn('Scoring betöltés hiba:', error)
+      logger.warn('Scoring betöltés hiba:', error)
       return null
     }
   }
@@ -253,7 +255,7 @@ export const AuthProvider = ({ children }) => {
       }
       return false
     } catch (error) {
-      console.warn('Retro prompt seen check error:', error)
+      logger.warn('Retro prompt seen check error:', error)
       return false
     }
   }
@@ -273,8 +275,8 @@ export const AuthProvider = ({ children }) => {
       }, { merge: true })
       return { success: true }
     } catch (error) {
-      console.warn('Retro prompt seen mentés hiba:', error)
-      return { success: false, message: error?.message || 'Mentés sikertelen' }
+      logger.warn('Retro prompt seen mentés hiba:', error)
+      return { success: false, message: sanitizeErrorMessage(error) || 'Mentés sikertelen' }
     }
   }
 
@@ -302,7 +304,7 @@ export const AuthProvider = ({ children }) => {
         const preferencesRef = doc(db, 'users', userId, 'preferences', 'data')
         await deleteDoc(preferencesRef).catch(() => {}) // Ha nincs, ne dobjon hibát
       } catch (firestoreError) {
-        console.warn('Firestore törlés hiba (folytatjuk):', firestoreError)
+        logger.warn('Firestore törlés hiba (folytatjuk):', firestoreError)
       }
       
       // Firebase Auth user törlése
@@ -313,8 +315,8 @@ export const AuthProvider = ({ children }) => {
       let errorMessage = 'Fiók törlése sikertelen.'
       if (error.code === 'auth/requires-recent-login') {
         errorMessage = 'Biztonsági okokból újra be kell jelentkezned a törlés előtt.'
-      } else if (error.message) {
-        errorMessage = error.message
+      } else {
+        errorMessage = sanitizeErrorMessage(error)
       }
       return { success: false, message: errorMessage }
     }

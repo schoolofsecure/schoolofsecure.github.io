@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
+import { sanitizeErrorMessage } from '../utils/sanitize'
 import '../index.css'
 import '../styles/aurora.css'
 
@@ -28,7 +29,7 @@ const Aurora = () => {
     fetch('/data/aurora.json')
       .then(res => res.json())
       .then(setData)
-      .catch(console.error)
+      .catch((e) => logger.error('Aurora data fetch error:', e))
   }, [])
 
   useEffect(() => {
@@ -135,7 +136,7 @@ const Aurora = () => {
         setRegistrationSuccess(false)
       }
     } catch (error) {
-      setGateError(error.message || 'Regisztráció sikertelen.')
+      setGateError(sanitizeErrorMessage(error) || 'Regisztráció sikertelen.')
       setRegistrationSuccess(false)
     }
   }
@@ -182,7 +183,7 @@ const Aurora = () => {
         window.updateLevelAccess()
       }
     } catch (error) {
-      setRetroError(error.message || 'Nem sikerült rögzíteni a teljesítést. Próbáld meg újra.')
+      setRetroError(sanitizeErrorMessage(error) || 'Nem sikerült rögzíteni a teljesítést. Próbáld meg újra.')
     } finally {
       setRetroSaving(false)
     }
@@ -224,7 +225,7 @@ const Aurora = () => {
             setShowLevels(true)
           }, 1000)
         } catch (error) {
-          console.warn('Nem sikerült menteni a mission teljesítését Firebase-be:', error)
+          logger.warn('Nem sikerült menteni a mission teljesítését Firebase-be:', error)
           setEntryStatus('Hiba történt a mentés során. Próbáld újra.')
           setEntryStatusType('err')
         }

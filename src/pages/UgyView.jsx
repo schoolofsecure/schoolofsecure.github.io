@@ -170,6 +170,15 @@ const UgyView = () => {
     img.src = config.images[step + 1];
   }, [step, config.images]);
 
+  const next = () => setStep(s => Math.min(s + 1, config.totalTasks - 1));
+  const markDone = (i) => setDone(d => { const nd = [...d]; nd[i] = true; return nd; });
+
+  const completedCount = useMemo(() => done.filter(Boolean).length, [done]);
+
+  const progressPct = useMemo(() => {
+    return (completedCount / config.totalTasks) * 100;
+  }, [completedCount, config.totalTasks]);
+
   // Mentés Firebase-be (csak bejelentkezés után)
   useEffect(() => {
     if (isAuthenticated) {
@@ -179,16 +188,6 @@ const UgyView = () => {
       }
     }
   }, [completedCount, config.totalTasks, isAuthenticated, saveLevelCompletion, levelNum]);
-
-  const next = () => setStep(s => Math.min(s + 1, config.totalTasks - 1));
-  const markDone = (i) => setDone(d => { const nd = [...d]; nd[i] = true; return nd; });
-
-  const progressPct = useMemo(() => {
-    const completedCount = done.filter(Boolean).length;
-    return (completedCount / config.totalTasks) * 100;
-  }, [done, config.totalTasks]);
-
-  const completedCount = useMemo(() => done.filter(Boolean).length, [done]);
 
   const handleCompletion = async () => {
     markDone(config.totalTasks - 1);

@@ -330,7 +330,7 @@ export const ugy3Config = {
   narrativeText: "A rendszerben rejtett útvonal bukkan fel, mintha a támadó saját, láthatatlan ösvényt építene a szerverek között. A logok csapdára emlékeztetnek, mégis fontos nyomokat rejthetnek. Rajtad áll, követed-e az árnyakat, vagy lezárod az ösvényt, mielőtt mélyebbre jut.",
   isDynamic: true,
   totalTasks: 5,
-  images: ['/images/3a.jpg', '/images/3b.jpg', '/images/3c.jpg', '/images/3d.jpg', '/images/3e.jpg'],
+  images: ['/images/1a.jpg', '/images/1b.jpg', '/images/1c.jpg', '/images/1d.jpg', '/images/1e.jpg'],
   nextLevelRoute: "/ugy4",
   nextLevelText: "Tovább a Rejtély Ajtajához",
   specialComponents: {},
@@ -345,11 +345,11 @@ export const ugy3Config = {
     RISKY_PERMISSION: 'Veszélyes engedélykérés'
   },
   taskImages: {
-    VIGENERE: '/images/3a.jpg',
-    NETWORK_ANOMALY: '/images/3b.jpg',
-    EMAIL_HEADER: '/images/3c.jpg',
-    URL_TRUST: '/images/3d.jpg',
-    RISKY_PERMISSION: '/images/3e.jpg'
+    VIGENERE: '/images/1a.jpg',
+    NETWORK_ANOMALY: '/images/1b.jpg',
+    EMAIL_HEADER: '/images/1c.jpg',
+    URL_TRUST: '/images/1d.jpg',
+    RISKY_PERMISSION: '/images/1e.jpg'
   },
   taskStories: {
     VIGENERE: {

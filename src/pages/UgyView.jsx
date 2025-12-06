@@ -57,33 +57,6 @@ const UgyView = () => {
     );
   }
 
-  // Inaktív pálya ellenőrzés: 3. ügytől felfelé minden ügy inaktív
-  if (levelNum >= 3) {
-    return (
-      <div className="container">
-        <header>
-          <Link to="/" className="brand" aria-label="CyberMystery – Vissza a főoldalra">
-            <div className="brand-badge">CM</div>
-            <div>{config.headerTitle || `Ügy #${levelNum}`}</div>
-          </Link>
-        </header>
-        <main>
-          <div className="card" style={{textAlign:'center', padding:'40px 20px'}}>
-            <h2 style={{margin:'0 0 16px'}}>⏸️ Inaktív pálya</h2>
-            <p className="muted" style={{margin:'0 0 20px', fontSize:'16px', lineHeight:'1.7'}}>
-              Ez a pálya jelenleg még inaktív.
-              <br />
-              Kérjük türelmedet, hamarosan elérhető lesz.
-            </p>
-            <div style={{display:'flex', gap:'12px', justifyContent:'center', flexWrap:'wrap'}}>
-              <Link className="btn" to="/aurora">Ügyek áttekintése</Link>
-            </div>
-          </div>
-        </main>
-      </div>
-    );
-  }
-
   const [step, setStep] = useState(0);
   const [done, setDone] = useState(Array(config.totalTasks).fill(false));
   const [showArchive, setShowArchive] = useState(false);
@@ -100,6 +73,9 @@ const UgyView = () => {
   
   // Ugy2 unlock dátum (csak akkor inicializáljuk, ha van unlockDate)
   const [isLevel3Unlocked, setIsLevel3Unlocked] = useState(false);
+  
+  // Fejlesztői mód: inaktív pálya megtekintése (csak ügy 3 esetén)
+  const [devModeActive, setDevModeActive] = useState(false);
 
   // Betöltés: állapot visszaállítása és előző pályák ellenőrzése
   useEffect(() => {
@@ -331,6 +307,51 @@ const UgyView = () => {
                 🔓 Fejlesztői mód: zárolás feloldása
               </button>
             </div>
+          </div>
+        </main>
+      </div>
+    );
+  }
+
+  // Inaktív pálya ellenőrzés: 3. ügytől felfelé minden ügy inaktív (kivéve fejlesztői módban az ügy 3)
+  if (levelNum >= 3 && !(levelNum === 3 && devModeActive)) {
+    return (
+      <div className="container">
+        <header>
+          <Link to="/" className="brand" aria-label="CyberMystery – Vissza a főoldalra">
+            <div className="brand-badge">CM</div>
+            <div>{config.headerTitle || `Ügy #${levelNum}`}</div>
+          </Link>
+        </header>
+        <main>
+          <div className="card" style={{textAlign:'center', padding:'40px 20px'}}>
+            <h2 style={{margin:'0 0 16px'}}>⏸️ Inaktív pálya</h2>
+            <p className="muted" style={{margin:'0 0 20px', fontSize:'16px', lineHeight:'1.7'}}>
+              Ez a pálya jelenleg még inaktív.
+              <br />
+              Kérjük türelmedet, hamarosan elérhető lesz.
+            </p>
+            <div style={{display:'flex', gap:'12px', justifyContent:'center', flexWrap:'wrap'}}>
+              <Link className="btn" to="/aurora">Ügyek áttekintése</Link>
+            </div>
+            {/* Fejlesztői gomb - csak ügy 3 esetén */}
+            {levelNum === 3 && (
+              <div style={{marginTop:'24px', paddingTop:'24px', borderTop:'1px solid rgba(207,230,255,0.1)'}}>
+                <button 
+                  className="btn-ghost" 
+                  onClick={() => setDevModeActive(true)}
+                  style={{
+                    fontSize:'13px',
+                    padding:'8px 16px',
+                    opacity:0.7,
+                    cursor:'pointer'
+                  }}
+                  title="Fejlesztői mód: pálya megtekintése"
+                >
+                  🔓 Fejlesztői mód: pálya megtekintése
+                </button>
+              </div>
+            )}
           </div>
         </main>
       </div>

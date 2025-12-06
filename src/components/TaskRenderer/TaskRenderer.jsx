@@ -1236,11 +1236,6 @@ const EmailHeaderTaskRenderer = ({ task, payload, taskStory, taskLabel, onSucces
             </div>
           </div>
         )}
-        {payload.hints && payload.hints.length > 0 && (
-          <div style={{ marginTop: '12px', fontSize: '12px', color: 'var(--muted)' }}>
-            <strong>Tipp:</strong> {payload.hints[0]}
-          </div>
-        )}
       </div>
       <div className="card">
         <h3>Gyanús jelek</h3>

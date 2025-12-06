@@ -1,7 +1,8 @@
 import { BaseTask } from '../types/TaskInterface'
 import { Random } from '../utils/random'
 
-const HEADER_TEMPLATES = [
+// 3 fix szcenárió (easy módban csak SPF ellenőrzés)
+export const SCENARIOS = [
   {
     from: 'alerts@banksecure.com',
     received: [
@@ -13,9 +14,9 @@ const HEADER_TEMPLATES = [
     anomalyIndex: null
   },
   {
-    from: 'alerts@banksecure.com',
+    from: 'security@cybermuseum.org',
     received: [
-      'from mail.randomhost.ru (203.0.113.55) by mx.banksecure.com',
+      'from mail.randomhost.ru (203.0.113.55) by mx.cybermuseum.org',
       'from localhost (127.0.0.1) by mail.randomhost.ru'
     ],
     spf: 'fail',
@@ -23,22 +24,23 @@ const HEADER_TEMPLATES = [
     anomalyIndex: 0
   },
   {
-    from: 'security@cybermuseum.org',
+    from: 'support@vaultpay.io',
     received: [
-      'from webmail.cybermuseum.org (198.51.100.44) by mx.cybermuseum.org',
-      'from suspicious-node (185.1.1.1) by webmail.cybermuseum.org'
+      'from webmail.vaultpay.io (198.51.100.44) by mx.vaultpay.io',
+      'from suspicious-node (185.1.1.1) by webmail.vaultpay.io'
     ],
     spf: 'neutral',
-    dkim: 'fail',
+    dkim: 'pass',
     anomalyIndex: 1
   }
 ]
 
 export class EmailHeaderTask extends BaseTask {
   static create({ id, difficulty }) {
-    const template = Random.choice(HEADER_TEMPLATES)
+    // Random választás a 3 fix szcenárió közül
+    const template = Random.choice(SCENARIOS)
     const hints = difficulty === 'easy'
-      ? ['Keresd a SPF/DKIM státuszokat.']
+      ? ['Keresd a SPF státuszt.']
       : difficulty === 'medium'
         ? ['Ellenőrizd a Received láncot.']
         : ['Vizsgáld az IP-ket és az SPF/DKIM mezőket is.']
@@ -46,7 +48,7 @@ export class EmailHeaderTask extends BaseTask {
     return new EmailHeaderTask({
       id,
       difficulty,
-      parameters: { template, hints }
+      parameters: { template, hints, difficulty }
     })
   }
 
@@ -56,16 +58,28 @@ export class EmailHeaderTask extends BaseTask {
 
   generate() {
     if (this.payload) return this.payload
-    const { template, hints } = this.parameters
+    const { template, hints, difficulty } = this.parameters
     const issues = []
-    if (template.spf !== 'pass') issues.push('spf')
-    if (template.dkim !== 'pass') issues.push('dkim')
-    if (template.anomalyIndex !== null) issues.push(`received-${template.anomalyIndex}`)
+    
+    // Easy módban csak SPF-et ellenőrizünk
+    if (difficulty === 'easy') {
+      if (template.spf !== 'pass') issues.push('spf')
+    } else {
+      if (template.spf !== 'pass') issues.push('spf')
+      if (template.dkim !== 'pass') issues.push('dkim')
+      if (template.anomalyIndex !== null) issues.push(`received-${template.anomalyIndex}`)
+    }
+    
     this.solution = issues
     this.payload = {
-      instructions: 'Elemezd az e-mail fejléceket és jelöld meg a gyanús jeleket.',
+      instructions: difficulty === 'easy' 
+        ? 'Elemezd az e-mail fejlécet és nézd meg, hogy az SPF státusz rendben van-e.'
+        : 'Elemezd az e-mail fejléceket és jelöld meg a gyanús jeleket.',
       header: template,
-      hints
+      hints,
+      hint: difficulty === 'easy'
+        ? 'Az SPF (Sender Policy Framework) ellenőrzi, hogy az e-mail küldője jogosult-e az adott domainről küldeni. A "pass" státusz azt jelenti, hogy minden rendben, más értékek gyanúsak lehetnek.'
+        : 'Az SPF és DKIM hitelesítési protokollok ellenőrzik az e-mail eredetét. A "pass" státusz azt jelenti, hogy minden rendben, más értékek gyanúsak lehetnek. A Received lánc mutatja az e-mail útvonalát.'
     }
     return this.payload
   }

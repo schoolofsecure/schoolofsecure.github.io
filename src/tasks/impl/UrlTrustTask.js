@@ -1,34 +1,49 @@
 import { BaseTask } from '../types/TaskInterface'
 import { Random } from '../utils/random'
 
-const LEGIT_DOMAINS = ['banksecure.com', 'cybermuseum.org', 'vaultpay.io', 'mailcorp.net']
-const SPOOF_PATTERNS = [
-  domain => domain.replace('o', '0'),
-  domain => `login.${domain}-secure.com`,
-  domain => `${domain}.verify-account.org`,
-  domain => domain.replace('.com', '-support.com'),
-  domain => `${domain.replace('.', '')}.cn`
+// 3 fix szcenárió (3 legit + 3 gyanús URL, összesen 6)
+export const SCENARIOS = [
+  {
+    urls: [
+      { url: 'https://banksecure.com', suspicious: false },
+      { url: 'https://cybermuseum.org', suspicious: false },
+      { url: 'https://vaultpay.io', suspicious: false },
+      { url: 'https://banksecure0.com', suspicious: true },
+      { url: 'https://login.cybermuseum.org-secure.com', suspicious: true },
+      { url: 'https://vaultpay.io.verify-account.org', suspicious: true }
+    ]
+  },
+  {
+    urls: [
+      { url: 'https://mailcorp.net', suspicious: false },
+      { url: 'https://banksecure.com', suspicious: false },
+      { url: 'https://cybermuseum.org', suspicious: false },
+      { url: 'https://mailcorp.net-support.com', suspicious: true },
+      { url: 'https://banksecure.com.verify-account.org', suspicious: true },
+      { url: 'https://cybermuseum0.org', suspicious: true }
+    ]
+  },
+  {
+    urls: [
+      { url: 'https://vaultpay.io', suspicious: false },
+      { url: 'https://mailcorp.net', suspicious: false },
+      { url: 'https://banksecure.com', suspicious: false },
+      { url: 'https://vaultpayio.cn', suspicious: true },
+      { url: 'https://login.mailcorp.net-secure.com', suspicious: true },
+      { url: 'https://banksecure.com-support.com', suspicious: true }
+    ]
+  }
 ]
 
 export class UrlTrustTask extends BaseTask {
   static create({ id, difficulty }) {
-    const total = difficulty === 'easy' ? 5 : difficulty === 'medium' ? 7 : 9
-    const legitCount = difficulty === 'hard' ? 3 : 4
-    const urls = []
-
-    for (let i = 0; i < legitCount; i++) {
-      urls.push({ url: `https://${Random.choice(LEGIT_DOMAINS)}`, suspicious: false })
-    }
-    while (urls.length < total) {
-      const base = Random.choice(LEGIT_DOMAINS)
-      const spoof = Random.choice(SPOOF_PATTERNS)(base)
-      urls.push({ url: `https://${spoof}`, suspicious: true })
-    }
+    // Random választás a 3 fix szcenárió közül
+    const scenario = Random.choice(SCENARIOS)
 
     return new UrlTrustTask({
       id,
       difficulty,
-      parameters: { urls: Random.shuffle(urls) }
+      parameters: { urls: Random.shuffle([...scenario.urls]) }
     })
   }
 
@@ -44,7 +59,8 @@ export class UrlTrustTask extends BaseTask {
       .filter(idx => idx !== null)
     this.payload = {
       instructions: 'Válaszd ki a hamis vagy gyanús URL-eket.',
-      urls: urls.map(entry => entry.url)
+      urls: urls.map(entry => entry.url),
+      hint: 'A gyanús URL-ek gyakran hasonlítanak a megbízható domainekhez, de tartalmaznak apró eltéréseket. Figyeld meg alaposan a domain neveket és hasonlítsd össze őket a megbízható domainekkel.'
     }
     return this.payload
   }

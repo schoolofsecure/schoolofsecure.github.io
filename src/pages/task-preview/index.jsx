@@ -4,6 +4,16 @@ import NarrativeBlock from '../../components/Ugy1/NarrativeBlock'
 import TaskCard from '../../components/Ugy1/TaskCard'
 import TaskRenderer from '../../components/TaskRenderer/TaskRenderer'
 import { TaskFactory, Random, LevelGenerator } from '../../tasks'
+import { RiskyPermissionTask } from '../../tasks/impl/RiskyPermissionTask'
+import { SCENARIOS as RISKY_PERMISSION_SCENARIOS } from '../../tasks/impl/RiskyPermissionTask'
+import { VigenereTask } from '../../tasks/impl/VigenereTask'
+import { SCENARIOS as VIGENERE_SCENARIOS } from '../../tasks/impl/VigenereTask'
+import { NetworkAnomalyTask } from '../../tasks/impl/NetworkAnomalyTask'
+import { SCENARIOS as NETWORK_ANOMALY_SCENARIOS } from '../../tasks/impl/NetworkAnomalyTask'
+import { EmailHeaderTask } from '../../tasks/impl/EmailHeaderTask'
+import { SCENARIOS as EMAIL_HEADER_SCENARIOS } from '../../tasks/impl/EmailHeaderTask'
+import { UrlTrustTask } from '../../tasks/impl/UrlTrustTask'
+import { SCENARIOS as URL_TRUST_SCENARIOS } from '../../tasks/impl/UrlTrustTask'
 import '../../styles/ugy1.css'
 
 const ALL_TASK_TYPES = [
@@ -75,7 +85,7 @@ const TaskPreviewList = () => {
 
     // 3. pálya feladatainak generálása - 3 variáció minden típushoz
     const ugy3Types = [
-      'ICON_MEMORY',
+      'VIGENERE',
       'NETWORK_ANOMALY',
       'EMAIL_HEADER',
       'URL_TRUST',
@@ -86,65 +96,139 @@ const TaskPreviewList = () => {
     
     ugy3Types.forEach((type, typeIndex) => {
       const variations = []
-      const seen = new Set()
-      let attempt = 0
-      const variationTarget = 3
       
-      // Nagyobb seed különbségek a különböző variációkhoz
-      const seedBase = BASE_SEED + 9999 + typeIndex * 10000
-      
-      while (variations.length < variationTarget && attempt < variationTarget * 20) {
-        // Nagyobb különbségek a seed-ek között, hogy biztosan eltérő feladatokat kapjunk
-        const seed = seedBase + attempt * 100
-        Random.setSeed(seed)
-        
-        const task = TaskFactory.createRandomTask('easy', [type], 3, attempt + 1)
-        
-        // Biztosítjuk, hogy a feladat teljesen generálva legyen
-        if (!task.payload) {
+      // RISKY_PERMISSION esetén explicit módon generáljuk a 3 fix szcenáriót
+      if (type === 'RISKY_PERMISSION') {
+        RISKY_PERMISSION_SCENARIOS.forEach((scenario, scenarioIndex) => {
+          // Keverjük össze az engedélyeket, hogy valósághű legyen
+          const shuffledPermissions = Random.shuffle([...scenario.permissions])
+          
+          const task = new RiskyPermissionTask({
+            id: `risky-perm-${scenarioIndex}`,
+            difficulty: 'easy',
+            parameters: {
+              app: scenario.app,
+              permissions: shuffledPermissions,
+              risky: [...scenario.risky]
+            }
+          })
           task.generate()
-        } else {
-          // Ha már van payload, újrageneráljuk, hogy biztosan friss legyen
-          task.payload = null
-          task.solution = null
-          task.generate()
-        }
-        
-        // Részletesebb signature a payload és solution alapján
-        const signature = JSON.stringify({
-          type: task.type,
-          payload: task.payload,
-          solution: task.solution,
-          difficulty: task.difficulty
-        })
-        
-        if (!seen.has(signature) && task.payload && task.solution !== undefined) {
-          seen.add(signature)
+          
           variations.push({
-            seed,
+            seed: BASE_SEED + 9999 + typeIndex * 10000 + scenarioIndex,
             task,
-            variationIndex: variations.length,
+            variationIndex: scenarioIndex,
             type
           })
-        }
-        attempt++
-      }
-      
-      // Ha még mindig nincs elég variáció, próbáljuk meg más slot értékekkel
-      if (variations.length < variationTarget) {
-        for (let slot = 1; slot <= 10 && variations.length < variationTarget; slot++) {
-          const seed = seedBase + slot * 1000
+        })
+      } else if (type === 'VIGENERE') {
+        // VIGENERE esetén explicit módon generáljuk a 3 fix szcenáriót
+        VIGENERE_SCENARIOS.forEach((scenario, scenarioIndex) => {
+          const task = new VigenereTask({
+            id: `vigenere-${scenarioIndex}`,
+            difficulty: 'easy',
+            parameters: {
+              plaintext: scenario.plaintext,
+              key: scenario.key,
+              levelNumber: 3,
+              slot: scenarioIndex + 1
+            }
+          })
+          task.generate()
+          
+          variations.push({
+            seed: BASE_SEED + 9999 + typeIndex * 10000 + scenarioIndex,
+            task,
+            variationIndex: scenarioIndex,
+            type
+          })
+        })
+      } else if (type === 'NETWORK_ANOMALY') {
+        // NETWORK_ANOMALY esetén explicit módon generáljuk a 3 fix szcenáriót
+        NETWORK_ANOMALY_SCENARIOS.forEach((scenario, scenarioIndex) => {
+          const task = new NetworkAnomalyTask({
+            id: `network-anomaly-${scenarioIndex}`,
+            difficulty: 'easy',
+            parameters: {
+              flows: [...scenario.flows]
+            }
+          })
+          task.generate()
+          
+          variations.push({
+            seed: BASE_SEED + 9999 + typeIndex * 10000 + scenarioIndex,
+            task,
+            variationIndex: scenarioIndex,
+            type
+          })
+        })
+      } else if (type === 'EMAIL_HEADER') {
+        // EMAIL_HEADER esetén explicit módon generáljuk a 3 fix szcenáriót
+        EMAIL_HEADER_SCENARIOS.forEach((scenario, scenarioIndex) => {
+          const task = new EmailHeaderTask({
+            id: `email-header-${scenarioIndex}`,
+            difficulty: 'easy',
+            parameters: {
+              template: scenario,
+              hints: ['Keresd a SPF státuszt.'],
+              difficulty: 'easy'
+            }
+          })
+          task.generate()
+          
+          variations.push({
+            seed: BASE_SEED + 9999 + typeIndex * 10000 + scenarioIndex,
+            task,
+            variationIndex: scenarioIndex,
+            type
+          })
+        })
+      } else if (type === 'URL_TRUST') {
+        // URL_TRUST esetén explicit módon generáljuk a 3 fix szcenáriót
+        URL_TRUST_SCENARIOS.forEach((scenario, scenarioIndex) => {
+          const task = new UrlTrustTask({
+            id: `url-trust-${scenarioIndex}`,
+            difficulty: 'easy',
+            parameters: {
+              urls: Random.shuffle([...scenario.urls])
+            }
+          })
+          task.generate()
+          
+          variations.push({
+            seed: BASE_SEED + 9999 + typeIndex * 10000 + scenarioIndex,
+            task,
+            variationIndex: scenarioIndex,
+            type
+          })
+        })
+      } else {
+        // Egyéb típusoknál a régi logika
+        const seen = new Set()
+        let attempt = 0
+        const variationTarget = 3
+        
+        // Nagyobb seed különbségek a különböző variációkhoz
+        const seedBase = BASE_SEED + 9999 + typeIndex * 10000
+        
+        while (variations.length < variationTarget && attempt < variationTarget * 20) {
+          // Nagyobb különbségek a seed-ek között, hogy biztosan eltérő feladatokat kapjunk
+          const seed = seedBase + attempt * 100
           Random.setSeed(seed)
           
-          const task = TaskFactory.createRandomTask('easy', [type], 3, slot)
+          const task = TaskFactory.createRandomTask('easy', [type], 3, attempt + 1)
+          
+          // Biztosítjuk, hogy a feladat teljesen generálva legyen
           if (!task.payload) {
             task.generate()
           } else {
+            // Ha már van payload, újrageneráljuk, hogy biztosan friss legyen
             task.payload = null
             task.solution = null
             task.generate()
           }
           
+          // Részletesebb signature a payload és solution alapján
           const signature = JSON.stringify({
             type: task.type,
             payload: task.payload,
@@ -160,6 +244,41 @@ const TaskPreviewList = () => {
               variationIndex: variations.length,
               type
             })
+          }
+          attempt++
+        }
+        
+        // Ha még mindig nincs elég variáció, próbáljuk meg más slot értékekkel
+        if (variations.length < variationTarget) {
+          for (let slot = 1; slot <= 10 && variations.length < variationTarget; slot++) {
+            const seed = seedBase + slot * 1000
+            Random.setSeed(seed)
+            
+            const task = TaskFactory.createRandomTask('easy', [type], 3, slot)
+            if (!task.payload) {
+              task.generate()
+            } else {
+              task.payload = null
+              task.solution = null
+              task.generate()
+            }
+            
+            const signature = JSON.stringify({
+              type: task.type,
+              payload: task.payload,
+              solution: task.solution,
+              difficulty: task.difficulty
+            })
+            
+            if (!seen.has(signature) && task.payload && task.solution !== undefined) {
+              seen.add(signature)
+              variations.push({
+                seed,
+                task,
+                variationIndex: variations.length,
+                type
+              })
+            }
           }
         }
       }
@@ -201,7 +320,7 @@ const TaskPreviewList = () => {
         <div className="card" style={{ marginTop: '20px', background: 'rgba(0,229,255,0.05)', border: '1px solid rgba(0,229,255,0.2)' }}>
           <h3 style={{ color: '#00e5ff' }}>3. pálya feladatainak előnézete</h3>
           <p className="muted" style={{ marginBottom: '16px', fontSize: '14px' }}>
-            A 3. pálya 5 fix feladatát mutatjuk: ICON_MEMORY, NETWORK_ANOMALY, EMAIL_HEADER, URL_TRUST, RISKY_PERMISSION (mind easy nehézség). Minden típushoz 3 variáció.
+            A 3. pálya 5 fix feladatát mutatjuk: VIGENERE, NETWORK_ANOMALY, EMAIL_HEADER, URL_TRUST, RISKY_PERMISSION (mind easy nehézség). Minden típushoz 3 variáció.
           </p>
           
           {Object.keys(ugy3Tasks).length > 0 && (
@@ -209,7 +328,7 @@ const TaskPreviewList = () => {
               <div style={{ marginBottom: '16px' }}>
                 <h4 style={{ fontSize: '14px', marginBottom: '8px' }}>Feladattípusok</h4>
                 <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-                  {['ICON_MEMORY', 'NETWORK_ANOMALY', 'EMAIL_HEADER', 'URL_TRUST', 'RISKY_PERMISSION'].map(type => (
+                  {['VIGENERE', 'NETWORK_ANOMALY', 'EMAIL_HEADER', 'URL_TRUST', 'RISKY_PERMISSION'].map(type => (
                     <button
                       key={type}
                       type="button"
@@ -228,24 +347,22 @@ const TaskPreviewList = () => {
 
               {selectedUgy3Task && ugy3Tasks[selectedUgy3Task] && ugy3Tasks[selectedUgy3Task].length > 0 && (
                 <>
-                  {ugy3Tasks[selectedUgy3Task].length > 1 && (
-                    <div style={{ marginBottom: '16px' }}>
-                      <h4 style={{ fontSize: '14px', marginBottom: '8px' }}>Variációk ({ugy3Tasks[selectedUgy3Task].length})</h4>
-                      <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-                        {ugy3Tasks[selectedUgy3Task].map((variation, index) => (
-                          <button
-                            key={index}
-                            type="button"
-                            className={selectedUgy3Variation === index ? 'btn' : 'btn-ghost'}
-                            onClick={() => setSelectedUgy3Variation(index)}
-                            style={{ fontSize: '12px', padding: '6px 12px' }}
-                          >
-                            Variáció {index + 1}
-                          </button>
-                        ))}
-                      </div>
+                  <div style={{ marginBottom: '16px' }}>
+                    <h4 style={{ fontSize: '14px', marginBottom: '8px' }}>Variációk ({ugy3Tasks[selectedUgy3Task].length})</h4>
+                    <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+                      {ugy3Tasks[selectedUgy3Task].map((variation, index) => (
+                        <button
+                          key={index}
+                          type="button"
+                          className={selectedUgy3Variation === index ? 'btn' : 'btn-ghost'}
+                          onClick={() => setSelectedUgy3Variation(index)}
+                          style={{ fontSize: '12px', padding: '6px 12px' }}
+                        >
+                          Variáció {index + 1}
+                        </button>
+                      ))}
                     </div>
-                  )}
+                  </div>
 
                   {ugy3Tasks[selectedUgy3Task][selectedUgy3Variation] && (
                     <>
@@ -333,7 +450,7 @@ const TaskPreviewList = () => {
               ))}
             </div>
 
-            {currentVariations.length > 1 && (
+            {currentVariations.length > 0 && (
               <div style={{ marginBottom: '16px' }}>
                 <h4 style={{ fontSize: '14px', marginBottom: '8px' }}>Variációk ({currentVariations.length})</h4>
                 <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>

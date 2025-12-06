@@ -1,46 +1,36 @@
 import { BaseTask } from '../types/TaskInterface'
 import { Random } from '../utils/random'
-import { StyleHelper } from '../utils/styleHelper'
 
-// Bővített plaintext pool több variációval
-const VIGENERE_TEXTS = [
-  'DATACENTER BREACH',
-  'TRUSTED NODE ALERT',
-  'SHADOW PROXY ACTIVE',
-  'MONITOR ALL CHANNELS',
-  'ARCHIVE LOCKDOWN ENABLED',
-  'FORENSIC TEAM EN ROUTE',
-  'SURVEILLANCE GRID ONLINE',
-  'ENCRYPTED MESSAGE FOUND',
-  'SECRET KEY DISCOVERED',
-  'INTRUSION DETECTED NOW',
-  'BACKUP SYSTEM RESTORED',
-  'FIREWALL BYPASSED HERE',
-  'ROOT ACCESS GAINED',
-  'DATA EXFILTRATED',
-  'ZERO DAY EXPLOIT'
+// 3 fix szcenárió
+export const SCENARIOS = [
+  {
+    plaintext: 'DATACENTER BREACH',
+    key: 'KEY'
+  },
+  {
+    plaintext: 'TRUSTED NODE ALERT',
+    key: 'LOCK'
+  },
+  {
+    plaintext: 'SHADOW PROXY ACTIVE',
+    key: 'CODE'
+  }
 ]
 
 export class VigenereTask extends BaseTask {
   static create({ id, difficulty, levelNumber = 2, slot = 1 }) {
-    // styleConfig randomRules használata
-    const rules = StyleHelper.getRandomRules('VIGENERE')
-    const keyLengths = rules.keyLengths?.[difficulty] || { easy: [3, 4], medium: [5, 6], hard: [7, 10] }
-    
-    const pool = {
-      easy: VIGENERE_TEXTS.slice(0, 5),
-      medium: VIGENERE_TEXTS.slice(2, 10),
-      hard: VIGENERE_TEXTS
-    }
-
-    const [min, max] = keyLengths
-    const key = Random.string(Random.int(min, max), { upper: true, lower: false, numbers: false })
-    const plaintext = Random.choice(pool[difficulty])
+    // Random választás a 3 fix szcenárió közül
+    const scenario = Random.choice(SCENARIOS)
 
     return new VigenereTask({
       id,
       difficulty,
-      parameters: { plaintext, key, levelNumber, slot }
+      parameters: { 
+        plaintext: scenario.plaintext, 
+        key: scenario.key,
+        levelNumber, 
+        slot 
+      }
     })
   }
 

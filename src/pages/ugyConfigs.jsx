@@ -335,30 +335,30 @@ export const ugy3Config = {
   nextLevelText: "Következő ügy",
   specialComponents: {},
   requiresPrevious: true, // Előző pályák teljesítése szükséges
-  forcedTypes: ['ICON_MEMORY', 'NETWORK_ANOMALY', 'EMAIL_HEADER', 'URL_TRUST', 'RISKY_PERMISSION'],
+  forcedTypes: ['VIGENERE', 'NETWORK_ANOMALY', 'EMAIL_HEADER', 'URL_TRUST', 'RISKY_PERMISSION'],
   forcedDifficulty: 'easy',
   taskLabels: {
-    ICON_MEMORY: 'Szimbólum-memória',
+    VIGENERE: 'Kulcskeringő',
     NETWORK_ANOMALY: 'Hálózati burjánzás',
     EMAIL_HEADER: 'Fejléc-röntgen',
     URL_TRUST: 'Kapuhivatkozás vizsgálat',
     RISKY_PERMISSION: 'Veszélyes engedélykérés'
   },
   taskImages: {
-    ICON_MEMORY: '/images/3a.jpg',
+    VIGENERE: '/images/3a.jpg',
     NETWORK_ANOMALY: '/images/3b.jpg',
     EMAIL_HEADER: '/images/3c.jpg',
     URL_TRUST: '/images/3d.jpg',
     RISKY_PERMISSION: '/images/3e.jpg'
   },
   taskStories: {
-    ICON_MEMORY: {
-      title: 'Szimbólum-memória',
-      text: `A rendszer naplóiban gyanús ikonok és szimbólumok jelentek meg.
+    VIGENERE: {
+      title: 'Kulcskeringő',
+      text: `A rendszer mélyén egy Vigenère-kóddal titkosított üzenet rejtőzik.
     
-A támadó ezeket a jeleket használhatta, hogy kommunikáljon vagy információt hagyjon a rendszerben.
+A kézbesítetlen üzenet kulcsa valahol a rendszerben el van rejtve, és csak a megfelelő dekódolással érhető el a tartalma.
     
-Emlékezz vissza a korábban látott ikonokra, és azonosítsd a veszélyes szimbólumokat.`
+Fejtsd meg a Vigenère-kódot a megadott kulccsal, hogy megtudd, mi rejtőzik az üzenetben.`
     },
     NETWORK_ANOMALY: {
       title: 'Hálózati burjánzás',

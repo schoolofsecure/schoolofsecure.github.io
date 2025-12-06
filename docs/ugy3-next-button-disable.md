@@ -2,12 +2,14 @@
 
 ## Változtatások
 
-Az ügy3 pálya befejezése után a tovább gomb az ügy4-re letiltva van.
+Az ügy3 pálya befejezése után a tovább gomb az ügy4-re letiltva van, és ugyanazt a szöveget írja ki, mint az ügy2-nél, december 13-mal.
 
 ## Részletek
 
 - **Fájl**: `src/pages/UgyView.jsx`
-- **Változtatás**: Az ügy3 befejezése után a "Következő ügy" gomb disabled állapotban jelenik meg
+- **Változtatás**: 
+  - Az ügy3 befejezése után a "Következő ügy" gomb disabled állapotban jelenik meg
+  - A befejezési szöveg: "Gratulálunk! A negyedik ügy **december 13-án, este 7 órakor nyílik**."
 - **Stílus**: Ugyanaz, mint az ügy2-nél a zárolt gomb (átlátszó, szürke szín)
 
 ## Implementáció

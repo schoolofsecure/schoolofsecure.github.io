@@ -470,6 +470,8 @@ const UgyView = () => {
                           <p className="muted" style={{ marginBottom: '16px', lineHeight: '1.6', fontSize: '14px' }}>
                             {levelNum === 2 
                               ? <>Gratulálunk! A harmadik ügy <strong>december 6-án, este 7 órakor nyílik</strong>.</>
+                              : levelNum === 3
+                              ? <>Gratulálunk! A negyedik ügy <strong>december 13-án, este 7 órakor nyílik</strong>.</>
                               : 'Gratulálunk! Sikeresen megoldottad a harmadik ügyet.'}
                           </p>
                           <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>

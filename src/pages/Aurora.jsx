@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
 import { sanitizeErrorMessage } from '../utils/sanitize'
+import { ugyConfigs } from './ugyConfigs.jsx'
 import '../index.css'
 import '../styles/aurora.css'
 
@@ -23,6 +24,7 @@ const Aurora = () => {
   const [retroPromptDismissed, setRetroPromptDismissed] = useState(true)
   const [retroSaving, setRetroSaving] = useState(false)
   const [retroError, setRetroError] = useState('')
+  const [isLevel3Unlocked, setIsLevel3Unlocked] = useState(false)
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -271,6 +273,20 @@ const Aurora = () => {
     }
   }, [isAuthenticated, getHighestCompletedLevel])
 
+  // Ügy 3 unlock dátum ellenőrzése
+  useEffect(() => {
+    const ugy2Config = ugyConfigs[2]
+    if (ugy2Config?.unlockDate) {
+      const unlockDate = new Date(ugy2Config.unlockDate)
+      const updateUnlock = () => {
+        setIsLevel3Unlocked(new Date() >= unlockDate)
+      }
+      updateUnlock()
+      const interval = setInterval(updateUnlock, 60000) // Perenként ellenőrzés
+      return () => clearInterval(interval)
+    }
+  }, [])
+
   if (!data) {
     return <div className="container">Betöltés...</div>
   }
@@ -500,7 +516,9 @@ const Aurora = () => {
               {(data.levels?.cards || []).map((card) => {
                 // A 3. kártya ne legyen automatikusan feloldva, ha csak a 2-es pálya van teljesítve
                 const isUgy2Completed = highestCompleted >= 2
+                const isUgy3Completed = highestCompleted >= 3
                 const isUgy3 = card.n === 3
+                const isUgy4 = card.n === 4
                 const isCompleted = card.n <= highestCompleted
                 
                 // Speciális eset: ha a 3. kártya és a 2-es pálya teljesítve van, akkor ne legyen feloldva
@@ -509,13 +527,14 @@ const Aurora = () => {
                   // A 4. ügytől felfelé (4, 5, 6, 7, 8, 9, 10, 11, 12) mindegyik inaktív
                   isUnlocked = false
                 } else if (isUgy3 && isUgy2Completed) {
-                  // A 3. kártya ne legyen feloldva, ha csak a 2-es pálya van teljesítve
-                  isUnlocked = false
+                  // A 3. kártya unlockolva van, ha az ügy 2 teljesítve van ÉS elérkezett a dátum
+                  isUnlocked = isLevel3Unlocked
                 } else {
                   // Minden pálya elérhető, ha már teljesítve van, vagy a következő pálya
                   isUnlocked = card.n <= highestCompleted + 1 || (card.n === 1 && !card.locked)
                 }
                 const showDecember6 = isUgy3 && isUgy2Completed && !isUnlocked
+                const showDecember13 = isUgy4 && isUgy3Completed && !isUnlocked
                 
                 return isUnlocked ? (
                   <Link
@@ -558,10 +577,10 @@ const Aurora = () => {
                   <div 
                     key={card.n} 
                     className="level-card" 
-                    aria-disabled={!showDecember6}
+                    aria-disabled={!showDecember6 && !showDecember13}
                     style={{ 
                       position: 'relative',
-                      filter: showDecember6 ? 'none' : 'grayscale(1) opacity(0.8)'
+                      filter: 'grayscale(1) opacity(0.8)'
                     }}
                   >
                     <span className="level-label">Ügy #{card.n}</span>
@@ -593,7 +612,33 @@ const Aurora = () => {
                         December 6-án, este 7 órakor nyílik
                       </div>
                     )}
-                    {!showDecember6 && (
+                    {showDecember13 && (
+                      <div 
+                        className="december-13-notice"
+                        style={{
+                          position: 'absolute',
+                          bottom: '8px',
+                          left: '8px',
+                          right: '8px',
+                          background: 'rgba(0, 229, 255, 0.2)',
+                          border: '1px solid rgba(0, 229, 255, 0.5)',
+                          borderRadius: '8px',
+                          padding: '10px 14px',
+                          fontSize: '13px',
+                          color: '#00e5ff',
+                          textAlign: 'center',
+                          fontFamily: 'Rajdhani, Inter, sans-serif',
+                          fontWeight: 600,
+                          backdropFilter: 'blur(6px)',
+                          zIndex: 10,
+                          boxShadow: '0 4px 12px rgba(0, 229, 255, 0.2)',
+                          letterSpacing: '0.3px'
+                        }}
+                      >
+                        December 13-án, este 7 órakor nyílik
+                      </div>
+                    )}
+                    {!showDecember6 && !showDecember13 && (
                     <span className="coming" aria-label="Zárolt">🔒</span>
                     )}
                   </div>

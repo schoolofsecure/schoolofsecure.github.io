@@ -500,25 +500,22 @@ const Aurora = () => {
               {(data.levels?.cards || []).map((card) => {
                 // A 3. kártya ne legyen automatikusan feloldva, ha csak a 2-es pálya van teljesítve
                 const isUgy2Completed = highestCompleted >= 2
-                const isUgy3Completed = highestCompleted >= 3
                 const isUgy3 = card.n === 3
-                const isUgy4 = card.n === 4
                 const isCompleted = card.n <= highestCompleted
                 
                 // Speciális eset: ha a 3. kártya és a 2-es pálya teljesítve van, akkor ne legyen feloldva
                 let isUnlocked
-                if (isUgy3 && isUgy2Completed) {
-                  // A 3. kártya ne legyen feloldva, ha csak a 2-es pálya van teljesítve
+                if (card.n >= 4) {
+                  // A 4. ügytől felfelé (4, 5, 6, 7, 8, 9, 10, 11, 12) mindegyik inaktív
                   isUnlocked = false
-                } else if (isUgy4 && isUgy3Completed) {
-                  // A 4. kártya ne legyen feloldva, ha csak a 3-as pálya van teljesítve
+                } else if (isUgy3 && isUgy2Completed) {
+                  // A 3. kártya ne legyen feloldva, ha csak a 2-es pálya van teljesítve
                   isUnlocked = false
                 } else {
                   // Minden pálya elérhető, ha már teljesítve van, vagy a következő pálya
                   isUnlocked = card.n <= highestCompleted + 1 || (card.n === 1 && !card.locked)
                 }
                 const showDecember6 = isUgy3 && isUgy2Completed && !isUnlocked
-                const showDecember13 = isUgy4 && isUgy3Completed && !isUnlocked
                 
                 return isUnlocked ? (
                   <Link
@@ -561,18 +558,18 @@ const Aurora = () => {
                   <div 
                     key={card.n} 
                     className="level-card" 
-                    aria-disabled={!showDecember6 && !showDecember13}
+                    aria-disabled={!showDecember6}
                     style={{ 
                       position: 'relative',
-                      filter: (showDecember6 || showDecember13) ? 'none' : 'grayscale(1) opacity(0.8)'
+                      filter: showDecember6 ? 'none' : 'grayscale(1) opacity(0.8)'
                     }}
                   >
                     <span className="level-label">Ügy #{card.n}</span>
                     <img src={card.img} alt={`Ügy ${card.n}`} loading="lazy" />
                     <div className="case-title">{card.title}</div>
-                    {(showDecember6 || showDecember13) && (
+                    {showDecember6 && (
                       <div 
-                        className={showDecember6 ? "december-6-notice" : "december-13-notice"}
+                        className="december-6-notice"
                         style={{
                           position: 'absolute',
                           bottom: '8px',
@@ -593,10 +590,10 @@ const Aurora = () => {
                           letterSpacing: '0.3px'
                         }}
                       >
-                        December {showDecember6 ? '6' : '13'}-án, este 7 órakor nyílik
+                        December 6-án, este 7 órakor nyílik
                       </div>
                     )}
-                    {!showDecember6 && !showDecember13 && (
+                    {!showDecember6 && (
                     <span className="coming" aria-label="Zárolt">🔒</span>
                     )}
                   </div>

@@ -39,6 +39,15 @@ function AppContent() {
           <Route path="/ugy1" element={<UgyView />} />
           <Route path="/ugy2" element={<UgyView />} />
           <Route path="/ugy3" element={<UgyView />} />
+          <Route path="/ugy4" element={<UgyView />} />
+          <Route path="/ugy5" element={<UgyView />} />
+          <Route path="/ugy6" element={<UgyView />} />
+          <Route path="/ugy7" element={<UgyView />} />
+          <Route path="/ugy8" element={<UgyView />} />
+          <Route path="/ugy9" element={<UgyView />} />
+          <Route path="/ugy10" element={<UgyView />} />
+          <Route path="/ugy11" element={<UgyView />} />
+          <Route path="/ugy12" element={<UgyView />} />
           {import.meta.env.DEV && (
             <>
           <Route path="/qa-debug" element={<QADebugPanel />} />

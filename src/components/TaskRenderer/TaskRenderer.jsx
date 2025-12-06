@@ -122,64 +122,67 @@ const HintDetails = ({ text }) => {
   )
 }
 
-// Fejlesztői skip gomb
-const DevSkipButton = ({ onSkip, disabled }) => {
-  return (
-    <button
-      className="btn-ghost"
-      type="button"
-      onClick={onSkip}
-      disabled={disabled}
-      style={{
-        fontSize: '11px',
-        padding: '4px 8px',
-        opacity: 0.6,
-        borderColor: 'rgba(207,230,255,0.1)',
-        color: 'var(--muted)'
-      }}
-      title="Fejlesztői mód: feladat kihagyása"
-    >
-      ⏭️ Skip
-    </button>
-  )
-}
+const DevSkipButton = ({ onSkip, disabled }) => (
+  <button
+    className="btn-ghost"
+    type="button"
+    onClick={onSkip}
+    disabled={disabled}
+    style={{ fontSize: '11px', padding: '4px 8px', opacity: 0.6, borderColor: 'rgba(207,230,255,0.1)', color: 'var(--muted)' }}
+    title="Fejlesztői mód: feladat kihagyása"
+  >
+    ⏭️ Skip
+  </button>
+)
+
+// Közös wrapper a bal oldali részhez
+const TaskLeftSide = ({ taskLabel, taskStory, payload, children }) => (
+  <div className="card">
+    {taskLabel && <h3>{taskLabel}</h3>}
+    {taskStory && (
+      <p className="muted" style={{ whiteSpace: 'pre-line', marginTop: taskLabel ? '8px' : '0' }}>
+        {taskStory.text}
+      </p>
+    )}
+    {!taskStory && payload?.intro && <p className="muted" style={{ marginTop: taskLabel ? '8px' : '0' }}>{payload.intro}</p>}
+    {payload?.instructions && (
+      <p className="muted" style={{ marginTop: (taskStory || payload.intro) ? '12px' : (taskLabel ? '8px' : '0') }}>
+        {payload.instructions}
+      </p>
+    )}
+    {children}
+  </div>
+)
+
+// Közös wrapper a jobb oldali részhez
+const TaskRightSide = ({ title, imageSrc, hint, children, devSkip }) => (
+  <div className="card">
+    {title && <h3>{title}</h3>}
+    {children}
+    {devSkip && (
+      <div style={{ marginTop: '8px', display: 'flex', justifyContent: 'flex-end' }}>
+        {devSkip}
+      </div>
+    )}
+    {imageSrc && <div className="task-note"><PerfImg className="task-ill" src={imageSrc} alt="Illusztráció" width="280" height="280" priority /></div>}
+    <HintDetails text={hint} />
+  </div>
+)
 
 // Caesar Task Renderer
 const CaesarTaskRenderer = ({ task, payload, taskStory, taskLabel, onSuccess, onFailure, imageSrc }) => {
-  const [feedback, setFeedback] = useState(null)
   const [solved, setSolved] = useState(false)
-
-  const handleCheck = (value, normalize) => {
-    const isValid = task.validate(value)
-    setFeedback(isValid ? 'ok' : 'err')
-    // onSuccess-t a ChallengeInput kezeli az onSuccess prop-on keresztül
-    return isValid
-  }
-
-  const handleDevSkip = () => {
-    setSolved(true)
-    onSuccess?.()
-  }
+  const handleCheck = (value) => task.validate(value)
+  const handleDevSkip = () => { setSolved(true); onSuccess?.() }
 
   return (
     <div className="grid2">
-      <div className="card">
-        {taskLabel && <h3>{taskLabel}</h3>}
-        {taskStory && (
-          <p className="muted" style={{ whiteSpace: 'pre-line', marginTop: taskLabel ? '8px' : '0' }}>
-            {taskStory.text}
-          </p>
-        )}
-        {!taskStory && payload.intro && <p className="muted" style={{ marginTop: taskLabel ? '8px' : '0' }}>{payload.intro}</p>}
-        <p className="muted" style={{ marginTop: (taskStory || payload.intro) ? '12px' : (taskLabel ? '8px' : '0') }}>{payload.instructions}</p>
+      <TaskLeftSide taskLabel={taskLabel} taskStory={taskStory} payload={payload}>
         <div className="statusline">
-          <code style={{fontSize:'16px', letterSpacing:'2px', wordBreak:'break-all'}}>
-            {payload.ciphertext}
-          </code>
+          <code style={{fontSize:'16px', letterSpacing:'2px', wordBreak:'break-all'}}>{payload.ciphertext}</code>
         </div>
-      </div>
-      <div className="card">
-        <h3>Válasz</h3>
+      </TaskLeftSide>
+      <TaskRightSide title="Válasz" imageSrc={imageSrc} hint={payload.hint} devSkip={<DevSkipButton onSkip={handleDevSkip} disabled={solved} />}>
         <ChallengeInput
           key={task?.id || 'caesar'}
           placeholder="dekódolt üzenet…"
@@ -189,12 +192,7 @@ const CaesarTaskRenderer = ({ task, payload, taskStory, taskLabel, onSuccess, on
           onSuccess={onSuccess}
           onFailure={onFailure}
         />
-        <div style={{ marginTop: '8px', display: 'flex', justifyContent: 'flex-end' }}>
-          <DevSkipButton onSkip={handleDevSkip} disabled={solved} />
-        </div>
-        {imageSrc && <div className="task-note"><PerfImg className="task-ill" src={imageSrc} alt="Illusztráció" width="280" height="280" priority /></div>}
-        <HintDetails text={payload.hint} />
-      </div>
+      </TaskRightSide>
     </div>
   )
 }
@@ -202,42 +200,18 @@ const CaesarTaskRenderer = ({ task, payload, taskStory, taskLabel, onSuccess, on
 // Vigenère Task Renderer
 const VigenereTaskRenderer = ({ task, payload, taskStory, taskLabel, onSuccess, onFailure, imageSrc }) => {
   const [solved, setSolved] = useState(false)
-
-  const handleCheck = (value, normalize) => {
-    const isValid = task.validate(value)
-    // onSuccess-t a ChallengeInput kezeli az onSuccess prop-on keresztül
-    return isValid
-  }
-
-  const handleDevSkip = () => {
-    setSolved(true)
-    onSuccess?.()
-  }
+  const handleCheck = (value) => task.validate(value)
+  const handleDevSkip = () => { setSolved(true); onSuccess?.() }
 
   return (
     <div className="grid2">
-      <div className="card">
-        {taskLabel && <h3>{taskLabel}</h3>}
-        {taskStory && (
-          <p className="muted" style={{ whiteSpace: 'pre-line', marginTop: taskLabel ? '8px' : '0' }}>
-            {taskStory.text}
-          </p>
-        )}
-        {!taskStory && payload.intro && <p className="muted" style={{ marginTop: taskLabel ? '8px' : '0' }}>{payload.intro}</p>}
-        <p className="muted" style={{ marginTop: (taskStory || payload.intro) ? '12px' : (taskLabel ? '8px' : '0') }}>{payload.instructions}</p>
+      <TaskLeftSide taskLabel={taskLabel} taskStory={taskStory} payload={payload}>
         <div className="statusline">
-          <code style={{fontSize:'16px', letterSpacing:'2px', wordBreak:'break-all'}}>
-            {payload.ciphertext}
-          </code>
+          <code style={{fontSize:'16px', letterSpacing:'2px', wordBreak:'break-all'}}>{payload.ciphertext}</code>
         </div>
-        {payload.key && (
-          <p className="muted" style={{marginTop:'8px', fontSize:'13px'}}>
-            Kulcs: <code>{payload.key}</code>
-          </p>
-        )}
-      </div>
-      <div className="card">
-        <h3>Válasz</h3>
+        {payload.key && <p className="muted" style={{marginTop:'8px', fontSize:'13px'}}>Kulcs: <code>{payload.key}</code></p>}
+      </TaskLeftSide>
+      <TaskRightSide title="Válasz" imageSrc={imageSrc} hint={payload.hint} devSkip={<DevSkipButton onSkip={handleDevSkip} disabled={solved} />}>
         <ChallengeInput
           key={task?.id || 'vigenere'}
           placeholder="dekódolt üzenet…"
@@ -247,12 +221,7 @@ const VigenereTaskRenderer = ({ task, payload, taskStory, taskLabel, onSuccess, 
           onSuccess={onSuccess}
           onFailure={onFailure}
         />
-        <div style={{ marginTop: '8px', display: 'flex', justifyContent: 'flex-end' }}>
-          <DevSkipButton onSkip={handleDevSkip} disabled={solved} />
-        </div>
-        {imageSrc && <div className="task-note"><PerfImg className="task-ill" src={imageSrc} alt="Illusztráció" width="280" height="280" priority /></div>}
-        <HintDetails text={payload.hint} />
-      </div>
+      </TaskRightSide>
     </div>
   )
 }

@@ -59,11 +59,10 @@ async function checkPreviousCompleted(level, checkLevelCompleted) {
   try {
     if (!checkLevelCompleted) return false;
     
-    const ugy1Done = await checkLevelCompleted('ugy1');
-    if (level === 2) return ugy1Done;
-    if (level === 3) {
-      const ugy2Done = await checkLevelCompleted('ugy2');
-      return ugy1Done && ugy2Done;
+    // Ellenőrizzük, hogy az összes előző pálya teljesítve van-e
+    for (let i = 1; i < level; i++) {
+      const previousDone = await checkLevelCompleted(`ugy${i}`);
+      if (!previousDone) return false;
     }
     return true;
   } catch(e) {
@@ -243,11 +242,7 @@ const UgyView = () => {
   }, [step, done, isAuthenticated, saveLevelCompletion, config.storageKey, levelNum]);
 
   const next = () => setStep(s => Math.min(s + 1, config.totalTasks - 1));
-  const markDone = (i) => setDone(d => {
-    const nd = d.slice();
-    nd[i] = true;
-    return nd;
-  });
+  const markDone = (i) => setDone(d => { const nd = [...d]; nd[i] = true; return nd; });
 
   const progressPct = useMemo(() => {
     const completedCount = done.filter(Boolean).length;
@@ -391,29 +386,29 @@ const UgyView = () => {
           <div style={{ marginLeft: 'auto', display: 'flex', gap: '10px', alignItems: 'center' }}>
             <Link
               to="/profile"
-              style={{
-                padding: '8px 16px',
-                fontSize: '13px',
-                background: 'rgba(255,255,255,0.05)',
-                border: '1px solid rgba(207,230,255,0.2)',
-                color: 'var(--muted)',
-                borderRadius: '6px',
-                cursor: 'pointer',
-                fontFamily: 'Rajdhani, Inter, sans-serif',
-                fontWeight: 500,
+            style={{
+              padding: '8px 16px',
+              fontSize: '13px',
+              background: 'rgba(255,255,255,0.05)',
+              border: '1px solid rgba(207,230,255,0.2)',
+              color: 'var(--muted)',
+              borderRadius: '6px',
+              cursor: 'pointer',
+              fontFamily: 'Rajdhani, Inter, sans-serif',
+              fontWeight: 500,
                 transition: 'all 0.2s',
                 textDecoration: 'none',
                 display: 'inline-flex',
                 alignItems: 'center'
-              }}
-              onMouseEnter={(e) => {
-                e.target.style.background = 'rgba(255,255,255,0.1)';
-                e.target.style.color = '#cfe6ff';
-              }}
-              onMouseLeave={(e) => {
-                e.target.style.background = 'rgba(255,255,255,0.05)';
-                e.target.style.color = 'var(--muted)';
-              }}
+            }}
+            onMouseEnter={(e) => {
+              e.target.style.background = 'rgba(255,255,255,0.1)';
+              e.target.style.color = '#cfe6ff';
+            }}
+            onMouseLeave={(e) => {
+              e.target.style.background = 'rgba(255,255,255,0.05)';
+              e.target.style.color = 'var(--muted)';
+            }}
             >
               Profil
             </Link>
@@ -442,9 +437,9 @@ const UgyView = () => {
               onMouseLeave={(e) => {
                 e.target.style.color = 'rgba(207,230,255,0.6)';
               }}
-            >
-              Kijelentkezés
-            </button>
+          >
+            Kijelentkezés
+          </button>
           </div>
         )}
       </header>
@@ -693,22 +688,22 @@ const UgyView = () => {
                                 {config.nextLevelText}
                               </button>
                             ) : (
-                              <Link
-                                className="btn"
-                                to={config.nextLevelRoute}
-                                style={{
-                                  textDecoration:'none',
-                                  display:'inline-flex',
-                                  justifyContent:'center',
-                                  alignItems:'center',
-                                  textAlign:'center',
-                                  minWidth:'0',
-                                  padding:'10px 18px',
-                                  fontSize:'13px'
-                                }}
-                              >
-                                {config.nextLevelText}
-                              </Link>
+                            <Link
+                              className="btn"
+                              to={config.nextLevelRoute}
+                              style={{
+                                textDecoration:'none',
+                                display:'inline-flex',
+                                justifyContent:'center',
+                                alignItems:'center',
+                                textAlign:'center',
+                                minWidth:'0',
+                                padding:'10px 18px',
+                                fontSize:'13px'
+                              }}
+                            >
+                              {config.nextLevelText}
+                            </Link>
                             )
                           )}
                         </div>
@@ -811,22 +806,22 @@ const UgyView = () => {
                                 {config.nextLevelText}
                               </button>
                             ) : (
-                              <Link
-                                className="btn"
-                                to={config.nextLevelRoute}
-                                style={{
-                                  textDecoration:'none',
-                                  display:'inline-flex',
-                                  justifyContent:'center',
-                                  alignItems:'center',
-                                  textAlign:'center',
-                                  minWidth:'0',
-                                  padding:'10px 18px',
-                                  fontSize:'13px'
-                                }}
-                              >
-                                {config.nextLevelText}
-                              </Link>
+                            <Link
+                              className="btn"
+                              to={config.nextLevelRoute}
+                              style={{
+                                textDecoration:'none',
+                                display:'inline-flex',
+                                justifyContent:'center',
+                                alignItems:'center',
+                                textAlign:'center',
+                                minWidth:'0',
+                                padding:'10px 18px',
+                                fontSize:'13px'
+                              }}
+                            >
+                              {config.nextLevelText}
+                            </Link>
                             )
                           )}
                         </div>

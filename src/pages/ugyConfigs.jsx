@@ -397,10 +397,59 @@ Elemezd az engedélykéréseket, és döntsd el, hogy melyek a veszélyesek.`
   }
 };
 
+// Sablon függvény dinamikus pályákhoz
+function createDynamicUgyConfig(level, title, badge, narrativeText) {
+  const img = `/images/${level}.jpg`;
+  const isLast = level === 12;
+  return {
+    level,
+    title,
+    badge,
+    headerTitle: `${title} - Ügy #${level}`,
+    narrativeTitle: `${title} - Ügy #${level}`,
+    narrativeText,
+    isDynamic: true,
+    totalTasks: 5,
+    images: Array(5).fill(img),
+    nextLevelRoute: isLast ? "/aurora" : `/ugy${level + 1}`,
+    nextLevelText: isLast ? "Vissza az Aurora-hoz" : "Következő ügy",
+    specialComponents: {},
+    requiresPrevious: true,
+    taskLabels: ugy2Config.taskLabels,
+    taskImages: {
+      CAESAR: img,
+      VIGENERE: img,
+      XOR: img,
+      PHISHING: img,
+      LOG_ANALYSIS: img
+    },
+    taskStories: ugy2Config.taskStories
+  };
+}
+
+export const ugy4Config = createDynamicUgyConfig(4, "A hiányzó idővonal", "Idővonal - hiányzó nyomok", "Az idővonalban hiányosságok jelentek meg. A nyomok azt sugallják, hogy valaki manipulálta az események sorrendjét. Az előző pályák megoldásai kulcsfontosságúak lesznek a folytatáshoz.");
+export const ugy5Config = createDynamicUgyConfig(5, "A rejtett metaadat", "Metaadat - rejtett információ", "A fájlok metaadataiban rejtett információk bukkannak fel. Valaki szándékosan elrejtett fontos adatokat, amelyek a nyomozás kulcsai lehetnek.");
+export const ugy6Config = createDynamicUgyConfig(6, "A szivárgó port", "Port - szivárgó kapcsolat", "A hálózati portokon szokatlan forgalom észlelhető. Valaki próbál behatolni a rendszerbe egy sebezhető porton keresztül.");
+export const ugy7Config = createDynamicUgyConfig(7, "A kettős identitás", "Identitás - kettős szerep", "Két különböző identitás nyomai bukkannak fel. Valaki álcázza magát, és több szerepben is megjelenik a rendszerben.");
+export const ugy8Config = createDynamicUgyConfig(8, "A törött kulcs", "Kulcs - törött titkosítás", "A titkosítási kulcsok sérültek vagy hiányoznak. Valaki megpróbálta feltörni a védelmet, és nyomokat hagyott maga után.");
+export const ugy9Config = createDynamicUgyConfig(9, "A megszakított átvitel", "Átvitel - megszakított kapcsolat", "Egy fontos adatátvitel megszakadt. A nyomok azt sugallják, hogy valaki szándékosan zavarta meg a kommunikációt.");
+export const ugy10Config = createDynamicUgyConfig(10, "A Phantom-Profil", "Profil - fantom identitás", "Egy fantom profil jelent meg a rendszerben. Valaki létrehozott egy láthatatlan identitást, amelyet csak a legapróbb nyomok árulnak el.");
+export const ugy11Config = createDynamicUgyConfig(11, "A lopott árnyékfiók", "Fiók - lopott árnyék", "Egy árnyékfiók került ellopásra. Valaki megszerezte egy másik felhasználó identitását, és azzal próbál behatolni a rendszerbe.");
+export const ugy12Config = createDynamicUgyConfig(12, "A főkolompos", "Főkolompos - végső rejtély", "Az utolsó rejtély. Minden nyom egyetlen pontra mutat: a főkolompos azonosítására. Itt dől el minden.");
+
 // Konfigurációk map
 export const ugyConfigs = {
   1: ugy1Config,
   2: ugy2Config,
-  3: ugy3Config
+  3: ugy3Config,
+  4: ugy4Config,
+  5: ugy5Config,
+  6: ugy6Config,
+  7: ugy7Config,
+  8: ugy8Config,
+  9: ugy9Config,
+  10: ugy10Config,
+  11: ugy11Config,
+  12: ugy12Config
 };
 

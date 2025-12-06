@@ -182,47 +182,47 @@ const Ugy3 = () => {
         if (!previousCompleted) return; // Ha zárolva van, ne töltse be a többi adatot
       }
 
-      // QA debug mód: seed és forced types ellenőrzése
-      const qaSeed = sessionStorage.getItem('qa_seed')
-      const qaLevel = sessionStorage.getItem('qa_level')
-      const qaForcedTypes = sessionStorage.getItem('qa_forced_types')
-      
-      const level = qaLevel ? parseInt(qaLevel, 10) : 3
-      const seed = qaSeed ? parseInt(qaSeed, 10) : null
-      const forcedTypes = qaForcedTypes ? JSON.parse(qaForcedTypes) : null
-      
-      setCurrentLevel(level)
-      
-      // QA mód cleanup
-      if (qaSeed) {
-        sessionStorage.removeItem('qa_seed')
-        sessionStorage.removeItem('qa_level')
-        sessionStorage.removeItem('qa_forced_types')
+    // QA debug mód: seed és forced types ellenőrzése
+    const qaSeed = sessionStorage.getItem('qa_seed')
+    const qaLevel = sessionStorage.getItem('qa_level')
+    const qaForcedTypes = sessionStorage.getItem('qa_forced_types')
+    
+    const level = qaLevel ? parseInt(qaLevel, 10) : 3
+    const seed = qaSeed ? parseInt(qaSeed, 10) : null
+    const forcedTypes = qaForcedTypes ? JSON.parse(qaForcedTypes) : null
+    
+    setCurrentLevel(level)
+    
+    // QA mód cleanup
+    if (qaSeed) {
+      sessionStorage.removeItem('qa_seed')
+      sessionStorage.removeItem('qa_level')
+      sessionStorage.removeItem('qa_forced_types')
+    }
+    
+    // Fix típusok: ICON_MEMORY, NETWORK_ANOMALY, EMAIL_HEADER, URL_TRUST, RISKY_PERMISSION
+    const ugy3Types = forcedTypes || [
+      'ICON_MEMORY',
+      'NETWORK_ANOMALY',
+      'EMAIL_HEADER',
+      'URL_TRUST',
+      'RISKY_PERMISSION'
+    ]
+    
+    const generatedTasks = LevelGenerator.generateLevel(level, 5, new Map(), 4, {
+      seed,
+      forcedTypes: ugy3Types,
+      forcedDifficulty: 'easy'
+    })
+    
+    // Minden feladat payload-jának generálása
+    generatedTasks.forEach(task => {
+      if (!task.payload) {
+        task.generate()
       }
-      
-      // Fix típusok: ICON_MEMORY, NETWORK_ANOMALY, EMAIL_HEADER, URL_TRUST, RISKY_PERMISSION
-      const ugy3Types = forcedTypes || [
-        'ICON_MEMORY',
-        'NETWORK_ANOMALY',
-        'EMAIL_HEADER',
-        'URL_TRUST',
-        'RISKY_PERMISSION'
-      ]
-      
-      const generatedTasks = LevelGenerator.generateLevel(level, 5, new Map(), 4, {
-        seed,
-        forcedTypes: ugy3Types,
-        forcedDifficulty: 'easy'
-      })
-      
-      // Minden feladat payload-jának generálása
-      generatedTasks.forEach(task => {
-        if (!task.payload) {
-          task.generate()
-        }
-      })
-      setTasks(generatedTasks)
-      setDone(Array(generatedTasks.length).fill(false))
+    })
+    setTasks(generatedTasks)
+    setDone(Array(generatedTasks.length).fill(false))
     };
     
     loadData();

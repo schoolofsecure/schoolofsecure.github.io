@@ -569,9 +569,9 @@ const Aurora = () => {
                     <span className="level-label">Ügy #{card.n}</span>
                     <img src={card.img} alt={`Ügy ${card.n}`} loading="lazy" />
                     <div className="case-title">{card.title}</div>
-                    {showDecember6 && (
+                    {(showDecember6 || showDecember13) && (
                       <div 
-                        className="december-6-notice"
+                        className={showDecember6 ? "december-6-notice" : "december-13-notice"}
                         style={{
                           position: 'absolute',
                           bottom: '8px',
@@ -592,33 +592,7 @@ const Aurora = () => {
                           letterSpacing: '0.3px'
                         }}
                       >
-                        December 6-án, este 7 órakor nyílik
-                      </div>
-                    )}
-                    {showDecember13 && (
-                      <div 
-                        className="december-13-notice"
-                        style={{
-                          position: 'absolute',
-                          bottom: '8px',
-                          left: '8px',
-                          right: '8px',
-                          background: 'rgba(0, 229, 255, 0.2)',
-                          border: '1px solid rgba(0, 229, 255, 0.5)',
-                          borderRadius: '8px',
-                          padding: '10px 14px',
-                          fontSize: '13px',
-                          color: '#00e5ff',
-                          textAlign: 'center',
-                          fontFamily: 'Rajdhani, Inter, sans-serif',
-                          fontWeight: 600,
-                          backdropFilter: 'blur(6px)',
-                          zIndex: 10,
-                          boxShadow: '0 4px 12px rgba(0, 229, 255, 0.2)',
-                          letterSpacing: '0.3px'
-                        }}
-                      >
-                        December 13-án, este 7 órakor nyílik
+                        December {showDecember6 ? '6' : '13'}-án, este 7 órakor nyílik
                       </div>
                     )}
                     {!showDecember6 && !showDecember13 && (

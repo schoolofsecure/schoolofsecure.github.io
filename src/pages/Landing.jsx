@@ -5,6 +5,7 @@ import '../index.css'
 
 const Landing = () => {
   const [gdprAgreed, setGdprAgreed] = useState(false)
+  const [gdprAgreedInForm, setGdprAgreedInForm] = useState(false)
   const [cookieBannerVisible, setCookieBannerVisible] = useState(false)
   const [showGdprHint, setShowGdprHint] = useState(false)
   const [showGdprHoverHint, setShowGdprHoverHint] = useState(false)
@@ -76,10 +77,17 @@ const Landing = () => {
   }
 
   const handleRegister = async () => {
+    if (!gdprAgreedInForm) {
+      setShowGdprHint(true)
+      return
+    }
+
+    setShowGdprHint(false)
     const result = await registerWithEmail(email, password)
     alert(result.message)
     if (result.success) {
       setAuthPanelOpen(false)
+      setGdprAgreedInForm(false)
     }
   }
 
@@ -272,6 +280,33 @@ const Landing = () => {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                   />
+                  {authMode === 'register' && (
+                    <div style={{display:'flex', alignItems:'flex-start', gap:'8px', padding:'8px 0'}}>
+                      <input
+                        type="checkbox"
+                        id="gdprAgreeInForm"
+                        checked={gdprAgreedInForm}
+                        onChange={(e) => {
+                          setGdprAgreedInForm(e.target.checked)
+                          if (e.target.checked) {
+                            setShowGdprHint(false)
+                          }
+                        }}
+                        style={{marginTop:'2px', flexShrink:0}}
+                      />
+                      <label
+                        htmlFor="gdprAgreeInForm"
+                        style={{
+                          fontSize:'12px',
+                          color: showGdprHint ? 'var(--danger)' : 'var(--muted)',
+                          lineHeight:'1.4',
+                          cursor:'pointer'
+                        }}
+                      >
+                        Elfogadom, hogy adataimat a játék céljára kezeljék. Bővebben az <Link to="/privacy" style={{color:'inherit', textDecoration:'underline'}}>adatkezelési tájékoztatóban</Link>.
+                      </label>
+                    </div>
+                  )}
                   <button
                     id={authMode === 'login' ? 'cm-login' : 'cm-register'}
                     className={authMode === 'login' ? 'btn-submit' : 'btn-secondary'}
@@ -283,7 +318,11 @@ const Landing = () => {
                   <button
                     type="button"
                     className="btn-ghost"
-                    onClick={() => setAuthMode((mode) => (mode === 'login' ? 'register' : 'login'))}
+                    onClick={() => {
+                      setAuthMode((mode) => (mode === 'login' ? 'register' : 'login'))
+                      setGdprAgreedInForm(false)
+                      setShowGdprHint(false)
+                    }}
                     style={{fontSize:'13px'}}
                   >
                     {authMode === 'login' ? 'Még nincs fiókod? Regisztrálj' : 'Van már fiókod? Lépj be'}

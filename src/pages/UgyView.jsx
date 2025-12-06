@@ -467,6 +467,7 @@ const UgyView = () => {
                 {currentTask ? (
                   <>
                     <TaskRenderer
+                      key={currentTask?.id || step}
                       task={currentTask}
                       taskStory={config.taskStories?.[currentTask.type]}
                       taskLabel={config.taskLabels?.[currentTask.type]}
@@ -668,6 +669,7 @@ const UgyView = () => {
                 ) : (
                   <>
                     <ChallengeInput
+                      key={step}
                       placeholder={currentStaticTask.placeholder || "válasz…"}
                       onCheck={(val, norm) => {
                         const ok = currentStaticTask.expectedAnswer(val, norm);

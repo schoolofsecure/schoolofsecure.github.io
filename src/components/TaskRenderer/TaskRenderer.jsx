@@ -181,6 +181,7 @@ const CaesarTaskRenderer = ({ task, payload, taskStory, taskLabel, onSuccess, on
       <div className="card">
         <h3>Válasz</h3>
         <ChallengeInput
+          key={task?.id || 'caesar'}
           placeholder="dekódolt üzenet…"
           onCheck={handleCheck}
           okText="Helyes! Tovább…"
@@ -238,6 +239,7 @@ const VigenereTaskRenderer = ({ task, payload, taskStory, taskLabel, onSuccess, 
       <div className="card">
         <h3>Válasz</h3>
         <ChallengeInput
+          key={task?.id || 'vigenere'}
           placeholder="dekódolt üzenet…"
           onCheck={handleCheck}
           okText="Helyes! Tovább…"
@@ -1583,6 +1585,7 @@ const DefaultTaskRenderer = ({ task, payload, taskStory, taskLabel, onSuccess, o
       <div className="card">
         <h3>Válasz</h3>
         <ChallengeInput
+          key={task?.id || 'default'}
           placeholder="válasz…"
           onCheck={handleCheck}
           okText="Helyes! Tovább…"

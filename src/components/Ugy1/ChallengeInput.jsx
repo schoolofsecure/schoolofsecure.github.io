@@ -27,6 +27,7 @@ const ChallengeInput = ({
     if (res) {
       onSuccess && onSuccess();
     } else {
+      setValue(''); // Töröljük az input mezőt rossz válasz esetén
       onFailure && onFailure();
     }
   };

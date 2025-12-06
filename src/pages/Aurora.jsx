@@ -504,7 +504,9 @@ const Aurora = () => {
               {(data.levels?.cards || []).map((card) => {
                 // A 3. kártya ne legyen automatikusan feloldva, ha csak a 2-es pálya van teljesítve
                 const isUgy2Completed = highestCompleted >= 2
+                const isUgy3Completed = highestCompleted >= 3
                 const isUgy3 = card.n === 3
+                const isUgy4 = card.n === 4
                 const isCompleted = card.n <= highestCompleted
                 
                 // Speciális eset: ha a 3. kártya és a 2-es pálya teljesítve van, akkor ne legyen feloldva
@@ -512,11 +514,15 @@ const Aurora = () => {
                 if (isUgy3 && isUgy2Completed) {
                   // A 3. kártya ne legyen feloldva, ha csak a 2-es pálya van teljesítve
                   isUnlocked = false
+                } else if (isUgy4 && isUgy3Completed) {
+                  // A 4. kártya ne legyen feloldva, ha csak a 3-as pálya van teljesítve
+                  isUnlocked = false
                 } else {
                   // Minden pálya elérhető, ha már teljesítve van, vagy a következő pálya
                   isUnlocked = card.n <= highestCompleted + 1 || (card.n === 1 && !card.locked)
                 }
                 const showDecember6 = isUgy3 && isUgy2Completed && !isUnlocked
+                const showDecember13 = isUgy4 && isUgy3Completed && !isUnlocked
                 
                 return isUnlocked ? (
                   <Link
@@ -559,10 +565,10 @@ const Aurora = () => {
                   <div 
                     key={card.n} 
                     className="level-card" 
-                    aria-disabled={!showDecember6}
+                    aria-disabled={!showDecember6 && !showDecember13}
                     style={{ 
                       position: 'relative',
-                      filter: showDecember6 ? 'none' : 'grayscale(1) opacity(0.8)'
+                      filter: (showDecember6 || showDecember13) ? 'none' : 'grayscale(1) opacity(0.8)'
                     }}
                   >
                     <span className="level-label">Ügy #{card.n}</span>
@@ -594,7 +600,33 @@ const Aurora = () => {
                         December 6-án, este 7 órakor nyílik
                       </div>
                     )}
-                    {!showDecember6 && (
+                    {showDecember13 && (
+                      <div 
+                        className="december-13-notice"
+                        style={{
+                          position: 'absolute',
+                          bottom: '8px',
+                          left: '8px',
+                          right: '8px',
+                          background: 'rgba(0, 229, 255, 0.2)',
+                          border: '1px solid rgba(0, 229, 255, 0.5)',
+                          borderRadius: '8px',
+                          padding: '10px 14px',
+                          fontSize: '13px',
+                          color: '#00e5ff',
+                          textAlign: 'center',
+                          fontFamily: 'Rajdhani, Inter, sans-serif',
+                          fontWeight: 600,
+                          backdropFilter: 'blur(6px)',
+                          zIndex: 10,
+                          boxShadow: '0 4px 12px rgba(0, 229, 255, 0.2)',
+                          letterSpacing: '0.3px'
+                        }}
+                      >
+                        December 13-án, este 7 órakor nyílik
+                      </div>
+                    )}
+                    {!showDecember6 && !showDecember13 && (
                     <span className="coming" aria-label="Zárolt">🔒</span>
                     )}
                   </div>

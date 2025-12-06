@@ -1110,7 +1110,9 @@ const NetworkAnomalyTaskRenderer = ({ task, payload, taskStory, taskLabel, onSuc
             {taskStory.text}
           </p>
         )}
-        <p className="muted" style={{ marginTop: (taskStory ? '12px' : (taskLabel ? '8px' : '0')) }}>{payload.instructions || ''}</p>
+        {payload.instructions && (
+          <p className="muted" style={{ marginTop: (taskStory ? '12px' : (taskLabel ? '8px' : '0')) }}>{payload.instructions}</p>
+        )}
       </div>
       <div className="card">
         <h3>Hálózati forgalom</h3>
@@ -1215,7 +1217,9 @@ const EmailHeaderTaskRenderer = ({ task, payload, taskStory, taskLabel, onSucces
             {taskStory.text}
           </p>
         )}
-        <p className="muted" style={{ marginTop: (taskStory ? '12px' : (taskLabel ? '8px' : '0')) }}>{payload.instructions || ''}</p>
+        {payload.instructions && (
+          <p className="muted" style={{ marginTop: (taskStory ? '12px' : (taskLabel ? '8px' : '0')) }}>{payload.instructions}</p>
+        )}
         {payload.header && (
           <div style={{ marginTop: '16px', padding: '16px', background: '#0b121c', borderRadius: '8px', border: '1px solid rgba(207,230,255,0.2)' }}>
             <div style={{ marginBottom: '12px', paddingBottom: '12px', borderBottom: '1px solid rgba(207,230,255,0.1)' }}>
@@ -1327,7 +1331,9 @@ const UrlTrustTaskRenderer = ({ task, payload, taskStory, taskLabel, onSuccess, 
             {taskStory.text}
           </p>
         )}
-        <p className="muted" style={{ marginTop: (taskStory ? '12px' : (taskLabel ? '8px' : '0')) }}>{payload.instructions || ''}</p>
+        {payload.instructions && (
+          <p className="muted" style={{ marginTop: (taskStory ? '12px' : (taskLabel ? '8px' : '0')) }}>{payload.instructions}</p>
+        )}
       </div>
       <div className="card">
         <h3>URL-ek</h3>
@@ -1419,7 +1425,9 @@ const RiskyPermissionTaskRenderer = ({ task, payload, taskStory, taskLabel, onSu
             {taskStory.text}
           </p>
         )}
-        <p className="muted" style={{ marginTop: (taskStory ? '12px' : (taskLabel ? '8px' : '0')) }}>{payload.instructions || ''}</p>
+        {payload.instructions && (
+          <p className="muted" style={{ marginTop: (taskStory ? '12px' : (taskLabel ? '8px' : '0')) }}>{payload.instructions}</p>
+        )}
       </div>
       <div className="card">
         <h3>Engedélyek</h3>

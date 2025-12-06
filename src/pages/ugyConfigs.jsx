@@ -323,16 +323,16 @@ Minden választásod hatással lesz arra, mihez fér hozzá a támadó, és arra
 
 export const ugy3Config = {
   level: 3,
-  title: "A kézbesítetlen üzenet",
-  badge: "Üzenet - kézbesítetlen nyomok",
-  headerTitle: "A kézbesítetlen üzenet - Ügy #3",
-  narrativeTitle: "A kézbesítetlen üzenet - Ügy #3",
-  narrativeText: "Az előző pályák nyomai egy újabb rejtélyhez vezettek. Egy üzenet soha nem érkezett meg a címzettjéhez, és a nyomok azt sugallják, hogy valaki megszakította a kommunikációt. Az előző két pálya megoldásai kulcsfontosságúak lesznek a folytatáshoz.",
+  title: "Árnyak Ösvénye",
+  badge: "Árnyak Ösvénye",
+  headerTitle: "Árnyak Ösvénye - Ügy #3",
+  narrativeTitle: "Árnyak Ösvénye - Ügy #3",
+  narrativeText: "A rendszerben rejtett útvonal bukkan fel, mintha a támadó saját, láthatatlan ösvényt építene a szerverek között. A logok csapdára emlékeztetnek, mégis fontos nyomokat rejthetnek. Rajtad áll, követed-e az árnyakat, vagy lezárod az ösvényt, mielőtt mélyebbre jut.",
   isDynamic: true,
   totalTasks: 5,
   images: ['/images/3a.jpg', '/images/3b.jpg', '/images/3c.jpg', '/images/3d.jpg', '/images/3e.jpg'],
   nextLevelRoute: "/ugy4",
-  nextLevelText: "Következő ügy",
+  nextLevelText: "Tovább a Rejtély Ajtajához",
   specialComponents: {},
   requiresPrevious: true, // Előző pályák teljesítése szükséges
   forcedTypes: ['VIGENERE', 'NETWORK_ANOMALY', 'EMAIL_HEADER', 'URL_TRUST', 'RISKY_PERMISSION'],
@@ -370,27 +370,15 @@ Elemezd a hálózati forgalmat, és azonosítsd az anomáliákat, hogy megakadá
     },
     EMAIL_HEADER: {
       title: 'Fejléc-röntgen',
-      text: `Egy gyanús e-mail érkezett a rendszerbe, amely állítólag egy megbízható forrástól származik.
-    
-A támadó ezt az e-mailt használhatta, hogy megtévesztse a rendszert és hozzáférést szerezzen.
-    
-Elemezd az e-mail fejlécét, és azonosítsd a gyanús jeleket, hogy megakadályozd a támadást.`
+      text: `Egy bejelentett e-mail fejléce furcsa átirányításokat és rejtett ugrásokat tartalmaz. A feladó ismerősnek tűnik, de a metaadatok mást mutatnak. Vizsgáld meg a nyomokat, mielőtt valaki a csapdába sétál.`
     },
     URL_TRUST: {
-      title: 'Kapuhivatkozás vizsgálat',
-      text: `A rendszer egy gyanús URL-t észlelt, amely állítólag egy megbízható oldalra mutat.
-    
-A támadó ezt az URL-t használhatta, hogy megtévesztse a felhasználókat és adatokat lopjon.
-    
-Elemezd az URL-t, és döntsd el, hogy megbízható-e vagy sem.`
+      title: 'A kapu, ami máshová vezet',
+      text: `A rendszer egy gyanús linket észlelt, amely épp csak annyira hiteles, hogy elhitesse magáról: biztonságos. A cím mögött azonban árnyak mozognak. Döntsd el, átvezet-e valós célhoz, vagy újabb átveréshez.`
     },
     RISKY_PERMISSION: {
-      title: 'Veszélyes engedélykérés',
-      text: `Egy alkalmazás szokatlan engedélyeket kér a rendszertől.
-    
-A naplók szerint a támadó ezt az alkalmazást használhatta, hogy hozzáférést szerezzen a rendszerhez.
-    
-Elemezd az engedélykéréseket, és döntsd el, hogy melyek a veszélyesek.`
+      title: 'Túl sok kulcs egy kézben',
+      text: `Egy alkalmazás váratlanul magas jogosultságokat kér, olyanokat, amelyekre a feladata alapján nincs szükség. Valaki talán ezen a résen jutna beljebb. Határozd meg, engeded-e, vagy lezárod a hozzáférést.`
     }
   }
 };

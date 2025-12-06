@@ -54,21 +54,13 @@ export class VigenereTask extends BaseTask {
     if (this.payload) return this.payload
     const { plaintext, key, levelNumber, slot } = this.parameters
     
-    // Fix narratíva minden VigenereTask-nál
-    const narrative = {
-        intro: 'A hálózat mélyén titkosított adatok rejtőznek. A biztonsági rendszer riasztásai egyre gyakoribbá válnak.',
-        task: 'A Vigenère-kóddal titkosított üzenet a rendszer mélyén rejtőzik. Fejtsd meg a kulcsot és olvasd el a rejtett információt.',
-        hint: 'A Vigenère-kód egy kulcsszó alapján működik. Minden betűhöz a kulcs megfelelő betűjét használja az eltoláshoz.'
-    }
     const ciphertext = VigenereTask.encode(plaintext, key)
     this.solution = plaintext.toUpperCase().replace(/[^A-Z]/g, '')
     
     this.payload = {
-      intro: narrative.intro,
-      instructions: narrative.task,
       ciphertext,
       key,
-      hint: narrative.hint
+      hint: 'A Vigenère-kód egy kulcsszó alapján működik. Minden betűhöz a kulcs megfelelő betűjét használja az eltoláshoz.'
     }
     return this.payload
   }

@@ -72,9 +72,6 @@ export class EmailHeaderTask extends BaseTask {
     
     this.solution = issues
     this.payload = {
-      instructions: difficulty === 'easy' 
-        ? 'Elemezd az e-mail fejlécet és nézd meg, hogy az SPF státusz rendben van-e.'
-        : 'Elemezd az e-mail fejléceket és jelöld meg a gyanús jeleket.',
       header: template,
       hints,
       hint: difficulty === 'easy'

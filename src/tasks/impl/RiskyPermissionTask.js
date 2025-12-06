@@ -70,7 +70,6 @@ export class RiskyPermissionTask extends BaseTask {
     const { app, permissions, risky } = this.parameters
     this.solution = risky
     this.payload = {
-      instructions: `A "${app}" alkalmazás az alábbi engedélyeket kéri. Jelöld ki, melyek túlzottan kockázatosak.`,
       permissions,
       hint: 'Gondold végig, hogy az alkalmazás funkciójához szükséges-e az adott engedély. Ha egy engedély nem kapcsolódik az alkalmazás céljához, az gyanús lehet.'
     }

@@ -58,7 +58,6 @@ export class UrlTrustTask extends BaseTask {
       .map((entry, idx) => (entry.suspicious ? idx : null))
       .filter(idx => idx !== null)
     this.payload = {
-      instructions: 'Válaszd ki a hamis vagy gyanús URL-eket.',
       urls: urls.map(entry => entry.url),
       hint: 'A gyanús URL-ek gyakran hasonlítanak a megbízható domainekhez, de tartalmaznak apró eltéréseket. Figyeld meg alaposan a domain neveket és hasonlítsd össze őket a megbízható domainekkel.'
     }

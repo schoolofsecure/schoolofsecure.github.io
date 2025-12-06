@@ -55,7 +55,6 @@ export class NetworkAnomalyTask extends BaseTask {
       .map((flow, idx) => (flow.isAnomaly ? idx : null))
       .filter(idx => idx !== null)
     this.payload = {
-      instructions: 'A hálózati forgalmi táblázatból válaszd ki az anomáliákat.',
       flows,
       hint: 'A normál hálózati forgalom jellemzően kisebb adatmennyiséget és ismert portokat használ. A gyanús kapcsolatok gyakran eltérnek a szokásos mintáktól - figyeld meg az adatmennyiség nagyságrendjét, a port számokat és a cél IP-címeket.'
     }

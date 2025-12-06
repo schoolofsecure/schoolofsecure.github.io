@@ -335,8 +335,6 @@ export const ugy3Config = {
   nextLevelText: "Következő ügy",
   specialComponents: {},
   requiresPrevious: true, // Előző pályák teljesítése szükséges
-  storageKey: 'ugy3_progress',
-  storageCompletedKey: 'ugy3_completed',
   forcedTypes: ['ICON_MEMORY', 'NETWORK_ANOMALY', 'EMAIL_HEADER', 'URL_TRUST', 'RISKY_PERMISSION'],
   forcedDifficulty: 'easy',
   taskLabels: {

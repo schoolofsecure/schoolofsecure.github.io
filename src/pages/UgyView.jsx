@@ -518,26 +518,48 @@ const UgyView = () => {
                                 {config.nextLevelText} →
                               </Link>
                             ) : levelNum === 2 ? (
-                              <button
-                                className="btn"
-                                disabled
-                                style={{
-                                  opacity: 0.5,
-                                  cursor: 'not-allowed',
-                                  display: 'inline-flex',
-                                  justifyContent: 'center',
-                                  alignItems: 'center',
-                                  textAlign: 'center',
-                                  minWidth: '0',
-                                  padding: '10px 18px',
-                                  fontSize: '13px',
-                                  background: 'rgba(0, 229, 255, 0.2)',
-                                  border: '1px solid rgba(0, 229, 255, 0.3)',
-                                  color: 'rgba(0, 229, 255, 0.5)'
-                                }}
-                              >
-                                {config.nextLevelText} →
-                              </button>
+                              <>
+                                <button
+                                  className="btn"
+                                  disabled
+                                  style={{
+                                    opacity: 0.5,
+                                    cursor: 'not-allowed',
+                                    display: 'inline-flex',
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                    textAlign: 'center',
+                                    minWidth: '0',
+                                    padding: '10px 18px',
+                                    fontSize: '13px',
+                                    background: 'rgba(0, 229, 255, 0.2)',
+                                    border: '1px solid rgba(0, 229, 255, 0.3)',
+                                    color: 'rgba(0, 229, 255, 0.5)'
+                                  }}
+                                >
+                                  {config.nextLevelText} →
+                                </button>
+                                <Link
+                                  className="btn-ghost"
+                                  to="/ugy3"
+                                  style={{
+                                    textDecoration: 'none',
+                                    display: 'inline-flex',
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                    textAlign: 'center',
+                                    minWidth: '0',
+                                    padding: '8px 14px',
+                                    fontSize: '11px',
+                                    opacity: 0.6,
+                                    borderColor: 'rgba(207,230,255,0.1)',
+                                    color: 'var(--muted)'
+                                  }}
+                                  title="Fejlesztői mód: zárolás kihagyása"
+                                >
+                                  ⏭️ Skip zárolás
+                                </Link>
+                              </>
                             ) : levelNum === 3 && config.nextLevelRoute ? (
                               <button
                                 className="btn"
@@ -703,6 +725,7 @@ const UgyView = () => {
                     {config.images && config.images[step] && (
                       <div className="task-note">
                         <PerfImg 
+                          key={`img-${step}`}
                           className="task-ill" 
                           src={config.images[step]} 
                           alt={`Illusztráció ${step + 1}`} 

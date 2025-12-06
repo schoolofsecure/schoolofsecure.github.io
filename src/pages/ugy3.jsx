@@ -131,14 +131,15 @@ Elemezd az engedélykéréseket, és döntsd el, hogy melyek a veszélyesek.`
   }
 }
 
-// Ellenőrzés: az első két pálya teljesítve van-e
-function checkPreviousCompleted() {
+// Ellenőrzés: az előző pályák teljesítve vannak-e (Firebase-ből)
+async function checkPreviousCompleted(checkLevelCompleted) {
+  if (!checkLevelCompleted) return false;
   try {
-    const ugy1Done = sessionStorage.getItem('cm_lvl1_entry_ok') === '1' ||
-                     localStorage.getItem('ugy1_completed') === 'true';
-    const ugy2Done = localStorage.getItem('ugy2_completed') === 'true';
+    const ugy1Done = await checkLevelCompleted('ugy1');
+    const ugy2Done = await checkLevelCompleted('ugy2');
     return ugy1Done && ugy2Done;
   } catch(e) {
+    console.warn('checkPreviousCompleted error:', e);
     return false;
   }
 }
@@ -150,7 +151,7 @@ const Ugy3 = () => {
   const [previousLocked, setPreviousLocked] = useState(true)
   const [searchParams] = useSearchParams()
   const navigate = useNavigate()
-  const { saveLevelCompletion, isAuthenticated, logout } = useAuth()
+  const { saveLevelCompletion, checkLevelCompleted, isAuthenticated, logout } = useAuth()
   const { scoreTask, scoreLevel } = useScoring()
   const [currentLevel, setCurrentLevel] = useState(3)
   const [errors, setErrors] = useState(0)
@@ -170,52 +171,66 @@ const Ugy3 = () => {
 
   // Feladatok generálása az oldal betöltésekor
   useEffect(() => {
-    // Ellenőrizzük, hogy az előző pályák teljesítve vannak-e
-    const previousCompleted = checkPreviousCompleted()
-    setPreviousLocked(!previousCompleted)
-
-    // QA debug mód: seed és forced types ellenőrzése
-    const qaSeed = sessionStorage.getItem('qa_seed')
-    const qaLevel = sessionStorage.getItem('qa_level')
-    const qaForcedTypes = sessionStorage.getItem('qa_forced_types')
+    let cancelled = false;
     
-    const level = qaLevel ? parseInt(qaLevel, 10) : 3
-    const seed = qaSeed ? parseInt(qaSeed, 10) : null
-    const forcedTypes = qaForcedTypes ? JSON.parse(qaForcedTypes) : null
-    
-    setCurrentLevel(level)
-    
-    // QA mód cleanup
-    if (qaSeed) {
-      sessionStorage.removeItem('qa_seed')
-      sessionStorage.removeItem('qa_level')
-      sessionStorage.removeItem('qa_forced_types')
-    }
-    
-    // Fix típusok: ICON_MEMORY, NETWORK_ANOMALY, EMAIL_HEADER, URL_TRUST, RISKY_PERMISSION
-    const ugy3Types = forcedTypes || [
-      'ICON_MEMORY',
-      'NETWORK_ANOMALY',
-      'EMAIL_HEADER',
-      'URL_TRUST',
-      'RISKY_PERMISSION'
-    ]
-    
-    const generatedTasks = LevelGenerator.generateLevel(level, 5, new Map(), 4, {
-      seed,
-      forcedTypes: ugy3Types,
-      forcedDifficulty: 'easy'
-    })
-    
-    // Minden feladat payload-jának generálása
-    generatedTasks.forEach(task => {
-      if (!task.payload) {
-        task.generate()
+    const loadData = async () => {
+      // Ellenőrizzük, hogy az előző pályák teljesítve vannak-e (Firebase-ből)
+      if (checkLevelCompleted) {
+        const previousCompleted = await checkPreviousCompleted(checkLevelCompleted);
+        if (cancelled) return;
+        setPreviousLocked(!previousCompleted);
+        if (!previousCompleted) return; // Ha zárolva van, ne töltse be a többi adatot
       }
-    })
-    setTasks(generatedTasks)
-    setDone(Array(generatedTasks.length).fill(false))
-  }, [])
+
+      // QA debug mód: seed és forced types ellenőrzése
+      const qaSeed = sessionStorage.getItem('qa_seed')
+      const qaLevel = sessionStorage.getItem('qa_level')
+      const qaForcedTypes = sessionStorage.getItem('qa_forced_types')
+      
+      const level = qaLevel ? parseInt(qaLevel, 10) : 3
+      const seed = qaSeed ? parseInt(qaSeed, 10) : null
+      const forcedTypes = qaForcedTypes ? JSON.parse(qaForcedTypes) : null
+      
+      setCurrentLevel(level)
+      
+      // QA mód cleanup
+      if (qaSeed) {
+        sessionStorage.removeItem('qa_seed')
+        sessionStorage.removeItem('qa_level')
+        sessionStorage.removeItem('qa_forced_types')
+      }
+      
+      // Fix típusok: ICON_MEMORY, NETWORK_ANOMALY, EMAIL_HEADER, URL_TRUST, RISKY_PERMISSION
+      const ugy3Types = forcedTypes || [
+        'ICON_MEMORY',
+        'NETWORK_ANOMALY',
+        'EMAIL_HEADER',
+        'URL_TRUST',
+        'RISKY_PERMISSION'
+      ]
+      
+      const generatedTasks = LevelGenerator.generateLevel(level, 5, new Map(), 4, {
+        seed,
+        forcedTypes: ugy3Types,
+        forcedDifficulty: 'easy'
+      })
+      
+      // Minden feladat payload-jának generálása
+      generatedTasks.forEach(task => {
+        if (!task.payload) {
+          task.generate()
+        }
+      })
+      setTasks(generatedTasks)
+      setDone(Array(generatedTasks.length).fill(false))
+    };
+    
+    loadData();
+    
+    return () => {
+      cancelled = true;
+    };
+  }, [checkLevelCompleted])
 
   const next = () => setStep(s => Math.min(s + 1, 4))
   const markDone = (i) => setDone(d => {

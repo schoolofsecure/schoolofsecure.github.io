@@ -98,21 +98,16 @@ function loadProgress() {
   return { step: 0, done: [false,false,false,false,false] };
 }
 
-// Ellenőrzés: az előző pályák teljesítve vannak-e
-function checkPreviousCompleted() {
+// Ellenőrzés: az előző pályák teljesítve vannak-e (Firebase-ből)
+async function checkPreviousCompleted(checkLevelCompleted) {
+  if (!checkLevelCompleted) return false;
   try {
-    // Ellenőrizzük az összes előző pályát
-    const checks = [];
-    for(let i = 1; i < 4; i++) {
-      if(i === 1) {
-        checks.push(sessionStorage.getItem('cm_lvl1_entry_ok') === '1' ||
-                   localStorage.getItem('ugy1_completed') === 'true');
-      } else {
-        checks.push(localStorage.getItem(`ugy${i}_completed`) === 'true');
-      }
-    }
-    return checks.every(c => c === true);
+    const ugy1Done = await checkLevelCompleted('ugy1');
+    const ugy2Done = await checkLevelCompleted('ugy2');
+    const ugy3Done = await checkLevelCompleted('ugy3');
+    return ugy1Done && ugy2Done && ugy3Done;
   } catch(e) {
+    console.warn('checkPreviousCompleted error:', e);
     return false;
   }
 }
@@ -122,25 +117,39 @@ const Ugy4 = () => {
   const [done, setDone] = useState([false,false,false,false,false]);
   const [previousLocked, setPreviousLocked] = useState(true);
   const [searchParams] = useSearchParams()
-  const { saveLevelCompletion, isAuthenticated } = useAuth()
+  const { saveLevelCompletion, checkLevelCompleted, isAuthenticated } = useAuth()
 
   // Betöltés: állapot visszaállítása és előző pályák ellenőrzése
   useEffect(() => {
-    const startFromBeginning = searchParams.get('start') === '1';
+    let cancelled = false;
     
-    if (startFromBeginning) {
-      setStep(0);
-      setDone([false, false, false, false, false]);
-    } else {
-      const { step: savedStep, done: savedDone } = loadProgress();
-      setStep(savedStep);
-      setDone(savedDone);
-    }
+    const loadData = async () => {
+      // Ellenőrizzük, hogy az előző pályák teljesítve vannak-e (Firebase-ből)
+      if (checkLevelCompleted) {
+        const previousCompleted = await checkPreviousCompleted(checkLevelCompleted);
+        if (cancelled) return;
+        setPreviousLocked(!previousCompleted);
+        if (!previousCompleted) return; // Ha zárolva van, ne töltse be a többi adatot
+      }
+      
+      const startFromBeginning = searchParams.get('start') === '1';
+      
+      if (startFromBeginning) {
+        setStep(0);
+        setDone([false, false, false, false, false]);
+      } else {
+        const { step: savedStep, done: savedDone } = loadProgress();
+        setStep(savedStep);
+        setDone(savedDone);
+      }
+    };
     
-    // Ellenőrizzük, hogy az előző pályák teljesítve vannak-e
-    const previousCompleted = checkPreviousCompleted();
-    setPreviousLocked(!previousCompleted);
-  }, []);
+    loadData();
+    
+    return () => {
+      cancelled = true;
+    };
+  }, [checkLevelCompleted, searchParams]);
 
   // Prefetch következő feladat képe
   useEffect(()=>{

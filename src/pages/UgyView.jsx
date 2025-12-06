@@ -186,6 +186,18 @@ const UgyView = () => {
         });
         setTasks(generatedTasks);
         setDone(Array(generatedTasks.length).fill(false));
+        
+        // Korrigáljuk a step-et, ha túl nagy vagy ha nincs mentett állapot
+        if (startFromBeginning || !config.storageKey) {
+          setStep(0);
+        } else {
+          setStep(prevStep => {
+            if (prevStep >= generatedTasks.length) {
+              return 0;
+            }
+            return prevStep;
+          });
+        }
       }
       
       // Ugy2 unlock dátum ellenőrzése
@@ -668,6 +680,24 @@ const UgyView = () => {
                       errText={currentStaticTask.errText || "Nem egészen – próbáld újra."}
                       onFailure={() => handleTaskFailure(currentStaticTask.difficulty)}
                     />
+                    <div style={{ marginTop: '8px', display: 'flex', justifyContent: 'flex-end' }}>
+                      <button
+                        className="btn-ghost"
+                        type="button"
+                        onClick={() => handleTaskSuccess(step, currentStaticTask.difficulty)}
+                        disabled={done[step]}
+                        style={{
+                          fontSize: '11px',
+                          padding: '4px 8px',
+                          opacity: 0.6,
+                          borderColor: 'rgba(207,230,255,0.1)',
+                          color: 'var(--muted)'
+                        }}
+                        title="Fejlesztői mód: feladat kihagyása"
+                      >
+                        ⏭️ Skip
+                      </button>
+                    </div>
                     {config.images && config.images[step] && (
                       <div className="task-note">
                         <PerfImg 

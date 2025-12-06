@@ -328,7 +328,7 @@ export const ugy3Config = {
   headerTitle: "A kézbesítetlen üzenet - Ügy #3",
   narrativeTitle: "A kézbesítetlen üzenet - Ügy #3",
   narrativeText: "Az előző pályák nyomai egy újabb rejtélyhez vezettek. Egy üzenet soha nem érkezett meg a címzettjéhez, és a nyomok azt sugallják, hogy valaki megszakította a kommunikációt. Az előző két pálya megoldásai kulcsfontosságúak lesznek a folytatáshoz.",
-  isDynamic: false,
+  isDynamic: true,
   totalTasks: 5,
   images: ['/images/3a.jpg', '/images/3b.jpg', '/images/3c.jpg', '/images/3d.jpg', '/images/3e.jpg'],
   nextLevelRoute: "/ugy4",
@@ -337,81 +337,64 @@ export const ugy3Config = {
   requiresPrevious: true, // Előző pályák teljesítése szükséges
   storageKey: 'ugy3_progress',
   storageCompletedKey: 'ugy3_completed',
-  tasks: [
-    {
-      step: 0,
-      title: "1. feladat",
-      leftTitle: "Első feladat",
-      leftContent: (
-        <>
-          <p className="muted">
-            Ez az első feladat a harmadik pályán. 
-            Az előző pályák megoldásait kombinálva kell továbblépned.
-          </p>
-          <div className="statusline">
-            A feladat részletei hamarosan...
-          </div>
-        </>
-      ),
-      rightTitle: "Válasz",
-      placeholder: "megoldás…",
-      expectedAnswer: () => false, // Ideiglenes
-      hint: (
-        <p className="muted" style={{margin:'8px 0 0'}}>
-          A feladat részletei hamarosan...
-        </p>
-      ),
-      difficulty: 'easy'
+  forcedTypes: ['ICON_MEMORY', 'NETWORK_ANOMALY', 'EMAIL_HEADER', 'URL_TRUST', 'RISKY_PERMISSION'],
+  forcedDifficulty: 'easy',
+  taskLabels: {
+    ICON_MEMORY: 'Szimbólum-memória',
+    NETWORK_ANOMALY: 'Hálózati burjánzás',
+    EMAIL_HEADER: 'Fejléc-röntgen',
+    URL_TRUST: 'Kapuhivatkozás vizsgálat',
+    RISKY_PERMISSION: 'Veszélyes engedélykérés'
+  },
+  taskImages: {
+    ICON_MEMORY: '/images/3a.jpg',
+    NETWORK_ANOMALY: '/images/3b.jpg',
+    EMAIL_HEADER: '/images/3c.jpg',
+    URL_TRUST: '/images/3d.jpg',
+    RISKY_PERMISSION: '/images/3e.jpg'
+  },
+  taskStories: {
+    ICON_MEMORY: {
+      title: 'Szimbólum-memória',
+      text: `A rendszer naplóiban gyanús ikonok és szimbólumok jelentek meg.
+    
+A támadó ezeket a jeleket használhatta, hogy kommunikáljon vagy információt hagyjon a rendszerben.
+    
+Emlékezz vissza a korábban látott ikonokra, és azonosítsd a veszélyes szimbólumokat.`
     },
-    {
-      step: 1,
-      title: "2. feladat",
-      leftTitle: "Második feladat",
-      leftContent: (
-        <p className="muted">A feladat részletei hamarosan...</p>
-      ),
-      rightTitle: "Válasz",
-      placeholder: "megoldás…",
-      expectedAnswer: () => false,
-      difficulty: 'easy'
+    NETWORK_ANOMALY: {
+      title: 'Hálózati burjánzás',
+      text: `A hálózati forgalom elemzése során gyanús kapcsolatokat találtál.
+    
+A rendszer naplói szerint ismeretlen források próbálnak kapcsolatot létesíteni a belső hálózattal.
+    
+Elemezd a hálózati forgalmat, és azonosítsd az anomáliákat, hogy megakadályozd a támadást.`
     },
-    {
-      step: 2,
-      title: "3. feladat",
-      leftTitle: "Harmadik feladat",
-      leftContent: (
-        <p className="muted">A feladat részletei hamarosan...</p>
-      ),
-      rightTitle: "Válasz",
-      placeholder: "megoldás…",
-      expectedAnswer: () => false,
-      difficulty: 'easy'
+    EMAIL_HEADER: {
+      title: 'Fejléc-röntgen',
+      text: `Egy gyanús e-mail érkezett a rendszerbe, amely állítólag egy megbízható forrástól származik.
+    
+A támadó ezt az e-mailt használhatta, hogy megtévesztse a rendszert és hozzáférést szerezzen.
+    
+Elemezd az e-mail fejlécét, és azonosítsd a gyanús jeleket, hogy megakadályozd a támadást.`
     },
-    {
-      step: 3,
-      title: "4. feladat",
-      leftTitle: "Negyedik feladat",
-      leftContent: (
-        <p className="muted">A feladat részletei hamarosan...</p>
-      ),
-      rightTitle: "Válasz",
-      placeholder: "megoldás…",
-      expectedAnswer: () => false,
-      difficulty: 'easy'
+    URL_TRUST: {
+      title: 'Kapuhivatkozás vizsgálat',
+      text: `A rendszer egy gyanús URL-t észlelt, amely állítólag egy megbízható oldalra mutat.
+    
+A támadó ezt az URL-t használhatta, hogy megtévesztse a felhasználókat és adatokat lopjon.
+    
+Elemezd az URL-t, és döntsd el, hogy megbízható-e vagy sem.`
     },
-    {
-      step: 4,
-      title: "5. feladat",
-      leftTitle: "Ötödik feladat",
-      leftContent: (
-        <p className="muted">A feladat részletei hamarosan...</p>
-      ),
-      rightTitle: "Válasz",
-      placeholder: "megoldás…",
-      expectedAnswer: () => false,
-      difficulty: 'easy'
+    RISKY_PERMISSION: {
+      title: 'Veszélyes engedélykérés',
+      text: `Egy alkalmazás szokatlan engedélyeket kér a rendszertől.
+    
+A naplók szerint a támadó ezt az alkalmazást használhatta, hogy hozzáférést szerezzen a rendszerhez.
+    
+Elemezd az engedélykéréseket, és döntsd el, hogy melyek a veszélyesek.`
     }
-  ]
+  }
 };
 
 // Konfigurációk map

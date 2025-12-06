@@ -74,7 +74,6 @@ const TaskRenderer = ({ task, taskStory, taskLabel, onSuccess, onFailure, imageS
     
     case 'XOR':
     case 'HASH_MISMATCH':
-    case 'URL_TRUST':
     case 'SOCIAL_ENGINEERING':
       return <SocialEngineeringTaskRenderer task={task} payload={payload} taskStory={taskStory} taskLabel={taskLabel} onSuccess={onSuccess} onFailure={onFailure} imageSrc={imageSrc} />
     
@@ -82,16 +81,25 @@ const TaskRenderer = ({ task, taskStory, taskLabel, onSuccess, onFailure, imageS
       return <FirewallTaskRenderer task={task} payload={payload} taskStory={taskStory} taskLabel={taskLabel} onSuccess={onSuccess} onFailure={onFailure} imageSrc={imageSrc} />
     
     case 'MISCONFIG':
+      return <MisconfigTaskRenderer task={task} payload={payload} taskStory={taskStory} taskLabel={taskLabel} onSuccess={onSuccess} onFailure={onFailure} imageSrc={imageSrc} />
+    
+    case 'NETWORK_ANOMALY':
+      return <NetworkAnomalyTaskRenderer task={task} payload={payload} taskStory={taskStory} taskLabel={taskLabel} onSuccess={onSuccess} onFailure={onFailure} imageSrc={imageSrc} />
+    
+    case 'EMAIL_HEADER':
+      return <EmailHeaderTaskRenderer task={task} payload={payload} taskStory={taskStory} taskLabel={taskLabel} onSuccess={onSuccess} onFailure={onFailure} imageSrc={imageSrc} />
+    
+    case 'URL_TRUST':
+      return <UrlTrustTaskRenderer task={task} payload={payload} taskStory={taskStory} taskLabel={taskLabel} onSuccess={onSuccess} onFailure={onFailure} imageSrc={imageSrc} />
+    
     case 'RISKY_PERMISSION':
-      return <DefaultTaskRenderer task={task} payload={payload} taskStory={taskStory} taskLabel={taskLabel} onSuccess={onSuccess} onFailure={onFailure} imageSrc={imageSrc} />
+      return <RiskyPermissionTaskRenderer task={task} payload={payload} taskStory={taskStory} taskLabel={taskLabel} onSuccess={onSuccess} onFailure={onFailure} imageSrc={imageSrc} />
     
     case 'SECURITY_DECISION':
       return <SecurityDecisionTaskRenderer task={task} payload={payload} taskStory={taskStory} taskLabel={taskLabel} onSuccess={onSuccess} onFailure={onFailure} imageSrc={imageSrc} />
     
     case 'CRYPTO_PUZZLE':
     case 'PSEUDOCODE_BUG':
-    case 'NETWORK_ANOMALY':
-    case 'EMAIL_HEADER':
     case 'ATTACK_SCENARIO':
     case 'ZERO_DAY':
       // Alapértelmezett renderelés szöveges inputtal
@@ -1002,6 +1010,466 @@ const PasswordStrengthTaskRenderer = ({ task, payload, taskStory, taskLabel, onS
         )}
         <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
           <button className="btn" type="button" onClick={handleSubmit} disabled={selectedAnswer === null || solved}>
+            Ellenőrzés
+          </button>
+        </div>
+        {imageSrc && <div className="task-note"><PerfImg className="task-ill" src={imageSrc} alt="Illusztráció" width="280" height="280" priority /></div>}
+        <HintDetails text={payload.hint} />
+      </div>
+    </div>
+  )
+}
+
+// Misconfig Task Renderer
+const MisconfigTaskRenderer = ({ task, payload, taskStory, taskLabel, onSuccess, onFailure, imageSrc }) => {
+  const [selectedLines, setSelectedLines] = useState([])
+  const [feedback, setFeedback] = useState(null)
+  const [solved, setSolved] = useState(false)
+
+  const toggleLine = (lineNumber) => {
+    setSelectedLines(prev => 
+      prev.includes(lineNumber)
+        ? prev.filter(n => n !== lineNumber)
+        : [...prev, lineNumber]
+    )
+    setFeedback(null)
+  }
+
+  const handleSubmit = () => {
+    const isValid = task.validate(selectedLines)
+    setFeedback(isValid ? 'ok' : 'err')
+    if (isValid) {
+      setSolved(true)
+      onSuccess?.()
+    } else {
+      onFailure?.()
+    }
+  }
+
+  return (
+    <div className="grid2">
+      <div className="card">
+        {taskLabel && <h3>{taskLabel}</h3>}
+        {taskStory && (
+          <p className="muted" style={{ whiteSpace: 'pre-line', marginTop: taskLabel ? '8px' : '0' }}>
+            {taskStory.text}
+          </p>
+        )}
+        <p className="muted" style={{ marginTop: (taskStory ? '12px' : (taskLabel ? '8px' : '0')) }}>{payload.instructions || ''}</p>
+      </div>
+      <div className="card">
+        <h3>Konfiguráció</h3>
+        <div style={{ marginBottom: '16px', padding: '12px', background: '#0b121c', borderRadius: '8px', border: '1px solid rgba(207,230,255,0.2)' }}>
+          <pre style={{ margin: 0, fontSize: '13px', fontFamily: 'monospace', lineHeight: '1.6', whiteSpace: 'pre-wrap' }}>
+            {payload.lines?.map((line, idx) => (
+              <div
+                key={idx}
+                onClick={() => toggleLine(line.lineNumber)}
+                style={{
+                  cursor: 'pointer',
+                  padding: '2px 4px',
+                  borderRadius: '4px',
+                  backgroundColor: selectedLines.includes(line.lineNumber) ? 'rgba(0,229,255,0.2)' : 'transparent',
+                  transition: 'background-color 0.2s'
+                }}
+              >
+                <span style={{ color: 'var(--muted)', marginRight: '8px' }}>{line.lineNumber}:</span>
+                <span>{line.text}</span>
+              </div>
+            ))}
+          </pre>
+        </div>
+        {feedback && (
+          <div className={`feedback ${feedback}`} style={{ marginBottom: '12px' }}>
+            {feedback === 'ok'
+              ? 'Helyes! Minden hibás sor azonosítva.'
+              : 'Nem stimmel. Gondold végig, mely sorok tartalmazzák a hibás beállításokat.'}
+          </div>
+        )}
+        <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
+          <button className="btn" type="button" onClick={handleSubmit} disabled={solved}>
+            Ellenőrzés
+          </button>
+        </div>
+        {imageSrc && <div className="task-note"><PerfImg className="task-ill" src={imageSrc} alt="Illusztráció" width="280" height="280" priority /></div>}
+        <HintDetails text={payload.hint} />
+      </div>
+    </div>
+  )
+}
+
+// Network Anomaly Task Renderer
+const NetworkAnomalyTaskRenderer = ({ task, payload, taskStory, taskLabel, onSuccess, onFailure, imageSrc }) => {
+  const [selectedRows, setSelectedRows] = useState([])
+  const [feedback, setFeedback] = useState(null)
+  const [solved, setSolved] = useState(false)
+
+  const toggleRow = (index) => {
+    setSelectedRows(prev => 
+      prev.includes(index)
+        ? prev.filter(i => i !== index)
+        : [...prev, index]
+    )
+    setFeedback(null)
+  }
+
+  const handleSubmit = () => {
+    const isValid = task.validate(selectedRows)
+    setFeedback(isValid ? 'ok' : 'err')
+    if (isValid) {
+      setSolved(true)
+      onSuccess?.()
+    } else {
+      onFailure?.()
+    }
+  }
+
+  return (
+    <div className="grid2">
+      <div className="card">
+        {taskLabel && <h3>{taskLabel}</h3>}
+        {taskStory && (
+          <p className="muted" style={{ whiteSpace: 'pre-line', marginTop: taskLabel ? '8px' : '0' }}>
+            {taskStory.text}
+          </p>
+        )}
+        <p className="muted" style={{ marginTop: (taskStory ? '12px' : (taskLabel ? '8px' : '0')) }}>{payload.instructions || ''}</p>
+      </div>
+      <div className="card">
+        <h3>Hálózati forgalom</h3>
+        <div style={{ overflowX: 'auto', marginBottom: '16px' }}>
+          <table style={{ width: '100%', borderCollapse: 'separate', borderSpacing: '0 4px', fontSize: '12px' }}>
+            <thead>
+              <tr style={{ color: '#94a3b8', fontSize: '11px' }}>
+                <th style={{ textAlign: 'left', padding: '4px' }}>Forrás</th>
+                <th style={{ textAlign: 'left', padding: '4px' }}>Cél</th>
+                <th style={{ textAlign: 'left', padding: '4px' }}>Port</th>
+                <th style={{ textAlign: 'left', padding: '4px' }}>Protokoll</th>
+                <th style={{ textAlign: 'left', padding: '4px' }}>Bájt</th>
+              </tr>
+            </thead>
+            <tbody>
+              {payload.flows?.map((flow, index) => (
+                <tr
+                  key={index}
+                  onClick={() => toggleRow(index)}
+                  style={{
+                    cursor: 'pointer',
+                    backgroundColor: selectedRows.includes(index)
+                      ? 'rgba(0,229,255,0.15)'
+                      : 'transparent',
+                    transition: 'background-color 0.2s'
+                  }}
+                >
+                  <td style={{ padding: '6px', fontFamily: 'monospace' }}>{flow.source}</td>
+                  <td style={{ padding: '6px', fontFamily: 'monospace' }}>{flow.destination}</td>
+                  <td style={{ padding: '6px' }}>{flow.port}</td>
+                  <td style={{ padding: '6px' }}>{flow.protocol}</td>
+                  <td style={{ padding: '6px', fontFamily: 'monospace' }}>{flow.bytes.toLocaleString()}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        {feedback && (
+          <div className={`feedback ${feedback}`} style={{ marginBottom: '12px' }}>
+            {feedback === 'ok'
+              ? 'Helyes! Minden anomália azonosítva.'
+              : 'Nem stimmel. Gondold végig, mely forgalmi sorok jelentenek anomáliát.'}
+          </div>
+        )}
+        <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
+          <button className="btn" type="button" onClick={handleSubmit} disabled={solved}>
+            Ellenőrzés
+          </button>
+        </div>
+        {imageSrc && <div className="task-note"><PerfImg className="task-ill" src={imageSrc} alt="Illusztráció" width="280" height="280" priority /></div>}
+        <HintDetails text={payload.hint} />
+      </div>
+    </div>
+  )
+}
+
+// Email Header Task Renderer
+const EmailHeaderTaskRenderer = ({ task, payload, taskStory, taskLabel, onSuccess, onFailure, imageSrc }) => {
+  const [selectedIssues, setSelectedIssues] = useState([])
+  const [feedback, setFeedback] = useState(null)
+  const [solved, setSolved] = useState(false)
+
+  const issueOptions = [
+    { id: 'spf', label: 'SPF hiba' },
+    { id: 'dkim', label: 'DKIM hiba' },
+    { id: 'received-0', label: 'Gyanús Received sor (első)' },
+    { id: 'received-1', label: 'Gyanús Received sor (második)' }
+  ]
+
+  const toggleIssue = (issueId) => {
+    setSelectedIssues(prev => 
+      prev.includes(issueId)
+        ? prev.filter(id => id !== issueId)
+        : [...prev, issueId]
+    )
+    setFeedback(null)
+  }
+
+  const handleSubmit = () => {
+    const isValid = task.validate(selectedIssues)
+    setFeedback(isValid ? 'ok' : 'err')
+    if (isValid) {
+      setSolved(true)
+      onSuccess?.()
+    } else {
+      onFailure?.()
+    }
+  }
+
+  return (
+    <div className="grid2">
+      <div className="card">
+        {taskLabel && <h3>{taskLabel}</h3>}
+        {taskStory && (
+          <p className="muted" style={{ whiteSpace: 'pre-line', marginTop: taskLabel ? '8px' : '0' }}>
+            {taskStory.text}
+          </p>
+        )}
+        <p className="muted" style={{ marginTop: (taskStory ? '12px' : (taskLabel ? '8px' : '0')) }}>{payload.instructions || ''}</p>
+        {payload.header && (
+          <div style={{ marginTop: '16px', padding: '16px', background: '#0b121c', borderRadius: '8px', border: '1px solid rgba(207,230,255,0.2)' }}>
+            <div style={{ marginBottom: '12px', paddingBottom: '12px', borderBottom: '1px solid rgba(207,230,255,0.1)' }}>
+              <div style={{ fontSize: '12px', color: 'var(--muted)', marginBottom: '4px' }}>Feladó:</div>
+              <div style={{ fontSize: '14px', fontWeight: 600 }}>{payload.header.from}</div>
+            </div>
+            <div style={{ marginBottom: '12px', paddingBottom: '12px', borderBottom: '1px solid rgba(207,230,255,0.1)' }}>
+              <div style={{ fontSize: '12px', color: 'var(--muted)', marginBottom: '4px' }}>Received:</div>
+              {payload.header.received?.map((rec, idx) => (
+                <div key={idx} style={{ fontSize: '12px', fontFamily: 'monospace', marginTop: '4px' }}>
+                  {rec}
+                </div>
+              ))}
+            </div>
+            <div>
+              <div style={{ fontSize: '12px', color: 'var(--muted)', marginBottom: '4px' }}>SPF: <span style={{ color: payload.header.spf === 'pass' ? '#51cf66' : '#ff6b6b' }}>{payload.header.spf}</span></div>
+              <div style={{ fontSize: '12px', color: 'var(--muted)' }}>DKIM: <span style={{ color: payload.header.dkim === 'pass' ? '#51cf66' : '#ff6b6b' }}>{payload.header.dkim}</span></div>
+            </div>
+          </div>
+        )}
+        {payload.hints && payload.hints.length > 0 && (
+          <div style={{ marginTop: '12px', fontSize: '12px', color: 'var(--muted)' }}>
+            <strong>Tipp:</strong> {payload.hints[0]}
+          </div>
+        )}
+      </div>
+      <div className="card">
+        <h3>Gyanús jelek</h3>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginBottom: '16px' }}>
+          {issueOptions.map(option => (
+            <label
+              key={option.id}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '10px',
+                padding: '10px',
+                borderRadius: '8px',
+                border: '1px solid rgba(207,230,255,0.2)',
+                cursor: 'pointer',
+                backgroundColor: selectedIssues.includes(option.id)
+                  ? 'rgba(0,229,255,0.1)'
+                  : 'transparent',
+                transition: 'background-color 0.2s'
+              }}
+            >
+              <input
+                type="checkbox"
+                checked={selectedIssues.includes(option.id)}
+                onChange={() => toggleIssue(option.id)}
+                style={{ cursor: 'pointer' }}
+              />
+              <span style={{ flex: 1, fontSize: '14px' }}>{option.label}</span>
+            </label>
+          ))}
+        </div>
+        {feedback && (
+          <div className={`feedback ${feedback}`} style={{ marginBottom: '12px' }}>
+            {feedback === 'ok'
+              ? 'Helyes! Minden gyanús jel azonosítva.'
+              : 'Nem stimmel. Gondold végig, mely jelek jelentenek problémát.'}
+          </div>
+        )}
+        <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
+          <button className="btn" type="button" onClick={handleSubmit} disabled={solved}>
+            Ellenőrzés
+          </button>
+        </div>
+        {imageSrc && <div className="task-note"><PerfImg className="task-ill" src={imageSrc} alt="Illusztráció" width="280" height="280" priority /></div>}
+        <HintDetails text={payload.hint} />
+      </div>
+    </div>
+  )
+}
+
+// URL Trust Task Renderer
+const UrlTrustTaskRenderer = ({ task, payload, taskStory, taskLabel, onSuccess, onFailure, imageSrc }) => {
+  const [selectedUrls, setSelectedUrls] = useState([])
+  const [feedback, setFeedback] = useState(null)
+  const [solved, setSolved] = useState(false)
+
+  const toggleUrl = (index) => {
+    setSelectedUrls(prev => 
+      prev.includes(index)
+        ? prev.filter(i => i !== index)
+        : [...prev, index]
+    )
+    setFeedback(null)
+  }
+
+  const handleSubmit = () => {
+    const isValid = task.validate(selectedUrls)
+    setFeedback(isValid ? 'ok' : 'err')
+    if (isValid) {
+      setSolved(true)
+      onSuccess?.()
+    } else {
+      onFailure?.()
+    }
+  }
+
+  return (
+    <div className="grid2">
+      <div className="card">
+        {taskLabel && <h3>{taskLabel}</h3>}
+        {taskStory && (
+          <p className="muted" style={{ whiteSpace: 'pre-line', marginTop: taskLabel ? '8px' : '0' }}>
+            {taskStory.text}
+          </p>
+        )}
+        <p className="muted" style={{ marginTop: (taskStory ? '12px' : (taskLabel ? '8px' : '0')) }}>{payload.instructions || ''}</p>
+      </div>
+      <div className="card">
+        <h3>URL-ek</h3>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginBottom: '16px' }}>
+          {payload.urls?.map((url, index) => (
+            <label
+              key={index}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '10px',
+                padding: '12px',
+                borderRadius: '8px',
+                border: '1px solid rgba(207,230,255,0.2)',
+                cursor: 'pointer',
+                backgroundColor: selectedUrls.includes(index)
+                  ? 'rgba(0,229,255,0.1)'
+                  : 'transparent',
+                transition: 'background-color 0.2s'
+              }}
+            >
+              <input
+                type="checkbox"
+                checked={selectedUrls.includes(index)}
+                onChange={() => toggleUrl(index)}
+                style={{ cursor: 'pointer' }}
+              />
+              <span style={{ flex: 1, fontSize: '14px', fontFamily: 'monospace', wordBreak: 'break-all' }}>{url}</span>
+            </label>
+          ))}
+        </div>
+        {feedback && (
+          <div className={`feedback ${feedback}`} style={{ marginBottom: '12px' }}>
+            {feedback === 'ok'
+              ? 'Helyes! Minden gyanús URL azonosítva.'
+              : 'Nem stimmel. Gondold végig, mely URL-ek gyanúsak vagy hamisak.'}
+          </div>
+        )}
+        <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
+          <button className="btn" type="button" onClick={handleSubmit} disabled={solved}>
+            Ellenőrzés
+          </button>
+        </div>
+        {imageSrc && <div className="task-note"><PerfImg className="task-ill" src={imageSrc} alt="Illusztráció" width="280" height="280" priority /></div>}
+        <HintDetails text={payload.hint} />
+      </div>
+    </div>
+  )
+}
+
+// Risky Permission Task Renderer
+const RiskyPermissionTaskRenderer = ({ task, payload, taskStory, taskLabel, onSuccess, onFailure, imageSrc }) => {
+  const [selectedPerms, setSelectedPerms] = useState([])
+  const [feedback, setFeedback] = useState(null)
+  const [solved, setSolved] = useState(false)
+
+  const togglePerm = (permId) => {
+    setSelectedPerms(prev => 
+      prev.includes(permId)
+        ? prev.filter(id => id !== permId)
+        : [...prev, permId]
+    )
+    setFeedback(null)
+  }
+
+  const handleSubmit = () => {
+    const isValid = task.validate(selectedPerms)
+    setFeedback(isValid ? 'ok' : 'err')
+    if (isValid) {
+      setSolved(true)
+      onSuccess?.()
+    } else {
+      onFailure?.()
+    }
+  }
+
+  return (
+    <div className="grid2">
+      <div className="card">
+        {taskLabel && <h3>{taskLabel}</h3>}
+        {taskStory && (
+          <p className="muted" style={{ whiteSpace: 'pre-line', marginTop: taskLabel ? '8px' : '0' }}>
+            {taskStory.text}
+          </p>
+        )}
+        <p className="muted" style={{ marginTop: (taskStory ? '12px' : (taskLabel ? '8px' : '0')) }}>{payload.instructions || ''}</p>
+      </div>
+      <div className="card">
+        <h3>Engedélyek</h3>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginBottom: '16px' }}>
+          {payload.permissions?.map((perm) => (
+            <label
+              key={perm.id}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '10px',
+                padding: '12px',
+                borderRadius: '8px',
+                border: '1px solid rgba(207,230,255,0.2)',
+                cursor: 'pointer',
+                backgroundColor: selectedPerms.includes(perm.id)
+                  ? 'rgba(0,229,255,0.1)'
+                  : 'transparent',
+                transition: 'background-color 0.2s'
+              }}
+            >
+              <input
+                type="checkbox"
+                checked={selectedPerms.includes(perm.id)}
+                onChange={() => togglePerm(perm.id)}
+                style={{ cursor: 'pointer' }}
+              />
+              <span style={{ flex: 1, fontSize: '14px' }}>{perm.text}</span>
+            </label>
+          ))}
+        </div>
+        {feedback && (
+          <div className={`feedback ${feedback}`} style={{ marginBottom: '12px' }}>
+            {feedback === 'ok'
+              ? 'Helyes! Minden veszélyes engedély azonosítva.'
+              : 'Nem stimmel. Gondold végig, mely engedélyek túlzottan kockázatosak.'}
+          </div>
+        )}
+        <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
+          <button className="btn" type="button" onClick={handleSubmit} disabled={solved}>
             Ellenőrzés
           </button>
         </div>

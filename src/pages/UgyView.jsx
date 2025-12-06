@@ -174,7 +174,8 @@ const UgyView = () => {
         
         const generatedTasks = LevelGenerator.generateLevel(level, config.totalTasks, new Map(), 4, {
           seed,
-          forcedTypes
+          forcedTypes: forcedTypes || config.forcedTypes,
+          forcedDifficulty: config.forcedDifficulty
         });
         
         // Minden feladat payload-jának generálása
@@ -461,13 +462,15 @@ const UgyView = () => {
                       onSuccess={() => handleTaskSuccess(step)}
                       onFailure={handleTaskFailure}
                     />
-                    {completedCount === tasks.length && tasks.length > 0 && levelNum === 2 && (
+                    {completedCount === tasks.length && tasks.length > 0 && (levelNum === 2 || levelNum === 3) && (
                       <div className="grid2" style={{ marginTop: '16px' }}>
                         <div></div>
                         <div className="card" style={{ animation: 'fadeIn .3s ease both' }}>
                           <h3 style={{ marginTop: 0, color: '#00e5ff', fontFamily: 'Rajdhani, Inter, sans-serif', fontSize: '18px', fontWeight: 700 }}>Ügy teljesítve</h3>
                           <p className="muted" style={{ marginBottom: '16px', lineHeight: '1.6', fontSize: '14px' }}>
-                            Gratulálunk! A harmadik ügy <strong>december 6-án, este 7 órakor nyílik</strong>.
+                            {levelNum === 2 
+                              ? <>Gratulálunk! A harmadik ügy <strong>december 6-án, este 7 órakor nyílik</strong>.</>
+                              : 'Gratulálunk! Sikeresen megoldottad a harmadik ügyet.'}
                           </p>
                           <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
                             <Link
@@ -482,7 +485,7 @@ const UgyView = () => {
                             >
                               Vissza az ügyekhez
                             </Link>
-                            {isLevel3Unlocked ? (
+                            {levelNum === 2 && isLevel3Unlocked ? (
                               <Link
                                 className="btn"
                                 to="/ugy3"
@@ -499,7 +502,7 @@ const UgyView = () => {
                               >
                                 {config.nextLevelText} →
                               </Link>
-                            ) : (
+                            ) : levelNum === 2 ? (
                               <button
                                 className="btn"
                                 disabled
@@ -520,7 +523,24 @@ const UgyView = () => {
                               >
                                 {config.nextLevelText} →
                               </button>
-                            )}
+                            ) : levelNum === 3 && config.nextLevelRoute ? (
+                              <Link
+                                className="btn"
+                                to={config.nextLevelRoute}
+                                style={{
+                                  textDecoration: 'none',
+                                  display: 'inline-flex',
+                                  justifyContent: 'center',
+                                  alignItems: 'center',
+                                  textAlign: 'center',
+                                  minWidth: '0',
+                                  padding: '10px 18px',
+                                  fontSize: '13px'
+                                }}
+                              >
+                                {config.nextLevelText} →
+                              </Link>
+                            ) : null}
                           </div>
                         </div>
                       </div>

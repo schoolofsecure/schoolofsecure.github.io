@@ -144,13 +144,17 @@ const UgyView = () => {
       // Ha van ?start=1 paraméter az URL-ben, kezdjük az első feladatnál
       const startFromBeginning = searchParams.get('start') === '1';
       
+      // Mentett állapot betöltése (csak ha nem dinamikus, vagy ha dinamikus, akkor később korrigáljuk)
+      let savedStep = 0;
+      let savedDone = Array(config.totalTasks).fill(false);
+      
       if (startFromBeginning) {
-        setStep(0);
-        setDone(Array(config.totalTasks).fill(false));
+        savedStep = 0;
+        savedDone = Array(config.totalTasks).fill(false);
       } else if (config.storageKey) {
-        const { step: savedStep, done: savedDone } = loadProgress(config.storageKey);
-        setStep(savedStep);
-        setDone(savedDone);
+        const loaded = loadProgress(config.storageKey);
+        savedStep = loaded.step || 0;
+        savedDone = loaded.done || Array(config.totalTasks).fill(false);
       }
       
       // Dinamikus feladatok generálása (ugy2)
@@ -185,19 +189,15 @@ const UgyView = () => {
           }
         });
         setTasks(generatedTasks);
-        setDone(Array(generatedTasks.length).fill(false));
         
-        // Korrigáljuk a step-et, ha túl nagy vagy ha nincs mentett állapot
-        if (startFromBeginning || !config.storageKey) {
-          setStep(0);
-        } else {
-          setStep(prevStep => {
-            if (prevStep >= generatedTasks.length) {
-              return 0;
-            }
-            return prevStep;
-          });
-        }
+        // Dinamikus feladatoknál mindig 0-ról kezdjük (mint az ügy2-nél)
+        // hogy minden feladatot lehessen játszani
+        setStep(0);
+        setDone(Array(generatedTasks.length).fill(false));
+      } else {
+        // Statikus feladatok esetén egyszerűen beállítjuk
+        setStep(savedStep);
+        setDone(savedDone);
       }
       
       // Ugy2 unlock dátum ellenőrzése

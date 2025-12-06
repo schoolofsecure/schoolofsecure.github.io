@@ -138,8 +138,16 @@ export const ScoringProvider = ({ children }) => {
       }
     }
     
-    // Ne ellenőrizzük a pálya teljesítését - a feladatok pontozása még akkor is történhet,
-    // ha a pálya már teljesítve van (újrajátszás esetén)
+    // Ellenőrizzük, hogy a pálya már teljesítve van-e
+    // Ha újrajátszás, ne adjunk pontokat
+    const existingLevelStat = levelStats[level]
+    if (existingLevelStat && existingLevelStat.completed) {
+      return {
+        points: 0,
+        feedback: '',
+        isCorrect
+      }
+    }
     
     const result = calculateTaskScore({ difficulty, isCorrect, level, timeSpent })
     

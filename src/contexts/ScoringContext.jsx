@@ -115,11 +115,11 @@ export const ScoringProvider = ({ children }) => {
   const updateRank = (points, level, skipAnimation = false) => {
     const newRank = getRank(points, level)
     
-    // Ellenőrizzük, hogy új rangot ért-e el (csak ha nem az első betöltés)
-    if (!skipAnimation && currentRank && currentRank.id && currentRank.id !== newRank.id) {
-      // Új rang! Animáció triggerelése
-      setShowRankBadge({ rank: newRank })
-    }
+    // Rank badge animáció kikapcsolva
+    // if (!skipAnimation && currentRank && currentRank.id && currentRank.id !== newRank.id) {
+    //   // Új rang! Animáció triggerelése
+    //   setShowRankBadge({ rank: newRank })
+    // }
     
     setCurrentRank(newRank)
     return newRank
@@ -138,16 +138,8 @@ export const ScoringProvider = ({ children }) => {
       }
     }
     
-    // Ellenőrizzük, hogy a pálya már teljesítve van-e
-    const levelStat = levelStats[level]
-    if (levelStat && levelStat.completed) {
-      // Ha a pálya már teljesítve van, ne pontozzuk újra
-      return {
-        points: 0,
-        feedback: '',
-        isCorrect
-      }
-    }
+    // Ne ellenőrizzük a pálya teljesítését - a feladatok pontozása még akkor is történhet,
+    // ha a pálya már teljesítve van (újrajátszás esetén)
     
     const result = calculateTaskScore({ difficulty, isCorrect, level, timeSpent })
     

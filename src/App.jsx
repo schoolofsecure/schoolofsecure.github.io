@@ -8,20 +8,10 @@ import LevelCompletionSummary from './components/Scoring/LevelCompletionSummary'
 import Landing from './pages/Landing'
 import Aurora from './pages/Aurora'
 import Privacy from './pages/Privacy'
-import Ugy1 from './pages/ugy1'
-import Ugy2 from './pages/ugy2'
+import UgyView from './pages/UgyView'
 import QADebugPanel from './pages/qa-debug'
 import TaskPreviewList from './pages/task-preview'
-//import Ugy3 from './pages/ugy3'
-//import Ugy4 from './pages/ugy4'
-//import Ugy5 from './pages/ugy5'
-//import Ugy6 from './pages/ugy6'
-//import Ugy7 from './pages/ugy7'
-//import Ugy8 from './pages/ugy8'
-//import Ugy9 from './pages/ugy9'
-//import Ugy10 from './pages/ugy10'
-//import Ugy11 from './pages/ugy11'
-//import Ugy12 from './pages/ugy12'
+
 
 function AppContent() {
   const { isAuthenticated } = useAuth()
@@ -44,8 +34,9 @@ function AppContent() {
           <Route path="/aurora" element={<Aurora />} />
           <Route path="/aurora.html" element={<Navigate to="/aurora" replace />} />
           <Route path="/privacy" element={<Privacy />} />
-          <Route path="/ugy1" element={<Ugy1 />} />
-          <Route path="/ugy2" element={<Ugy2 />} />
+          <Route path="/ugy1" element={<UgyView />} />
+          <Route path="/ugy2" element={<UgyView />} />
+          <Route path="/ugy3" element={<UgyView />} />
           {import.meta.env.DEV && (
             <>
           <Route path="/qa-debug" element={<QADebugPanel />} />

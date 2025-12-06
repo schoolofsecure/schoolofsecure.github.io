@@ -122,12 +122,7 @@ const CaesarTaskRenderer = ({ task, payload, taskStory, taskLabel, onSuccess, on
   const handleCheck = (value, normalize) => {
     const isValid = task.validate(value)
     setFeedback(isValid ? 'ok' : 'err')
-    if (isValid) {
-      setSolved(true)
-      onSuccess?.()
-    } else {
-      onFailure?.()
-    }
+    // onSuccess-t a ChallengeInput kezeli az onSuccess prop-on keresztül
     return isValid
   }
 
@@ -176,12 +171,7 @@ const VigenereTaskRenderer = ({ task, payload, taskStory, taskLabel, onSuccess, 
 
   const handleCheck = (value, normalize) => {
     const isValid = task.validate(value)
-    if (isValid) {
-      setSolved(true)
-      onSuccess?.()
-    } else {
-      onFailure?.()
-    }
+    // onSuccess-t a ChallengeInput kezeli az onSuccess prop-on keresztül
     return isValid
   }
 
@@ -1028,12 +1018,7 @@ const DefaultTaskRenderer = ({ task, payload, taskStory, taskLabel, onSuccess, o
 
   const handleCheck = (value, normalize) => {
     const isValid = task.validate(value)
-    if (isValid) {
-      setSolved(true)
-      onSuccess?.()
-    } else {
-      onFailure?.()
-    }
+    // onSuccess-t a ChallengeInput kezeli az onSuccess prop-on keresztül
     return isValid
   }
 

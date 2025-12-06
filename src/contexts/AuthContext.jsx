@@ -157,6 +157,18 @@ export const AuthProvider = ({ children }) => {
     }
   }
 
+  const checkLevelCompleted = async (levelId) => {
+    if (!user || !user.emailVerified) return false
+    try {
+      const ref = doc(db, 'users', user.uid, 'completions', String(levelId))
+      const snap = await getDoc(ref)
+      return snap.exists()
+    } catch (error) {
+      console.warn('Level completion check error:', error)
+      return false
+    }
+  }
+
   const getHighestCompletedLevel = async () => {
     if (!user || !user.emailVerified) return 0
     try {
@@ -271,6 +283,7 @@ export const AuthProvider = ({ children }) => {
     sendPasswordReset,
     saveLevelCompletion,
     checkMissionCompletion,
+    checkLevelCompleted,
     getHighestCompletedLevel,
     saveScoringData,
     loadScoringData,

@@ -73,9 +73,6 @@ const UgyView = () => {
   
   // Ugy2 unlock dátum (csak akkor inicializáljuk, ha van unlockDate)
   const [isLevel3Unlocked, setIsLevel3Unlocked] = useState(false);
-  
-  // Fejlesztői mód: inaktív pálya megtekintése (csak ügy 3 esetén)
-  const [devModeActive, setDevModeActive] = useState(false);
 
   // Betöltés: állapot visszaállítása és előző pályák ellenőrzése
   useEffect(() => {
@@ -297,8 +294,8 @@ const UgyView = () => {
     );
   }
 
-  // Inaktív pálya ellenőrzés: 3. ügytől felfelé minden ügy inaktív (kivéve fejlesztői módban az ügy 3)
-  if (levelNum >= 3 && !(levelNum === 3 && devModeActive)) {
+  // Inaktív pálya ellenőrzés: 4. ügytől felfelé minden ügy inaktív
+  if (levelNum >= 4) {
     return (
       <div className="container">
         <header>
@@ -459,7 +456,7 @@ const UgyView = () => {
                             {levelNum === 2 
                               ? <>Gratulálunk! A harmadik ügy <strong>december 6-án, este 7 órakor nyílik</strong>.</>
                               : levelNum === 3
-                              ? <>Gratulálunk! A negyedik ügy <strong>december 13-án, este 7 órakor nyílik</strong>.</>
+                              ? <>Gratulálunk! A negyedik ügy <strong>december 18-án, este 7 órakor nyílik</strong>.</>
                               : 'Gratulálunk! Sikeresen megoldottad a harmadik ügyet.'}
                           </p>
                           <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>

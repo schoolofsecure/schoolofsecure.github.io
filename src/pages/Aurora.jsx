@@ -635,7 +635,7 @@ const Aurora = () => {
                           letterSpacing: '0.3px'
                         }}
                       >
-                        December 13-án, este 7 órakor nyílik
+                        December 18-án, este 7 órakor nyílik
                       </div>
                     )}
                     {!showDecember6 && !showDecember13 && (

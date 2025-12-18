@@ -447,7 +447,7 @@ const UgyView = () => {
                       imageSrc={config.taskImages?.[currentTask.type]}
                       onSuccess={() => handleTaskSuccess(step)}
                       onFailure={handleTaskFailure}
-                      showDevSkip={levelNum > 3}
+                      showDevSkip={levelNum > 4}
                     />
                     {completedCount === tasks.length && tasks.length > 0 && config.isDynamic && (
                       <div className="grid2" style={{ marginTop: '16px' }}>

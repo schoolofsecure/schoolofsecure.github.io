@@ -73,7 +73,7 @@ const UgyView = () => {
   
   // Ugy2 unlock dátum (csak akkor inicializáljuk, ha van unlockDate)
   const [isLevel3Unlocked, setIsLevel3Unlocked] = useState(false);
-
+  
   // Betöltés: állapot visszaállítása és előző pályák ellenőrzése
   useEffect(() => {
     let cancelled = false;
@@ -449,7 +449,7 @@ const UgyView = () => {
                       onFailure={handleTaskFailure}
                       showDevSkip={levelNum > 3}
                     />
-                    {completedCount === tasks.length && tasks.length > 0 && (levelNum === 2 || levelNum === 3) && (
+                    {completedCount === tasks.length && tasks.length > 0 && config.isDynamic && (
                       <div className="grid2" style={{ marginTop: '16px' }}>
                         <div></div>
                         <div className="card" style={{ animation: 'fadeIn .3s ease both' }}>
@@ -459,7 +459,9 @@ const UgyView = () => {
                               ? <>Gratulálunk! A harmadik ügy <strong>december 6-án, este 7 órakor nyílik</strong>.</>
                               : levelNum === 3
                               ? <>Gratulálunk! A negyedik ügy <strong>december 18-án, este 7 órakor nyílik</strong>.</>
-                              : 'Gratulálunk! Sikeresen megoldottad a harmadik ügyet.'}
+                              : levelNum === 4
+                              ? <>Gratulálunk! Az ötödik ügy <strong>december 24-én, este 7 órakor nyílik</strong>.</>
+                              : 'Gratulálunk! Sikeresen megoldottad az ügyet.'}
                           </p>
                           <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
                             <Link
@@ -533,6 +535,23 @@ const UgyView = () => {
                               >
                                 {config.nextLevelText} →
                               </button>
+                            ) : levelNum >= 4 && config.nextLevelRoute ? (
+                              <Link
+                                className="btn"
+                                to={config.nextLevelRoute}
+                                style={{
+                                  textDecoration: 'none',
+                                  display: 'inline-flex',
+                                  justifyContent: 'center',
+                                  alignItems: 'center',
+                                  textAlign: 'center',
+                                  minWidth: '0',
+                                  padding: '10px 18px',
+                                  fontSize: '13px'
+                                }}
+                              >
+                                {config.nextLevelText} →
+                              </Link>
                             ) : null}
                           </div>
                         </div>

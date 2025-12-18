@@ -517,8 +517,10 @@ const Aurora = () => {
                 // A 3. kártya ne legyen automatikusan feloldva, ha csak a 2-es pálya van teljesítve
                 const isUgy2Completed = highestCompleted >= 2
                 const isUgy3Completed = highestCompleted >= 3
+                const isUgy4Completed = highestCompleted >= 4
                 const isUgy3 = card.n === 3
                 const isUgy4 = card.n === 4
+                const isUgy5 = card.n === 5
                 const isCompleted = card.n <= highestCompleted
                 
                 // Speciális eset: ha a 3. kártya és a 2-es pálya teljesítve van, akkor ne legyen feloldva
@@ -535,6 +537,7 @@ const Aurora = () => {
                 }
                 const showDecember6 = isUgy3 && isUgy2Completed && !isUnlocked
                 const showDecember13 = isUgy4 && isUgy3Completed && !isUnlocked
+                const showDecember24 = isUgy5 && isUgy4Completed && !isUnlocked
                 
                 return isUnlocked ? (
                   <Link
@@ -577,7 +580,7 @@ const Aurora = () => {
                   <div 
                     key={card.n} 
                     className="level-card" 
-                    aria-disabled={!showDecember6 && !showDecember13}
+                    aria-disabled={!showDecember6 && !showDecember13 && !showDecember24}
                     style={{ 
                       position: 'relative',
                       filter: 'grayscale(1) opacity(0.8)'
@@ -638,7 +641,33 @@ const Aurora = () => {
                         December 18-án, este 7 órakor nyílik
                       </div>
                     )}
-                    {!showDecember6 && !showDecember13 && (
+                    {showDecember24 && (
+                      <div 
+                        className="december-24-notice"
+                        style={{
+                          position: 'absolute',
+                          bottom: '8px',
+                          left: '8px',
+                          right: '8px',
+                          background: 'rgba(0, 229, 255, 0.2)',
+                          border: '1px solid rgba(0, 229, 255, 0.5)',
+                          borderRadius: '8px',
+                          padding: '10px 14px',
+                          fontSize: '13px',
+                          color: '#00e5ff',
+                          textAlign: 'center',
+                          fontFamily: 'Rajdhani, Inter, sans-serif',
+                          fontWeight: 600,
+                          backdropFilter: 'blur(6px)',
+                          zIndex: 10,
+                          boxShadow: '0 4px 12px rgba(0, 229, 255, 0.2)',
+                          letterSpacing: '0.3px'
+                        }}
+                      >
+                        December 24-én, este 7 órakor nyílik
+                      </div>
+                    )}
+                    {!showDecember6 && !showDecember13 && !showDecember24 && (
                     <span className="coming" aria-label="Zárolt">🔒</span>
                     )}
                   </div>

@@ -793,11 +793,11 @@ const SecurityDecisionTaskRenderer = ({ task, payload, taskStory, taskLabel, onS
         <p className="muted" style={{ marginTop: taskStory ? '12px' : (taskLabel ? '8px' : '0') }}>{payload.instructions}</p>
       </div>
       <div className="card">
-        <h3>{payload.scenarios?.[0]?.title || 'Döntési helyzetek'}</h3>
+        <h3>Döntési helyzetek</h3>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
           {payload.scenarios?.map((scenario, scenarioIndex) => (
             <div key={scenarioIndex} style={{ padding: '12px', border: '1px solid rgba(207,230,255,0.2)', borderRadius: '8px' }}>
-              {scenarioIndex > 0 && <strong style={{ display: 'block', marginBottom: '6px' }}>{scenario.title || `${scenarioIndex + 1}. helyzet`}</strong>}
+              <strong style={{ display: 'block', marginBottom: '6px' }}>{scenario.title || `${scenarioIndex + 1}. helyzet`}</strong>
               <p className="muted" style={{ marginBottom: '10px', whiteSpace: 'pre-line' }}>{scenario.scenario || scenario.text}</p>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
                 {scenario.options?.map((option, optionIndex) => (

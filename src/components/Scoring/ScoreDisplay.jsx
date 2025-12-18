@@ -11,7 +11,13 @@ const ScoreDisplay = () => {
   const { isAuthenticated } = useAuth()
   
   // Csak bejelentkezés után jelenjen meg
-  if (!isAuthenticated || !currentRank) {
+  // Ha nincs currentRank, akkor is mutassuk a pontszámot (legalább 0 ponttal)
+  if (!isAuthenticated) {
+    return null
+  }
+  
+  // Ha nincs currentRank, de van pontszám, akkor is mutassuk
+  if (!currentRank && totalPoints === 0) {
     return null
   }
   

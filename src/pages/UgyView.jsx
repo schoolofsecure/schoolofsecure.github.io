@@ -198,7 +198,7 @@ const UgyView = () => {
     if (isAuthenticated) {
       const timeSpent = Math.floor((Date.now() - levelStartTimeRef.current) / 1000);
       const totalTasks = config.isDynamic ? tasks.length : config.totalTasks;
-      result = scoreLevel({
+      result = await scoreLevel({
         level: currentLevel,
         totalTasks,
         completedTasks: completedCount + 1,

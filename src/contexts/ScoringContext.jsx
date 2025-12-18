@@ -64,40 +64,71 @@ export const ScoringProvider = ({ children }) => {
 
   const loadScoringData = async () => {
     if (!isAuthenticated || !user) {
-      return
+      return null
     }
     
     try {
       const data = await authLoadScoringData()
+      logger.info('Scoring adatok betöltése:', data)
       if (data) {
         let pointsToUse = 0 // Alapértelmezett
         
-        if (data.totalPoints !== undefined && data.totalPoints !== null) {
-          // Ha van totalPoints, használjuk azt
-          pointsToUse = data.totalPoints
-        } else if (data.levelStats && Object.keys(data.levelStats).length > 0) {
-          // Ha nincs totalPoints, de van levelStats, számoljuk ki
-          // 0-ról indulunk, majd hozzáadjuk a pályák pontszámait
-          pointsToUse = Object.values(data.levelStats).reduce((sum, stat) => {
+        // Számoljuk ki a levelStats-ból
+        let calculatedFromLevelStats = 0
+        if (data.levelStats && Object.keys(data.levelStats).length > 0) {
+          calculatedFromLevelStats = Object.values(data.levelStats).reduce((sum, stat) => {
             return sum + (stat.points || 0)
           }, 0)
+          logger.info('levelStats-ból számolt pontok:', calculatedFromLevelStats, data.levelStats)
+        }
+        
+        // Használjuk a nagyobb értéket: totalPoints vagy levelStats-ból számolt
+        // Ez biztosítja, hogy ha a totalPoints tartalmazza a korábbi pontokat, azok ne vesznek el
+        if (data.totalPoints !== undefined && data.totalPoints !== null) {
+          pointsToUse = Math.max(data.totalPoints, calculatedFromLevelStats)
+          logger.info('totalPoints:', data.totalPoints, 'levelStats-ból:', calculatedFromLevelStats, 'használt:', pointsToUse)
+        } else {
+          pointsToUse = calculatedFromLevelStats
+          logger.info('Nincs totalPoints, levelStats-ból számolt pontok használata:', pointsToUse)
         }
         
         setTotalPoints(pointsToUse)
         setAchievements(data.achievements || [])
         setLevelStats(data.levelStats || {})
         setPerfectStreak(data.perfectStreak || 0)
-        updateRank(pointsToUse, data.highestLevel || 1, true) // skipAnimation: true betöltéskor
+        const highestLevel = data.highestLevel || (data.levelStats && Object.keys(data.levelStats).length > 0 
+          ? Math.max(...Object.keys(data.levelStats).map(Number))
+          : 1) || 1
+        logger.info('Rang frissítése:', pointsToUse, highestLevel)
+        updateRank(pointsToUse, highestLevel, true) // skipAnimation: true betöltéskor
+        
+        // Visszaadjuk az adatokat, hogy közvetlenül használhassuk
+        return {
+          totalPoints: pointsToUse,
+          levelStats: data.levelStats || {},
+          highestLevel
+        }
       } else {
         // Ha nincs mentett adat, kezdjünk 0 ponttal
+        logger.info('Nincs mentett adat, 0 ponttal kezdünk')
         setTotalPoints(0)
         updateRank(0, 1, true)
+        return {
+          totalPoints: 0,
+          levelStats: {},
+          highestLevel: 1
+        }
       }
     } catch (e) {
       logger.warn('Nem sikerült betölteni a pontozást:', e)
       // Hiba esetén is inicializáljuk az alapértelmezett értékekkel
       setTotalPoints(0)
       updateRank(0, 1, true)
+      return {
+        totalPoints: 0,
+        levelStats: {},
+        highestLevel: 1
+      }
     }
   }
   
@@ -175,7 +206,7 @@ export const ScoringProvider = ({ children }) => {
   /**
    * Pálya befejezési pontozás
    */
-  const scoreLevel = ({ level, totalTasks, completedTasks, errors, timeSpent, allCluesCorrect }) => {
+  const scoreLevel = async ({ level, totalTasks, completedTasks, errors, timeSpent, allCluesCorrect }) => {
     // Csak bejelentkezés után működik
     if (!isAuthenticated || !user) {
       return {
@@ -190,31 +221,39 @@ export const ScoringProvider = ({ children }) => {
       }
     }
     
-    // Szinkronizáljuk a totalPoints-ot a levelStats alapján, ha szükséges
+    // Mindig újratöltjük az adatokat, hogy biztosan a legfrissebb adatokkal dolgozzunk
     // Ez biztosítja, hogy az előző ügyek pontszámai is benne legyenek
-    let currentTotalPoints = totalPoints
-    if (totalPoints === 0 && Object.keys(levelStats).length > 0) {
-      const calculatedTotal = Object.values(levelStats).reduce((sum, stat) => {
+    const loadedData = await loadScoringData()
+    
+    // Használjuk a betöltött adatokat közvetlenül
+    let currentTotalPoints = loadedData?.totalPoints || totalPoints
+    const currentLevelStats = loadedData?.levelStats || levelStats
+    
+    // Szinkronizáljuk a totalPoints-ot a levelStats alapján, ha szükséges
+    if (currentLevelStats && Object.keys(currentLevelStats).length > 0) {
+      const calculatedTotal = Object.values(currentLevelStats).reduce((sum, stat) => {
         return sum + (stat.points || 0)
       }, 0)
-      if (calculatedTotal > 0) {
+      // Ha a számított összeg nagyobb, mint a jelenlegi totalPoints, akkor használjuk azt
+      if (calculatedTotal > currentTotalPoints) {
         currentTotalPoints = calculatedTotal
         setTotalPoints(calculatedTotal)
       }
     }
     
     // Ellenőrizzük, hogy a pálya már teljesítve van-e
-    const existingLevelStat = levelStats[level]
+    const existingLevelStat = currentLevelStats[level]
     if (existingLevelStat && existingLevelStat.completed) {
       // Ha a pálya már teljesítve van, ne pontozzuk újra
       // De mégis mutassuk az összegző animációt (csak pontszám változás nélkül)
       // Szinkronizáljuk a totalPoints-ot, ha szükséges
-      let displayTotalPoints = totalPoints
-      if (totalPoints === 0 && Object.keys(levelStats).length > 0) {
-        const calculatedTotal = Object.values(levelStats).reduce((sum, stat) => {
+      let displayTotalPoints = currentTotalPoints
+      if (currentLevelStats && Object.keys(currentLevelStats).length > 0) {
+        const calculatedTotal = Object.values(currentLevelStats).reduce((sum, stat) => {
           return sum + (stat.points || 0)
         }, 0)
-        if (calculatedTotal > 0) {
+        // Ha a számított összeg nagyobb, mint a jelenlegi totalPoints, akkor használjuk azt
+        if (calculatedTotal > displayTotalPoints) {
           displayTotalPoints = calculatedTotal
           setTotalPoints(calculatedTotal)
         }
@@ -301,7 +340,7 @@ export const ScoringProvider = ({ children }) => {
     
     // Frissített értékek kiszámítása a mentéshez
     const updatedLevelStats = {
-      ...levelStats,
+      ...currentLevelStats,
       [level]: levelStat
     }
     const updatedPerfectStreak = errors === 0 ? perfectStreak + 1 : 0

@@ -415,6 +415,7 @@ function createDynamicUgyConfig(level, title, badge, narrativeText) {
 
 export const ugy4Config = {
   ...createDynamicUgyConfig(4, "A hiányzó idővonal", "Idővonal - hiányzó nyomok", "Az idővonalban hiányosságok jelentek meg. A nyomok azt sugallják, hogy valaki manipulálta az események sorrendjét. Az előző pályák megoldásai kulcsfontosságúak lesznek a folytatáshoz."),
+  nextLevelText: "Tovább a Suttogások Könyvére",
   forcedTypes: ['PASSWORD_STRENGTH', 'FIREWALL', 'PHISHING', 'SOCIAL_ENGINEERING', 'SECURITY_DECISION'],
   forcedDifficulty: 'medium',
   shuffleTypes: true // Kevert sorrend

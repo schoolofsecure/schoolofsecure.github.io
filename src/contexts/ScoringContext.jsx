@@ -190,12 +190,36 @@ export const ScoringProvider = ({ children }) => {
       }
     }
     
+    // Szinkronizáljuk a totalPoints-ot a levelStats alapján, ha szükséges
+    // Ez biztosítja, hogy az előző ügyek pontszámai is benne legyenek
+    let currentTotalPoints = totalPoints
+    if (totalPoints === 0 && Object.keys(levelStats).length > 0) {
+      const calculatedTotal = Object.values(levelStats).reduce((sum, stat) => {
+        return sum + (stat.points || 0)
+      }, 0)
+      if (calculatedTotal > 0) {
+        currentTotalPoints = calculatedTotal
+        setTotalPoints(calculatedTotal)
+      }
+    }
+    
     // Ellenőrizzük, hogy a pálya már teljesítve van-e
     const existingLevelStat = levelStats[level]
     if (existingLevelStat && existingLevelStat.completed) {
       // Ha a pálya már teljesítve van, ne pontozzuk újra
       // De mégis mutassuk az összegző animációt (csak pontszám változás nélkül)
-      const rank = updateRank(totalPoints, level)
+      // Szinkronizáljuk a totalPoints-ot, ha szükséges
+      let displayTotalPoints = totalPoints
+      if (totalPoints === 0 && Object.keys(levelStats).length > 0) {
+        const calculatedTotal = Object.values(levelStats).reduce((sum, stat) => {
+          return sum + (stat.points || 0)
+        }, 0)
+        if (calculatedTotal > 0) {
+          displayTotalPoints = calculatedTotal
+          setTotalPoints(calculatedTotal)
+        }
+      }
+      const rank = updateRank(displayTotalPoints, level)
       const levelNames = {
         1: 'A Titkosított Adatcsomag',
         2: 'A Hamisított Archívum',
@@ -214,7 +238,7 @@ export const ScoringProvider = ({ children }) => {
       setShowLevelCompletion({
         levelName: levelNames[level] || `Ügy #${level}`,
         rank,
-        totalPoints: totalPoints
+        totalPoints: displayTotalPoints
       })
       
       return {
@@ -238,7 +262,7 @@ export const ScoringProvider = ({ children }) => {
       allCluesCorrect
     })
     
-    const newTotal = totalPoints + result.totalPoints
+    const newTotal = currentTotalPoints + result.totalPoints
     setTotalPoints(newTotal)
     
     // Pálya statisztikák mentése

@@ -25,7 +25,7 @@ export class LevelGenerator {
    * @returns {Array<BaseTask>} - Generált feladatok listája
    */
   static generateLevel(levelNumber, tasksPerLevel = 5, typeHistory = new Map(), cooldown = 4, options = {}) {
-    const { seed = null, forcedTypes = null } = options
+    const { seed = null, forcedTypes = null, forcedDifficulty = null, shuffleTypes = false } = options
     
     // Seed beállítása, ha van
     if (seed !== null) {
@@ -45,6 +45,22 @@ export class LevelGenerator {
       const finalTypes = shuffledTypes.slice(0, tasksPerLevel)
       const tasks = finalTypes.map((type, index) =>
         TaskFactory.createRandomTask('easy', [type], levelNumber, index + 1)
+      )
+      
+      if (seed !== null) {
+        Random.resetSeed()
+      }
+      
+      return tasks
+    }
+    
+    // Speciális eset: 4. pálya fix típusokkal, közepes nehézséggel, kevert sorrendben
+    if (levelNumber === 4 && forcedTypes && shuffleTypes) {
+      const shuffledTypes = Random.shuffle([...forcedTypes])
+      const finalTypes = shuffledTypes.slice(0, tasksPerLevel)
+      const difficulty = forcedDifficulty || 'medium'
+      const tasks = finalTypes.map((type, index) =>
+        TaskFactory.createRandomTask(difficulty, [type], levelNumber, index + 1)
       )
       
       if (seed !== null) {
@@ -149,8 +165,8 @@ export class LevelGenerator {
       
       usedTypesInThisLevel.add(selectedType)
       
-      // Nehézség választása súlyozott randomizálással
-      const difficulty = Random.weightedChoice(difficultyWeights)
+      // Nehézség választása: ha van forcedDifficulty, azt használjuk, különben súlyozott randomizálás
+      const difficulty = forcedDifficulty || Random.weightedChoice(difficultyWeights)
       
       // Feladat generálása a kiválasztott típussal
       const task = TaskFactory.createRandomTask(difficulty, [selectedType], levelNumber, slot)

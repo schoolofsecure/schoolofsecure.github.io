@@ -121,7 +121,8 @@ const UgyView = () => {
         const generatedTasks = LevelGenerator.generateLevel(level, config.totalTasks, new Map(), 4, {
           seed,
           forcedTypes: forcedTypes || config.forcedTypes,
-          forcedDifficulty: config.forcedDifficulty
+          forcedDifficulty: config.forcedDifficulty,
+          shuffleTypes: config.shuffleTypes
         });
         
         // Minden feladat payload-jának generálása
@@ -294,8 +295,9 @@ const UgyView = () => {
     );
   }
 
-  // Inaktív pálya ellenőrzés: 4. ügytől felfelé minden ügy inaktív
-  if (levelNum >= 4) {
+  // Inaktív pálya ellenőrzés: 4. ügytől felfelé minden ügy inaktív (kivéve fejlesztői módban az ügy 4)
+  const isDev = import.meta.env.DEV;
+  if (levelNum >= 4 && !(levelNum === 4 && isDev)) {
     return (
       <div className="container">
         <header>

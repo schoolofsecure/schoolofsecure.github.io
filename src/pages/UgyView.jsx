@@ -71,8 +71,9 @@ const UgyView = () => {
   // Ugy3 zárolás
   const [previousLocked, setPreviousLocked] = useState(false);
   
-  // Ugy2 unlock dátum (csak akkor inicializáljuk, ha van unlockDate)
+  // Unlock dátumok (ugy3 és ugy4)
   const [isLevel3Unlocked, setIsLevel3Unlocked] = useState(false);
+  const [isLevel4Unlocked, setIsLevel4Unlocked] = useState(false);
   
   // Betöltés: állapot visszaállítása és előző pályák ellenőrzése
   useEffect(() => {
@@ -143,11 +144,16 @@ const UgyView = () => {
         setDone(savedDone);
       }
       
-      // Ugy2 unlock dátum ellenőrzése
+      // Unlock dátum ellenőrzése (ugy3 és ugy4)
       if (config.unlockDate) {
         const unlockDate = new Date(config.unlockDate);
         const updateUnlock = () => {
-          setIsLevel3Unlocked(new Date() >= unlockDate);
+          const isUnlocked = new Date() >= unlockDate;
+          if (levelNum === 3) {
+            setIsLevel3Unlocked(isUnlocked);
+          } else if (levelNum === 4) {
+            setIsLevel4Unlocked(isUnlocked);
+          }
         };
         updateUnlock();
         const interval = setInterval(updateUnlock, 60000);
@@ -295,9 +301,8 @@ const UgyView = () => {
     );
   }
 
-  // Inaktív pálya ellenőrzés: 4. ügytől felfelé minden ügy inaktív (kivéve fejlesztői módban az ügy 4)
-  const isDev = import.meta.env.DEV;
-  if (levelNum >= 4 && !(levelNum === 4 && isDev)) {
+  // Inaktív pálya ellenőrzés: 5. ügytől felfelé minden ügy inaktív
+  if (levelNum >= 5) {
     return (
       <div className="container">
         <header>

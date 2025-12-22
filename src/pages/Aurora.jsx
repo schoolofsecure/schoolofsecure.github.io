@@ -25,6 +25,7 @@ const Aurora = () => {
   const [retroSaving, setRetroSaving] = useState(false)
   const [retroError, setRetroError] = useState('')
   const [isLevel3Unlocked, setIsLevel3Unlocked] = useState(false)
+  const [isLevel4Unlocked, setIsLevel4Unlocked] = useState(false)
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -287,6 +288,20 @@ const Aurora = () => {
     }
   }, [])
 
+  // Ügy 4 unlock dátum ellenőrzése
+  useEffect(() => {
+    const ugy4Config = ugyConfigs[4]
+    if (ugy4Config?.unlockDate) {
+      const unlockDate = new Date(ugy4Config.unlockDate)
+      const updateUnlock = () => {
+        setIsLevel4Unlocked(new Date() >= unlockDate)
+      }
+      updateUnlock()
+      const interval = setInterval(updateUnlock, 60000) // Perenként ellenőrzés
+      return () => clearInterval(interval)
+    }
+  }, [])
+
   if (!data) {
     return <div className="container">Betöltés...</div>
   }
@@ -525,19 +540,21 @@ const Aurora = () => {
                 
                 // Speciális eset: ha a 3. kártya és a 2-es pálya teljesítve van, akkor ne legyen feloldva
                 let isUnlocked
-                if (card.n >= 4) {
-                  // A 4. ügytől felfelé (4, 5, 6, 7, 8, 9, 10, 11, 12) mindegyik inaktív
+                if (card.n >= 5) {
+                  // Az 5. ügytől felfelé (5, 6, 7, 8, 9, 10, 11, 12) mindegyik inaktív
                   isUnlocked = false
                 } else if (isUgy3 && isUgy2Completed) {
                   // A 3. kártya unlockolva van, ha az ügy 2 teljesítve van ÉS elérkezett a dátum
                   isUnlocked = isLevel3Unlocked
+                } else if (isUgy4 && isUgy3Completed) {
+                  // A 4. kártya unlockolva van, ha az ügy 3 teljesítve van ÉS elérkezett a dátum
+                  isUnlocked = isLevel4Unlocked
                 } else {
                   // Minden pálya elérhető, ha már teljesítve van, vagy a következő pálya
                   isUnlocked = card.n <= highestCompleted + 1 || (card.n === 1 && !card.locked)
                 }
                 const showDecember6 = isUgy3 && isUgy2Completed && !isUnlocked
                 const showDecember13 = isUgy4 && isUgy3Completed && !isUnlocked
-                const showDecember24 = isUgy5 && isUgy4Completed && !isUnlocked
                 
                 return isUnlocked ? (
                   <Link
@@ -580,7 +597,7 @@ const Aurora = () => {
                   <div 
                     key={card.n} 
                     className="level-card" 
-                    aria-disabled={!showDecember6 && !showDecember13 && !showDecember24}
+                    aria-disabled={!showDecember6 && !showDecember13}
                     style={{ 
                       position: 'relative',
                       filter: 'grayscale(1) opacity(0.8)'
@@ -641,33 +658,7 @@ const Aurora = () => {
                         December 18-án, este 7 órakor nyílik
                       </div>
                     )}
-                    {showDecember24 && (
-                      <div 
-                        className="december-24-notice"
-                        style={{
-                          position: 'absolute',
-                          bottom: '8px',
-                          left: '8px',
-                          right: '8px',
-                          background: 'rgba(0, 229, 255, 0.2)',
-                          border: '1px solid rgba(0, 229, 255, 0.5)',
-                          borderRadius: '8px',
-                          padding: '10px 14px',
-                          fontSize: '13px',
-                          color: '#00e5ff',
-                          textAlign: 'center',
-                          fontFamily: 'Rajdhani, Inter, sans-serif',
-                          fontWeight: 600,
-                          backdropFilter: 'blur(6px)',
-                          zIndex: 10,
-                          boxShadow: '0 4px 12px rgba(0, 229, 255, 0.2)',
-                          letterSpacing: '0.3px'
-                        }}
-                      >
-                        December 24-én, este 7 órakor nyílik
-                      </div>
-                    )}
-                    {!showDecember6 && !showDecember13 && !showDecember24 && (
+                    {!showDecember6 && !showDecember13 && (
                     <span className="coming" aria-label="Zárolt">🔒</span>
                     )}
                   </div>

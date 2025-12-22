@@ -418,7 +418,8 @@ export const ugy4Config = {
   nextLevelText: "Tovább a Suttogások Könyvére",
   forcedTypes: ['PASSWORD_STRENGTH', 'FIREWALL', 'PHISHING', 'SOCIAL_ENGINEERING', 'SECURITY_DECISION'],
   forcedDifficulty: 'medium',
-  shuffleTypes: true // Kevert sorrend
+  shuffleTypes: true, // Kevert sorrend
+  unlockDate: '2025-12-18T19:00:00+01:00'
 };
 export const ugy5Config = createDynamicUgyConfig(5, "A rejtett metaadat", "Metaadat - rejtett információ", "A fájlok metaadataiban rejtett információk bukkannak fel. Valaki szándékosan elrejtett fontos adatokat, amelyek a nyomozás kulcsai lehetnek.");
 export const ugy6Config = createDynamicUgyConfig(6, "A szivárgó port", "Port - szivárgó kapcsolat", "A hálózati portokon szokatlan forgalom észlelhető. Valaki próbál behatolni a rendszerbe egy sebezhető porton keresztül.");

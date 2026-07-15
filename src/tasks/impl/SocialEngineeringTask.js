@@ -5,99 +5,99 @@ const SCENARIOS = {
   easy: [
     {
       id: 'urgent-message',
-      title: 'Sürgős üzenet',
-      text: 'A hangvétele személyes, sietős, és segítséget kér. A rendszerlogok szerint a küldő helyéről már korábban is érkeztek gyanús próbálkozások.',
+      title: 'Urgent message',
+      text: 'The tone is personal and urgent, asking for help. System logs show suspicious attempts from the sender\'s location before.',
       actions: [
-        { id: 'help_immediately', label: 'Azonnal segítek, mert sürgős a helyzet.' },
-        { id: 'verify_report', label: 'Ellenőrzöm a küldő azonosítóját és jelentést teszek a biztonsági csapatnak.' },
-        { id: 'forward_colleague', label: 'Továbbítom egy kollégának, hogy ő döntsön.' }
+        { id: 'help_immediately', label: 'Help immediately — the situation is urgent.' },
+        { id: 'verify_report', label: 'Verify the sender\'s identity and report it to the security team.' },
+        { id: 'forward_colleague', label: 'Forward it to a colleague and let them decide.' }
       ],
       correctAction: 'verify_report',
-      explanation: 'Gyanús üzeneteket mindig ellenőrizni kell, különösen ha a küldő helyéről korábban is érkeztek gyanús próbálkozások.'
+      explanation: 'Suspicious messages should always be verified, especially when the sender\'s location has a history of suspicious attempts.'
     },
     {
       id: 'tech-support-request',
-      title: 'Technikai támogatás kérés',
-      text: 'Azonnali hozzáférésre van szükségük a rendszerhez. A kérés személyes hangvételű és sürgeti a választ.',
+      title: 'Tech support request',
+      text: 'They need immediate access to the system. The request feels personal and pushes for a quick response.',
       actions: [
-        { id: 'grant_access', label: 'Megadom a hozzáférést, mert a technikai osztály kéri.' },
-        { id: 'verify_ticket', label: 'Ellenőrzöm, hogy van-e hivatalos ticket, és csak akkor adok hozzáférést.' },
-        { id: 'ignore', label: 'Figyelmen kívül hagyom, biztos spam.' }
+        { id: 'grant_access', label: 'Grant access because the tech department asked.' },
+        { id: 'verify_ticket', label: 'Check for an official ticket and grant access only if one exists.' },
+        { id: 'ignore', label: 'Ignore it — probably spam.' }
       ],
       correctAction: 'verify_ticket',
-      explanation: 'Minden hozzáférési kérést hivatalos ticket rendszeren keresztül kell kezelni, nem személyes üzeneteken.'
+      explanation: 'Every access request must go through the official ticket system, not personal messages.'
     }
   ],
   medium: [
     {
       id: 'fake-invoice',
-      title: 'Sürgős számla',
-      text: 'Egy külsős „szállító” e-mailben azt állítja, hogy az AuroraGrid projektet csak akkor folytatják, ha most átutalsz egy előleget.',
+      title: 'Urgent invoice',
+      text: 'An external "vendor" claims by email that the AuroraGrid project will only continue if you wire an advance payment now.',
       actions: [
-        { id: 'pay_now', label: 'Azonnal utalok, nehogy csússzon a projekt.' },
-        { id: 'verify_procurement', label: 'Visszautasítom, amíg a beszerzéssel nem egyeztetek.' },
-        { id: 'ask_bank', label: 'Megkérdezem a bankot, hogy jóváírható-e.' }
+        { id: 'pay_now', label: 'Pay immediately so the project does not slip.' },
+        { id: 'verify_procurement', label: 'Refuse until procurement confirms the request.' },
+        { id: 'ask_bank', label: 'Ask the bank whether the transfer is acceptable.' }
       ],
       correctAction: 'verify_procurement',
-      explanation: 'Minden pénzügyi változtatást hivatalos csatornán kell ellenőrizni, különösen külsős igény esetén.'
+      explanation: 'Every financial change must be verified through official channels, especially from external parties.'
     },
     {
       id: 'usb-drop',
-      title: 'Talált USB',
-      text: 'A parkolóban találsz egy COBALTIA logós pendrive-ot, rajta „bérek2025.xlsx” felirattal.',
+      title: 'Found USB drive',
+      text: 'You find a COBALTIA-branded flash drive in the parking lot labeled "salaries2025.xlsx".',
       actions: [
-        { id: 'plug_in', label: 'Bedugom egy izolált gépbe megnézni.' },
-        { id: 'give_manager', label: 'Odaadom a közvetlen vezetőmnek.' },
-        { id: 'submit_it', label: 'Leadom az információbiztonsági csapatnak.' }
+        { id: 'plug_in', label: 'Plug it into an isolated machine to inspect it.' },
+        { id: 'give_manager', label: 'Hand it to my direct manager.' },
+        { id: 'submit_it', label: 'Turn it in to the information security team.' }
       ],
       correctAction: 'submit_it',
-      explanation: 'Ismeretlen adathordozót soha nem csatlakoztatunk; az IT vizsgálja meg.'
+      explanation: 'Never connect unknown storage devices; let IT inspect them.'
     }
   ],
   hard: [
     {
       id: 'slack-reset',
-      title: '„Azonnali” Slack reset',
-      text: 'AuroraMesh chatben egy „globális admin” azt kéri, hogy egy privát linkre kattintva erősítsd meg a fiókodat, különben törlik.',
+      title: '"Instant" Slack reset',
+      text: 'In AuroraMesh chat, a "global admin" asks you to confirm your account via a private link or it will be deleted.',
       actions: [
-        { id: 'click_link', label: 'Kattintok és megadom a jelszót, hogy biztonságban legyen.' },
-        { id: 'ask_reason', label: 'Rákérdezek nyilvános csatornában, de a linket megnyitom.' },
-        { id: 'refuse_public', label: 'Elutasítom, és nyilvános csatornában ellenőrzöm a hivatalos státuszt.' }
+        { id: 'click_link', label: 'Click the link and enter my password to stay secure.' },
+        { id: 'ask_reason', label: 'Ask in a public channel, but still open the link.' },
+        { id: 'refuse_public', label: 'Refuse and verify the official status in a public channel.' }
       ],
       correctAction: 'refuse_public',
-      explanation: 'Mindig hivatalos, ellenőrzött csatornán kérj megerősítést; phishing lehet.'
+      explanation: 'Always confirm through official, verified channels; this may be phishing.'
     },
     {
       id: 'oncall-sms',
       title: 'On-call SMS',
-      text: 'Éjjel SMS-t kapsz, hogy az „Éjjeli SOC” új átutalási kulcsot kér, és a küldött linket 5 percen belül jóvá kell hagynod.',
+      text: 'At night you get an SMS saying "Night SOC" needs a new transfer key approved via a link within 5 minutes.',
       actions: [
-        { id: 'approve', label: 'Jóváhagyom, mert on-call sürgős lehet.' },
-        { id: 'call_shift_lead', label: 'Visszahívom a hivatalos on-call számot ellenőrzéshez.' },
-        { id: 'ignore', label: 'Figyelmen kívül hagyom, biztos spam.' }
+        { id: 'approve', label: 'Approve it — on-call requests can be urgent.' },
+        { id: 'call_shift_lead', label: 'Call back the official on-call number to verify.' },
+        { id: 'ignore', label: 'Ignore it — probably spam.' }
       ],
       correctAction: 'call_shift_lead',
-      explanation: 'SOS helyzetben is előbb validáld hivatalos csatornán (on-call lista).'
+      explanation: 'Even in emergencies, validate through official channels first (on-call roster).'
     },
     {
       id: 'video_request',
-      title: 'Video-meghívás',
-      text: 'Egy új kolléga videochaten kér képernyőmegosztást, hogy „megmutathassa” a belső CRM hibát, és admin jogot kér a gépedre.',
+      title: 'Video call request',
+      text: 'A new colleague asks on video chat for screen sharing to "show" an internal CRM bug and requests admin rights on your machine.',
       actions: [
-        { id: 'share_screen', label: 'Megosztom a képernyőt és admin jogot adok.' },
-        { id: 'record_meeting', label: 'Elindítok egy rögzítést, de teljesítem a kérést.' },
-        { id: 'refuse_policy', label: 'Elutasítom, és javaslom a hivatalos ticketet.' }
+        { id: 'share_screen', label: 'Share my screen and grant admin rights.' },
+        { id: 'record_meeting', label: 'Start a recording but still fulfill the request.' },
+        { id: 'refuse_policy', label: 'Refuse and suggest opening an official ticket.' }
       ],
       correctAction: 'refuse_policy',
-      explanation: 'Admin jogot csak szabályozott folyamatban adunk; videochaten kérni gyanús.'
+      explanation: 'Admin rights are only granted through controlled processes; asking over video chat is suspicious.'
     }
   ]
 }
 
 const HINTS = {
-  easy: 'Mindig gondold át: jogos-e a kérés? Ismered a kérő személyt? Létezik hivatalos csatorna?',
-  medium: 'Ellenőrizd, honnan érkezett az igény, van-e dokumentált ticket, és hivatkozz politikákra.',
-  hard: 'Sürgősnek tűnő, többcsatornás próbálkozásokat csak hivatalos visszaigazolással teljesítsd.'
+  easy: 'Always ask: is the request legitimate? Do you know the person? Is there an official channel?',
+  medium: 'Check where the request came from, whether a ticket exists, and refer to policy.',
+  hard: 'Urgent, multi-channel attempts should only be fulfilled after official confirmation.'
 }
 
 export class SocialEngineeringTask extends BaseTask {
@@ -122,7 +122,7 @@ export class SocialEngineeringTask extends BaseTask {
     const { scenarios } = this.parameters
     this.solution = scenarios.map(s => s.correctAction)
     this.payload = {
-      instructions: 'Olvasd el a helyzetet, majd válaszd ki azt a reakciót, amelyik megfelel a biztonsági protokollnak.',
+      instructions: 'Read each situation and choose the response that follows security protocol.',
       scenarios,
       hint: HINTS[this.difficulty]
     }
@@ -136,5 +136,3 @@ export class SocialEngineeringTask extends BaseTask {
     return userInput.every((choice, idx) => choice === this.solution[idx])
   }
 }
-
-

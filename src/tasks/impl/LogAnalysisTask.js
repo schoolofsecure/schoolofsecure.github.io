@@ -8,7 +8,6 @@ const IPS = ['10.0.4.12', '172.16.9.8', '192.168.1.55', '203.0.113.44', '198.51.
 
 export class LogAnalysisTask extends BaseTask {
   static create({ id, difficulty, levelNumber = 2, slot = 1 }) {
-    // styleConfig randomRules használata
     const rules = StyleHelper.getRandomRules('LOG_ANALYSIS')
     const complexity = StyleHelper.getComplexity(difficulty)
     
@@ -56,11 +55,10 @@ export class LogAnalysisTask extends BaseTask {
     if (this.payload) return this.payload
     const { rows, anomalies, levelNumber, slot } = this.parameters
     
-    // Fix narratíva minden LogAnalysisTask-nál
     const narrative = {
-        intro: 'Ahogy a rendszer biztonsági szerverszobájába lépsz, a levegő vibrál. A ventilátorok túl gyorsan pörögnek, a monitorokon pedig remegő sorok futnak.',
-        task: 'A technikusok szerint valaki éjjel hozzáfért a rendszerhez és „kitisztította" a nyomait. Csakhogy a hacker amatőr hibát vétett: hátrahagyott egy félbehagyott logfájlt, amelyben a fontos részeket ugyan törölte, de egy mintát nem tudott eltakarni.',
-        hint: 'Figyeld a kulcs-érték párokat. Minden érték vezető karaktere fontos a következő feladathoz. Gyűjtsd össze ezeket a karaktereket, és rakd össze a jelszót!'
+        intro: 'As you enter the security server room, the air hums with tension. Fans spin too fast, and trembling lines scroll across the monitors.',
+        task: 'Technicians say someone accessed the system overnight and "cleaned up" their tracks. But the intruder made a rookie mistake: they left behind a half-finished log file — important parts were deleted, but one pattern could not be hidden.',
+        hint: 'Watch the key-value pairs. The leading character of each value matters for the next task. Collect those characters and assemble the password!'
     }
     this.solution = anomalies.sort((a, b) => a - b)
     
@@ -80,5 +78,3 @@ export class LogAnalysisTask extends BaseTask {
     return JSON.stringify(sortedInput) === JSON.stringify(this.solution)
   }
 }
-
-

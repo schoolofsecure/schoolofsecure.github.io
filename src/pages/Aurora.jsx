@@ -3,6 +3,8 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
 import { sanitizeErrorMessage } from '../utils/sanitize'
 import { ugyConfigs } from './ugyConfigs.jsx'
+import SiteNav from '../components/SiteNav'
+import { logger } from '../utils/logger'
 import '../index.css'
 import '../styles/aurora.css'
 
@@ -37,7 +39,7 @@ const Aurora = () => {
 
   useEffect(() => {
     if (data?.mission) {
-      setEntryStatus(data.mission.statusReady || '[status] READY — várakozás a bevitelre…')
+      setEntryStatus(data.mission.statusReady || '[status] READY — awaiting input…')
       setEntryStatusType('')
     }
   }, [data])
@@ -101,7 +103,7 @@ const Aurora = () => {
   const handleGateSubmit = async (e) => {
     e.preventDefault()
     if (!email.trim() || !password.trim()) {
-      setGateError('Írj be az e-mail címet és a jelszót.')
+      setGateError('Enter your email and password.')
       return
     }
     
@@ -111,14 +113,14 @@ const Aurora = () => {
       setGateError('')
       // A useEffect automatikusan ellenőrzi a mission teljesítését és beállítja a panelt
     } else {
-      setGateError(result.message || 'Bejelentkezés sikertelen.')
+      setGateError(result.message || 'Sign-in failed.')
     }
   }
 
   const handleRegister = async (e) => {
     e.preventDefault()
     if (!email.trim() || !password.trim()) {
-      setGateError('Írj be az e-mail címet és a jelszót.')
+      setGateError('Enter your email and password.')
       setRegistrationSuccess(false)
       return
     }
@@ -135,18 +137,18 @@ const Aurora = () => {
         setGateError('')
         setRegistrationSuccess(true)
       } else {
-        setGateError(result.message || 'Regisztráció sikertelen.')
+        setGateError(result.message || 'Registration failed.')
         setRegistrationSuccess(false)
       }
     } catch (error) {
-      setGateError(sanitizeErrorMessage(error) || 'Regisztráció sikertelen.')
+      setGateError(sanitizeErrorMessage(error) || 'Registration failed.')
       setRegistrationSuccess(false)
     }
   }
 
   const handlePasswordReset = async () => {
     if (!email.trim()) {
-      setPasswordResetMessage('Írj be egy e-mail címet a jelszó emlékeztetőhöz.')
+      setPasswordResetMessage('Enter your email address to reset your password.')
       return
     }
     
@@ -156,10 +158,10 @@ const Aurora = () => {
     try {
       await sendPasswordReset(email)
       // Biztonsági okokból mindig ugyanazt az üzenetet mutatjuk
-      setPasswordResetMessage('Ha a fenti e-mail cím megtalálható az adatbázisunkban, akkor kiküldtünk egy jelszó emlékeztető e-mailt. Ellenőrizd a postaládádat.')
+      setPasswordResetMessage('If that email is registered with us, we sent a password reset link. Check your inbox.')
     } catch (error) {
       // Biztonsági okokból mindig ugyanazt az üzenetet mutatjuk
-      setPasswordResetMessage('Ha a fenti e-mail cím megtalálható az adatbázisunkban, akkor kiküldtünk egy jelszó emlékeztető e-mailt. Ellenőrizd a postaládádat.')
+      setPasswordResetMessage('If that email is registered with us, we sent a password reset link. Check your inbox.')
     }
   }
 
@@ -170,11 +172,11 @@ const Aurora = () => {
     try {
       const missionResult = await saveLevelCompletion('mission')
       if (!missionResult?.success) {
-        throw new Error(missionResult?.message || 'Nem sikerült rögzíteni a belépő protokollt.')
+        throw new Error(missionResult?.message || 'Could not record entry protocol completion.')
       }
       const ugy1Result = await saveLevelCompletion('ugy1')
       if (!ugy1Result?.success) {
-        throw new Error(ugy1Result?.message || 'Nem sikerült rögzíteni az első ügyet.')
+        throw new Error(ugy1Result?.message || 'Could not record the first case.')
       }
       // Jelöljük meg, hogy látta a promptot (Firebase-ben)
       await setRetroPromptSeen()
@@ -186,7 +188,7 @@ const Aurora = () => {
         window.updateLevelAccess()
       }
     } catch (error) {
-      setRetroError(sanitizeErrorMessage(error) || 'Nem sikerült rögzíteni a teljesítést. Próbáld meg újra.')
+      setRetroError(sanitizeErrorMessage(error) || 'Could not save your progress. Please try again.')
     } finally {
       setRetroSaving(false)
     }
@@ -205,17 +207,17 @@ const Aurora = () => {
     const v = entryCode.trim()
     
     if (!v) {
-      setEntryStatus(data.mission.statusErrEmpty || '[status] HIBA — üres bevitel.')
+      setEntryStatus(data.mission.statusErrEmpty || '[status] ERROR — empty input.')
       setEntryStatusType('err')
       return
     }
     if (!allowed.test(v)) {
-      setEntryStatus(data.mission.statusErrChars || '[status] HIBA — csak betűk, számok és kötőjel engedélyezett.')
+      setEntryStatus(data.mission.statusErrChars || '[status] ERROR — letters, numbers, and hyphens only.')
       setEntryStatusType('err')
       return
     }
     if (v.toUpperCase() === (data.mission.expected || '').toUpperCase()) {
-      setEntryStatus(data.mission.statusOk || '[status] ACCESS GRANTED — belépő protokoll teljesítve.')
+      setEntryStatus(data.mission.statusOk || '[status] ACCESS GRANTED — entry protocol complete.')
       setEntryStatusType('ok')
       
       // Firebase mentés, ha be van jelentkezve
@@ -228,8 +230,8 @@ const Aurora = () => {
             setShowLevels(true)
           }, 1000)
         } catch (error) {
-          logger.warn('Nem sikerült menteni a mission teljesítését Firebase-be:', error)
-          setEntryStatus('Hiba történt a mentés során. Próbáld újra.')
+          logger.warn('Could not save mission completion to Firebase:', error)
+          setEntryStatus('Something went wrong while saving. Please try again.')
           setEntryStatusType('err')
         }
       } else {
@@ -240,7 +242,7 @@ const Aurora = () => {
         }, 1000)
       }
     } else {
-      setEntryStatus(data.mission.statusErrWrong || '[status] ACCESS DENIED — ellenőrizd az „ACCESS" írásmódját és a kötőjeleket.')
+      setEntryStatus(data.mission.statusErrWrong || '[status] ACCESS DENIED — check the spelling of "ACCESS" and the hyphens.')
       setEntryStatusType('err')
     }
   }
@@ -303,60 +305,24 @@ const Aurora = () => {
   }, [])
 
   if (!data) {
-    return <div className="container">Betöltés...</div>
+    return <div className="container">Loading…</div>
   }
 
   return (
     <div className="aurora-container">
-      <header className="aurora-header">
-        <Link to="/" className="aurora-brand" aria-label="CyberMystery – Vissza a főoldalra">
-          <div className="brand-badge">CM</div>
-          <div className="brand-title">CyberMystery</div>
-        </Link>
-        {isAuthenticated && user && (
-          <Link
-            to="/profile"
-            style={{
-              marginLeft: 'auto',
-              padding: '8px 16px',
-              fontSize: '13px',
-              background: 'rgba(255,255,255,0.05)',
-              border: '1px solid rgba(207,230,255,0.2)',
-              color: 'var(--muted)',
-              borderRadius: '6px',
-              cursor: 'pointer',
-              fontFamily: 'Rajdhani, Inter, sans-serif',
-              fontWeight: 500,
-              transition: 'all 0.2s',
-              textDecoration: 'none',
-              display: 'inline-flex',
-              alignItems: 'center'
-            }}
-            onMouseEnter={(e) => {
-              e.target.style.background = 'rgba(255,255,255,0.1)'
-              e.target.style.color = '#cfe6ff'
-            }}
-            onMouseLeave={(e) => {
-              e.target.style.background = 'rgba(255,255,255,0.05)'
-              e.target.style.color = 'var(--muted)'
-            }}
-          >
-            Profil
-          </Link>
-        )}
-      </header>
+      <SiteNav />
 
       {!unlocked && (
         <div className="gate" id="gate">
           <div className="gate-card">
-            <h1 id="gateTitle">{data.gate?.title || 'Belépés szükséges'}</h1>
+            <h1 id="gateTitle">{data.gate?.title || 'Sign in required'}</h1>
             <p id="gateDesc">{data.gate?.desc || ''}</p>
             <form id="gateForm" className="gate-form" onSubmit={handleGateSubmit}>
               <input
                 id="email"
                 className="input"
                 type="email"
-                placeholder="E-mail cím"
+                placeholder="Email address"
                 autoComplete="email"
                 value={email}
                 onChange={(e) => {
@@ -371,7 +337,7 @@ const Aurora = () => {
                 id="password"
                 className="input"
                 type="password"
-                placeholder="Jelszó"
+                placeholder="Password"
                 autoComplete="current-password"
                 value={password}
                 onChange={(e) => {
@@ -382,8 +348,8 @@ const Aurora = () => {
                 style={{marginBottom: '10px'}}
               />
               <div style={{display: 'flex', gap: '10px', flexWrap: 'nowrap', alignItems: 'center'}}>
-                <button className="btn" type="submit">Bejelentkezés</button>
-                <button className="btn-ghost" type="button" onClick={handleRegister}>Regisztráció</button>
+                <button className="btn" type="submit">Sign in</button>
+                <button className="btn-ghost" type="button" onClick={handleRegister}>Register</button>
                 <button 
                   className="btn-ghost" 
                   type="button" 
@@ -395,7 +361,7 @@ const Aurora = () => {
                     whiteSpace: 'nowrap'
                   }}
                 >
-                  Jelszó emlékeztető
+                  Reset password
                 </button>
               </div>
             </form>
@@ -409,8 +375,8 @@ const Aurora = () => {
                 color: 'var(--ok)',
                 fontSize: '14px'
               }}>
-                ✓ Sikeres regisztráció! Küldtünk egy megerősítő e-mailt az <strong>{email}</strong> címre.<br />
-                Ellenőrizd a postaládádat, majd jelentkezz be a jelszóval, miután megerősítetted az e-mailt.
+                ✓ Registration successful! We sent a confirmation email to <strong>{email}</strong>.<br />
+                Check your inbox, then sign in after you verify your email.
               </div>
             )}
             {passwordResetMessage && (
@@ -452,9 +418,9 @@ const Aurora = () => {
                   background:'rgba(5,16,29,0.8)'
                 }}
               >
-                <h3 style={{marginTop:0, fontSize:'16px'}}>Már megoldottad korábban?</h3>
+                <h3 style={{marginTop:0, fontSize:'16px'}}>Already solved this before?</h3>
                 <p style={{color:'var(--muted)', margin:'4px 0 12px'}}>
-                  Ha regisztráció előtt már teljesítetted a belépő protokollt és az első ügyet, most vissza tudjuk jelölni neked.
+                  If you completed the entry protocol and the first case before registering, we can mark them as done on your account.
                 </p>
                 <div style={{display:'flex', gap:'10px', flexWrap:'wrap'}}>
                   <button
@@ -463,14 +429,14 @@ const Aurora = () => {
                     onClick={handleRetroCompletionClaim}
                     disabled={retroSaving}
                   >
-                    {retroSaving ? 'Mentés folyamatban…' : 'Igen, már megoldottam'}
+                    {retroSaving ? 'Saving…' : 'Yes, I already solved it'}
                   </button>
                   <button
                     className="btn-ghost"
                     type="button"
                     onClick={handleRetroDismiss}
                   >
-                    Nem, most fogom megoldani
+                    No, I'll solve it now
                   </button>
                 </div>
                 {retroError && (
@@ -505,7 +471,7 @@ const Aurora = () => {
                       }
                     }}
                   />
-                  <button id="entryBtn" className="btn" onClick={handleEntrySubmit}>Beküldés</button>
+                  <button id="entryBtn" className="btn" onClick={handleEntrySubmit}>Submit</button>
                 </div>
                 <div className="cm-hint">
                   <details>
@@ -569,8 +535,8 @@ const Aurora = () => {
                       position: 'relative'
                     }}
                   >
-                    <span className="level-label">Ügy #{card.n}</span>
-                    <img src={card.img} alt={`Ügy ${card.n}`} loading="lazy" />
+                    <span className="level-label">Case #{card.n}</span>
+                    <img src={card.img} alt={`Case ${card.n}`} loading="lazy" />
                     <div className="case-title">{card.title}</div>
                     {isCompleted && (
                       <div 
@@ -589,7 +555,7 @@ const Aurora = () => {
                           letterSpacing: '0.3px'
                         }}
                       >
-                        ✓ Teljesítve
+                        ✓ Completed
                       </div>
                     )}
                   </Link>
@@ -603,8 +569,8 @@ const Aurora = () => {
                       filter: 'grayscale(1) opacity(0.8)'
                     }}
                   >
-                    <span className="level-label">Ügy #{card.n}</span>
-                    <img src={card.img} alt={`Ügy ${card.n}`} loading="lazy" />
+                    <span className="level-label">Case #{card.n}</span>
+                    <img src={card.img} alt={`Case ${card.n}`} loading="lazy" />
                     <div className="case-title">{card.title}</div>
                     {showDecember6 && (
                       <div 
@@ -629,7 +595,7 @@ const Aurora = () => {
                           letterSpacing: '0.3px'
                         }}
                       >
-                        December 6-án, este 7 órakor nyílik
+                        Opens December 6 at 7 PM
                       </div>
                     )}
                     {showDecember13 && (
@@ -655,11 +621,11 @@ const Aurora = () => {
                           letterSpacing: '0.3px'
                         }}
                       >
-                        December 18-án, este 7 órakor nyílik
+                        Opens December 18 at 7 PM
                       </div>
                     )}
                     {!showDecember6 && !showDecember13 && (
-                    <span className="coming" aria-label="Zárolt">🔒</span>
+                    <span className="coming" aria-label="Locked">🔒</span>
                     )}
                   </div>
                 )

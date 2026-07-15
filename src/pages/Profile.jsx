@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
 import { useScoring } from '../contexts/ScoringContext'
+import SiteNav from '../components/SiteNav'
 import '../index.css'
 
 const Profile = () => {
@@ -28,7 +29,6 @@ const Profile = () => {
       const highest = await getHighestCompletedLevel()
       setHighestLevel(highest)
       
-      // Betöltjük, hogy mely pályák teljesítve vannak
       const completed = []
       for (let i = 1; i <= 12; i++) {
         const isCompleted = await checkLevelCompleted(`ugy${i}`)
@@ -58,7 +58,7 @@ const Profile = () => {
     if (result.success) {
       navigate('/')
     } else {
-      setDeleteError(result.message || 'Fiók törlése sikertelen.')
+      setDeleteError(result.message || 'Account deletion failed.')
       setDeleteLoading(false)
     }
   }
@@ -68,41 +68,36 @@ const Profile = () => {
   }
 
   const levelNames = {
-    1: 'A Titkosított Adatcsomag',
-    2: 'A Hamisított Archívum',
-    3: 'A Kézbesítetlen Üzenet',
-    4: 'A Hiányzó Idővonal',
-    5: 'A Rejtett Metaadat',
-    6: 'A Szivárgó Port',
-    7: 'A Kettős Identitás',
-    8: 'A Törött Kulcs',
-    9: 'A Megszakított Átvitel',
-    10: 'A Phantom‑Profil',
-    11: 'A Lopott Árnyékfiók',
-    12: 'A Főkolompos'
+    1: 'The Encrypted Data Packet',
+    2: 'The Forged Archive',
+    3: 'The Undelivered Message',
+    4: 'The Missing Timeline',
+    5: 'The Hidden Metadata',
+    6: 'The Leaking Port',
+    7: 'The Dual Identity',
+    8: 'The Broken Key',
+    9: 'The Interrupted Transmission',
+    10: 'The Phantom Profile',
+    11: 'The Stolen Shadow Account',
+    12: 'The Mastermind'
   }
 
   return (
     <div className="container">
-      <header>
-        <Link to="/aurora" className="brand" aria-label="CyberMystery – Vissza az ügyekhez">
-          <div className="brand-badge">CM</div>
-          <div>Profil</div>
-        </Link>
-      </header>
+      <SiteNav />
 
       <main>
         <div className="card" style={{ maxWidth: '600px', margin: '0 auto' }}>
-          <h1 style={{ marginTop: 0 }}>Profil</h1>
+          <h1 style={{ marginTop: 0 }}>Profile</h1>
           
           <div style={{ marginBottom: '24px', paddingBottom: '24px', borderBottom: '1px solid rgba(207,230,255,0.2)' }}>
             <div style={{ marginBottom: '8px' }}>
-              <strong style={{ color: 'var(--muted)', fontSize: '13px' }}>E-mail cím</strong>
+              <strong style={{ color: 'var(--muted)', fontSize: '13px' }}>Email address</strong>
             </div>
             <div style={{ fontSize: '16px', color: '#cfe6ff' }}>{user.email}</div>
             {!user.emailVerified && (
               <div style={{ marginTop: '8px', padding: '8px', background: 'rgba(255,193,7,0.1)', border: '1px solid rgba(255,193,7,0.3)', borderRadius: '6px', fontSize: '13px', color: '#ffc107' }}>
-                ⚠️ Az e-mail címed még nincs megerősítve
+                ⚠️ Your email address is not verified yet
               </div>
             )}
           </div>
@@ -110,29 +105,29 @@ const Profile = () => {
           {stats && (
             <>
               <div style={{ marginBottom: '24px', paddingBottom: '24px', borderBottom: '1px solid rgba(207,230,255,0.2)' }}>
-                <h3 style={{ marginTop: 0, marginBottom: '16px', fontSize: '18px' }}>Statisztikák</h3>
+                <h3 style={{ marginTop: 0, marginBottom: '16px', fontSize: '18px' }}>Statistics</h3>
                 
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: '12px', marginBottom: '16px' }}>
                   <div style={{ padding: '12px', background: 'rgba(0,229,255,0.1)', borderRadius: '8px', border: '1px solid rgba(0,229,255,0.2)' }}>
-                    <div style={{ fontSize: '11px', color: 'var(--muted)', marginBottom: '4px' }}>Pontszám</div>
+                    <div style={{ fontSize: '11px', color: 'var(--muted)', marginBottom: '4px' }}>Score</div>
                     <div style={{ fontSize: '20px', fontWeight: 700, color: '#00e5ff' }}>{stats.totalPoints || 0}</div>
                   </div>
                   
                   {currentRank && (
                     <div style={{ padding: '12px', background: 'rgba(0,229,255,0.1)', borderRadius: '8px', border: '1px solid rgba(0,229,255,0.2)' }}>
-                      <div style={{ fontSize: '11px', color: 'var(--muted)', marginBottom: '4px' }}>Rang</div>
+                      <div style={{ fontSize: '11px', color: 'var(--muted)', marginBottom: '4px' }}>Rank</div>
                       <div style={{ fontSize: '16px', fontWeight: 600, color: '#00e5ff' }}>{currentRank.name}</div>
                     </div>
                   )}
                   
                   <div style={{ padding: '12px', background: 'rgba(0,229,255,0.1)', borderRadius: '8px', border: '1px solid rgba(0,229,255,0.2)' }}>
-                    <div style={{ fontSize: '11px', color: 'var(--muted)', marginBottom: '4px' }}>Teljesített pályák</div>
+                    <div style={{ fontSize: '11px', color: 'var(--muted)', marginBottom: '4px' }}>Cases completed</div>
                     <div style={{ fontSize: '20px', fontWeight: 700, color: '#00e5ff' }}>{stats.completedLevels || 0}</div>
                   </div>
                   
                   {stats.perfectStreak > 0 && (
                     <div style={{ padding: '12px', background: 'rgba(51,255,153,0.1)', borderRadius: '8px', border: '1px solid rgba(51,255,153,0.2)' }}>
-                      <div style={{ fontSize: '11px', color: 'var(--muted)', marginBottom: '4px' }}>Hibátlan sorozat</div>
+                      <div style={{ fontSize: '11px', color: 'var(--muted)', marginBottom: '4px' }}>Perfect streak</div>
                       <div style={{ fontSize: '20px', fontWeight: 700, color: '#33ff99' }}>{stats.perfectStreak}</div>
                     </div>
                   )}
@@ -140,7 +135,7 @@ const Profile = () => {
 
                 {completedLevels.length > 0 && (
                   <div style={{ marginTop: '16px' }}>
-                    <div style={{ fontSize: '13px', color: 'var(--muted)', marginBottom: '8px' }}>Teljesített ügyek:</div>
+                    <div style={{ fontSize: '13px', color: 'var(--muted)', marginBottom: '8px' }}>Completed cases:</div>
                     <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
                       {completedLevels.map(level => (
                         <span
@@ -156,7 +151,7 @@ const Profile = () => {
                             fontWeight: 600
                           }}
                         >
-                          Ügy #{level}
+                          Case #{level}
                         </span>
                       ))}
                     </div>
@@ -167,7 +162,7 @@ const Profile = () => {
           )}
 
           <div style={{ marginBottom: '24px' }}>
-            <h3 style={{ marginTop: 0, marginBottom: '16px', fontSize: '18px' }}>Fiók beállítások</h3>
+            <h3 style={{ marginTop: 0, marginBottom: '16px', fontSize: '18px' }}>Account settings</h3>
             
             <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
               <button
@@ -179,18 +174,18 @@ const Profile = () => {
                   justifyContent: 'flex-start'
                 }}
               >
-                Kijelentkezés
+                Sign out
               </button>
             </div>
           </div>
 
           <div style={{ paddingTop: '24px', borderTop: '1px solid rgba(255,107,107,0.2)' }}>
-            <h3 style={{ marginTop: 0, marginBottom: '12px', fontSize: '18px', color: '#ff6b6b' }}>Veszélyes zóna</h3>
+            <h3 style={{ marginTop: 0, marginBottom: '12px', fontSize: '18px', color: '#ff6b6b' }}>Danger zone</h3>
             
             {!showDeleteConfirm ? (
               <div>
                 <p className="muted" style={{ marginBottom: '12px', fontSize: '14px' }}>
-                  A fiók törlése végleges. Minden adatod, pontszámaid és teljesítéseid törlődnek, és ezt nem lehet visszavonni.
+                  Deleting your account is permanent. All your data, scores, and progress will be removed and cannot be recovered.
                 </p>
                 <button
                   className="btn-ghost"
@@ -201,13 +196,13 @@ const Profile = () => {
                     color: '#ff6b6b'
                   }}
                 >
-                  Fiók törlése
+                  Delete account
                 </button>
               </div>
             ) : (
               <div>
                 <p className="muted" style={{ marginBottom: '12px', fontSize: '14px' }}>
-                  <strong>Biztos vagy benne?</strong> Ez a művelet véglegesen törli a fiókodat és minden adatodat.
+                  <strong>Are you sure?</strong> This will permanently delete your account and all associated data.
                 </p>
                 {deleteError && (
                   <div style={{ marginBottom: '12px', padding: '10px', background: 'rgba(255,107,107,0.1)', border: '1px solid rgba(255,107,107,0.3)', borderRadius: '6px', color: '#ff6b6b', fontSize: '13px' }}>
@@ -226,7 +221,7 @@ const Profile = () => {
                       color: '#ff6b6b'
                     }}
                   >
-                    {deleteLoading ? 'Törlés folyamatban...' : 'Igen, törlöm a fiókomat'}
+                    {deleteLoading ? 'Deleting…' : 'Yes, delete my account'}
                   </button>
                   <button
                     className="btn-ghost"
@@ -237,7 +232,7 @@ const Profile = () => {
                     disabled={deleteLoading}
                     style={{ padding: '12px 18px' }}
                   >
-                    Mégse
+                    Cancel
                   </button>
                 </div>
               </div>
@@ -250,4 +245,3 @@ const Profile = () => {
 }
 
 export default Profile
-

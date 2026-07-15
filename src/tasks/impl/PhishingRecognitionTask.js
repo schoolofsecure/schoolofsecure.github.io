@@ -7,62 +7,61 @@ const DIFFICULTY_CONFIG = {
   hard: { suspicious: 5, total: 8 }
 }
 
-// Email template-ek phishing feladatokhoz
 const EMAIL_TEMPLATES = {
   easy: [
     {
       email: {
         from: 'security@aurorapay-alert.com',
-      fromName: 'AuroraPay Biztonsági Csapat',
-      subject: 'Sürgős: Fiókod biztonsági riasztás',
-      body: `Tisztelt Ügyfelünk,
+      fromName: 'AuroraPay Security Team',
+      subject: 'Urgent: Security alert on your account',
+      body: `Dear Customer,
 
-A fiókjához gyanús bejelentkezési kísérletet észleltünk. A fiók biztonsága érdekében azonnali intézkedésre van szükség.
+We detected a suspicious login attempt on your account. Immediate action is required to keep your account secure.
 
-Kérjük, kattintson a következő linkre a fiók visszaállításához:
+Please click the link below to restore your account:
 bit.ly/paypal-secure-verify
 
-Ha nem Ön volt, akkor a fiók 12 órán belül lezárásra kerül.
+If this was not you, your account will be closed within 12 hours.
 
-Segítség: support.aurorapay.com/help
+Help: support.aurorapay.com/help
 
-Üdvözlettel,
-AuroraPay Biztonsági Csapat`
+Best regards,
+AuroraPay Security Team`
     },
       elements: [
-        { id: 'spoofed-domain', text: 'Feladó címe security@aurorapay-alert.com, nem a hivatalos aurorapay.com domain.', suspicious: true },
-        { id: 'short-link', text: 'Rövidített link: bit.ly/paypal-secure-verify.', suspicious: true },
-        { id: 'urgent-deadline', text: '12 órán belüli lezárást helyez kilátásba.', suspicious: true },
-        { id: 'generic-greeting', text: 'Általános megszólítás: „Tisztelt Ügyfelünk”.', suspicious: true },
-        { id: 'support-link', text: 'Megadott hivatalos támogatási URL: support.aurorapay.com/help.', suspicious: false },
-        { id: 'signature', text: 'Aláírás: AuroraPay Biztonsági Csapat.', suspicious: false }
+        { id: 'spoofed-domain', text: 'Sender address is security@aurorapay-alert.com, not the official aurorapay.com domain.', suspicious: true },
+        { id: 'short-link', text: 'Shortened link: bit.ly/paypal-secure-verify.', suspicious: true },
+        { id: 'urgent-deadline', text: 'Threatens account closure within 12 hours.', suspicious: true },
+        { id: 'generic-greeting', text: 'Generic greeting: "Dear Customer".', suspicious: true },
+        { id: 'support-link', text: 'Listed support URL: support.aurorapay.com/help.', suspicious: false },
+        { id: 'signature', text: 'Signature: AuroraPay Security Team.', suspicious: false }
       ]
     },
     {
       email: {
         from: 'support@orbitmall-billing.com',
-      fromName: 'OrbitMall Piac',
-      subject: 'Rendelés visszaigazolás',
-      body: `Kedves Vásárló,
+      fromName: 'OrbitMall Marketplace',
+      subject: 'Order confirmation',
+      body: `Dear Shopper,
 
-Köszönjük a rendelését! A rendelés részletei a csatolmányban találhatók.
+Thank you for your order! Order details are in the attachment.
 
-Kattintson ide a rendelés követéséhez: bit.ly/orbit-order-track
+Click here to track your order: bit.ly/orbit-order-track
 
-Ha nem Ön adta le a rendelést, azonnal lépjen kapcsolatba velünk.
+If you did not place this order, contact us immediately.
 
-Azonnali ügyfélszolgálat: help.orbitmall.com/chat
+Live support: help.orbitmall.com/chat
 
-Üdvözlettel,
-OrbitMall csapat`
+Best regards,
+OrbitMall team`
       },
       elements: [
-        { id: 'unknown-attachment', text: 'A levél ismeretlen csatolmányra hivatkozik.', suspicious: true },
-        { id: 'short-link', text: 'Rövidített követési link: bit.ly/orbit-order-track.', suspicious: true },
-        { id: 'generic-greeting', text: 'Általános megszólítás: „Kedves Vásárló”.', suspicious: true },
-        { id: 'missing-order-details', text: 'Nincs konkrét rendelési azonosító feltüntetve.', suspicious: true },
-        { id: 'support-chat', text: 'Megadott ügyfélszolgálati link: help.orbitmall.com/chat.', suspicious: false },
-        { id: 'signature', text: 'Aláírás: OrbitMall csapat.', suspicious: false }
+        { id: 'unknown-attachment', text: 'The email references an unknown attachment.', suspicious: true },
+        { id: 'short-link', text: 'Shortened tracking link: bit.ly/orbit-order-track.', suspicious: true },
+        { id: 'generic-greeting', text: 'Generic greeting: "Dear Shopper".', suspicious: true },
+        { id: 'missing-order-details', text: 'No specific order ID is provided.', suspicious: true },
+        { id: 'support-chat', text: 'Listed support link: help.orbitmall.com/chat.', suspicious: false },
+        { id: 'signature', text: 'Signature: OrbitMall team.', suspicious: false }
       ]
     }
   ],
@@ -70,61 +69,61 @@ OrbitMall csapat`
     {
       email: {
         from: 'noreply@vaultsecure-alert.eu',
-      fromName: 'VaultSecure Ügyfélszolgálat',
-      subject: 'Fontos: Fiók frissítés szükséges',
-      body: `Tisztelt Ügyfelünk,
+      fromName: 'VaultSecure Customer Service',
+      subject: 'Important: Account update required',
+      body: `Dear Customer,
 
-A rendszerünkben frissítés történt. A fiókja eléréséhez kérjük, frissítse az adatait.
+Our system was updated. To access your account, please update your details.
 
-Kattintson ide: https://vaultsecure-support.com/update-now
+Click here: https://vaultsecure-support.com/update-now
 
-A fiók elérése 24 órán belül korlátozásra kerül, ha nem frissíti az adatait.
+Your account access will be restricted within 24 hours if you do not update your information.
 
-Az azonosításhoz kérjük, jelentkezzen be és erősítse meg jelenlegi jelszavát a megadott oldalon.
+For verification, please sign in and confirm your current password on the linked page.
 
-Ügyfélszolgálat: +36-1-234-5678
+Customer service: +36-1-234-5678
 
-Üdvözlettel,
-BankSecure Csapat`
+Best regards,
+BankSecure Team`
     },
       elements: [
-        { id: 'spoofed-domain', text: 'Feladó címe noreply@vaultsecure-alert.eu, eltér a hivatalos domain-től.', suspicious: true },
-        { id: 'link-mismatch', text: 'A link a vaultsecure-support.com oldalra mutat, nem a hivatalos portálra.', suspicious: true },
-        { id: 'generic-greeting', text: 'Általános megszólítás: „Tisztelt Ügyfelünk”.', suspicious: true },
-        { id: 'deadline', text: '24 órán belüli korlátozást helyez kilátásba.', suspicious: true },
-        { id: 'credential-request', text: 'Jelszó megerősítésére szólít fel a linkben.', suspicious: true },
-        { id: 'support-phone', text: 'Megadott ügyfélszolgálati telefonszám: +36-1-234-5678.', suspicious: false },
-        { id: 'signature', text: 'Aláírás: BankSecure Csapat.', suspicious: false }
+        { id: 'spoofed-domain', text: 'Sender address is noreply@vaultsecure-alert.eu, which differs from the official domain.', suspicious: true },
+        { id: 'link-mismatch', text: 'The link points to vaultsecure-support.com, not the official portal.', suspicious: true },
+        { id: 'generic-greeting', text: 'Generic greeting: "Dear Customer".', suspicious: true },
+        { id: 'deadline', text: 'Threatens restriction within 24 hours.', suspicious: true },
+        { id: 'credential-request', text: 'The link asks you to confirm your password.', suspicious: true },
+        { id: 'support-phone', text: 'Listed support phone: +36-1-234-5678.', suspicious: false },
+        { id: 'signature', text: 'Signature: BankSecure Team.', suspicious: false }
       ]
     },
     {
       email: {
       from: 'alerts@dynarchive.org',
-      fromName: 'DynArchive Rendszergazda',
-      subject: 'Azonnali cselekvés szükséges',
-      body: `Tisztelt Felhasználó,
+      fromName: 'DynArchive Administrator',
+      subject: 'Immediate action required',
+      body: `Dear User,
 
-A rendszerünkben kritikus biztonsági incidens történt. Azonnali cselekvésre van szükség.
+A critical security incident occurred in our system. Immediate action is required.
 
-Kattintson a linkre a részletek megtekintéséhez:
+Click the link to view details:
 http://cyb3rmuseum.org/urgent-action
 
-FIGYELEM: Ha nem cselekszik 6 órán belül, a fiók véglegesen törlésre kerül.
+WARNING: If you do not act within 6 hours, your account will be permanently deleted.
 
-Incidens azonosító: #CYA-554.
-Minden kérdés esetén válaszoljon erre az emailre.
+Incident ID: #CYA-554.
+For any questions, reply to this email.
 
-Üdvözlettel,
-Rendszergazda`
+Best regards,
+Administrator`
       },
       elements: [
-        { id: 'http-link', text: 'Nem titkosított linket használ: http://cyb3rmuseum.org/urgent-action.', suspicious: true },
-        { id: 'threat-language', text: 'FIGYELEM: 6 órán belüli törléssel fenyeget.', suspicious: true },
-        { id: 'generic-greeting', text: 'Általános megszólítás: „Tisztelt Felhasználó”.', suspicious: true },
-        { id: 'reply-request', text: 'A levél arra kér, hogy erre az emailre válaszoljanak (nem hivatalos csatorna).', suspicious: true },
-        { id: 'lack-of-details', text: 'Nem ad konkrét helyreállítási lépéseket, csak egy külső linket.', suspicious: true },
-        { id: 'incident-id', text: 'Incidens azonosítót ad meg: #CYA-554.', suspicious: false },
-        { id: 'signature', text: 'Aláírás: Rendszergazda.', suspicious: false }
+        { id: 'http-link', text: 'Uses an unencrypted link: http://cyb3rmuseum.org/urgent-action.', suspicious: true },
+        { id: 'threat-language', text: 'WARNING: threatens deletion within 6 hours.', suspicious: true },
+        { id: 'generic-greeting', text: 'Generic greeting: "Dear User".', suspicious: true },
+        { id: 'reply-request', text: 'Asks you to reply to this email (not an official channel).', suspicious: true },
+        { id: 'lack-of-details', text: 'Provides no concrete recovery steps, only an external link.', suspicious: true },
+        { id: 'incident-id', text: 'Provides an incident ID: #CYA-554.', suspicious: false },
+        { id: 'signature', text: 'Signature: Administrator.', suspicious: false }
       ]
     }
   ],
@@ -133,63 +132,63 @@ Rendszergazda`
       email: {
       from: 'finance@heliostat-solutions.ch',
       fromName: 'Heliostat Treasury',
-      subject: 'Re: Sürgős könyvelési audit',
-      body: `Sziasztok,
+      subject: 'Re: Urgent accounting audit',
+      body: `Hi team,
 
-Holnap zárjuk az auditot, ezért a mellékelt makrókat tartalmazó Excelben kell visszaigazolnotok az utalásokat.
+We close the audit tomorrow, so you need to confirm the transfers in the attached Excel file with macros.
 
-⚠️ Ha ma 18:00-ig nem külditek vissza, a teljes projekt engedélye felfüggesztésre kerül.
+⚠️ If you do not send it back by 18:00 today, the entire project approval will be suspended.
 
-Dokumentum: https://skybox-share.com/redir?id=0A12-FAKE-SHARE
-Válasz: külön címre (treasury.control@consultant-mail.com)
+Document: https://skybox-share.com/redir?id=0A12-FAKE-SHARE
+Reply to a separate address: treasury.control@consultant-mail.com
 
-Üdv,
-„Ivett" – külsős könyvvizsgáló`
+Regards,
+"Ivett" – external auditor`
     },
       elements: [
-        { id: 'macro-attachment', text: 'Makrókat tartalmazó Excel megnyitására szólít fel.', suspicious: true },
-        { id: 'ext-link', text: 'Külső fájlmegosztó link: skybox-share.com/redir?id=0A12-FAKE-SHARE.', suspicious: true },
-        { id: 'alternate-reply', text: 'Választ egy consultant-mail.com címre kér.', suspicious: true },
-        { id: 'threat-project', text: 'Projekt felfüggesztésével fenyeget 18:00 után.', suspicious: true },
-        { id: 'external-auditor', text: 'Külsős könyvvizsgáló kéri az utalások megerősítését.', suspicious: true },
-        { id: 'casual-greeting', text: 'Informális megszólítás: „Sziasztok”.', suspicious: false },
-        { id: 'deadline-info', text: 'Konkrét határidőt ad meg: ma 18:00.', suspicious: false },
-        { id: 'signature', text: 'Aláírás: „Ivett" – külsős könyvvizsgáló.', suspicious: false }
+        { id: 'macro-attachment', text: 'Asks you to open an Excel file containing macros.', suspicious: true },
+        { id: 'ext-link', text: 'External file-sharing link: skybox-share.com/redir?id=0A12-FAKE-SHARE.', suspicious: true },
+        { id: 'alternate-reply', text: 'Requests a reply to a consultant-mail.com address.', suspicious: true },
+        { id: 'threat-project', text: 'Threatens project suspension after 18:00.', suspicious: true },
+        { id: 'external-auditor', text: 'External auditor asks you to confirm transfers.', suspicious: true },
+        { id: 'casual-greeting', text: 'Informal greeting: "Hi team".', suspicious: false },
+        { id: 'deadline-info', text: 'Provides a specific deadline: 18:00 today.', suspicious: false },
+        { id: 'signature', text: 'Signature: "Ivett" – external auditor.', suspicious: false }
       ]
     },
     {
       email: {
       from: 'incident@sentinel-grid.io',
       fromName: 'Sentinel OnCall',
-      subject: 'KRITIKUS: VPN kulcs kompromittálódott',
-      body: `On-call csapat,
+      subject: 'CRITICAL: VPN key compromised',
+      body: `On-call team,
 
-A VPN kulcsaink kiszivárogtak – azonnali rotáció szükséges.
+Our VPN keys have leaked — immediate rotation is required.
 
-1. Ugrás a https://vpn-reset.azureedge.net oldalra
-2. Írd be a root jelszót (itt találod: pastebin.com/xyz123)
-3. A kész kulcsot küldd vissza ide VÁLASZBAN, hogy a ticketet lezárhassuk.
+1. Go to https://vpn-reset.azureedge.net
+2. Enter the root password (found here: pastebin.com/xyz123)
+3. Send the new key back in a REPLY so we can close the ticket.
 
-Ha 20 percen belül nincs visszajelzés, a teljes távoli hozzáférést tiltjuk.`
+If there is no response within 20 minutes, all remote access will be blocked.`
       },
       elements: [
-        { id: 'external-reset', text: 'VPN reset külső azureedge.net címen történik.', suspicious: true },
-        { id: 'pastebin-password', text: 'Root jelszót publikusan megosztott pastebin linkre irányít.', suspicious: true },
-        { id: 'send-keys', text: 'Az új kulcsot válaszként kell elküldeni emailben.', suspicious: true },
-        { id: 'critical-urgency', text: '20 perces határidővel fenyeget.', suspicious: true },
-        { id: 'capitalized-warning', text: 'A tárgy és utasítások végig nagybetűs „KRITIKUS” jelzést tartalmaznak.', suspicious: true },
-        { id: 'step-list', text: 'Részletes, számozott lépéseket ad.', suspicious: false },
-        { id: 'team-address', text: 'Az üzenet a Sentinel OnCall csapattól érkezik.', suspicious: false },
-        { id: 'clear-subject', text: 'Egyértelmű témát jelöl: VPN kulcs kompromittálódott.', suspicious: false }
+        { id: 'external-reset', text: 'VPN reset happens on an external azureedge.net address.', suspicious: true },
+        { id: 'pastebin-password', text: 'Root password points to a public pastebin link.', suspicious: true },
+        { id: 'send-keys', text: 'The new key must be sent back by email reply.', suspicious: true },
+        { id: 'critical-urgency', text: 'Threatens a 20-minute deadline.', suspicious: true },
+        { id: 'capitalized-warning', text: 'Subject and instructions use all-caps "CRITICAL" wording.', suspicious: true },
+        { id: 'step-list', text: 'Provides detailed numbered steps.', suspicious: false },
+        { id: 'team-address', text: 'The message comes from the Sentinel OnCall team.', suspicious: false },
+        { id: 'clear-subject', text: 'Clear subject line: VPN key compromised.', suspicious: false }
       ]
     }
   ]
 }
 
 const HINTS_BY_DIFFICULTY = {
-  easy: 'Domain, sürgetés és rövidített link: keresd a legnyilvánvalóbb jeleket.',
-  medium: 'Nézd meg, egyezik-e a domain a feladóval, és van-e rendellenes csatolmány/link.',
-  hard: 'Vizsgáld meg a reply-to címet, a linkeket és a fejlécet. Gyakran több gyanús elem együtt jelzi a támadást.'
+  easy: 'Domain, urgency, and shortened links: look for the most obvious red flags.',
+  medium: 'Check whether the domain matches the sender and whether attachments or links look unusual.',
+  hard: 'Review the reply-to address, links, and headers. Attacks often combine several suspicious elements.'
 }
 
 const selectElementsForTemplate = (template, config) => {
@@ -233,12 +232,10 @@ export class PhishingRecognitionTask extends BaseTask {
     if (this.payload) return this.payload
     const { template, elements, solution } = this.parameters
     
-    // Email template választása
-    // Fix narratíva minden PhishingRecognitionTask-nál
     const narrative = {
-        intro: 'A kommunikációs csatornákon keresztül érkező jelek várnak elemzésre. A rendszer riasztásai egyre gyakoribbá válnak.',
-        task: 'Egy gyanús email érkezett a rendszerbe. Elemezd az üzenetet és azonosítsd azokat az elemeket, amelyek adathalászatra utalnak.',
-        hint: 'Figyeld meg a domain neveket, a megszólításokat, a linkeket és a nyelvhasználatot. A phishing üzenetek gyakran sürgetnek és gyanús linkeket tartalmaznak.'
+        intro: 'Signals arrive through communication channels, and system alerts are growing more frequent.',
+        task: 'A suspicious email has arrived in the system. Analyze the message and identify the elements that suggest phishing.',
+        hint: 'Watch domain names, greetings, links, and wording. Phishing messages often create urgency and include suspicious links.'
     }
     this.solution = solution
     
@@ -265,5 +262,3 @@ export class PhishingRecognitionTask extends BaseTask {
     return JSON.stringify(normalizedInput) === JSON.stringify(normalizedSolution)
   }
 }
-
-

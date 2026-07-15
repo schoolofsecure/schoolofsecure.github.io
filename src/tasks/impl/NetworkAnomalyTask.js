@@ -1,7 +1,6 @@
 import { BaseTask } from '../types/TaskInterface'
 import { Random } from '../utils/random'
 
-// 3 fix szcenárió (easy módban 5 flow, 2 anomália)
 export const SCENARIOS = [
   {
     flows: [
@@ -34,7 +33,6 @@ export const SCENARIOS = [
 
 export class NetworkAnomalyTask extends BaseTask {
   static create({ id, difficulty }) {
-    // Random választás a 3 fix szcenárió közül
     const scenario = Random.choice(SCENARIOS)
 
     return new NetworkAnomalyTask({
@@ -56,7 +54,7 @@ export class NetworkAnomalyTask extends BaseTask {
       .filter(idx => idx !== null)
     this.payload = {
       flows,
-      hint: 'A normál hálózati forgalom jellemzően kisebb adatmennyiséget és ismert portokat használ. A gyanús kapcsolatok gyakran eltérnek a szokásos mintáktól - figyeld meg az adatmennyiség nagyságrendjét, a port számokat és a cél IP-címeket.'
+      hint: 'Normal network traffic typically uses smaller data volumes and well-known ports. Suspicious connections often break the usual pattern — watch data volume, port numbers, and destination IPs.'
     }
     return this.payload
   }
@@ -69,5 +67,3 @@ export class NetworkAnomalyTask extends BaseTask {
     return JSON.stringify(normalized) === JSON.stringify(solutionSorted)
   }
 }
-
-

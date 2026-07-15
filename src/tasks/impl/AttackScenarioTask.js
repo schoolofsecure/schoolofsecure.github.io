@@ -3,22 +3,22 @@ import { Random } from '../utils/random'
 
 const SCENARIOS = [
   {
-    prompt: 'A felhasználók hamis Google bejelentkezési oldalra jutnak egy SMS-ben küldött linkről.',
+    prompt: 'Users land on a fake Google login page from a link sent by SMS.',
     options: ['Phishing', 'Man-in-the-middle', 'SQL injection'],
     answer: 0
   },
   {
-    prompt: 'A támadó a Wi-Fi hotspot közepén ülve módosítja a forgalmat.',
+    prompt: 'An attacker sits in the middle of a Wi-Fi hotspot and modifies traffic.',
     options: ['DNS poisoning', 'Man-in-the-middle', 'Ransomware'],
     answer: 1
   },
   {
-    prompt: 'Ismeretlen processz tömegesen titkosítja a szerveren lévő adatokat és váltságdíjat kér.',
+    prompt: 'An unknown process mass-encrypts data on a server and demands a ransom.',
     options: ['Ransomware', 'Brute force', 'Session hijack'],
     answer: 0
   },
   {
-    prompt: 'A támadó adatbázisból érzékeny információt szív ki hibás input validáció miatt.',
+    prompt: 'An attacker extracts sensitive data from a database because of weak input validation.',
     options: ['Cross-site scripting', 'SQL injection', 'Command injection'],
     answer: 1
   }
@@ -45,7 +45,7 @@ export class AttackScenarioTask extends BaseTask {
     const { scenarios } = this.parameters
     this.solution = scenarios.map(s => s.answer)
     this.payload = {
-      instructions: 'Az alábbi szcenáriók közül válaszd ki, milyen támadásról van szó.',
+      instructions: 'For each scenario below, identify the type of attack.',
       scenarios
     }
     return this.payload
@@ -58,5 +58,3 @@ export class AttackScenarioTask extends BaseTask {
     return userInput.every((choice, idx) => Number(choice) === this.solution[idx])
   }
 }
-
-

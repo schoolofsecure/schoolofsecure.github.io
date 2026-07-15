@@ -1,49 +1,49 @@
-// Ügyek konfigurációi
+// Case configurations
 import React from 'react'
 export const ugy1Config = {
   level: 1,
-  title: "A múzeum éjszakája",
-  badge: "Múzeum - éjszakai műszak",
-  headerTitle: "A múzeum éjszakája - Ügy #1",
-  narrativeTitle: "A múzeum éjszakája - Ügy #1",
-  narrativeText: "Az üres termekben csak az érzékelők pislognak. Az archívumban mozgás nyomai, de hiányzik az idővonal. A restaurátor szerint \"csak egy kis rendrakás\" - szerintünk nem.",
+  title: "Night at the Museum",
+  badge: "Museum - night shift",
+  headerTitle: "Night at the Museum - Case #1",
+  narrativeTitle: "Night at the Museum - Case #1",
+  narrativeText: "In the empty halls, only the sensors blink. Traces of movement in the archive, but the timeline is missing. The conservator says it's \"just a little tidying up\" - we disagree.",
   isDynamic: false,
   totalTasks: 5,
   images: ['/images/1a.jpg', '/images/1b.jpg', '/images/1c.jpg', '/images/1d.jpg', '/images/1e.jpg'],
   nextLevelRoute: "/ugy2",
-  nextLevelText: "Tovább az Éjféli kézfogásra",
+  nextLevelText: "Continue to Midnight Handshake",
   specialComponents: { wordSearch: true, matchTable: true, archive: true },
   tasks: [
     {
       step: 0,
-      title: "1. feladat",
-      leftTitle: "Rejtjel",
+      title: "Task 1",
+      leftTitle: "Cipher",
       leftContent: (
         <>
           <p className="muted">
-            Éjfél van, a múzeum szerveréről váratlanul titkosított üzenet érkezett.<br /><br />
-            A képernyőn furcsa karakterek villognak, mintha valaki sietve rejtette volna el az üzenetet.<br /><br />
-            <code>Yljbdcc, Crol ohkhw wlwnrvxjbqrn</code><br /><br />
-            A biztonsági csapat tanácstalan, de te, friss kibernyomozóként, készen állsz a felderítésre.
+            It's midnight, and an encrypted message has arrived unexpectedly from the museum server.<br /><br />
+            Strange characters flicker on the screen, as if someone hurried to hide the message.<br /><br />
+            <code>Zdwfk rxw, Crol pljkw eh d vhfuhw djhqw.</code><br /><br />
+            The security team is stumped, but you, a fresh cyber investigator, are ready to dig in.
           </p>
           <div className="statusline">
-            Fejtsd meg a titkosított üzenetet, hogy megtudd az első nyomot a küldetésedhez.
-            A kijelző felvillan, a sorok villogni kezdenek… minden karakter egy újabb nyomot rejt.
-            Ha sikerül megfejtened, a titkosított hálózaton tovább jutsz, és a következő bizonyíték vár.
+            Decrypt the message to uncover the first clue in your mission.
+            The display flashes, the lines begin to blink… every character hides another clue.
+            If you succeed, you'll advance through the encrypted network and the next piece of evidence awaits.
           </div>
         </>
       ),
-      rightTitle: "Válasz",
-      placeholder: "üzenet…",
+      rightTitle: "Answer",
+      placeholder: "message…",
       expectedAnswer: (val, norm) => {
-        const expected = 'Vigyázz, Zoli lehet titkosügynök.';
+        const expected = 'Watch out, Zoli might be a secret agent.';
         return norm(val) === norm(expected);
       },
       hint: (
         <>
           <p className="muted" style={{margin:'8px 0 0'}}>
-            Gondolj az ábécére, és képzeld el, hogy minden betű egy kicsit előrébb vagy hátrébb lép a sorban.
-            A szóközök és írásjelek nem változnak. Próbáld kibogozni a titkos üzenetet, amely el van rejtve a karakterek között.
+            Think about the alphabet, and imagine each letter stepping a little forward or back in the line.
+            Spaces and punctuation stay the same. Try to unravel the secret message hidden among the characters.
           </p>
           <div className="hint-chips" aria-hidden="true">
             <span className="hint-chip">rot‑3</span>
@@ -57,131 +57,131 @@ export const ugy1Config = {
     },
     {
       step: 1,
-      title: "2. feladat",
-      leftTitle: "Torzult rendszerlog",
+      title: "Task 2",
+      leftTitle: "Corrupted system log",
       leftContent: (
         <>
-          <p className="muted">Ahogy a múzeum biztonsági szerverszobájába lépsz, a levegő vibrál.</p>
-          <p className="muted">A ventilátorok túl gyorsan pörögnek, a monitorokon pedig remegő sorok futnak.</p>
+          <p className="muted">As you step into the museum's security server room, the air hums with tension.</p>
+          <p className="muted">The fans spin too fast, and trembling lines scroll across the monitors.</p>
           <p className="muted" style={{marginTop:'8px'}}>
-            A technikusok szerint valaki éjjel hozzáfért a rendszerhez és „kitisztította" a nyomait.
-            Csakhogy a hacker amatőr hibát vétett: hátrahagyott egy félbehagyott logfájlt, amelyben a fontos részeket ugyan törölte,
-            de egy mintát nem tudott eltakarni.
+            Technicians say someone accessed the system at night and "cleaned up" their tracks.
+            But the hacker made a rookie mistake: they left behind an unfinished log file. They deleted the important parts,
+            but couldn't cover up one pattern.
           </p>
-          <p className="muted" style={{marginTop:'8px'}}>A logfájl vége villogva jelenik meg előtted:</p>
-          <div className="console float-soft" aria-label="Rendszer napló">
-            <span className="line"><span className="ts">2025-11-21 09:02:14</span> <span className="lvl info">INFO</span>  <span className="kv">SessionID=Nd0f94be7ac21f44f...</span></span>
-            <span className="line"><span className="ts">2025-11-21 09:02:17</span> <span className="lvl warn">WARN</span>  <span className="kv">PayloadHash=Y57ac90b32df1a...</span></span>
-            <span className="line"><span className="ts">2025-11-21 09:02:20</span> <span className="lvl info">INFO</span>  <span className="kv">LoginToken=Oaa12f8c0bffe942...</span></span>
-            <span className="line"><span className="ts">2025-11-21 09:02:24</span> <span className="lvl error">ERROR</span> <span className="kv">ReqHash=Mc21f9ee8b1127c3...</span></span>
-            <span className="line"><span className="ts">2025-11-21 09:02:28</span> <span className="lvl info">INFO</span>  <span className="kv">OutID=Od991e0bc113fe0...</span></span>
+          <p className="muted" style={{marginTop:'8px'}}>The end of the log file flickers before you:</p>
+          <div className="console float-soft" aria-label="System log">
+            <span className="line"><span className="ts">2025-11-21 09:02:14</span> <span className="lvl info">INFO</span>  <span className="kv">ConnectionID=Cd0f94be7ac21f44f...</span></span>
+            <span className="line"><span className="ts">2025-11-21 09:02:17</span> <span className="lvl warn">WARN</span>  <span className="kv">LoginToken=L57ac90b32df1a...</span></span>
+            <span className="line"><span className="ts">2025-11-21 09:02:20</span> <span className="lvl info">INFO</span>  <span className="kv">UserHash=Uaa12f8c0bffe942...</span></span>
+            <span className="line"><span className="ts">2025-11-21 09:02:24</span> <span className="lvl error">ERROR</span> <span className="kv">EventRef=Ec21f9ee8b1127c3...</span></span>
+            <span className="line"><span className="ts">2025-11-21 09:02:28</span> <span className="lvl info">INFO</span>  <span className="kv">SessionID=Sd991e0bc113fe0...</span></span>
             <span className="line"><span className="ts">2025-11-21 09:02:32</span> <span className="lvl alert">ALERT</span> <span className="kv">KeyRef=Kb019aaef9e13cc1...</span></span>
           </div>
           <div className="statusline" style={{marginTop:'10px'}}>
-            Gyűjtsd össze a naplósorok értékeinek első betűit,
-            olvasd össze kulcsszóvá, majd írj be a mezőbe.
+            Collect the first letters of the log line values,
+            read them together as a keyword, then enter it in the field.
           </div>
         </>
       ),
-      rightTitle: "Válasz",
-      placeholder: "kulcsszó…",
+      rightTitle: "Answer",
+      placeholder: "keyword…",
       expectedAnswer: (val, norm) => {
         const v = norm(val).replace(/[\s\-_.]/g,'');
-        return v === 'NYOMOK';
+        return v === 'CLUES';
       },
       hint: (
         <p className="muted" style={{margin:'8px 0 0'}}>
-          Figyeld a kulcs‑érték párokat. Minden érték vezető karaktere fontos a következő feladathoz.
-          Gyűjtsd össze ezeket a karaktereket, és rakd össze a jelszót!
-          (Magyarázat: a „kulcs‑érték pár" olyan forma, mint „Név=Secure" - a bal oldal a kulcs, a jobb oldal az érték.)
+          Watch the key‑value pairs. Every value's leading character matters for the next task.
+          Collect these characters and assemble the password!
+          (Explanation: a "key‑value pair" looks like "Name=Secure" - the left side is the key, the right side is the value.)
         </p>
       ),
       difficulty: 'medium'
     },
     {
       step: 2,
-      title: "3. feladat",
-      leftTitle: "Titkosított levél",
+      title: "Task 3",
+      leftTitle: "Encrypted letter",
       leftContent: (
         <>
           <div className="card" style={{background:'#0b121c', borderColor:'rgba(207,230,255,0.12)'}}>
             <p className="muted" style={{whiteSpace:'pre-line', margin:0}}>
-Kedves ismeretlen!
+Dear stranger!
 
-Ma nyolckor a kávézónál vártalak volna,
-de három pillanat alatt elszaladt az idő.
+I was supposed to meet you at the café at eight o'clock today,
+but in three moments time slipped away.
 
-Minden percben egyetlen percet gondolok rád,
-és hét lépés távolságban érzem a közelséged.
+Every minute I think of you,
+and seven steps away I feel your closeness.
 
- Először azok a pillanatok törnek elő, amelyek a legerősebben élnek bennem.
- Ezután következik az érzés, ami először megmozdította a szívemet.
- A következő jelek a közénk feszülő tér rezdüléseiben bújnak meg.
- Végül a röpke, elsuhanó percek rajzolják ki a történet teljes képét.
+First come the moments that live most strongly within me.
+Then comes the feeling that first moved my heart.
+The next signs hide in the tremors of the space stretched between us.
+Finally, a single fleeting minute draws the full picture of the story.
 
-Üdvözlettel, S.</p>
+Best regards, S.</p>
           </div>
           <div className="statusline" style={{marginTop:'10px'}}>
-            Gépeld be a 4 számjegyű kulcskódot - a levél suttogja a megoldást.
+            Enter the 4-digit key code - the letter whispers the answer.
           </div>
         </>
       ),
-      rightTitle: "Válasz",
-      placeholder: "4 számjegy…",
+      rightTitle: "Answer",
+      placeholder: "4 digits…",
       expectedAnswer: (val, _norm) => {
         const v = String(val||'').replace(/\D/g,'');
         return v === '3871';
       },
-      okText: "Helyes! Tovább…",
-      errText: "Nem egészen - figyeld a számokat szavakban és a sorrendet.",
+      okText: "Correct! Continue…",
+      errText: "Not quite - watch the numbers hidden in words and their order.",
       hint: (
         <p className="muted" style={{margin:'8px 0 0'}}>
-          Figyeld a levél apró utalásait - bizonyos szavak mögött rejlenek a kulcs jelei.
-          A sorrend titka a történet ritmusában bújik meg: csak ha jól olvasod, áll össze a kód.
+          Watch the letter's subtle hints - certain words hide the key signs behind them.
+          The secret of the order lies in the rhythm of the story: only if you read it carefully does the code come together.
         </p>
       ),
       difficulty: 'medium'
     },
     {
       step: 3,
-      title: "4. feladat",
-      leftTitle: "Kódolt betűk",
+      title: "Task 4",
+      leftTitle: "Encoded letters",
       leftContent: (
         <>
           <p className="muted" style={{margin:'8px 0 10px'}}>
-            A múzeum egyik archivált adatcsomagjában furcsa szövegrácsot találtak.<br /><br />
-            A technikusok szerint valaki szándékosan rejtett el benne kulcsszavakat, amelyek a rendszerbe történt behatolásra utalnak.
-            A mintázat túl rendezett ahhoz, hogy véletlen legyen.<br /><br />
-            A biztonsági csapat téged kér, hogy keresd meg a rejtett szavakat — ezek vezetnek a következő nyomhoz.<br />
-            De vigyázz: a támadó mindig hagy egy hamis nyomot is, hogy megtévessze a nyomozókat.
+            In one of the museum's archived data packets, investigators found a strange text grid.<br /><br />
+            Technicians believe someone deliberately hid keywords in it that point to a breach of the system.
+            The pattern is too orderly to be random.<br /><br />
+            The security team asks you to find the hidden words — they lead to the next clue.<br />
+            But be careful: the attacker always leaves a false trail to mislead investigators.
           </p>
           <div className="ws-wrap">
             <div className="ws-board">
               <div id="wsGrid" className="ws-grid"></div>
             </div>
             <div className="ws-words">
-              <strong>Keresendő szavak:</strong>
+              <strong>Words to find:</strong>
               <ul id="wsList" style={{margin:'8px 0 0 16px', padding:0}}></ul>
-              <div id="wsDone" className="ws-done">Kész!</div>
+              <div id="wsDone" className="ws-done">Done!</div>
             </div>
           </div>
           <div className="statusline" style={{marginTop:'10px'}}>
-            Jelöld ki a rácsban elrejtett szavakat.
-            A megtalált szavak első betűi számokká alakulnak - olvasd össze a négy számot kóddá.
+            Highlight the hidden words in the grid.
+            The first letters of the found words become numbers - read the four digits together as a code.
           </div>
         </>
       ),
-      rightTitle: "Kód",
-      placeholder: "4 számjegy…",
+      rightTitle: "Code",
+      placeholder: "4 digits…",
       expectedAnswer: (val, _norm) => {
         const v = String(val||'').replace(/\D/g,'');
         return v === '3542';
       },
-      okText: "Helyes! Tovább…",
-      errText: "Nem egészen - előbb találd meg a szavakat, majd alakítsd számokká az első betűiket.",
+      okText: "Correct! Continue…",
+      errText: "Not quite - find the words first, then turn their first letters into numbers.",
       hint: (
         <p className="muted" style={{margin:'8px 0 0'}}>
-          Minden szó első betűje számot rejt. Figyeld a rácsban elrejtett kulcsszavakat, így juthatsz a következő kódhoz.
+          Each word's first letter hides a number. Watch for the hidden keywords in the grid to reach the next code.
         </p>
       ),
       difficulty: 'hard',
@@ -189,15 +189,15 @@ Minden percben egyetlen percet gondolok rád,
     },
     {
       step: 4,
-      title: "5. feladat",
-      leftTitle: "Nyomok dokumentálása",
+      title: "Task 5",
+      leftTitle: "Documenting clues",
       leftContent: (
         <>
-          <p className="muted">A központ rákérdez, mennyire figyeltél az eddigi nyomokra. Egy ügyes kibernyomozó minden nyomot rendszerez, hogy később könnyen visszakereshető legyen.</p>
-          <p className="muted">Dokumentáld az előző négy feladat nyomait! Írj le minden nyomot külön sorban, és jelöld, honnan származik. Csak akkor tudsz továbblépni, ha mind a négy nyomot helyesen jegyzed fel.</p>
+          <p className="muted">HQ wants to know how closely you've been following the clues so far. A skilled cyber investigator organizes every clue so it can be retrieved easily later.</p>
+          <p className="muted">Document the clues from the previous four tasks! Write each clue on its own line and mark where it came from. You can only move on once all four clues are recorded correctly.</p>
         </>
       ),
-      rightTitle: "Táblázat",
+      rightTitle: "Table",
       needsMatchTable: true,
       difficulty: 'hard'
     }
@@ -206,19 +206,19 @@ Minden percben egyetlen percet gondolok rád,
 
 export const ugy2Config = {
   level: 2,
-  title: "Éjféli kézfogás",
-  badge: "Éjféli kézfogás",
-  headerTitle: "Éjféli kézfogás - Ügy #2",
-  narrativeTitle: "Éjféli kézfogás - Ügy #2",
+  title: "Midnight Handshake",
+  badge: "Midnight Handshake",
+  headerTitle: "Midnight Handshake - Case #2",
+  narrativeTitle: "Midnight Handshake - Case #2",
   narrativeText: (
     <>
       <p>
-        A múzeum csendje most valahogy nyugtalanítóbb, mint előző éjjel. A kamera-rendszer továbbra is akadozik,
-        a hálózati térkép pedig ismeretlen kapcsolatokat mutat - olyanokat, amelyeknek nem kellene létezniük.
+        The museum's silence feels more unsettling tonight than last night. The camera system still stutters,
+        and the network map shows unknown connections - ones that shouldn't exist.
       </p>
       <p>
-        Úgy tűnik, az éjszakai behatoló nem csak a gépeket érintette, hanem lassan próbál behatolni a teljes rendszerbe.
-        Ha sikerül neki mélyebbre jutnia, a múzeum rendszereinek titkai pillanatok alatt kiszivároghatnak. Rajtad múlik, hogy visszaverd a támadást.
+        It seems the night intruder didn't just touch the machines, but is slowly trying to break into the entire system.
+        If they go deeper, the museum's secrets could leak in moments. It's up to you to push back the attack.
       </p>
     </>
   ),
@@ -226,29 +226,29 @@ export const ugy2Config = {
   totalTasks: 5,
   images: ['/images/2a.jpg', '/images/2b.jpg', '/images/2c.jpg', '/images/2d.jpg', '/images/2e.jpg'],
   nextLevelRoute: "/ugy3",
-  nextLevelText: "Tovább az Árnyak Ösvényére",
+  nextLevelText: "Continue to Path of Shadows",
   specialComponents: {},
   taskLabels: {
-    CAESAR: 'Titkosított suttogás',
-    VIGENERE: 'Kulcskeringő',
-    XOR: 'Villanó bitek',
-    HASH_MISMATCH: 'Elcsúszott ujjlenyomat',
-    ICON_MEMORY: 'Szimbólum-memória',
-    PASSWORD_STRENGTH: 'Gyanús jelszóváltoztatás',
-    PHISHING: 'Kurátori csali levél',
-    URL_TRUST: 'Kapuhivatkozás vizsgálat',
-    LOG_ANALYSIS: 'Éjjeli logvadászat',
-    SOCIAL_ENGINEERING: 'Beszivárgó kérés',
-    FIREWALL: 'Rendszerkapcsolat-vadász tűzfal',
-    MISCONFIG: 'Rejtett konfigurációs hiba',
-    RISKY_PERMISSION: 'Veszélyes engedélykérés',
-    SECURITY_DECISION: 'Nyomok mérlegelése',
-    CRYPTO_PUZZLE: 'Mini kripto rejtély',
-    PSEUDOCODE_BUG: 'Pszeudokód csapda',
-    NETWORK_ANOMALY: 'Hálózati burjánzás',
-    EMAIL_HEADER: 'Fejléc-röntgen',
-    ATTACK_SCENARIO: 'Támadási mozaik',
-    ZERO_DAY: 'Nulladik nap dilemma'
+    CAESAR: 'Encrypted whisper',
+    VIGENERE: 'Key carousel',
+    XOR: 'Flashing bits',
+    HASH_MISMATCH: 'Slipped fingerprint',
+    ICON_MEMORY: 'Symbol memory',
+    PASSWORD_STRENGTH: 'Suspicious password change',
+    PHISHING: 'Curatorial bait email',
+    URL_TRUST: 'Gateway link inspection',
+    LOG_ANALYSIS: 'Night log hunt',
+    SOCIAL_ENGINEERING: 'Infiltrating request',
+    FIREWALL: 'System connection hunter firewall',
+    MISCONFIG: 'Hidden configuration error',
+    RISKY_PERMISSION: 'Dangerous permission request',
+    SECURITY_DECISION: 'Weighing the clues',
+    CRYPTO_PUZZLE: 'Mini crypto mystery',
+    PSEUDOCODE_BUG: 'Pseudocode trap',
+    NETWORK_ANOMALY: 'Network sprawl',
+    EMAIL_HEADER: 'Header X-ray',
+    ATTACK_SCENARIO: 'Attack mosaic',
+    ZERO_DAY: 'Zero-day dilemma'
   },
   taskImages: {
     PASSWORD_STRENGTH: '/images/2b.jpg',
@@ -259,63 +259,63 @@ export const ugy2Config = {
   },
   taskStories: {
     PASSWORD_STRENGTH: {
-      title: 'Gyanús jelszóváltoztatás',
-      text: `A rendszer egyik adminfiókja szokatlan jelszóváltoztatási kérelmet küldött be.
+      title: 'Suspicious password change',
+      text: `One of the system's admin accounts submitted an unusual password change request.
 
-A kérelem pont akkor érkezett, amikor az ismeretlen „rendszerkapcsolat létesítése" riasztás aktiválódott.
+The request arrived exactly when the unknown "establish system connection" alert fired.
 
-Most rajtad a sor, hogy dönts:
+Now it's your turn to decide:
 
-A javasolt jelszó megfelel-e a biztonsági követelményeknek, vagy a támadó próbál gyenge autentikációt becsempészni a rendszerbe.
+Does the proposed password meet security requirements, or is the attacker trying to slip weak authentication into the system?
 
-Válaszd ki a legbiztonságosabb döntést, hogy megakadályozd a támadót a további hozzáférésben.`
+Choose the safest decision to stop the attacker from gaining further access.`
     },
     FIREWALL: {
-      title: 'Rendszerkapcsolat-vadász tűzfal',
-      text: `A tűzfal naplója szerint néhány külső cím váratlanul „engedélyezett" állapotba került.
-    Ha rosszul zárod le a szabályt, a múzeum fontos érzékelői némulhatnak el - de ha nyitva hagyod, a támadó tartós hozzáférést szerezhet.
+      title: 'System connection hunter firewall',
+      text: `According to the firewall log, several external addresses unexpectedly moved to "allowed" status.
+    If you lock down the wrong rule, the museum's critical sensors could go silent - but if you leave it open, the attacker could gain persistent access.
 
-A látogatói webkioszkot ideiglenesen leválasztották a belső hálóról, de továbbra is kiszolgálja a digitális tárlat webes felületét.
+The visitor web kiosk was temporarily disconnected from the internal network, but it still serves the digital exhibition's web interface.
 
-Engedélyezd a látogatók által használt webes protokollokat, de tartsd zárva az admin SSH‑csatornát, hogy a kioszkot kívülről ne lehessen módosítani.`
+Allow the web protocols used by visitors, but keep the admin SSH channel closed so the kiosk can't be modified from outside.`
     },
     PHISHING: {
-      title: 'Kurátori csali levél',
-      text: `Egy kurátor postaládájában gyanús üzenet jelent meg, amely állítólag a belső technikai osztálytól érkezett.
+      title: 'Curatorial bait email',
+      text: `A suspicious message appeared in a curator's inbox, supposedly from the internal technical department.
 
-    A logok szerint az éjszakai támadó küldhette, hogy megszerezze a bejelentkezési adatait.
+    Logs suggest the night attacker may have sent it to steal login credentials.
 
-Csak akkor állíthatod le az akciót, ha felismered a rejtett jeleket.
+You can only stop the attack if you recognize the hidden signs.
 
-A logfájlok között elrejtett üzenetek várnak a megfejtésre. A rendszer mindig hagy nyomokat - csak meg kell találnod őket.
+Hidden messages wait among the log files for decryption. The system always leaves traces - you just have to find them.
 
-Egy felhasználó gyanús e-mailt jelentett.
+A user reported a suspicious email.
 
-Elemezd az üzenet tartalmát, és azonosítsd a phishing jellemzőket, hogy megakadályozd a támadást.`
+Analyze the message content and identify phishing characteristics to stop the attack.`
     },
     SOCIAL_ENGINEERING: {
-      title: 'Beszivárgó kérés',
-      text: `Egy sürgős üzenet érkezett - állítólag a múzeum egyik technikusától. A hangvétele személyes, sietős, és segítséget kér.
+      title: 'Infiltrating request',
+      text: `An urgent message arrived - supposedly from one of the museum's technicians. The tone is personal, rushed, and asks for help.
 
-De valami nem stimmel. A szóhasználat furcsa, a rendszerlogok pedig azt mutatják, hogy a küldő helyéről már korábban is érkeztek gyanús próbálkozások. Lehet, hogy ez csak egy újabb kísérlet arra, hogy rajtad keresztül jusson be a hálózatba.
+But something isn't right. The wording is odd, and system logs show suspicious attempts from the sender's location before. This might be another attempt to get into the network through you.
 
-Vizsgáld meg az üzenetet, elemezd a kérését, és döntsd el:
+Examine the message, analyze the request, and decide:
 
-valódi segítségkérésről van szó, vagy csak egy manipulatív próbálkozás?
+Is this a genuine call for help, or just a manipulative attempt?
 
-Válaszd ki azt a reakciót, amelyik megfelel a biztonsági protokollnak.`
+Choose the response that follows security protocol.`
     },
     SECURITY_DECISION: {
-      title: 'Nyomok mérlegelése',
-      text: `A rendszer riaszt: a támadó létrehozott egy rejtett rendszerkapcsolat‑alagutat.
+      title: 'Weighing the clues',
+      text: `The system alerts: the attacker created a hidden system connection tunnel.
 
-Most rajtad a sor, hogy dönts:
+Now it's your turn to decide:
 
-- Azonnal lekapcsolod, ezzel megakadályozva, hogy tovább haladjon?
+- Shut it down immediately, stopping them from going further?
 
-- Vagy megfigyeled a műveletet, hogy több információt gyűjts róla - vállalva a kockázatot, hogy közben mélyebbre juthat?
+- Or observe the activity to gather more information - accepting the risk that they may go deeper in the meantime?
 
-Minden választásod hatással lesz arra, mihez fér hozzá a támadó, és arra is, te mennyit derítesz ki a módszereiről.`
+Every choice affects what the attacker can access, and how much you learn about their methods.`
     }
   },
   unlockDate: '2025-12-06T19:00:00+01:00'
@@ -323,26 +323,26 @@ Minden választásod hatással lesz arra, mihez fér hozzá a támadó, és arra
 
 export const ugy3Config = {
   level: 3,
-  title: "Árnyak Ösvénye",
-  badge: "Árnyak Ösvénye",
-  headerTitle: "Árnyak Ösvénye - Ügy #3",
-  narrativeTitle: "Árnyak Ösvénye - Ügy #3",
-  narrativeText: "A rendszerben rejtett útvonal bukkan fel, mintha a támadó saját, láthatatlan ösvényt építene a szerverek között. A logok csapdára emlékeztetnek, mégis fontos nyomokat rejthetnek. Rajtad áll, követed-e az árnyakat, vagy lezárod az ösvényt, mielőtt mélyebbre jut.",
+  title: "Path of Shadows",
+  badge: "Path of Shadows",
+  headerTitle: "Path of Shadows - Case #3",
+  narrativeTitle: "Path of Shadows - Case #3",
+  narrativeText: "A hidden route appears in the system, as if the attacker is building their own invisible path between servers. The logs feel like traps, yet they may hide important clues. It's up to you: follow the shadows, or close the path before they go deeper.",
   isDynamic: true,
   totalTasks: 5,
   images: ['/images/1a.jpg', '/images/1b.jpg', '/images/1c.jpg', '/images/1d.jpg', '/images/1e.jpg'],
   nextLevelRoute: "/ugy4",
-  nextLevelText: "Tovább a Rejtély Ajtajához",
+  nextLevelText: "Continue to The Mystery Door",
   specialComponents: {},
-  requiresPrevious: true, // Előző pályák teljesítése szükséges
+  requiresPrevious: true, // Previous levels must be completed
   forcedTypes: ['VIGENERE', 'NETWORK_ANOMALY', 'EMAIL_HEADER', 'URL_TRUST', 'RISKY_PERMISSION'],
   forcedDifficulty: 'easy',
   taskLabels: {
-    VIGENERE: 'Kulcskeringő',
-    NETWORK_ANOMALY: 'Hálózati burjánzás',
-    EMAIL_HEADER: 'Fejléc-röntgen',
-    URL_TRUST: 'Kapuhivatkozás vizsgálat',
-    RISKY_PERMISSION: 'Veszélyes engedélykérés'
+    VIGENERE: 'Key carousel',
+    NETWORK_ANOMALY: 'Network sprawl',
+    EMAIL_HEADER: 'Header X-ray',
+    URL_TRUST: 'Gateway link inspection',
+    RISKY_PERMISSION: 'Dangerous permission request'
   },
   taskImages: {
     VIGENERE: '/images/1a.jpg',
@@ -353,37 +353,37 @@ export const ugy3Config = {
   },
   taskStories: {
     VIGENERE: {
-      title: 'Kulcskeringő',
-      text: `A rendszer mélyén egy Vigenère-kóddal titkosított üzenet rejtőzik.
+      title: 'Key carousel',
+      text: `Deep in the system, a message encrypted with a Vigenère cipher lies hidden.
     
-A kézbesítetlen üzenet kulcsa valahol a rendszerben el van rejtve, és csak a megfelelő dekódolással érhető el a tartalma.
+The key to the undelivered message is hidden somewhere in the system, and only the right decoding reveals its contents.
     
-Fejtsd meg a Vigenère-kódot a megadott kulccsal, hogy megtudd, mi rejtőzik az üzenetben.`
+Decrypt the Vigenère cipher with the given key to find out what the message contains.`
     },
     NETWORK_ANOMALY: {
-      title: 'Hálózati burjánzás',
-      text: `A hálózati forgalom elemzése során gyanús kapcsolatokat találtál.
+      title: 'Network sprawl',
+      text: `While analyzing network traffic, you found suspicious connections.
     
-A rendszer naplói szerint ismeretlen források próbálnak kapcsolatot létesíteni a belső hálózattal.
+System logs show unknown sources trying to connect to the internal network.
     
-Elemezd a hálózati forgalmat, és azonosítsd az anomáliákat, hogy megakadályozd a támadást.`
+Analyze the network traffic and identify anomalies to stop the attack.`
     },
     EMAIL_HEADER: {
-      title: 'Fejléc-röntgen',
-      text: `Egy bejelentett e-mail fejléce furcsa átirányításokat és rejtett ugrásokat tartalmaz. A feladó ismerősnek tűnik, de a metaadatok mást mutatnak. Vizsgáld meg a nyomokat, mielőtt valaki a csapdába sétál.`
+      title: 'Header X-ray',
+      text: `A reported email header contains strange redirects and hidden hops. The sender looks familiar, but the metadata tells a different story. Examine the clues before someone walks into the trap.`
     },
     URL_TRUST: {
-      title: 'A kapu, ami máshová vezet',
-      text: `A rendszer egy gyanús linket észlelt, amely épp csak annyira hiteles, hogy elhitesse magáról: biztonságos. A cím mögött azonban árnyak mozognak. Döntsd el, átvezet-e valós célhoz, vagy újabb átveréshez.`
+      title: 'The gate that leads elsewhere',
+      text: `The system detected a suspicious link just credible enough to pass itself off as safe. Shadows move behind the address. Decide whether it leads to a real destination or yet another deception.`
     },
     RISKY_PERMISSION: {
-      title: 'Túl sok kulcs egy kézben',
-      text: `Egy alkalmazás váratlanul magas jogosultságokat kér, olyanokat, amelyekre a feladata alapján nincs szükség. Valaki talán ezen a résen jutna beljebb. Határozd meg, engeded-e, vagy lezárod a hozzáférést.`
+      title: 'Too many keys in one hand',
+      text: `An application suddenly requests high permissions - ones it doesn't need for its task. Someone might slip through this gap. Decide whether to allow it or lock down access.`
     }
   }
 };
 
-// Sablon függvény dinamikus pályákhoz
+// Template function for dynamic tracks
 function createDynamicUgyConfig(level, title, badge, narrativeText) {
   const img = `/images/${level}.jpg`;
   const isLast = level === 12;
@@ -391,14 +391,14 @@ function createDynamicUgyConfig(level, title, badge, narrativeText) {
     level,
     title,
     badge,
-    headerTitle: `${title} - Ügy #${level}`,
-    narrativeTitle: `${title} - Ügy #${level}`,
+    headerTitle: `${title} - Case #${level}`,
+    narrativeTitle: `${title} - Case #${level}`,
     narrativeText,
     isDynamic: true,
     totalTasks: 5,
     images: Array(5).fill(img),
     nextLevelRoute: isLast ? "/aurora" : `/ugy${level + 1}`,
-    nextLevelText: isLast ? "Vissza az Aurora-hoz" : "Következő ügy",
+    nextLevelText: isLast ? "Back to Aurora" : "Next case",
     specialComponents: {},
     requiresPrevious: true,
     taskLabels: ugy2Config.taskLabels,
@@ -414,23 +414,23 @@ function createDynamicUgyConfig(level, title, badge, narrativeText) {
 }
 
 export const ugy4Config = {
-  ...createDynamicUgyConfig(4, "A hiányzó idővonal", "Idővonal - hiányzó nyomok", "Az idővonalban hiányosságok jelentek meg. A nyomok azt sugallják, hogy valaki manipulálta az események sorrendjét. Az előző pályák megoldásai kulcsfontosságúak lesznek a folytatáshoz."),
-  nextLevelText: "Tovább a Suttogások Könyvére",
+  ...createDynamicUgyConfig(4, "The Missing Timeline", "Timeline - missing clues", "Gaps have appeared in the timeline. The clues suggest someone manipulated the order of events. Solutions from previous levels will be crucial to continue."),
+  nextLevelText: "Continue to Book of Whispers",
   forcedTypes: ['PASSWORD_STRENGTH', 'FIREWALL', 'PHISHING', 'SOCIAL_ENGINEERING', 'SECURITY_DECISION'],
   forcedDifficulty: 'medium',
-  shuffleTypes: true, // Kevert sorrend
+  shuffleTypes: true, // Shuffled order
   unlockDate: '2025-12-18T19:00:00+01:00'
 };
-export const ugy5Config = createDynamicUgyConfig(5, "A rejtett metaadat", "Metaadat - rejtett információ", "A fájlok metaadataiban rejtett információk bukkannak fel. Valaki szándékosan elrejtett fontos adatokat, amelyek a nyomozás kulcsai lehetnek.");
-export const ugy6Config = createDynamicUgyConfig(6, "A szivárgó port", "Port - szivárgó kapcsolat", "A hálózati portokon szokatlan forgalom észlelhető. Valaki próbál behatolni a rendszerbe egy sebezhető porton keresztül.");
-export const ugy7Config = createDynamicUgyConfig(7, "A kettős identitás", "Identitás - kettős szerep", "Két különböző identitás nyomai bukkannak fel. Valaki álcázza magát, és több szerepben is megjelenik a rendszerben.");
-export const ugy8Config = createDynamicUgyConfig(8, "A törött kulcs", "Kulcs - törött titkosítás", "A titkosítási kulcsok sérültek vagy hiányoznak. Valaki megpróbálta feltörni a védelmet, és nyomokat hagyott maga után.");
-export const ugy9Config = createDynamicUgyConfig(9, "A megszakított átvitel", "Átvitel - megszakított kapcsolat", "Egy fontos adatátvitel megszakadt. A nyomok azt sugallják, hogy valaki szándékosan zavarta meg a kommunikációt.");
-export const ugy10Config = createDynamicUgyConfig(10, "A Phantom-Profil", "Profil - fantom identitás", "Egy fantom profil jelent meg a rendszerben. Valaki létrehozott egy láthatatlan identitást, amelyet csak a legapróbb nyomok árulnak el.");
-export const ugy11Config = createDynamicUgyConfig(11, "A lopott árnyékfiók", "Fiók - lopott árnyék", "Egy árnyékfiók került ellopásra. Valaki megszerezte egy másik felhasználó identitását, és azzal próbál behatolni a rendszerbe.");
-export const ugy12Config = createDynamicUgyConfig(12, "A főkolompos", "Főkolompos - végső rejtély", "Az utolsó rejtély. Minden nyom egyetlen pontra mutat: a főkolompos azonosítására. Itt dől el minden.");
+export const ugy5Config = createDynamicUgyConfig(5, "Hidden Metadata", "Metadata - hidden information", "Hidden information surfaces in file metadata. Someone deliberately concealed important data that could be keys to the investigation.");
+export const ugy6Config = createDynamicUgyConfig(6, "The Leaking Port", "Port - leaking connection", "Unusual traffic is detected on network ports. Someone is trying to break into the system through a vulnerable port.");
+export const ugy7Config = createDynamicUgyConfig(7, "Double Identity", "Identity - dual role", "Traces of two different identities appear. Someone is disguising themselves and showing up in the system in multiple roles.");
+export const ugy8Config = createDynamicUgyConfig(8, "The Broken Key", "Key - broken encryption", "Encryption keys are damaged or missing. Someone tried to break through the protection and left traces behind.");
+export const ugy9Config = createDynamicUgyConfig(9, "The Interrupted Transfer", "Transfer - interrupted connection", "An important data transfer was cut off. The clues suggest someone deliberately disrupted the communication.");
+export const ugy10Config = createDynamicUgyConfig(10, "The Phantom Profile", "Profile - phantom identity", "A phantom profile appeared in the system. Someone created an invisible identity revealed only by the smallest traces.");
+export const ugy11Config = createDynamicUgyConfig(11, "The Stolen Shadow Account", "Account - stolen shadow", "A shadow account was stolen. Someone took another user's identity and is using it to break into the system.");
+export const ugy12Config = createDynamicUgyConfig(12, "The Mastermind", "Mastermind - final mystery", "The final mystery. Every clue points to one place: identifying the mastermind. Everything is decided here.");
 
-// Konfigurációk map
+// Configurations map
 export const ugyConfigs = {
   1: ugy1Config,
   2: ugy2Config,
@@ -445,4 +445,3 @@ export const ugyConfigs = {
   11: ugy11Config,
   12: ugy12Config
 };
-

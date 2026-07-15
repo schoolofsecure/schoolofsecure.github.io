@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
+import BrandLogo from '../../components/BrandLogo'
 import NarrativeBlock from '../../components/Ugy1/NarrativeBlock'
 import TaskCard from '../../components/Ugy1/TaskCard'
 import TaskRenderer from '../../components/TaskRenderer/TaskRenderer'
@@ -301,10 +301,8 @@ const TaskPreviewList = () => {
   return (
     <div className="container">
       <header>
-        <Link to="/" className="brand" aria-label="CyberMystery – Vissza a főoldalra">
-          <div className="brand-badge">CM</div>
+        <BrandLogo ariaLabel="Iterali – Back to home" />
           <div>Task Preview List</div>
-        </Link>
       </header>
 
       <main>

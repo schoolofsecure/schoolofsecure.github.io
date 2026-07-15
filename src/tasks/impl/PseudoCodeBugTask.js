@@ -5,7 +5,7 @@ const SNIPPETS = {
   easy: [
     {
       language: 'pseudo',
-      title: 'Egyszerű belépési ellenőrzés',
+      title: 'Simple login check',
       lines: [
         'function authenticate(username, password) {',
         '  hash = sha256(password)',
@@ -16,24 +16,24 @@ const SNIPPETS = {
         '}'
       ],
       issueLine: 2,
-      description: 'Hash-elés előtt nincs só használva'
+      description: 'No salt is used before hashing'
     },
     {
       language: 'pseudo',
-      title: 'Vizsgálatlan SQL lekérdezés',
+      title: 'Unsanitized SQL query',
       lines: [
         'query = "SELECT * FROM users WHERE name = \'" + input + "\'"',
         'result = db.execute(query)',
         'return result'
       ],
       issueLine: 1,
-      description: 'SQL injection veszély'
+      description: 'SQL injection risk'
     }
   ],
   medium: [
     {
       language: 'pseudo',
-      title: 'API token generálás',
+      title: 'API token generation',
       lines: [
         'function issueToken(user) {',
         '  token = generateRandomString(6)',
@@ -42,11 +42,11 @@ const SNIPPETS = {
         '}'
       ],
       issueLine: 2,
-      description: 'Túl rövid token, brute force-lal kitalálható'
+      description: 'Token is too short and can be brute-forced'
     },
     {
       language: 'pseudo',
-      title: 'Log írás admin panelhez',
+      title: 'Admin panel logging',
       lines: [
         'log("Admin login attempt: " + username)',
         'if (isValid(username, password)) {',
@@ -57,13 +57,13 @@ const SNIPPETS = {
         '}'
       ],
       issueLine: 1,
-      description: 'A napló belső infót szivárogtat (felhasználónév)'
+      description: 'The log leaks internal information (username)'
     }
   ],
   hard: [
     {
       language: 'pseudo',
-      title: 'Kétfaktoros hitelesítés',
+      title: 'Two-factor authentication',
       lines: [
         'function verify2FA(user, code) {',
         '  lastCode = cache.get(user.id)',
@@ -75,11 +75,11 @@ const SNIPPETS = {
         '}'
       ],
       issueLine: 4,
-      description: 'Az elfogadott kódot visszateszi a cache-be, így újra felhasználható'
+      description: 'The accepted code is stored back in cache and can be reused'
     },
     {
       language: 'pseudo',
-      title: 'Fájl feltöltés ellenőrzés',
+      title: 'File upload validation',
       lines: [
         'function handleUpload(file) {',
         '  name = file.name',
@@ -91,7 +91,7 @@ const SNIPPETS = {
         '}'
       ],
       issueLine: 4,
-      description: 'Nem vizsgálja a fájl tartalmát / dupla kiterjesztést'
+      description: 'Does not inspect file content or double extensions'
     }
   ]
 }
@@ -102,9 +102,9 @@ export class PseudoCodeBugTask extends BaseTask {
     const snippet = Random.choice(pool)
 
     const hintsByDifficulty = {
-      easy: ['Figyeld meg, hogyan kezelik a bemenetet – van-e szűrés vagy sózás.'],
-      medium: ['Nézd meg, milyen információ kerül naplózásra vagy hány bitekből áll a védelem.'],
-      hard: ['Gondold végig az állapotkezelést: mi történik az elfogadott kódokkal vagy fájlnevekkel?']
+      easy: ['Watch how input is handled — is there filtering or salting?'],
+      medium: ['Look at what information gets logged and how strong the protection is.'],
+      hard: ['Think through state handling: what happens to accepted codes or filenames?']
     }
 
     return new PseudoCodeBugTask({
@@ -123,7 +123,7 @@ export class PseudoCodeBugTask extends BaseTask {
     const { snippet, hint } = this.parameters
     this.solution = snippet.issueLine
     this.payload = {
-      instructions: 'Jelöld meg, melyik sor tartalmaz biztonsági hibát.',
+      instructions: 'Mark the line that contains the security flaw.',
       snippet,
       hint,
       description: snippet.description,
@@ -138,5 +138,3 @@ export class PseudoCodeBugTask extends BaseTask {
     return userInput === this.solution
   }
 }
-
-

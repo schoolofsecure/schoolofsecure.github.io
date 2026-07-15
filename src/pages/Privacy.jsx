@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import SiteNav from '../components/SiteNav'
 import '../index.css'
 
 const Privacy = () => {
@@ -7,15 +8,16 @@ const Privacy = () => {
 
   return (
     <div className="container">
+      <SiteNav />
       <div className="card">
-        <h1 id="adatkezeles">Adatkezelési tájékoztató</h1>
-        <p className="muted">Utolsó frissítés: 2025. december 2.</p>
-        <span className="pill">GDPR kompatibilis</span>
+        <h1 id="adatkezeles">Privacy Policy</h1>
+        <p className="muted">Last updated: December 2, 2025</p>
+        <span className="pill">GDPR compliant</span>
 
         <div className="grid" style={{marginTop:'14px'}}>
           <section className="section">
-            <h2>1. Adatkezelő</h2>
-            <p>Az interaktív nyomozós krimi (kiberbiztonság témában) adatkezelője: <strong>Papp‑Kovács Erika</strong> (adatkezelő). Elérhetőség: 
+            <h2>1. Data controller</h2>
+            <p>The data controller for this interactive cybercrime mystery game is <strong>Papp‑Kovács Erika</strong>. Contact: 
               {revealedEmails ? (
                 <span>
                   {emails.map((email, i) => (
@@ -31,67 +33,67 @@ const Privacy = () => {
                   onClick={() => setRevealedEmails(true)}
                   style={{cursor: 'pointer', textDecoration: 'underline'}}
                 >
-                  [e‑mail cím megjelenítése]
+                  [show email address]
                 </span>
               )}
             </p>
           </section>
 
           <section className="section">
-            <h2>2. Kezelt adatok köre</h2>
+            <h2>2. Data we collect</h2>
             <ul>
-              <li>E‑mail cím.</li>
+              <li>Email address.</li>
             </ul>
           </section>
 
           <section className="section">
-            <h2>3. Adatkezelés célja és jogalapja</h2>
+            <h2>3. Purpose and legal basis</h2>
             <ul>
-              <li>Bejelentkezés a játékhoz, felhasználói fiók kezelése (hozzájárulás – GDPR 6. cikk (1) a)).</li>
-              <li>Rendszerbiztonság és hibakeresés (jogos érdek – GDPR 6. cikk (1) f)).</li>
+              <li>Sign-in and account management for the game (consent – GDPR Article 6(1)(a)).</li>
+              <li>System security and troubleshooting (legitimate interest – GDPR Article 6(1)(f)).</li>
             </ul>
           </section>
 
           <section className="section">
-            <h2>4. Megőrzési idő</h2>
+            <h2>4. Retention period</h2>
             <ul>
-              <li>Felhasználói fiók adatok: a visszavonásig, de legfeljebb 24 hónap.</li>
-              <li>Technikai naplók: legfeljebb 90 nap.</li>
+              <li>Account data: until withdrawal, up to 24 months maximum.</li>
+              <li>Technical logs: up to 90 days.</li>
             </ul>
           </section>
 
           <section className="section">
-            <h2>5. Adatfeldolgozók, adattovábbítás</h2>
+            <h2>5. Processors and data transfers</h2>
             <ul>
-              <li>Google Firebase (Authentication) – a bejelentkezéshez és adattároláshoz.</li>
+              <li>Google Firebase (Authentication) – for sign-in and data storage.</li>
             </ul>
-            <p>Harmadik országba irányuló adattovábbítás esetén az EU megfelelőségi határozata vagy megfelelő garanciák biztosítottak.</p>
+            <p>Where data is transferred outside the EU, appropriate safeguards or adequacy decisions are in place.</p>
           </section>
 
           <section className="section" id="cookies">
-            <h2>6. Sütik (Cookie-k)</h2>
-            <p>Az oldal kizárólag a működéshez feltétlenül szükséges cookie-kat használ (beállítások, űrlapvédelem, alapszintű működés). Profilozó vagy marketing cookie-kat nem alkalmazunk.</p>
+            <h2>6. Cookies</h2>
+            <p>This site uses only cookies that are strictly necessary for operation (settings, form protection, basic functionality). We do not use profiling or marketing cookies.</p>
           </section>
 
           <section className="section">
-            <h2>7. Érintetti jogok</h2>
+            <h2>7. Your rights</h2>
             <ul>
-              <li>Hozzáférés és tájékoztatás kérése a kezelt adatokhoz.</li>
-              <li>Helyesbítés, törlés („elfeledtetés"), adatkezelés korlátozása.</li>
-              <li>Hozzájárulás visszavonása bármikor, indoklás nélkül.</li>
-              <li>Adathordozhatóság (automatikusan kezelt adatok esetén).</li>
-              <li>Panasz benyújtása: Nemzeti Adatvédelmi és Információszabadság Hatóság (NAIH).</li>
+              <li>Request access to and information about your personal data.</li>
+              <li>Request correction, deletion ("right to be forgotten"), or restriction of processing.</li>
+              <li>Withdraw consent at any time without giving a reason.</li>
+              <li>Data portability (for automatically processed data).</li>
+              <li>Lodge a complaint with the Hungarian National Authority for Data Protection and Freedom of Information (NAIH).</li>
             </ul>
           </section>
 
           <section className="section">
-            <h2>8. Adatbiztonság</h2>
-            <p>Megfelelő technikai és szervezési intézkedésekkel védjük a személyes adatokat a jogosulatlan hozzáféréssel, megváltoztatással vagy nyilvánosságra hozatallal szemben.</p>
+            <h2>8. Data security</h2>
+            <p>We protect personal data with appropriate technical and organizational measures against unauthorized access, alteration, or disclosure.</p>
           </section>
 
           <section className="section">
-            <h2>9. Kapcsolat</h2>
-            <p>Adatkezeléssel kapcsolatos megkeresés: 
+            <h2>9. Contact</h2>
+            <p>For privacy-related inquiries: 
               {revealedEmails ? (
                 <span>
                   {emails.map((email, i) => (
@@ -107,22 +109,21 @@ const Privacy = () => {
                   onClick={() => setRevealedEmails(true)}
                   style={{cursor: 'pointer', textDecoration: 'underline'}}
                 >
-                  [e‑mail cím megjelenítése]
+                  [show email address]
                 </span>
               )}
             </p>
           </section>
 
           <section className="section">
-            <h2>10. Hatály</h2>
-            <p>Jelen tájékoztató az interaktív nyomozós krimi játék (kiberbiztonság témában) játékára és webalkalmazására vonatkozik. Változás esetén a módosított verzió lép hatályba a közzétételtől.</p>
+            <h2>10. Scope</h2>
+            <p>This policy applies to the Iterali interactive cybercrime mystery game and its web application. If it changes, the updated version takes effect upon publication.</p>
           </section>
         </div>
-        <p className="footer">© 2025 CyberMystery – Adatkezelési tájékoztató</p>
+        <p className="footer">© 2025 Iterali – Privacy Policy</p>
       </div>
     </div>
   )
 }
 
 export default Privacy
-

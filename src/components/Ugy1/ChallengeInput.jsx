@@ -5,17 +5,17 @@ export const normalizeText = (s) => {
     .toString()
     .normalize('NFD')
     .replace(/[\u0300-\u036f]/g,'')
-    .replace(/[^A-Za-z0-9\s]/g,'') // távolítsuk el az írásjeleket
+    .replace(/[^A-Za-z0-9\s]/g,'')
     .replace(/\s+/g,' ')
     .trim()
     .toUpperCase();
 };
 
 const ChallengeInput = ({
-  placeholder = 'válasz…',
+  placeholder = 'your answer…',
   onCheck,
-  okText = 'Helyes!',
-  errText = 'Nem egészen – próbáld újra.',
+  okText = 'Correct!',
+  errText = 'Not quite — try again.',
   onSuccess,
   onFailure
 }) => {
@@ -27,15 +27,15 @@ const ChallengeInput = ({
     if (res) {
       onSuccess && onSuccess();
     } else {
-      setValue(''); // Töröljük az input mezőt rossz válasz esetén
+      setValue('');
       onFailure && onFailure();
     }
   };
   return (
     <div>
       <div className="input-row">
-        <input className="input" type="text" placeholder={placeholder} value={value} onChange={(e)=>setValue(e.target.value)} aria-label="válasz"/>
-        <button className="btn" type="button" onClick={onSubmit}>Ellenőrzés</button>
+        <input className="input" type="text" placeholder={placeholder} value={value} onChange={(e)=>setValue(e.target.value)} aria-label="answer"/>
+        <button className="btn" type="button" onClick={onSubmit}>Check</button>
       </div>
       {status && (
         <div className={'feedback ' + (status === 'ok' ? 'ok' : 'err')}>
@@ -47,5 +47,3 @@ const ChallengeInput = ({
 };
 
 export default ChallengeInput
-
-

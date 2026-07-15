@@ -2,11 +2,11 @@ import { BaseTask } from '../types/TaskInterface'
 import { Random } from '../utils/random'
 
 const EVENT_POOL = [
-  { id: 'evt1', text: 'Ismeretlen IOC jelenik meg a naplókban, amely nem szerepel adatbázisban.', zeroDay: true },
-  { id: 'evt2', text: 'Publikált CVE ellenére exploit próbálkozás történik – patch még nincs fenn.', zeroDay: false },
-  { id: 'evt3', text: 'Új, aláíratlan driver települ rendszerszinten.', zeroDay: true },
-  { id: 'evt4', text: 'Ismert ransomware hash bukkan fel.', zeroDay: false },
-  { id: 'evt5', text: 'Speciális sandbox-ban azonosítatlan API hívás történik kernel szinten.', zeroDay: true }
+  { id: 'evt1', text: 'An unknown IOC appears in the logs and is not in any database.', zeroDay: true },
+  { id: 'evt2', text: 'An exploit attempt occurs despite a published CVE — no patch is installed yet.', zeroDay: false },
+  { id: 'evt3', text: 'A new, unsigned driver is installed at system level.', zeroDay: true },
+  { id: 'evt4', text: 'A known ransomware hash appears.', zeroDay: false },
+  { id: 'evt5', text: 'In a special sandbox, an unidentified API call occurs at kernel level.', zeroDay: true }
 ]
 
 export class ZeroDayTask extends BaseTask {
@@ -30,7 +30,7 @@ export class ZeroDayTask extends BaseTask {
       .map((evt, idx) => (evt.zeroDay ? idx : null))
       .filter(idx => idx !== null)
     this.payload = {
-      instructions: 'Válaszd ki, mely események utalhatnak zero-day támadásra.',
+      instructions: 'Select the events that may indicate a zero-day attack.',
       events
     }
     return this.payload
@@ -44,5 +44,3 @@ export class ZeroDayTask extends BaseTask {
     return JSON.stringify(normalized) === JSON.stringify(solutionSorted)
   }
 }
-
-

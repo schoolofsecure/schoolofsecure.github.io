@@ -1,7 +1,6 @@
 import { BaseTask } from '../types/TaskInterface'
 import { Random } from '../utils/random'
 
-// 3 fix szcenárió
 export const SCENARIOS = [
   {
     plaintext: 'DATACENTER BREACH',
@@ -19,7 +18,6 @@ export const SCENARIOS = [
 
 export class VigenereTask extends BaseTask {
   static create({ id, difficulty, levelNumber = 2, slot = 1 }) {
-    // Random választás a 3 fix szcenárió közül
     const scenario = Random.choice(SCENARIOS)
 
     return new VigenereTask({
@@ -60,7 +58,7 @@ export class VigenereTask extends BaseTask {
     this.payload = {
       ciphertext,
       key,
-      hint: 'A Vigenère-kód egy kulcsszó alapján működik. Minden betűhöz a kulcs megfelelő betűjét használja az eltoláshoz.'
+      hint: 'The Vigenère cipher uses a keyword. Each letter is shifted according to the matching letter in the key.'
     }
     return this.payload
   }
@@ -72,5 +70,3 @@ export class VigenereTask extends BaseTask {
     return normalized === this.solution
   }
 }
-
-

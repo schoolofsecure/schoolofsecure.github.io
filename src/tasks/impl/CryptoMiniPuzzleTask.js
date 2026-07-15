@@ -25,7 +25,6 @@ export class CryptoMiniPuzzleTask extends BaseTask {
   }
 
   static xor(str, key) {
-    // Böngésző-kompatibilis XOR implementáció
     const encoder = new TextEncoder()
     const data = encoder.encode(str)
     const keyBuf = encoder.encode(key)
@@ -35,14 +34,12 @@ export class CryptoMiniPuzzleTask extends BaseTask {
       result[i] = data[i] ^ keyBuf[i % keyBuf.length]
     }
     
-    // Hex stringgé konvertálás
     return Array.from(result)
       .map(b => b.toString(16).padStart(2, '0'))
       .join('')
   }
 
   static toBase64(str) {
-    // Böngésző-kompatibilis base64 kódolás
     return btoa(unescape(encodeURIComponent(str)))
   }
 
@@ -59,9 +56,9 @@ export class CryptoMiniPuzzleTask extends BaseTask {
 
     this.solution = secret
     this.payload = {
-      instructions: `A következő transzformációk készültek: ${steps.join(' → ')}. Fejtsd vissza az eredeti sztringet.`,
+      instructions: `The following transformations were applied: ${steps.join(' → ')}. Reverse them to recover the original string.`,
       output: intermediate,
-      hint: steps.includes('xor') ? `XOR kulcs: ${xorKey}` : undefined
+      hint: steps.includes('xor') ? `XOR key: ${xorKey}` : undefined
     }
     return this.payload
   }
@@ -72,5 +69,3 @@ export class CryptoMiniPuzzleTask extends BaseTask {
     return userInput.trim() === this.solution
   }
 }
-
-

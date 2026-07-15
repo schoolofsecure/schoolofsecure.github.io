@@ -27,10 +27,9 @@ header {
   display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 16px 0 8px;
 }
 .brand { display: flex; align-items: center; gap: 10px; color: var(--ink); text-decoration: none; }
-.brand-badge {
-  width: 36px; height: 36px; border-radius: 8px; display: grid; place-items: center;
-  background: linear-gradient(135deg, var(--neonCyan), var(--neonGreen)); color:#051018; font-weight: 800;
-  box-shadow: 0 0 20px rgba(0,229,255,0.35), inset 0 0 12px rgba(33,255,195,0.25);
+.brand-logo {
+  width: 36px; height: 36px; border-radius: 8px; object-fit: contain; display: block;
+  box-shadow: 0 0 20px rgba(0,229,255,0.25);
 }
 h1,h2,h3 { font-family: 'Inter', system-ui, sans-serif; margin:0 0 8px; }
 .muted { color: var(--muted); }

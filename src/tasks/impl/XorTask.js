@@ -48,9 +48,9 @@ export class XorTask extends BaseTask {
     const ciphertext = XorTask.xorStrings(plaintext, key)
     this.solution = plaintext
     this.payload = {
-      instructions: 'Az alábbi hexadecimális XOR eredményt kell visszafejteni.',
+      instructions: 'Decrypt the following hexadecimal XOR result.',
       ciphertext,
-      keyHint: key.length === 1 ? 'Kulcs hossza: 1 byte' : `Kulcs hossza: ${key.length} karakter`
+      keyHint: key.length === 1 ? 'Key length: 1 byte' : `Key length: ${key.length} characters`
     }
     return this.payload
   }
@@ -61,5 +61,3 @@ export class XorTask extends BaseTask {
     return userInput.trim() === this.solution
   }
 }
-
-

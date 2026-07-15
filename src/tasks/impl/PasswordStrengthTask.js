@@ -2,12 +2,12 @@ import { BaseTask } from '../types/TaskInterface'
 import { Random } from '../utils/random'
 
 const REQUIREMENT_LABELS = {
-  minLength: 'legalább 8 karakter',
-  mixedCase: 'nagybetű és kisbetű is',
-  number: 'tartalmaz számot',
-  special: 'tartalmaz speciális karaktert',
-  noDictionary: 'ne tartalmazzon tiltott szót',
-  entropy: 'ne ismételje háromszor ugyanazt a karaktert'
+  minLength: 'at least 8 characters',
+  mixedCase: 'both uppercase and lowercase letters',
+  number: 'contains a number',
+  special: 'contains a special character',
+  noDictionary: 'must not contain a forbidden word',
+  entropy: 'must not repeat the same character three times'
 }
 
 export class PasswordStrengthTask extends BaseTask {
@@ -55,15 +55,15 @@ export class PasswordStrengthTask extends BaseTask {
     const { requirements, candidate } = this.parameters
     this.solution = PasswordStrengthTask.evaluate(candidate, requirements)
     const hintByDifficulty = {
-      easy: 'Figyeld meg: kell-e szám, és elég hosszú‑e a jelszó. A speciális karakterek itt még nem kötelezők.',
-      medium: 'A megfelelő jelszó vegyes kis- és nagybetűt, számot és speciális jelet is tartalmazzon.',
-      hard: 'A tiltott szavakat (password, admin stb.) kerüld, és ügyelj arra is, hogy ne ismétlődjön túl sok karakter.'
+      easy: 'Check whether the password includes a number and is long enough. Special characters are not required here.',
+      medium: 'A strong password should mix upper- and lowercase letters, numbers, and special characters.',
+      hard: 'Avoid forbidden words (password, admin, etc.) and make sure characters do not repeat too often.'
     }
     this.payload = {
-      instructions: 'Értékeld a jelszó erősségét a felsorolt követelmények alapján.',
+      instructions: 'Rate the password strength based on the listed requirements.',
       candidate,
       requirements: requirements.map(req => REQUIREMENT_LABELS[req] || req),
-      hint: hintByDifficulty[this.difficulty] || 'Vizsgáld meg, hogy a jelszó teljesíti‑e a felsorolt szabályokat.'
+      hint: hintByDifficulty[this.difficulty] || 'Check whether the password meets all listed rules.'
     }
     return this.payload
   }
@@ -73,5 +73,3 @@ export class PasswordStrengthTask extends BaseTask {
     return Boolean(userInput) === Boolean(this.solution)
   }
 }
-
-

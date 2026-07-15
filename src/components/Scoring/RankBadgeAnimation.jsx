@@ -91,7 +91,7 @@ const RankBadgeAnimation = ({ rank, onComplete }) => {
       >
         <img
           src="/images/badge.png"
-          alt="Rangjelvény"
+          alt="Rank badge"
           style={{
             width: '200px',
             height: '200px',

@@ -198,12 +198,12 @@ export function MatchTable({ onDone, onFailure }){
       .replace(/[^A-Za-z0-9]/g,'')
       .toUpperCase();
   }
-  const SOURCES = ['Rejtjel','Torzult rendszerlog','Titkosított levél','Kódolt betűk'];
+  const SOURCES = ['Cipher','Distorted system log','Encrypted letter','Coded letters'];
   const ACCEPT = [
-    { texts: ['VIGYAZZZOLILEHETTITKOSUGYNOK'], src: 'REJTJEL' },
-    { texts: ['NYOMOK'], src: 'TORZULTRENDSZERLOG' },
-    { texts: ['3871'], src: 'TITKOSITOTTLEVEL' },
-    { texts: ['3542'], src: 'KODOLTBETUK' }
+    { texts: ['WATCHOUTZOLIMIGHTBEASECRETAGENT'], src: 'CIPHER' },
+    { texts: ['CLUES'], src: 'DISTORTEDSYSTEMLOG' },
+    { texts: ['3871'], src: 'ENCRYPTEDLETTER' },
+    { texts: ['3542'], src: 'CODEDLETTERS' }
   ];
   function updateRow(i, field, val){
     setRows(prev=>{
@@ -224,13 +224,13 @@ export function MatchTable({ onDone, onFailure }){
         return textOk && srcOk;
       });
       if(matchIdx === -1){
-        setMsg('Helytelen párosítás.');
+        setMsg('Incorrect pairing.');
         onFailure && onFailure();
         return;
       }
       used.add(matchIdx);
     }
-    setMsg('Helyes! Minden párosítás stimmel.');
+    setMsg('Correct! All pairings match.');
     onDone && onDone();
   }
   return (
@@ -239,19 +239,19 @@ export function MatchTable({ onDone, onFailure }){
         <table style={{width:'100%', borderCollapse:'separate', borderSpacing:'0 8px'}}>
           <thead>
             <tr style={{color:'#94a3b8', fontSize:'12px'}}>
-              <th style={{textAlign:'left'}}>Nyom</th>
-              <th style={{textAlign:'left'}}>Forrás</th>
+              <th style={{textAlign:'left'}}>Clue</th>
+              <th style={{textAlign:'left'}}>Source</th>
             </tr>
           </thead>
           <tbody>
             {rows.map((r, i)=>(
               <tr key={i}>
                 <td style={{paddingRight:'10px'}}>
-                  <input className="input" type="text" placeholder="nyom…" value={r.text} onChange={(e)=>updateRow(i,'text', e.target.value)} />
+                  <input className="input" type="text" placeholder="clue…" value={r.text} onChange={(e)=>updateRow(i,'text', e.target.value)} />
                 </td>
                 <td>
                   <select className="input" value={r.src} onChange={(e)=>updateRow(i,'src', e.target.value)}>
-                    <option value="">– válassz –</option>
+                    <option value="">– select –</option>
                     {SOURCES.map(s=>(
                       <option key={s} value={s}>{s}</option>
                     ))}
@@ -263,7 +263,7 @@ export function MatchTable({ onDone, onFailure }){
         </table>
       </div>
       <div style={{display:'flex', gap:'10px', marginTop:'10px', alignItems:'center'}}>
-        <button className="btn" type="button" onClick={check}>Ellenőrzés</button>
+        <button className="btn" type="button" onClick={check}>Check</button>
         {msg && <span className="feedback" style={{fontWeight:700}}>{msg}</span>}
       </div>
     </div>
@@ -321,22 +321,22 @@ export function ArchiveModal({ onClose }){
   }, []);
 
   return (
-    <div className="modal" role="dialog" aria-modal="true" aria-label="Nyomok újramegtekintése">
+    <div className="modal" role="dialog" aria-modal="true" aria-label="Review clues again">
       <div className="modal-backdrop" onClick={onClose} />
       <div className="modal-panel card">
         <div style={{display:'flex', alignItems:'center', justifyContent:'space-between', marginBottom:'8px'}}>
-          <h3 style={{margin:0}}>🔍 Nyomok újramegtekintése</h3>
-          <button className="btn-ghost" type="button" onClick={onClose}>Bezárás</button>
+          <h3 style={{margin:0}}>🔍 Review clues again</h3>
+          <button className="btn-ghost" type="button" onClick={onClose}>Close</button>
         </div>
         <div className="archive-grid">
           <section className="card">
-            <h3 style={{marginTop:0}}>🔐 1. Rejtjeles feladat</h3>
-            <p className="muted">Csak a titkosított üzenet:</p>
-            <div className="statusline"><code>Yljbdcc, Crol ohkhw wlwnrvxjbqrn</code></div>
+            <h3 style={{marginTop:0}}>🔐 1. Cipher task</h3>
+            <p className="muted">Encrypted message only:</p>
+            <div className="statusline"><code>Zdwfk rxw, Crol pljkw eh d vhfuhw djhqw.</code></div>
           </section>
           <section className="card">
-            <h3 style={{marginTop:0}}>🧩 2. Torzult rendszerlog</h3>
-            <div className="console float-soft" aria-label="Rendszer napló">
+            <h3 style={{marginTop:0}}>🧩 2. Distorted system log</h3>
+            <div className="console float-soft" aria-label="System log">
               <span className="line"><span className="ts">2025-11-21 09:02:14</span> <span className="lvl info">INFO</span>  <span className="kv">SessionID=Nd0f94be7ac21f44f...</span></span>
               <span className="line"><span className="ts">2025-11-21 09:02:17</span> <span className="lvl warn">WARN</span>  <span className="kv">PayloadHash=Y57ac90b32df1a...</span></span>
               <span className="line"><span className="ts">2025-11-21 09:02:20</span> <span className="lvl info">INFO</span>  <span className="kv">LoginToken=Oaa12f8c0bffe942...</span></span>
@@ -346,27 +346,27 @@ export function ArchiveModal({ onClose }){
             </div>
           </section>
           <section className="card">
-            <h3 style={{marginTop:0}}>💌 3. Titkosított levél</h3>
+            <h3 style={{marginTop:0}}>💌 3. Encrypted letter</h3>
             <div className="card" style={{background:'#0b121c', borderColor:'rgba(207,230,255,0.12)'}}>
               <p className="muted" style={{whiteSpace:'pre-line', margin:0}}>
-Kedves ismeretlen!
+Dear stranger!
 
-Ma nyolckor a kávézónál vártalak volna,
-de három pillanat alatt elszaladt az idő.
+I was supposed to meet you at the café at eight o'clock today,
+but in three moments time slipped away.
 
-Minden percben egyetlen percet gondolok rád,
-és hét lépés távolságban érzem a közelséged.
+Every minute I think of you,
+and seven steps away I feel your closeness.
 
- Először azok a pillanatok törnek elő, amelyek a legerősebben élnek bennem.
- Ezután következik az érzés, ami először megmozdította a szívemet.
- A következő jelek a közénk feszülő tér rezdüléseiben bújnak meg.
- Végül a röpke, elsuhanó percek rajzolják ki a történet teljes képét.
+First come the moments that live most strongly within me.
+Then comes the feeling that first moved my heart.
+The next signs hide in the tremors of the space stretched between us.
+Finally, a single fleeting minute draws the full picture of the story.
 
-Üdvözlettel, S.</p>
+Best regards, S.</p>
             </div>
           </section>
           <section className="card">
-            <h3 style={{marginTop:0}}>🔎 4. Kódolt betűk</h3>
+            <h3 style={{marginTop:0}}>🔎 4. Coded letters</h3>
             <div className="ws-board">
               <div id="wsGridArchive" className="ws-grid"></div>
             </div>

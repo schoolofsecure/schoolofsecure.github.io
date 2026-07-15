@@ -1,7 +1,6 @@
 import { BaseTask } from '../types/TaskInterface'
 import { Random } from '../utils/random'
 
-// 3 fix szcenárió (easy módban csak SPF ellenőrzés)
 export const SCENARIOS = [
   {
     from: 'alerts@banksecure.com',
@@ -37,13 +36,12 @@ export const SCENARIOS = [
 
 export class EmailHeaderTask extends BaseTask {
   static create({ id, difficulty }) {
-    // Random választás a 3 fix szcenárió közül
     const template = Random.choice(SCENARIOS)
     const hints = difficulty === 'easy'
-      ? ['Keresd a SPF státuszt.']
+      ? ['Look for the SPF status.']
       : difficulty === 'medium'
-        ? ['Ellenőrizd a Received láncot.']
-        : ['Vizsgáld az IP-ket és az SPF/DKIM mezőket is.']
+        ? ['Check the Received chain.']
+        : ['Review the IPs and SPF/DKIM fields.']
 
     return new EmailHeaderTask({
       id,
@@ -61,7 +59,6 @@ export class EmailHeaderTask extends BaseTask {
     const { template, hints, difficulty } = this.parameters
     const issues = []
     
-    // Easy módban csak SPF-et ellenőrizünk
     if (difficulty === 'easy') {
       if (template.spf !== 'pass') issues.push('spf')
     } else {
@@ -75,8 +72,8 @@ export class EmailHeaderTask extends BaseTask {
       header: template,
       hints,
       hint: difficulty === 'easy'
-        ? 'Az SPF (Sender Policy Framework) ellenőrzi, hogy az e-mail küldője jogosult-e az adott domainről küldeni. A "pass" státusz azt jelenti, hogy minden rendben, más értékek gyanúsak lehetnek.'
-        : 'Az SPF és DKIM hitelesítési protokollok ellenőrzik az e-mail eredetét. A "pass" státusz azt jelenti, hogy minden rendben, más értékek gyanúsak lehetnek. A Received lánc mutatja az e-mail útvonalát.'
+        ? 'SPF (Sender Policy Framework) checks whether the sender is authorized to send from the domain. A "pass" status means all is well; other values may be suspicious.'
+        : 'SPF and DKIM authentication verify email origin. A "pass" status means all is well; other values may be suspicious. The Received chain shows the email\'s path.'
     }
     return this.payload
   }
@@ -89,5 +86,3 @@ export class EmailHeaderTask extends BaseTask {
     return JSON.stringify(normalized) === JSON.stringify(solutionSorted)
   }
 }
-
-

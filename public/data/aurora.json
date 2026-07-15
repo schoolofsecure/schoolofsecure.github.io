@@ -1,55 +1,53 @@
 {
   "gate": {
-    "title": "Belépés szükséges",
+    "title": "Sign in required",
     "desc": "",
-    "placeholder": "Belépési kulcs",
+    "placeholder": "Access key",
     "hint": "",
-    "pass": "kriptográfia"
+    "pass": "cryptography"
   },
   "intro": {
-    "badge": "Kezdő szint",
-    "title": "Bevezető a művelethez",
-    "lead": "„Secure”: Ez a belépő pálya. Rövid, kérdés‑alapú bemelegítés – hogy a következő szinten már otthon legyél a nyomokban.",
-    "chips": ["alapok","jó gyakorlatok","OSINT","Wi‑Fi védelem","mentések"],
-    "start": "Kezdd el a játékot"
+    "badge": "Beginner level",
+    "title": "Mission briefing",
+    "lead": "Secure: This is the entry level. A short, question-based warm-up so you're ready to follow the trail on the next stage.",
+    "chips": ["basics", "best practices", "OSINT", "Wi‑Fi security", "backups"],
+    "start": "Start the game"
   },
   "mission": {
-    "badge": "Küldetés 1",
-    "title": "Belépő protokoll",
-    "narr1": "Az ügynöki terminál éled. A háttérben logok peregnek, a kijelző sarkában halvány neonvonal pulzál.",
-    "narr2": "Secure csak ennyit ír: „Első lépés: igazold, hogy figyelsz a részletekre.”",
-    "leftTitle": "Protokoll terminál",
-    "puzzleHTML": "Egy rövid kódrészlet villan fel a képernyőn:<br /><code id=\"entryCode\" class=\"neon-flicker\" style=\"background:#0b121c; border:1px solid rgba(207,230,255,.12); padding:2px 6px; border-radius:6px;\">ACCCESS‑LEVEL: NOVICE_01</code><br />Vedd észre a hibát, majd add meg a helyes ellenőrző szót (csak betűk/számok, kötőjel).",
-    "statusReady": "[status] READY — várakozás a bevitelre…",
-    "rightTitle": "Válasz",
-    "inputPlaceholder": "ellenőrző szó…",
-    "hintTitle": "Súgó megnyitása",
-    "hintText": "Figyeld meg: az egyik betűből túl sok van, és nem minden karakter megengedett. Használj csak betűket, számokat és kötőjelet.",
-    "hintChips": ["ACCESS-LEVEL","NOVICE-01","ENTRY"],
+    "badge": "Mission 1",
+    "title": "Entry protocol",
+    "narr1": "The agent terminal comes online. Logs scroll in the background; a faint neon line pulses in the corner of the screen.",
+    "narr2": "Secure only writes: \"First step: prove you're paying attention to the details.\"",
+    "leftTitle": "Protocol terminal",
+    "puzzleHTML": "A short code snippet flashes on screen:<br /><code id=\"entryCode\" class=\"neon-flicker\" style=\"background:#0b121c; border:1px solid rgba(207,230,255,.12); padding:2px 6px; border-radius:6px;\">ACCCESS‑LEVEL: NOVICE_01</code><br />Spot the mistake, then enter the correct verification word (letters, numbers, and hyphens only).",
+    "statusReady": "[status] READY — awaiting input…",
+    "rightTitle": "Answer",
+    "inputPlaceholder": "verification word…",
+    "hintTitle": "Open hint",
+    "hintText": "Look closely: one letter appears too many times, and not every character is allowed. Use only letters, numbers, and hyphens.",
+    "hintChips": ["ACCESS-LEVEL", "NOVICE-01", "ENTRY"],
     "expected": "ACCESS-LEVEL-NOVICE-01",
-    "statusOk": "[status] ACCESS GRANTED — belépő protokoll teljesítve.",
-    "statusErrEmpty": "[status] HIBA — üres bevitel.",
-    "statusErrChars": "[status] HIBA — csak betűk, számok és kötőjel engedélyezett.",
-    "statusErrWrong": "[status] ACCESS DENIED — ellenőrizd az „ACCESS” írásmódját és a kötőjeleket."
+    "statusOk": "[status] ACCESS GRANTED — entry protocol complete.",
+    "statusErrEmpty": "[status] ERROR — empty input.",
+    "statusErrChars": "[status] ERROR — only letters, numbers, and hyphens allowed.",
+    "statusErrWrong": "[status] ACCESS DENIED — check the spelling of \"ACCESS\" and the hyphens."
   },
   "levels": {
-    "title": "Válaszd ki az ügyet",
+    "title": "Choose a case",
     "desc": "",
     "cards": [
-      { "n": 1, "title": "A Titkosított Adatcsomag", "img": "/images/1.jpg", "href": "/ugy1", "locked": false },
-      { "n": 2, "title": "A Hamisított Archívum", "img": "/images/2.jpg", "href": "#", "locked": true },
-      { "n": 3, "title": "A Kézbesítetlen Üzenet", "img": "/images/3.jpg", "href": "#", "locked": true },
-      { "n": 4, "title": "A Hiányzó Idővonal", "img": "/images/4.jpg", "href": "#", "locked": true },
-      { "n": 5, "title": "A Rejtett Metaadat", "img": "/images/5.jpg", "href": "#", "locked": true },
-      { "n": 6, "title": "A Szivárgó Port", "img": "/images/6.jpg", "href": "#", "locked": true },
-      { "n": 7, "title": "A Kettős Identitás", "img": "/images/7.jpg", "href": "#", "locked": true },
-      { "n": 8, "title": "A Törött Kulcs", "img": "/images/8.jpg", "href": "#", "locked": true },
-      { "n": 9, "title": "A Megszakított Átvitel", "img": "/images/9.jpg", "href": "#", "locked": true },
-      { "n": 10, "title": "A Phantom‑Profil", "img": "/images/10.jpg", "href": "#", "locked": true },
-      { "n": 11, "title": "A Lopott Árnyékfiók", "img": "/images/11.jpg", "href": "#", "locked": true },
-      { "n": 12, "title": "A Főkolompos", "img": "/images/12.jpg", "href": "#", "locked": true }
+      { "n": 1, "title": "The Encrypted Data Packet", "img": "/images/1.jpg", "href": "/ugy1", "locked": false },
+      { "n": 2, "title": "The Forged Archive", "img": "/images/2.jpg", "href": "#", "locked": true },
+      { "n": 3, "title": "The Undelivered Message", "img": "/images/3.jpg", "href": "#", "locked": true },
+      { "n": 4, "title": "The Missing Timeline", "img": "/images/4.jpg", "href": "#", "locked": true },
+      { "n": 5, "title": "The Hidden Metadata", "img": "/images/5.jpg", "href": "#", "locked": true },
+      { "n": 6, "title": "The Leaking Port", "img": "/images/6.jpg", "href": "#", "locked": true },
+      { "n": 7, "title": "The Double Identity", "img": "/images/7.jpg", "href": "#", "locked": true },
+      { "n": 8, "title": "The Broken Key", "img": "/images/8.jpg", "href": "#", "locked": true },
+      { "n": 9, "title": "The Interrupted Transfer", "img": "/images/9.jpg", "href": "#", "locked": true },
+      { "n": 10, "title": "The Phantom Profile", "img": "/images/10.jpg", "href": "#", "locked": true },
+      { "n": 11, "title": "The Stolen Shadow Account", "img": "/images/11.jpg", "href": "#", "locked": true },
+      { "n": 12, "title": "The Mastermind", "img": "/images/12.jpg", "href": "#", "locked": true }
     ]
   }
 }
-
-

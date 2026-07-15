@@ -52,7 +52,7 @@ const ScoreDisplay = () => {
           fontFamily: 'Rajdhani, Inter, sans-serif'
         }}
       >
-        {totalPoints} pont
+        {totalPoints} pts
       </div>
     </div>
   )

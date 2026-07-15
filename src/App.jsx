@@ -1,11 +1,19 @@
 import React from 'react'
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom'
 import { AuthProvider, useAuth } from './contexts/AuthContext'
 import { ScoringProvider, useScoring } from './contexts/ScoringContext'
+import { LearningProgressProvider } from './contexts/LearningProgressContext'
 import PointAnimation from './components/Scoring/PointAnimation'
 import RankBadgeAnimation from './components/Scoring/RankBadgeAnimation'
 import LevelCompletionSummary from './components/Scoring/LevelCompletionSummary'
 import Landing from './pages/Landing'
+import Play from './pages/Play'
+import Learn from './pages/learn/Learn'
+import LearnPath from './pages/learn/LearnPath'
+import LearnLesson from './pages/learn/LearnLesson'
+import LearnDashboard from './pages/learn/LearnDashboard'
+import Pricing from './pages/Pricing'
+import ForTeams from './pages/ForTeams'
 import Aurora from './pages/Aurora'
 import Privacy from './pages/Privacy'
 import Profile from './pages/Profile'
@@ -15,25 +23,44 @@ import ErrorBoundary from './components/ErrorBoundary'
 import QADebugPanel from './pages/qa-debug'
 import TaskPreviewList from './pages/task-preview'
 
+function VisualEffects() {
+  const { pathname } = useLocation()
+  const hideVisuals = pathname.startsWith('/learn')
+
+  if (hideVisuals) return null
+
+  return (
+    <>
+      <div className="scanlines" aria-hidden="true" />
+      <div className="grid-overlay" aria-hidden="true" />
+    </>
+  )
+}
 
 function AppContent() {
   const { isAuthenticated } = useAuth()
-  const { 
-    showPointAnimation, 
-    setShowPointAnimation, 
-    showRankBadge, 
+  const {
+    showPointAnimation,
+    setShowPointAnimation,
+    showRankBadge,
     setShowRankBadge,
     showLevelCompletion,
-    setShowLevelCompletion
+    setShowLevelCompletion,
   } = useScoring()
 
   return (
     <>
-        <BrowserRouter>
-        <div className="scanlines" aria-hidden="true"></div>
-        <div className="grid-overlay" aria-hidden="true"></div>
+      <BrowserRouter>
+        <VisualEffects />
         <Routes>
           <Route path="/" element={<Landing />} />
+          <Route path="/play" element={<Play />} />
+          <Route path="/learn" element={<Learn />} />
+          <Route path="/learn/dashboard" element={<LearnDashboard />} />
+          <Route path="/learn/paths/:pathId" element={<LearnPath />} />
+          <Route path="/learn/lessons/:lessonId" element={<LearnLesson />} />
+          <Route path="/pricing" element={<Pricing />} />
+          <Route path="/teams" element={<ForTeams />} />
           <Route path="/aurora" element={<Aurora />} />
           <Route path="/aurora.html" element={<Navigate to="/aurora" replace />} />
           <Route path="/privacy" element={<Privacy />} />
@@ -52,8 +79,8 @@ function AppContent() {
           <Route path="/ugy12" element={<UgyView />} />
           {import.meta.env.DEV && (
             <>
-          <Route path="/qa-debug" element={<QADebugPanel />} />
-          <Route path="/task-preview" element={<TaskPreviewList />} />
+              <Route path="/qa-debug" element={<QADebugPanel />} />
+              <Route path="/task-preview" element={<TaskPreviewList />} />
             </>
           )}
           <Route path="*" element={<NotFound />} />
@@ -87,13 +114,14 @@ function App() {
   return (
     <ErrorBoundary>
       <AuthProvider>
-        <ScoringProvider>
-          <AppContent />
-        </ScoringProvider>
+        <LearningProgressProvider>
+          <ScoringProvider>
+            <AppContent />
+          </ScoringProvider>
+        </LearningProgressProvider>
       </AuthProvider>
     </ErrorBoundary>
   )
 }
 
 export default App
-

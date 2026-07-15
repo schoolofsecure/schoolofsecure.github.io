@@ -16,36 +16,36 @@ const FIREWALL_SCENARIOS = [
   {
     id: 'museum-kiosk',
     difficulty: 'easy',
-    intro: 'A látogatói webkioszkot ideiglenesen leválasztották a belső hálóról, de továbbra is kiszolgálja a digitális tárlat webes felületét.',
-    instructions: 'Engedélyezd a látogatók által használt webes protokollokat, de tartsd zárva az admin SSH-t, hogy a kioszkot kívülről ne lehessen konfigurálni.',
-    hint: 'A kioszk csak HTTP (80/TCP) és HTTPS (443/TCP) forgalmat igényel, minden admin port maradjon zárva.',
+    intro: 'The visitor web kiosk was temporarily isolated from the internal network but still serves the digital exhibition website.',
+    instructions: 'Allow the web protocols visitors use, but keep admin SSH closed so the kiosk cannot be configured remotely.',
+    hint: 'The kiosk only needs HTTP (80/TCP) and HTTPS (443/TCP); all admin ports should stay closed.',
     allow: ['HTTP', 'HTTPS'],
     deny: ['SSH']
   },
   {
     id: 'sensor-gateway',
     difficulty: 'easy',
-    intro: 'A mozgásérzékelők egy DNS-alapú címkiszolgálón keresztül kommunikálnak, az üzemeltetői felület pedig HTTPS-en érhető el.',
-    instructions: 'Tedd lehetővé, hogy a gateway DNS-lekérdezéseket és HTTPS kapcsolatokat indítson, de blokkolj minden e-mail kimenetet, hogy ne használhassák spamre.',
-    hint: 'Csak azok a protokollok legyenek nyitva, amelyeket a kioszk a webes tartalom megjelenítéséhez feltétlenül használ. A levelezéssel kapcsolatos portokat viszont ebben a környezetben általában nem szükséges engedélyezni.',
+    intro: 'Motion sensors communicate through a DNS-based resolver, and the operator interface is available over HTTPS.',
+    instructions: 'Let the gateway run DNS queries and HTTPS connections, but block all outbound email so it cannot be abused for spam.',
+    hint: 'Only open the protocols the kiosk truly needs to display web content. Mail-related ports are usually unnecessary in this environment.',
     allow: ['DNS', 'HTTPS'],
     deny: ['SMTP']
   },
   {
     id: 'remote-labs',
     difficulty: 'medium',
-    intro: 'A kutatók VPN-en keresztül csatlakoznak, majd SSH-val lépnek be a labor szerverekre. A támadók viszont RDP-n és SMTP-n próbálkoznak.',
-    instructions: 'Engedélyezd a kutatók OpenVPN és SSH forgalmát, viszont blokkolj minden RDP-t és SMTP-t.',
-    hint: '1194/UDP és 22/TCP mehet, 3389/TCP és 25/TCP maradjon tiltott.',
+    intro: 'Researchers connect over VPN, then SSH into lab servers. Attackers, meanwhile, probe RDP and SMTP.',
+    instructions: 'Allow OpenVPN and SSH for researchers, but block all RDP and SMTP traffic.',
+    hint: '1194/UDP and 22/TCP may pass; 3389/TCP and 25/TCP should stay blocked.',
     allow: ['OPENVPN', 'SSH'],
     deny: ['RDP', 'SMTP']
   },
   {
     id: 'forensic-bridge',
     difficulty: 'hard',
-    intro: 'Egy incidens után csak az igazolt adatáramlást engedhetitek: a forenzikus csapat HTTPS-en tölti fel a jelentéseket, DNS lekérdezésre szükségük van, de minden távoli admin hozzáférést zárni kell.',
-    instructions: 'Engedélyezd a HTTPS és DNS forgalmat, illetve a SFTP alapú adatküldést, de tilts SSH-t, RDP-t és OpenVPN-t.',
-    hint: '443/TCP, 53/UDP és SFTP (22/TCP) kell, minden távoli admin csatorna zárt.',
+    intro: 'After an incident, only verified data flows are allowed: the forensic team uploads reports over HTTPS, needs DNS lookups, but all remote admin access must be closed.',
+    instructions: 'Allow HTTPS and DNS traffic plus SFTP data transfer, but block SSH, RDP, and OpenVPN.',
+    hint: '443/TCP, 53/UDP, and SFTP (22/TCP) are required; every remote admin channel stays closed.',
     allow: ['HTTPS', 'DNS', 'SFTP'],
     deny: ['SSH', 'RDP', 'OPENVPN']
   }
@@ -54,7 +54,7 @@ const FIREWALL_SCENARIOS = [
 const mapServices = (codes) => codes.map(code => {
   const svc = SERVICES.find(service => service.id === code)
   if (!svc) {
-    throw new Error(`Ismeretlen szolgáltatás: ${code}`)
+    throw new Error(`Unknown service: ${code}`)
   }
   return svc
 })
@@ -106,5 +106,3 @@ export class FirewallRulesTask extends BaseTask {
     )
   }
 }
-
-

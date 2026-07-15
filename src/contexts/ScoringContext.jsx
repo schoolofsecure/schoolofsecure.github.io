@@ -216,7 +216,7 @@ export const ScoringProvider = ({ children }) => {
         errorPenalty: 0,
         levelBonus: 0,
         rank: null,
-        feedback: 'Bejelentkezés szükséges a pontozáshoz.',
+        feedback: 'Sign in to earn points.',
         newAchievements: []
       }
     }
@@ -260,22 +260,22 @@ export const ScoringProvider = ({ children }) => {
       }
       const rank = updateRank(displayTotalPoints, level)
       const levelNames = {
-        1: 'A Titkosított Adatcsomag',
-        2: 'A Hamisított Archívum',
-        3: 'A Kézbesítetlen Üzenet',
-        4: 'A Hiányzó Idővonal',
-        5: 'A Rejtett Metaadat',
-        6: 'A Szivárgó Port',
-        7: 'A Kettős Identitás',
-        8: 'A Törött Kulcs',
-        9: 'A Megszakított Átvitel',
-        10: 'A Phantom‑Profil',
-        11: 'A Lopott Árnyékfiók',
-        12: 'A Főkolompos'
+        1: 'The Encrypted Data Packet',
+        2: 'The Forged Archive',
+        3: 'The Undelivered Message',
+        4: 'The Missing Timeline',
+        5: 'The Hidden Metadata',
+        6: 'The Leaking Port',
+        7: 'The Double Identity',
+        8: 'The Broken Key',
+        9: 'The Interrupted Transfer',
+        10: 'The Phantom Profile',
+        11: 'The Stolen Shadow Account',
+        12: 'The Mastermind'
       }
       
       setShowLevelCompletion({
-        levelName: levelNames[level] || `Ügy #${level}`,
+        levelName: levelNames[level] || `Case #${level}`,
         rank,
         totalPoints: displayTotalPoints
       })
@@ -287,7 +287,7 @@ export const ScoringProvider = ({ children }) => {
         errorPenalty: 0,
         levelBonus: 0,
         rank,
-        feedback: 'Pálya újrajátszva - pontszám nem változott.',
+        feedback: 'Level replayed — score unchanged.',
         newAchievements: []
       }
     }
@@ -366,23 +366,23 @@ export const ScoringProvider = ({ children }) => {
     
     // Pálya neve meghatározása
     const levelNames = {
-      1: 'A Titkosított Adatcsomag',
-      2: 'A Hamisított Archívum',
-      3: 'A Kézbesítetlen Üzenet',
-      4: 'A Hiányzó Idővonal',
-      5: 'A Rejtett Metaadat',
-      6: 'A Szivárgó Port',
-      7: 'A Kettős Identitás',
-      8: 'A Törött Kulcs',
-      9: 'A Megszakított Átvitel',
-      10: 'A Phantom‑Profil',
-      11: 'A Lopott Árnyékfiók',
-      12: 'A Főkolompos'
+      1: 'The Encrypted Data Packet',
+      2: 'The Forged Archive',
+      3: 'The Undelivered Message',
+      4: 'The Missing Timeline',
+      5: 'The Hidden Metadata',
+      6: 'The Leaking Port',
+      7: 'The Double Identity',
+      8: 'The Broken Key',
+      9: 'The Interrupted Transfer',
+      10: 'The Phantom Profile',
+      11: 'The Stolen Shadow Account',
+      12: 'The Mastermind'
     }
     
     // Összegző animáció triggerelése
     setShowLevelCompletion({
-      levelName: levelNames[level] || `Ügy #${level}`,
+      levelName: levelNames[level] || `Case #${level}`,
       rank,
       totalPoints: newTotal
     })

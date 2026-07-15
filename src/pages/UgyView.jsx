@@ -11,6 +11,8 @@ import { WordSearchMount, MatchTable, ArchiveModal } from '../components/Ugy1/Sp
 import { ugyConfigs } from './ugyConfigs.jsx'
 import { LevelGenerator } from '../tasks'
 import { PerfImg } from '../components/PerfImg'
+import SiteNav from '../components/SiteNav'
+import GameSessionResults from '../components/GameSessionResults'
 import { logger } from '../utils/logger'
 import '../styles/ugy1.css'
 
@@ -37,8 +39,8 @@ const UgyView = () => {
   const location = useLocation();
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
-  const { saveLevelCompletion, checkLevelCompleted, isAuthenticated, logout } = useAuth();
-  const { scoreTask, scoreLevel } = useScoring();
+  const { saveLevelCompletion, checkLevelCompleted, isAuthenticated } = useAuth();
+  const { scoreTask, scoreLevel, totalPoints } = useScoring();
   
   // Kiolvassuk az ügy számát a pathname-ből (/ugy1 -> 1, /ugy2 -> 2, stb.)
   const match = location.pathname.match(/\/ugy(\d+)/);
@@ -50,7 +52,7 @@ const UgyView = () => {
       <div className="container">
         <main>
           <div className="card">
-            <p className="muted">Ismeretlen ügy: {levelNum || '?'}</p>
+            <p className="muted">Unknown case: {levelNum || '?'}</p>
           </div>
         </main>
       </div>
@@ -61,6 +63,7 @@ const UgyView = () => {
   const [done, setDone] = useState(Array(config.totalTasks).fill(false));
   const [showArchive, setShowArchive] = useState(false);
   const [errors, setErrors] = useState(0);
+  const [sessionResults, setSessionResults] = useState(null);
   const [taskFeedback, setTaskFeedback] = useState('');
   const levelStartTimeRef = useRef(Date.now());
   
@@ -186,6 +189,8 @@ const UgyView = () => {
     return (completedCount / config.totalTasks) * 100;
   }, [completedCount, config.totalTasks]);
 
+  const isSuccessFeedback = taskFeedback.includes('Correct') || taskFeedback.includes('Helyes') || taskFeedback.includes('+');
+
   // Mentés Firebase-be (csak bejelentkezés után)
   useEffect(() => {
     if (isAuthenticated) {
@@ -216,6 +221,16 @@ const UgyView = () => {
     
     // Visszajelzés megjelenítése
     setTaskFeedback(result.feedback);
+
+    const totalTasks = config.isDynamic ? tasks.length : config.totalTasks;
+    setTimeout(() => {
+      setSessionResults({
+        score: result.totalPoints ?? totalPoints ?? Math.max(0, (totalTasks - errors) * 10),
+        totalTasks,
+        errors,
+        levelName: config.headerTitle || `Case #${levelNum}`,
+      });
+    }, 5500);
     
     try {
       // Mindig mentjük Firebase-be, ha be vagyunk jelentkezve
@@ -276,24 +291,20 @@ const UgyView = () => {
   if (config.requiresPrevious && previousLocked) {
     return (
       <div className="container">
-        <header>
-          <Link to="/" className="brand" aria-label="CyberMystery – Vissza a főoldalra">
-            <div className="brand-badge">CM</div>
-            <div>{config.headerTitle}</div>
-          </Link>
-        </header>
+        <SiteNav />
+        {config.headerTitle && <div className="case-title-bar">{config.headerTitle}</div>}
         <main>
           <div className="card" style={{textAlign:'center', padding:'40px 20px'}}>
-            <h2 style={{margin:'0 0 16px'}}>🔒 Pálya zárolva</h2>
+            <h2 style={{margin:'0 0 16px'}}>🔒 Level locked</h2>
             <p className="muted" style={{margin:'0 0 20px', fontSize:'16px', lineHeight:'1.7'}}>
-              A harmadik pálya csak az első két pálya teljesítése után érhető el.
+              The third case unlocks only after you complete the first two.
               <br />
-              Visszatérhetsz az előző pályákra, hogy befejezd a feladatokat.
+              Return to earlier cases to finish the remaining tasks.
             </p>
             <div style={{display:'flex', gap:'12px', justifyContent:'center', flexWrap:'wrap'}}>
-              <Link className="btn" to="/ugy1">Első pálya</Link>
-              <Link className="btn" to="/ugy2">Második pálya</Link>
-              <Link className="btn-ghost" to="/aurora">Ügyek áttekintése</Link>
+              <Link className="btn" to="/ugy1">Case 1</Link>
+              <Link className="btn" to="/ugy2">Case 2</Link>
+              <Link className="btn-ghost" to="/aurora">Browse cases</Link>
             </div>
           </div>
         </main>
@@ -305,22 +316,18 @@ const UgyView = () => {
   if (levelNum >= 5) {
     return (
       <div className="container">
-        <header>
-          <Link to="/" className="brand" aria-label="CyberMystery – Vissza a főoldalra">
-            <div className="brand-badge">CM</div>
-            <div>{config.headerTitle || `Ügy #${levelNum}`}</div>
-          </Link>
-        </header>
+        <SiteNav />
+        <div className="case-title-bar">{config.headerTitle || `Case #${levelNum}`}</div>
         <main>
           <div className="card" style={{textAlign:'center', padding:'40px 20px'}}>
-            <h2 style={{margin:'0 0 16px'}}>⏸️ Inaktív pálya</h2>
+            <h2 style={{margin:'0 0 16px'}}>⏸️ Inactive case</h2>
             <p className="muted" style={{margin:'0 0 20px', fontSize:'16px', lineHeight:'1.7'}}>
-              Ez a pálya jelenleg még inaktív.
+              This case is not active yet.
               <br />
-              Kérjük türelmedet, hamarosan elérhető lesz.
+              Please check back soon — it will be available shortly.
             </p>
             <div style={{display:'flex', gap:'12px', justifyContent:'center', flexWrap:'wrap'}}>
-              <Link className="btn" to="/aurora">Ügyek áttekintése</Link>
+              <Link className="btn" to="/aurora">Browse cases</Link>
             </div>
           </div>
         </main>
@@ -333,85 +340,21 @@ const UgyView = () => {
 
   return (
     <div className="container">
-      <header>
-        <Link to="/" className="brand" aria-label="CyberMystery – Vissza a főoldalra">
-          <div className="brand-badge">CM</div>
-          <div>{config.headerTitle}</div>
-        </Link>
-        {isAuthenticated && (
-          <div style={{ marginLeft: 'auto', display: 'flex', gap: '10px', alignItems: 'center' }}>
-            <Link
-              to="/profile"
-            style={{
-              padding: '8px 16px',
-              fontSize: '13px',
-              background: 'rgba(255,255,255,0.05)',
-              border: '1px solid rgba(207,230,255,0.2)',
-              color: 'var(--muted)',
-              borderRadius: '6px',
-              cursor: 'pointer',
-              fontFamily: 'Rajdhani, Inter, sans-serif',
-              fontWeight: 500,
-                transition: 'all 0.2s',
-                textDecoration: 'none',
-                display: 'inline-flex',
-                alignItems: 'center'
-            }}
-            onMouseEnter={(e) => {
-              e.target.style.background = 'rgba(255,255,255,0.1)';
-              e.target.style.color = '#cfe6ff';
-            }}
-            onMouseLeave={(e) => {
-              e.target.style.background = 'rgba(255,255,255,0.05)';
-              e.target.style.color = 'var(--muted)';
-            }}
-            >
-              Profil
-            </Link>
-            <button
-              onClick={async () => {
-                const result = await logout();
-                if (result.success) {
-                  navigate('/');
-                }
-              }}
-              style={{
-                padding: '6px 12px',
-                fontSize: '11px',
-                background: 'transparent',
-                border: 'none',
-                color: 'rgba(207,230,255,0.6)',
-                borderRadius: '6px',
-                cursor: 'pointer',
-                fontFamily: 'Rajdhani, Inter, sans-serif',
-                fontWeight: 400,
-                transition: 'all 0.2s'
-              }}
-              onMouseEnter={(e) => {
-                e.target.style.color = 'rgba(207,230,255,0.9)';
-              }}
-              onMouseLeave={(e) => {
-                e.target.style.color = 'rgba(207,230,255,0.6)';
-              }}
-          >
-            Kijelentkezés
-          </button>
-          </div>
-        )}
-      </header>
+      <SiteNav />
+      <div className="case-title-bar">{config.headerTitle}</div>
       <ScoreDisplay />
       {taskFeedback && (
         <div
           style={{
             textAlign:'right',
             fontSize:'13px',
-            color: taskFeedback.includes('Helyes') ? '#00e5ff' : 'var(--muted)',
+            color: isSuccessFeedback ? '#00e5ff' : 'var(--muted)',
             marginTop:'-6px',
             marginBottom:'12px',
             padding: '8px 12px',
-            background: taskFeedback.includes('Helyes') ? 'rgba(0,229,255,0.1)' : 'rgba(207,230,255,0.05)',
+            background: isSuccessFeedback ? 'rgba(0,229,255,0.1)' : 'rgba(207,230,255,0.05)',
             borderRadius: '6px',
-            border: `1px solid ${taskFeedback.includes('Helyes') ? 'rgba(0,229,255,0.3)' : 'rgba(207,230,255,0.2)'}`
+            border: `1px solid ${isSuccessFeedback ? 'rgba(0,229,255,0.3)' : 'rgba(207,230,255,0.2)'}`
           }}
         >
           {taskFeedback}
@@ -438,10 +381,10 @@ const UgyView = () => {
           <>
             {tasks.length === 0 ? (
               <div className="card">
-                <p className="muted">Feladatok betöltése...</p>
+                <p className="muted">Loading tasks...</p>
               </div>
             ) : (
-              <TaskCard title={`${step + 1}. feladat`}>
+              <TaskCard title={`Task ${step + 1}`}>
                 {currentTask ? (
                   <>
                     <TaskRenderer
@@ -458,15 +401,15 @@ const UgyView = () => {
                       <div className="grid2" style={{ marginTop: '16px' }}>
                         <div></div>
                         <div className="card" style={{ animation: 'fadeIn .3s ease both' }}>
-                          <h3 style={{ marginTop: 0, color: '#00e5ff', fontFamily: 'Rajdhani, Inter, sans-serif', fontSize: '18px', fontWeight: 700 }}>Ügy teljesítve</h3>
+                          <h3 style={{ marginTop: 0, color: '#00e5ff', fontFamily: 'Rajdhani, Inter, sans-serif', fontSize: '18px', fontWeight: 700 }}>Case complete</h3>
                           <p className="muted" style={{ marginBottom: '16px', lineHeight: '1.6', fontSize: '14px' }}>
                             {levelNum === 2 
-                              ? <>Gratulálunk! A harmadik ügy <strong>december 6-án, este 7 órakor nyílik</strong>.</>
+                              ? <>Congratulations! Case 3 opens on <strong>December 6 at 7:00 PM</strong>.</>
                               : levelNum === 3
-                              ? <>Gratulálunk! A negyedik ügy <strong>december 18-án, este 7 órakor nyílik</strong>.</>
+                              ? <>Congratulations! Case 4 opens on <strong>December 18 at 7:00 PM</strong>.</>
                               : levelNum === 4
-                              ? <>Gratulálunk! Az ötödik ügy <strong>december 24-én, este 7 órakor nyílik</strong>.</>
-                              : 'Gratulálunk! Sikeresen megoldottad az ügyet.'}
+                              ? <>Congratulations! Case 5 opens on <strong>December 24 at 7:00 PM</strong>.</>
+                              : 'Congratulations! You successfully solved the case.'}
                           </p>
                           <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
                             <Link
@@ -479,7 +422,7 @@ const UgyView = () => {
                                 padding: '4px 0'
                               }}
                             >
-                              Vissza az ügyekhez
+                              Back to cases
                             </Link>
                             {levelNum === 2 && isLevel3Unlocked ? (
                               <Link
@@ -564,7 +507,7 @@ const UgyView = () => {
                     )}
                   </>
                 ) : (
-                  <p className="muted">Aktív feladat betöltése...</p>
+                  <p className="muted">Loading active task...</p>
                 )}
               </TaskCard>
             )}
@@ -590,7 +533,7 @@ const UgyView = () => {
                     {config.specialComponents?.archive && (
                       <div style={{display:'flex', gap:'10px', marginTop:'10px'}}>
                         <button className="btn-ghost" type="button" onClick={()=>setShowArchive(true)}>
-                          🔍 Nyomok újramegtekintése
+                          🔍 Review clues again
                         </button>
                       </div>
                     )}
@@ -607,7 +550,7 @@ const UgyView = () => {
                               padding:'4px 0'
                             }}
                           >
-                            Vissza az ügyekhez
+                            Back to cases
                           </Link>
                           {config.nextLevelRoute && (
                             levelNum === 3 ? (
@@ -658,7 +601,7 @@ const UgyView = () => {
                   <>
                     <ChallengeInput
                       key={step}
-                      placeholder={currentStaticTask.placeholder || "válasz…"}
+                      placeholder={currentStaticTask.placeholder || "answer…"}
                       onCheck={(val, norm) => {
                         const ok = currentStaticTask.expectedAnswer(val, norm);
                         if (ok) { 
@@ -666,8 +609,8 @@ const UgyView = () => {
                         }
                         return ok;
                       }}
-                      okText={currentStaticTask.okText || "Helyes! Tovább…"}
-                      errText={currentStaticTask.errText || "Nem egészen – próbáld újra."}
+                      okText={currentStaticTask.okText || "Correct! Continue…"}
+                      errText={currentStaticTask.errText || "Not quite — try again."}
                       onFailure={() => handleTaskFailure(currentStaticTask.difficulty)}
                     />
                     {config.images && config.images[step] && (
@@ -676,7 +619,7 @@ const UgyView = () => {
                           key={`img-${step}`}
                           className="task-ill" 
                           src={config.images[step]} 
-                          alt={`Illusztráció ${step + 1}`} 
+                          alt={`Illustration ${step + 1}`} 
                           width="280" 
                           height="280" 
                           priority 
@@ -686,7 +629,7 @@ const UgyView = () => {
                     {currentStaticTask.hint && (
                       <div className="hint">
                         <details>
-                          <summary>Súgó megnyitása</summary>
+                          <summary>Open hint</summary>
                           {currentStaticTask.hint}
                         </details>
                       </div>
@@ -707,7 +650,7 @@ const UgyView = () => {
                               padding:'4px 0'
                             }}
                           >
-                            Vissza az ügyekhez
+                            Back to cases
                           </Link>
                           {config.nextLevelRoute && (
                             levelNum === 3 ? (
@@ -762,6 +705,12 @@ const UgyView = () => {
       </main>
       {showArchive && config.specialComponents?.archive && (
         <ArchiveModal onClose={()=>setShowArchive(false)} />
+      )}
+      {sessionResults && (
+        <GameSessionResults
+          {...sessionResults}
+          onClose={() => setSessionResults(null)}
+        />
       )}
     </div>
   );

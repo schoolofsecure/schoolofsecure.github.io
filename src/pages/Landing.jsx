@@ -1,499 +1,131 @@
 import React, { useState, useEffect } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
-import { useAuth } from '../contexts/AuthContext'
+import { Link } from 'react-router-dom'
+import SiteNav from '../components/SiteNav'
 import '../index.css'
 
 const Landing = () => {
-  const [gdprAgreed, setGdprAgreed] = useState(false)
-  const [gdprAgreedInForm, setGdprAgreedInForm] = useState(false)
   const [cookieBannerVisible, setCookieBannerVisible] = useState(false)
-  const [showGdprHint, setShowGdprHint] = useState(false)
-  const [showGdprHoverHint, setShowGdprHoverHint] = useState(false)
-  const [authPanelOpen, setAuthPanelOpen] = useState(false)
-  const [authMode, setAuthMode] = useState('login')
-  const { user, loading, registerWithEmail, loginWithEmail, logout } = useAuth()
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const navigate = useNavigate()
-
-  const authStatusText = user
-    ? user.emailVerified
-      ? 'Bejelentkezve'
-      : 'Megerősítés szükséges'
-    : ''
-
-  const baseAuthBtnStyle = {
-    minWidth: '150px',
-    height: '46px',
-    borderRadius: '999px',
-    fontFamily: 'Rajdhani, Inter, sans-serif',
-    fontSize: '14px',
-    letterSpacing: '0.4px',
-    fontWeight: 600,
-    padding: '0 20px'
-  }
-
-  useEffect(() => {
-    if (!loading && user && user.emailVerified) {
-      navigate('/aurora', { replace: true })
-    }
-  }, [loading, user, navigate])
 
   useEffect(() => {
     try {
-      const consent = localStorage.getItem('cookieConsent')
-      if (!consent) {
-        setCookieBannerVisible(true)
-      }
+      if (!localStorage.getItem('cookieConsent')) setCookieBannerVisible(true)
     } catch (e) {}
   }, [])
 
-  const handleCookieAccept = () => {
-    try {
-      localStorage.setItem('cookieConsent', 'accepted')
-      setCookieBannerVisible(false)
-    } catch (e) {}
-  }
-
-  const handleSignup = (e) => {
-    e.preventDefault()
-
-    if (!gdprAgreed) {
-      setShowGdprHint(true)
-      // Scroll to the GDPR szekcióhoz
-      setTimeout(() => {
-        const consentBlock = document.getElementById('gdprConsent')
-        if (consentBlock) {
-          consentBlock.scrollIntoView({ behavior: 'smooth', block: 'center' })
-        }
-      }, 100)
-      return
-    }
-
-    setShowGdprHint(false)
-    setAuthMode('register')
-    setAuthPanelOpen(true)
-    window.scrollTo({ top: 0, behavior: 'smooth' })
-  }
-
-  const handleRegister = async () => {
-    if (!gdprAgreedInForm) {
-      setShowGdprHint(true)
-      return
-    }
-
-    setShowGdprHint(false)
-    const result = await registerWithEmail(email, password)
-    alert(result.message)
-    if (result.success) {
-      setAuthPanelOpen(false)
-      setGdprAgreedInForm(false)
-    }
-  }
-
-  const handleLogin = async () => {
-    const result = await loginWithEmail(email, password)
-    alert(result.message)
-    if (result.success) {
-      setAuthPanelOpen(false)
-      navigate('/aurora')
-    }
-  }
-
-  const handleLogout = async () => {
-    const result = await logout()
-    alert(result.message)
-    if (result.success) {
-      setAuthPanelOpen(false)
-    }
-  }
-
   return (
     <div className="container">
-      <header style={{display:'flex', alignItems:'center', gap:'24px', flexWrap:'wrap'}}>
-        <Link to="/" className="brand" aria-label="CyberMystery">
-          <div className="brand-badge">CM</div>
-          <div className="brand-title">CyberMystery</div>
-        </Link>
-        <div style={{marginLeft:'auto', position:'relative'}}>
-          <div
-            style={{
-              display:'flex',
-              alignItems:'center',
-              gap:'10px',
-              justifyContent:'flex-end',
-              flexWrap:'wrap'
-            }}
-          >
-            {authStatusText && (
-              <span
-                style={{
-                  padding:'6px 12px',
-                  borderRadius:'999px',
-                  border:'1px solid rgba(207,230,255,0.2)',
-                  fontSize:'13px',
-                  color:'var(--muted)',
-                  background:'rgba(15,22,33,0.7)'
-                }}
-              >
-                {authStatusText}
-              </span>
-            )}
-            {!user && (
-              <>
-                <button
-                  type="button"
-                  className="btn-ghost"
-                  style={{
-                    ...baseAuthBtnStyle,
-                    border: '1px solid rgba(207,230,255,0.35)',
-                    color: 'var(--ink)',
-                    background: 'rgba(255,255,255,0.06)',
-                    boxShadow: '0 8px 20px rgba(0,0,0,0.25)'
-                  }}
-                  onClick={() => {
-                    setAuthMode('login')
-                    setAuthPanelOpen(true)
-                  }}
-                  aria-expanded={authPanelOpen}
-                  aria-controls="authPanel"
-                >
-                  Belépés
-                </button>
-                <button
-                  type="button"
-                  className="btn"
-                  style={{
-                    ...baseAuthBtnStyle,
-                    background: 'linear-gradient(120deg, #00e5ff, #66ffe3)',
-                    color: '#04111f',
-                    border: '1px solid rgba(0,229,255,0.9)',
-                    boxShadow: '0 12px 26px rgba(0,229,255,0.35)'
-                  }}
-                  onClick={() => {
-                    setAuthMode('register')
-                    setAuthPanelOpen(true)
-                  }}
-                  aria-expanded={authPanelOpen}
-                  aria-controls="authPanel"
-                >
-                  Regisztráció
-                </button>
-              </>
-            )}
-            {user && (
-              <Link
-                to="/profile"
-                className="btn-secondary"
-                style={{
-                  ...baseAuthBtnStyle,
-                  border: '1px solid rgba(207,230,255,0.3)',
-                  background: 'rgba(255,255,255,0.04)',
-                  textDecoration: 'none',
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  justifyContent: 'center'
-                }}
-              >
-                Profil
-              </Link>
-            )}
-          </div>
-          {authPanelOpen && (
-            <div
-              id="authPanel"
-              className="card"
-              style={{
-                position:'absolute',
-                top:'calc(100% + 12px)',
-                right:0,
-                minWidth:'320px',
-                padding:'20px',
-                background:'#0b121c',
-                border:'1px solid rgba(207,230,255,0.2)',
-                borderRadius:'16px',
-                boxShadow:'0 20px 45px rgba(0,0,0,0.4)',
-                zIndex:5
-              }}
-            >
-              <div style={{display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:'12px'}}>
-                <strong style={{fontSize:'15px'}}>
-                  {user ? 'Profil' : authMode === 'login' ? 'Belépés' : 'Regisztráció'}
-                </strong>
-                <button
-                  type="button"
-                  className="btn-ghost"
-                  style={{padding:'4px 10px'}}
-                  onClick={() => setAuthPanelOpen(false)}
-                  aria-label="Panel bezárása"
-                >
-                  ✕
-                </button>
-              </div>
-              {user ? (
-                user.emailVerified ? (
-                  <div>
-                    <p style={{margin:'0 0 12px', color:'var(--muted)', fontSize:'14px'}}>
-                      Bejelentkezve, készen állsz a nyomozásra.
-                    </p>
-                    <button className="btn-secondary" type="button" onClick={handleLogout} style={{width:'100%'}}>
-                      Kijelentkezés
-                    </button>
-                  </div>
-                ) : (
-                  <div>
-                    <p style={{margin:'0 0 12px', color:'var(--muted)', fontSize:'14px'}}>
-                      Az e-mail címed megerősítése szükséges a játékhoz.
-                    </p>
-                    <button className="btn-secondary" type="button" onClick={handleLogout} style={{width:'100%'}}>
-                      Kijelentkezés
-                    </button>
-                  </div>
-                )
-              ) : (
-                <form
-                  onSubmit={(e) => {
-                    e.preventDefault()
-                    if (authMode === 'login') {
-                      handleLogin()
-                    } else {
-                      handleRegister()
-                    }
-                  }}
-                  style={{display:'flex', flexDirection:'column', gap:'10px'}}
-                >
-                  <input
-                    id="cm-email"
-                    className="input"
-                    type="email"
-                    placeholder="E-mail cím"
-                    autoComplete="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                  />
-                  <input
-                    id="cm-pass"
-                    className="input"
-                    type="password"
-                    placeholder="Jelszó"
-                    autoComplete="current-password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                  />
-                  {authMode === 'register' && (
-                    <div style={{display:'flex', alignItems:'flex-start', gap:'8px', padding:'8px 0'}}>
-                      <input
-                        type="checkbox"
-                        id="gdprAgreeInForm"
-                        checked={gdprAgreedInForm}
-                        onChange={(e) => {
-                          setGdprAgreedInForm(e.target.checked)
-                          if (e.target.checked) {
-                            setShowGdprHint(false)
-                          }
-                        }}
-                        style={{marginTop:'2px', flexShrink:0}}
-                      />
-                      <label
-                        htmlFor="gdprAgreeInForm"
-                        style={{
-                          fontSize:'12px',
-                          color: showGdprHint ? 'var(--danger)' : 'var(--muted)',
-                          lineHeight:'1.4',
-                          cursor:'pointer'
-                        }}
-                      >
-                        Elfogadom, hogy adataimat a játék céljára kezeljék. Bővebben az <Link to="/privacy" style={{color:'inherit', textDecoration:'underline'}}>adatkezelési tájékoztatóban</Link>.
-                      </label>
-                    </div>
-                  )}
-                  <button
-                    id={authMode === 'login' ? 'cm-login' : 'cm-register'}
-                    className={authMode === 'login' ? 'btn-submit' : 'btn-secondary'}
-                    type="submit"
-                    style={{width:'100%'}}
-                  >
-                    {authMode === 'login' ? 'Belépés' : 'Regisztráció'}
-                  </button>
-                  <button
-                    type="button"
-                    className="btn-ghost"
-                    onClick={() => {
-                      setAuthMode((mode) => (mode === 'login' ? 'register' : 'login'))
-                      setGdprAgreedInForm(false)
-                      setShowGdprHint(false)
-                    }}
-                    style={{fontSize:'13px'}}
-                  >
-                    {authMode === 'login' ? 'Még nincs fiókod? Regisztrálj' : 'Van már fiókod? Lépj be'}
-                  </button>
-                </form>
-              )}
-            </div>
-          )}
-        </div>
-      </header>
+      <SiteNav />
 
-      <section className="hero" aria-label="Fő szekció">
+      <section className="hero" aria-label="Main section">
         <div className="hero-copy">
-          <h1>Fedezd fel a digitális titkokat!</h1>
-          <p className="lead">Interaktív online nyomozós krimi a kiberbiztonság világában. Oldj meg <strong>rejtélyeket</strong>, fejts meg <strong>logikai feladványokat</strong>, hozz meg <strong>döntéseket</strong> – és leplezd le, ki áll a digitális támadások mögött.</p>
+          <h1>Learn cybersecurity through realistic challenges</h1>
+          <p className="lead">
+            Build practical skills from your first case to career-ready confidence. Start with a free investigative game, then go deeper with structured lessons, exercises, and workplace-focused modules.
+          </p>
           <div className="features">
-            <div className="feat"><h4>Nyomozás</h4><p>Interjúk, nyomok, idővonal, bizonyítékok.</p></div>
-            <div className="feat"><h4>Hackelés</h4><p>Kódtörés, hálózati minták, OSINT feladatok.</p></div>
-            <div className="feat"><h4>Logika</h4><p>Fejtörők, rejtvények, kombinációk.</p></div>
-            <div className="feat"><h4>Döntések</h4><p>Több lehetséges végkimenetel.</p></div>
+            <div className="feat"><h4>Real scenarios</h4><p>Situations that mirror actual emails, logins, and decisions.</p></div>
+            <div className="feat"><h4>Build skills</h4><p>Structured lessons and exercises when you want to go deeper.</p></div>
+            <div className="feat"><h4>Free to start</h4><p>Short investigative challenges as your entry point.</p></div>
+            <div className="feat"><h4>Track progress</h4><p>See what you know and what to study next.</p></div>
           </div>
-          <div className="cta-row" style={{position:'relative', display:'inline-block'}}>
-            <a 
-              id="heroBtn" 
-              href="https://forms.gle/pVMdZ7SSWWbCJhzdA" 
-              target="_blank" 
-              rel="noopener" 
-              className="btn btn-primary" 
-              aria-label="Kezdd el a nyomozást" 
-              onClick={handleSignup}
-              onMouseEnter={() => {
-                if (!gdprAgreed) {
-                  setShowGdprHoverHint(true)
-                }
-              }}
-              onMouseLeave={() => setShowGdprHoverHint(false)}
-              style={{
-                opacity: 1,
-                filter: 'none',
-                pointerEvents: 'auto',
-                cursor: 'pointer'
-              }}
-            >
-              Kezdd el a nyomozást
-            </a>
-            {(showGdprHoverHint || showGdprHint) && !gdprAgreed && (
-              <div
-                style={{
-                  position:'absolute',
-                  top:'50%',
-                  left:'50%',
-                  transform:'translate(-50%, -50%)',
-                  padding:'12px 16px',
-                  borderRadius:'12px',
-                  background:'rgba(4, 17, 31, 0.92)',
-                  border:'1px solid rgba(255,255,255,0.15)',
-                  color: showGdprHint ? 'var(--danger)' : 'var(--muted)',
-                  fontSize:'13px',
-                  fontWeight: showGdprHint ? 700 : 500,
-                  pointerEvents:'none',
-                  boxShadow:'0 12px 30px rgba(0,0,0,0.4)',
-                  width:'max-content',
-                  maxWidth:'260px',
-                  textAlign:'center',
-                  zIndex: 3,
-                  transition: 'color 0.2s ease'
-                }}
-              >
-                A gomb aktiválásához fogadd el az adatkezelést.
-              </div>
-            )}
-          </div>
-          <div className="gdpr-consent" id="gdprConsent" style={{marginTop:'10px'}}>
-            <div className="gdpr-checkbox">
-              <input 
-                type="checkbox" 
-                id="gdprAgree" 
-                checked={gdprAgreed}
-                onChange={(e) => {
-                  setGdprAgreed(e.target.checked)
-                  if (e.target.checked) {
-                    setShowGdprHint(false)
-                  setShowGdprHoverHint(false)
-                  }
-                }}
-              />
-              <label htmlFor="gdprAgree">
-                Elfogadom, hogy adataimat a játék céljára kezeljék. Bővebben az <Link to="/privacy">adatkezelési tájékoztatóban</Link>.
-              </label>
+          <div className="cta-row">
+            <div className="cta-block">
+              <Link to="/play" className="btn btn-primary" style={{ textDecoration: 'none' }}>Play Free</Link>
+              <p className="cta-micro">Your entry point — realistic scenarios, no setup required.</p>
+            </div>
+            <div className="cta-block">
+              <Link to="/learn" className="btn btn-secondary" style={{ textDecoration: 'none' }}>Explore Learning Paths</Link>
+              <p className="cta-micro">Short lessons, progress tracking, and topics for learners who want to go further.</p>
             </div>
           </div>
         </div>
         <div className="hero-media">
-          <div className="terminal-card" role="img" aria-label="Hangulatvizuál – neon terminál">
+          <div className="terminal-card" role="img" aria-label="Atmosphere visual, neon terminal">
             <div className="terminal-bar">
-              <span className="dot red"></span>
-              <span className="dot yellow"></span>
-              <span className="dot green"></span>
+              <span className="dot red" /><span className="dot yellow" /><span className="dot green" />
             </div>
             <div className="terminal-body">
               <div><span className="prompt">investigator@cm</span>:~$ trace --source breach.log</div>
-              <div>› scanning network… <span style={{color:'var(--ok)'}}>OK</span></div>
-              <div>› anomaly detected: <span style={{color:'var(--danger)'}}>UNAUTHORIZED ACCESS</span></div>
+              <div>› scanning network… <span style={{ color: 'var(--ok)' }}>OK</span></div>
+              <div>› anomaly detected: <span style={{ color: 'var(--danger)' }}>UNAUTHORIZED ACCESS</span></div>
               <div>› decrypting payload… ████░░░░░ 42%</div>
-              <div>› clue unlocked: <em>"A jelszó a történetben rejtőzik."</em></div>
+              <div>› clue unlocked: <em>"The password is hidden in the story."</em></div>
               <div>_ <span className="cursor"></span></div>
             </div>
           </div>
         </div>
       </section>
 
-      <section id="brief" className="sidebar-layout" style={{margin: '28px 0 6px'}}>
+      <section style={{ margin: '26px 0 10px' }}>
+        <div className="features" style={{ gridTemplateColumns: 'repeat(2, 1fr)' }}>
+          <div className="feat">
+            <span style={{ display: 'inline-block', marginBottom: '8px', padding: '3px 10px', borderRadius: '999px', fontSize: '11px', fontWeight: 700, color: 'var(--ok)', border: '1px solid rgba(51,255,153,0.35)', background: 'rgba(51,255,153,0.1)' }}>Free</span>
+            <h4>Test Your Cybersecurity Instincts</h4>
+            <p>Practice with realistic cases. Spot phishing, social engineering, and suspicious behavior. Always free.</p>
+            <Link to="/aurora" className="btn btn-primary" style={{ textDecoration: 'none', marginTop: '12px', padding: '10px 18px', fontSize: '14px' }}>Start Free Game</Link>
+          </div>
+          <div className="feat">
+            <h4>Go Beyond the Game</h4>
+            <p>Structured lessons, exercises, progress tracking, and workplace-focused modules for serious learners.</p>
+            <Link to="/learn" className="btn btn-secondary" style={{ textDecoration: 'none', marginTop: '12px', padding: '10px 18px', fontSize: '14px' }}>View Learning Paths</Link>
+          </div>
+        </div>
+      </section>
+
+      <section style={{ margin: '10px 0 26px' }}>
+        <h3 style={{ fontFamily: 'Rajdhani, Inter, sans-serif', margin: '0 0 14px' }}>How it works</h3>
+        <div className="features">
+          <div className="feat"><h4>1. Play the game</h4><p>Realistic scenarios test how you handle pressure.</p></div>
+          <div className="feat"><h4>2. Find weak spots</h4><p>See which topics need more practice.</p></div>
+          <div className="feat"><h4>3. Keep learning</h4><p>Structured lessons build practical skills.</p></div>
+          <div className="feat"><h4>4. Stay sharp</h4><p>New scenarios and content over time.</p></div>
+        </div>
+      </section>
+
+      <section id="brief" className="sidebar-layout" style={{ margin: '28px 0 6px' }}>
         <div className="brief-left">
-          <h3 style={{fontFamily: 'Rajdhani, Inter, sans-serif', margin: '0 0 8px'}}>Miért izgalmas?</h3>
-          <ul style={{margin: 0, paddingLeft: '18px', color: 'var(--muted)', lineHeight: 1.8}}>
-            <li>Nyomozás a kiberbiztonság szürke zónájában: minden döntésed számít.</li>
-            <li>Fejleszti a problémamegoldást és a logikai gondolkodást.</li>
-            <li>Változatos pályák: OSINT feladatok, kódtörés, hálózati nyomok elemzése.</li>
-            <li>Újrajátszhatóság: több befejezés, rejtett szálak, bónusznyomok.</li>
+          <h3 style={{ fontFamily: 'Rajdhani, Inter, sans-serif', margin: '0 0 8px' }}>Why it works</h3>
+          <ul style={{ margin: 0, paddingLeft: '18px', color: 'var(--muted)', lineHeight: 1.8 }}>
+            <li>Real situations, not abstract tips — scenarios that mirror actual emails, logins, and decisions.</li>
+            <li>You learn by doing — the free game gives quick practice; the platform adds exercises, feedback, and depth.</li>
+            <li>Open to everyone, built for growth — plain language when you&apos;re starting out, and a clear path to workplace and career topics.</li>
+            <li>A path that scales with you — basic awareness in the game, then structured learning for stronger habits and professional readiness.</li>
           </ul>
-          <div className="tips" aria-label="Secure kiberbiztonsági tippjei">
-            <h4>Secure kiberbiztonsági tippjei</h4>
+          <div className="tips" aria-label="Secure's cybersecurity tips">
+            <h4>A few things Secure keeps mentioning</h4>
             <ul>
-              <li>Ellenőrizd, szerepel‑e az e‑mail címed a „Have I Been Pwned"-on.</li>
-              <li>Titkosítsd a Wi‑Fi‑t – még otthon is.</li>
-              <li>Kétlépcsős azonosítás: nem csak erős, de extra biztonság.</li>
-              <li>Biztonsági kérdések? Használj kitalált válaszokat.</li>
-              <li>Offline mentés = adataid tartós védelme.</li>
+              <li>Curious if your email leaked? Check haveibeenpwned.com.</li>
+              <li>Encrypt your home wifi. Still worth it, even at home.</li>
+              <li>Turn on two factor auth. Passwords alone are not enough.</li>
+              <li>Security questions? Make up the answers.</li>
+              <li>Back up what matters offline. Cloud sync is not a backup.</li>
             </ul>
           </div>
         </div>
-        <aside className="secure-figure" aria-label="Secure – kiberbiztonsági szakértő">
-          <img src="/images/secure.png" alt="Secure – kiberbiztonsági szakértő portré" loading="lazy" decoding="async" />
-          <p className="secure-caption">Szia, Secure vagyok – kiberbiztonsági szakértő. Imádom a rejtett mintákat és a logikai kihívásokat. Végigvezetlek a bizonyítékokon, közben praktikus tippekkel és eszközökkel segítek, hogy magabiztosan gondolkodj, mint egy profi nyomozó.</p>
+        <aside className="secure-figure" aria-label="Secure, cybersecurity expert">
+          <img src="/images/secure.png" alt="Secure, cybersecurity expert portrait" loading="lazy" decoding="async" />
+          <p className="secure-caption">
+            I'm Secure. I pop up while you work through a case and point at things you might've skimmed past. Less lecture, more "hey, look at this line again."
+          </p>
         </aside>
       </section>
 
-      <section aria-label="Idézet" style={{margin: '10px 0 30px'}}>
-        <blockquote style={{margin:0, padding: '14px 16px', background: '#0f1621', border: '1px solid rgba(207,230,255,0.08)', borderRadius: '12px', color: 'var(--ink)'}}>
-          „Mint egy modern noir – neonfényben úszó kódsorok, rejtett minták, és egy nyom, ami végigvezet a sötét web határáig."
+      <section aria-label="Quote" style={{ margin: '10px 0 30px' }}>
+        <blockquote style={{ margin: 0, padding: '14px 16px', background: '#0f1621', border: '1px solid rgba(207,230,255,0.08)', borderRadius: '12px', color: 'var(--ink)' }}>
+          Real challenges. Practical skills. Part detective story, part puzzle box — with more terminal windows than you&apos;d expect from a game in your browser.
         </blockquote>
       </section>
 
-      <footer>
-        <div className="footer-social">
-          <a href="https://www.facebook.com/groups/1177342823898055" target="_blank" rel="noopener" aria-label="Csatlakozz a Facebook közösséghez">
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M22.675 0h-21.35C.596 0 0 .597 0 1.333v21.333C0 23.403.596 24 1.325 24h11.495v-9.294H9.847V11.06h2.973V8.413c0-2.94 1.792-4.544 4.412-4.544 1.253 0 2.332.093 2.646.135v3.07l-1.816.001c-1.423 0-1.698.676-1.698 1.668v2.318h3.396l-.442 3.646h-2.954V24h5.789C23.404 24 24 23.403 24 22.667V1.333C24 .597 23.404 0 22.675 0z"></path>
-            </svg>
-            <span>Csatlakozz a közösséghez és bázishoz</span>
-          </a>
-        </div>
-        © 2025 CyberMystery. Minden jog fenntartva.
+      <footer style={{ padding: '40px 0', color: 'var(--muted)', fontSize: '13px', textAlign: 'center' }}>
+        © 2025 Iterali. All rights reserved.
       </footer>
 
       {cookieBannerVisible && (
-        <div id="cookieBanner" className="cookie-banner" role="region" aria-label="Cookie tájékoztató">
+        <div id="cookieBanner" className="cookie-banner" role="region" aria-label="Cookie notice">
           <div className="cookie-card">
-            <div className="cookie-text">
-              Ez a weboldal kizárólag a működéshez szükséges cookie-kat használ.
-            </div>
+            <div className="cookie-text">We use a few cookies so login and saved progress work.</div>
             <div className="cookie-actions">
-              <button 
-                id="cookieSettings" 
-                className="btn-ghost" 
-                type="button"
-                onClick={() => alert('Csak működéshez szükséges cookie-kat használunk – nincs követés / analitika ezen az oldalon.')}
-              >
-                Beállítások
-              </button>
-              <button id="cookieAccept" className="btn-accept" type="button" onClick={handleCookieAccept}>Elfogadom</button>
+              <button type="button" className="btn-accept" onClick={() => { localStorage.setItem('cookieConsent', 'accepted'); setCookieBannerVisible(false) }}>Accept</button>
             </div>
           </div>
         </div>
@@ -503,4 +135,3 @@ const Landing = () => {
 }
 
 export default Landing
-

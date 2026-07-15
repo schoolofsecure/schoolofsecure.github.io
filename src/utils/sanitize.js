@@ -24,21 +24,21 @@ export const sanitizeString = (str) => {
  * Sanitizálja az error.message-t, hogy ne tartalmazzon érzékeny adatokat
  */
 export const sanitizeErrorMessage = (error) => {
-  if (!error) return 'Ismeretlen hiba'
+  if (!error) return 'Unknown error'
   
   // Ha van error.code (Firebase error), használjuk azt
   if (error.code) {
     // Firebase error code-ok biztonságosak, nem tartalmaznak érzékeny adatokat
     const codeMessages = {
-      'auth/email-already-in-use': 'Ez az e-mail cím már használatban van.',
-      'auth/invalid-email': 'Érvénytelen e-mail cím.',
-      'auth/weak-password': 'A jelszó túl gyenge. Használj legalább 6 karaktert.',
-      'auth/user-not-found': 'Ezzel az e-mail címmel nincs regisztrált fiók.',
-      'auth/wrong-password': 'Hibás jelszó.',
-      'auth/requires-recent-login': 'Biztonsági okokból újra be kell jelentkezned.',
-      'auth/network-request-failed': 'Hálózati hiba. Ellenőrizd az internetkapcsolatod.',
-      'permission-denied': 'Nincs jogosultságod ehhez a művelethez.',
-      'unavailable': 'A szolgáltatás jelenleg nem elérhető. Próbáld újra később.'
+      'auth/email-already-in-use': 'This email address is already in use.',
+      'auth/invalid-email': 'Invalid email address.',
+      'auth/weak-password': 'Password is too weak. Use at least 6 characters.',
+      'auth/user-not-found': 'No account is registered with this email address.',
+      'auth/wrong-password': 'Incorrect password.',
+      'auth/requires-recent-login': 'For security reasons, you need to sign in again.',
+      'auth/network-request-failed': 'Network error. Check your internet connection.',
+      'permission-denied': 'You do not have permission for this action.',
+      'unavailable': 'The service is currently unavailable. Please try again later.'
     }
     
     if (codeMessages[error.code]) {
@@ -56,8 +56,7 @@ export const sanitizeErrorMessage = (error) => {
   }
   
   // Alapértelmezett üzenet
-  return 'Hiba történt. Próbáld újra később.'
+  return 'Something went wrong. Please try again later.'
 }
 
 export default { sanitizeString, sanitizeErrorMessage }
-

@@ -2,33 +2,31 @@ import { BaseTask } from '../types/TaskInterface'
 import { Random } from '../utils/random'
 import { StyleHelper } from '../utils/styleHelper'
 
-// Bővített ikon pool több variációval
 const ICON_SET = [
-  { id: 'lock', label: 'Lakatos ikon', type: 'safe' },
-  { id: 'shield', label: 'Pajzs ikon', type: 'safe' },
-  { id: 'skull', label: 'Halálfej ikon', type: 'threat' },
-  { id: 'bug', label: 'Bogár ikon', type: 'threat' },
-  { id: 'email', label: 'E-mail ikon', type: 'neutral' },
-  { id: 'wifi', label: 'Wi-Fi ikon', type: 'neutral' },
-  { id: 'warning', label: 'Figyelmeztetés ikon', type: 'threat' },
-  { id: 'key', label: 'Kulcs ikon', type: 'safe' },
-  { id: 'firewall', label: 'Tűzfal ikon', type: 'safe' },
-  { id: 'virus', label: 'Vírus ikon', type: 'threat' },
-  { id: 'hacker', label: 'Hacker ikon', type: 'threat' },
-  { id: 'database', label: 'Adatbázis ikon', type: 'neutral' },
-  { id: 'server', label: 'Szerver ikon', type: 'neutral' },
-  { id: 'encryption', label: 'Titkosítás ikon', type: 'safe' }
+  { id: 'lock', label: 'Lock icon', type: 'safe' },
+  { id: 'shield', label: 'Shield icon', type: 'safe' },
+  { id: 'skull', label: 'Skull icon', type: 'threat' },
+  { id: 'bug', label: 'Bug icon', type: 'threat' },
+  { id: 'email', label: 'Email icon', type: 'neutral' },
+  { id: 'wifi', label: 'Wi-Fi icon', type: 'neutral' },
+  { id: 'warning', label: 'Warning icon', type: 'threat' },
+  { id: 'key', label: 'Key icon', type: 'safe' },
+  { id: 'firewall', label: 'Firewall icon', type: 'safe' },
+  { id: 'virus', label: 'Virus icon', type: 'threat' },
+  { id: 'hacker', label: 'Hacker icon', type: 'threat' },
+  { id: 'database', label: 'Database icon', type: 'neutral' },
+  { id: 'server', label: 'Server icon', type: 'neutral' },
+  { id: 'encryption', label: 'Encryption icon', type: 'safe' }
 ]
 
 export class IconMemoryTask extends BaseTask {
   static create({ id, difficulty, levelNumber = 2, slot = 1 }) {
-    // styleConfig randomRules használata
     const rules = StyleHelper.getRandomRules('ICON_MEMORY')
     const complexity = StyleHelper.getComplexity(difficulty)
     
     const pairCount = rules.pairs?.[difficulty] || complexity.iconCount || 
                      (difficulty === 'easy' ? 3 : difficulty === 'medium' ? 4 : 5)
-    const chosen = Random.sample(ICON_SET, pairCount * 2) // Dupla, hogy legyen párosítás
+    const chosen = Random.sample(ICON_SET, pairCount * 2)
     const requiredTypes = chosen.filter(icon => icon.type === 'threat').map(icon => icon.id)
 
     return new IconMemoryTask({
@@ -51,22 +49,21 @@ export class IconMemoryTask extends BaseTask {
     if (this.payload) return this.payload
     const { icons, requiredTypes, levelNumber, slot } = this.parameters
     
-    // Narratív szövegek variációi
     const narratives = [
       {
-        intro: 'A rendszer egyik archivált adatcsomagjában furcsa szövegrácsot találtak. A technikusok szerint valaki szándékosan rejtett el benne kulcsszavakat.',
-        task: 'A biztonsági csapat téged kér, hogy keresd meg a rejtett szavakat — ezek vezetnek a következő nyomhoz. De vigyázz: a támadó mindig hagy egy hamis nyomot is.',
-        hint: 'Minden szó első betűje számot rejt. Figyeld a rácsban elrejtett kulcsszavakat, így juthatsz a következő kódhoz.'
+        intro: 'Technicians found a strange text grid inside an archived data packet. Someone deliberately hid keywords inside it.',
+        task: 'Security needs you to find the hidden words — they lead to the next lead. But watch out: the attacker always leaves a false trail too.',
+        hint: 'Each word\'s first letter hides a number. Look for hidden keywords in the grid to reach the next code.'
       },
       {
-        intro: 'A monitorok remegő fényében gyanús aktivitás jelei bukkannak fel. A rendszer ikonjai között gyanús mintázatok találhatók.',
-        task: 'Jegyezd meg, mely ikonok jelentenek kockázatot (pl. malware/phishing), majd jelöld ki őket. A memória teszt segít azonosítani a fenyegetéseket.',
-        hint: 'Figyeld a részleteket, mert ott rejlik a megoldás. A veszélyes ikonok gyakran hasonlóak a biztonságosakhoz.'
+        intro: 'In the flickering glow of the monitors, suspicious activity appears among the system icons.',
+        task: 'Remember which icons signal risk (e.g. malware/phishing), then select them. The memory test helps identify threats.',
+        hint: 'Watch the details — that is where the answer hides. Dangerous icons often look similar to safe ones.'
       },
       {
-        intro: 'A hálózat mélyén titkosított adatok rejtőznek. A biztonsági rendszer riasztásai egyre gyakoribbá válnak.',
-        task: 'A rendszer ikonjai között gyanús elemek találhatók. Azonosítsd azokat az ikonokat, amelyek potenciális biztonsági kockázatot jeleznek.',
-        hint: 'Ne siess, alaposan elemezd az adatokat. A rendszer mindig hagy nyomokat, csak meg kell találnod őket.'
+        intro: 'Encrypted data hides deep in the network. Security alerts are growing more frequent.',
+        task: 'Suspicious elements appear among the system icons. Identify the icons that indicate a potential security risk.',
+        hint: 'Take your time and analyze carefully. The system always leaves traces — you just have to find them.'
       }
     ]
     
@@ -90,5 +87,3 @@ export class IconMemoryTask extends BaseTask {
     return JSON.stringify(sortedInput) === JSON.stringify(sortedSolution)
   }
 }
-
-

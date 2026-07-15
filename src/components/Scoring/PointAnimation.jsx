@@ -68,7 +68,7 @@ const PointAnimation = ({ points, onComplete }) => {
           whiteSpace: 'nowrap',
         }}
       >
-        {isNegative ? '-' : '+'}{displayPoints} pont
+        {isNegative ? '-' : '+'}{displayPoints} pts
       </div>
     </div>
   )

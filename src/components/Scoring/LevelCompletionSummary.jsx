@@ -39,11 +39,11 @@ const LevelCompletionSummary = ({ levelName, rank, totalPoints, onComplete }) =>
   // Motiváló üzenet generálása ranggal megszólítva
   const getMotivationalMessage = () => {
     const messages = [
-      `Kedves ${rank.name}! Kiváló munkát végeztél!`,
-      `Kedves ${rank.name}! Tovább haladsz a nyomokon!`,
-      `Kedves ${rank.name}! Közelebb a megoldáshoz!`,
-      `Kedves ${rank.name}! Remek teljesítmény!`,
-      `Kedves ${rank.name}! Folytasd így tovább!`
+      `${rank.name}, excellent work!`,
+      `${rank.name}, you're closing in on the truth!`,
+      `${rank.name}, one step closer to the solution!`,
+      `${rank.name}, great performance!`,
+      `${rank.name}, keep it up!`
     ]
     return messages[Math.floor(Math.random() * messages.length)]
   }
@@ -62,19 +62,19 @@ const LevelCompletionSummary = ({ levelName, rank, totalPoints, onComplete }) =>
     >
       <div className="summary-content">
         <div className="summary-header">
-          <div className="completion-badge">Ügy teljesítve</div>
+          <div className="completion-badge">Case completed</div>
           <h2 className="level-name">{levelName}</h2>
         </div>
         
         <div className="summary-body">
           <div className="summary-item">
-            <span className="summary-label">Rang:</span>
+            <span className="summary-label">Rank:</span>
             <span className="summary-value">{rank.name}</span>
           </div>
           
           <div className="summary-item">
-            <span className="summary-label">Összpontszám:</span>
-            <span className="summary-value points">{totalPoints} pont</span>
+            <span className="summary-label">Total score:</span>
+            <span className="summary-value points">{totalPoints} pts</span>
           </div>
         </div>
         

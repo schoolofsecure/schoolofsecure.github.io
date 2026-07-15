@@ -63,20 +63,20 @@ export const AuthProvider = ({ children }) => {
   const registerWithEmail = async (email, password) => {
     try {
       if (!email || !password) {
-        throw new Error('Adj meg e-mail címet és jelszót.')
+        throw new Error('Please enter an email address and password.')
       }
       const cred = await createUserWithEmailAndPassword(auth, email, password)
       await sendEmailVerification(cred.user)
       await signOut(auth)
-      return { success: true, message: 'Sikeres regisztráció! Küldtünk egy megerősítő e-mailt. Ellenőrizd a postaládádat.' }
+      return { success: true, message: 'Registration successful! We sent a confirmation email. Check your inbox.' }
     } catch (error) {
-      let errorMessage = 'Regisztráció sikertelen.'
+      let errorMessage = 'Registration failed.'
       if (error.code === 'auth/email-already-in-use') {
-        errorMessage = 'Ha a megerősítő e-mail nem érkezik meg, próbálj meg bejelentkezni a fiókodba.'
+        errorMessage = 'If the confirmation email does not arrive, try signing in to your account.'
       } else if (error.code === 'auth/invalid-email') {
-        errorMessage = 'Érvénytelen e-mail cím.'
+        errorMessage = 'Invalid email address.'
       } else if (error.code === 'auth/weak-password') {
-        errorMessage = 'A jelszó túl gyenge. Használj legalább 6 karaktert.'
+        errorMessage = 'Password is too weak. Use at least 6 characters.'
       } else {
         errorMessage = sanitizeErrorMessage(error)
       }
@@ -87,7 +87,7 @@ export const AuthProvider = ({ children }) => {
   const loginWithEmail = async (email, password) => {
     try {
       if (!email || !password) {
-        throw new Error('Adj meg e-mail címet és jelszót.')
+        throw new Error('Please enter an email address and password.')
       }
       const cred = await signInWithEmailAndPassword(auth, email, password)
       if (!cred.user.emailVerified) {
@@ -95,36 +95,36 @@ export const AuthProvider = ({ children }) => {
           await sendEmailVerification(cred.user)
         } catch (_) {}
         await signOut(auth)
-        return { success: false, message: 'Még nem erősítetted meg az e-mail címed. Küldtünk megerősítő linket. Jelentkezz be újra a megerősítés után.' }
+        return { success: false, message: 'Your email is not verified yet. We sent a confirmation link. Sign in again after verifying.' }
       }
-      return { success: true, message: 'Sikeres bejelentkezés!' }
+      return { success: true, message: 'Signed in successfully!' }
     } catch (error) {
-      return { success: false, message: sanitizeErrorMessage(error) || 'Bejelentkezés sikertelen' }
+      return { success: false, message: sanitizeErrorMessage(error) || 'Sign-in failed' }
     }
   }
 
   const logout = async () => {
     try {
       await signOut(auth)
-      return { success: true, message: 'Kijelentkeztél.' }
+      return { success: true, message: 'Signed out.' }
     } catch (error) {
-      return { success: false, message: sanitizeErrorMessage(error) || 'Kijelentkezés sikertelen' }
+      return { success: false, message: sanitizeErrorMessage(error) || 'Sign-out failed' }
     }
   }
 
   const sendPasswordReset = async (email) => {
     try {
       if (!email || !email.trim()) {
-        throw new Error('Adj meg egy e-mail címet.')
+        throw new Error('Please enter an email address.')
       }
       await sendPasswordResetEmail(auth, email.trim())
-      return { success: true, message: 'Jelszó emlékeztető e-mail elküldve. Ellenőrizd a postaládádat.' }
+      return { success: true, message: 'Password reset email sent. Check your inbox.' }
     } catch (error) {
-      let errorMessage = 'Nem sikerült elküldeni a jelszó emlékeztető e-mailt.'
+      let errorMessage = 'Could not send password reset email.'
       if (error.code === 'auth/user-not-found') {
-        errorMessage = 'Ezzel az e-mail címmel nincs regisztrált fiók.'
+        errorMessage = 'No account is registered with this email address.'
       } else if (error.code === 'auth/invalid-email') {
-        errorMessage = 'Érvénytelen e-mail cím.'
+        errorMessage = 'Invalid email address.'
       } else {
         errorMessage = sanitizeErrorMessage(error)
       }
@@ -135,19 +135,19 @@ export const AuthProvider = ({ children }) => {
   const saveLevelCompletion = async (levelId) => {
     try {
       if (!user) {
-        throw new Error('Előbb jelentkezz be a mentéshez.')
+        throw new Error('Sign in first to save.')
       }
       if (!user.emailVerified) {
-        throw new Error('Csak megerősített e-maillel lehet menteni. Ellenőrizd a postaládád.')
+        throw new Error('You need a verified email to save. Check your inbox.')
       }
       if (!levelId) {
-        throw new Error('Hiányzik a pálya azonosító (levelId).')
+        throw new Error('Missing level ID (levelId).')
       }
       const ref = doc(db, 'users', user.uid, 'completions', String(levelId))
       await setDoc(ref, { levelId: String(levelId), completedAt: serverTimestamp() }, { merge: true })
-      return { success: true, message: `Pálya mentve: ${levelId}` }
+      return { success: true, message: `Level saved: ${levelId}` }
     } catch (error) {
-      return { success: false, message: sanitizeErrorMessage(error) || 'Mentés sikertelen' }
+      return { success: false, message: sanitizeErrorMessage(error) || 'Save failed' }
     }
   }
 
@@ -202,13 +202,13 @@ export const AuthProvider = ({ children }) => {
   const saveScoringData = async (scoringData) => {
     try {
       if (!user) {
-        throw new Error('Előbb jelentkezz be a mentéshez.')
+        throw new Error('Sign in first to save.')
       }
       if (!user.emailVerified) {
-        throw new Error('Csak megerősített e-maillel lehet menteni. Ellenőrizd a postaládád.')
+        throw new Error('You need a verified email to save. Check your inbox.')
       }
       if (!scoringData) {
-        throw new Error('Hiányznak a scoring adatok.')
+        throw new Error('Scoring data is missing.')
       }
       const ref = doc(db, 'users', user.uid, 'scoring', 'data')
       await setDoc(ref, {
@@ -218,7 +218,7 @@ export const AuthProvider = ({ children }) => {
       return { success: true }
     } catch (error) {
       logger.warn('Scoring mentés hiba:', error)
-      return { success: false, message: sanitizeErrorMessage(error) || 'Mentés sikertelen' }
+      return { success: false, message: sanitizeErrorMessage(error) || 'Save failed' }
     }
   }
 
@@ -263,10 +263,10 @@ export const AuthProvider = ({ children }) => {
   const setRetroPromptSeen = async () => {
     try {
       if (!user) {
-        throw new Error('Előbb jelentkezz be a mentéshez.')
+        throw new Error('Sign in first to save.')
       }
       if (!user.emailVerified) {
-        throw new Error('Csak megerősített e-maillel lehet menteni. Ellenőrizd a postaládád.')
+        throw new Error('You need a verified email to save. Check your inbox.')
       }
       const ref = doc(db, 'users', user.uid, 'preferences', 'data')
       await setDoc(ref, {
@@ -276,14 +276,14 @@ export const AuthProvider = ({ children }) => {
       return { success: true }
     } catch (error) {
       logger.warn('Retro prompt seen mentés hiba:', error)
-      return { success: false, message: sanitizeErrorMessage(error) || 'Mentés sikertelen' }
+      return { success: false, message: sanitizeErrorMessage(error) || 'Save failed' }
     }
   }
 
   const deleteAccount = async () => {
     try {
       if (!user) {
-        throw new Error('Nincs bejelentkezve felhasználó.')
+        throw new Error('No user is signed in.')
       }
       
       const userId = user.uid
@@ -310,11 +310,11 @@ export const AuthProvider = ({ children }) => {
       // Firebase Auth user törlése
       await deleteUser(auth.currentUser)
       
-      return { success: true, message: 'Fiók sikeresen törölve.' }
+      return { success: true, message: 'Account deleted successfully.' }
     } catch (error) {
-      let errorMessage = 'Fiók törlése sikertelen.'
+      let errorMessage = 'Failed to delete account.'
       if (error.code === 'auth/requires-recent-login') {
-        errorMessage = 'Biztonsági okokból újra be kell jelentkezned a törlés előtt.'
+        errorMessage = 'For security reasons, you need to sign in again before deleting your account.'
       } else {
         errorMessage = sanitizeErrorMessage(error)
       }

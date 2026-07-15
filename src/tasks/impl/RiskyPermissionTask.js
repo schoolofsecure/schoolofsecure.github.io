@@ -1,53 +1,48 @@
 import { BaseTask } from '../types/TaskInterface'
 import { Random } from '../utils/random'
 
-// Engedélyek definíciója
 const PERMISSIONS = {
-  camera: { id: 'camera', text: 'Kamera hozzáférés' },
-  microphone: { id: 'microphone', text: 'Mikrofon hozzáférés' },
-  contacts: { id: 'contacts', text: 'Névjegyek olvasása' },
-  sms: { id: 'sms', text: 'SMS olvasás/küldés' },
-  location: { id: 'location', text: 'Precíz helyadatok' },
-  storage: { id: 'storage', text: 'Teljes tárhely írás/olvasás' }
+  camera: { id: 'camera', text: 'Camera access' },
+  microphone: { id: 'microphone', text: 'Microphone access' },
+  contacts: { id: 'contacts', text: 'Read contacts' },
+  sms: { id: 'sms', text: 'Read/send SMS' },
+  location: { id: 'location', text: 'Precise location' },
+  storage: { id: 'storage', text: 'Full storage read/write' }
 }
 
-// 3 fix szcenárió
 export const SCENARIOS = [
   {
-    app: 'zseblámpa',
+    app: 'Flashlight',
     permissions: [
       PERMISSIONS.camera,
       PERMISSIONS.microphone,
       PERMISSIONS.contacts
     ],
-    risky: ['camera', 'microphone', 'contacts'] // Egy zseblámpának semmilyen engedélyt nem kellene kérnie
+    risky: ['camera', 'microphone', 'contacts']
   },
   {
-    app: 'időjárás app',
+    app: 'Weather app',
     permissions: [
       PERMISSIONS.location,
       PERMISSIONS.contacts,
       PERMISSIONS.sms
     ],
-    risky: ['contacts', 'sms'] // Helyadatok logikus, de névjegyek és SMS nem
+    risky: ['contacts', 'sms']
   },
   {
-    app: 'jegyzet app',
+    app: 'Notes app',
     permissions: [
       PERMISSIONS.storage,
       PERMISSIONS.camera,
       PERMISSIONS.microphone
     ],
-    risky: ['microphone'] // Tárhely és kamera logikus (jegyzetek mentése, fotó), de mikrofon veszélyes lehet
+    risky: ['microphone']
   }
 ]
 
 export class RiskyPermissionTask extends BaseTask {
   static create({ id, difficulty }) {
-    // Random választás a 3 fix szcenárió közül
     const scenario = Random.choice(SCENARIOS)
-    
-    // Keverjük össze az engedélyeket
     const shuffledPermissions = Random.shuffle([...scenario.permissions])
 
     return new RiskyPermissionTask({
@@ -71,7 +66,7 @@ export class RiskyPermissionTask extends BaseTask {
     this.solution = risky
     this.payload = {
       permissions,
-      hint: 'Gondold végig, hogy az alkalmazás funkciójához szükséges-e az adott engedély. Ha egy engedély nem kapcsolódik az alkalmazás céljához, az gyanús lehet.'
+      hint: 'Consider whether each permission is actually needed for what the app does. If a permission does not match the app\'s purpose, it may be suspicious.'
     }
     return this.payload
   }
@@ -85,5 +80,3 @@ export class RiskyPermissionTask extends BaseTask {
     return JSON.stringify(normalized) === JSON.stringify(expected)
   }
 }
-
-

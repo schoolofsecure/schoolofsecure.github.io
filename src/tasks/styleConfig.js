@@ -1,11 +1,11 @@
 /**
- * Stílus- és szabályrendszer a dinamikus pályageneráláshoz.
- * 
- * Ez a modul határozza meg, hogy a 2. pályától kezdve hogyan generálódnak
- * a feladatok, hogy illeszkedjenek az 1. pálya hangulatához és struktúrájához.
+ * Style and rule system for dynamic level generation.
+ *
+ * This module defines how tasks are generated from level 2 onward
+ * to match the tone and structure of level 1.
  */
 export const styleConfig = {
-  /** 1) Feladattípus-eloszlás (összesen 100%) */
+  /** 1) Task type distribution (totals 100%) */
   taskDistribution: {
     CAESAR: 0.08,
     VIGENERE: 0.06,
@@ -29,7 +29,7 @@ export const styleConfig = {
     ZERO_DAY: 0.03
   },
 
-  /** 2) Nehézség-eloszlás pályaszám szerint */
+  /** 2) Difficulty distribution by level number */
   difficultyByLevel: {
     default: { easy: 0.6, medium: 0.35, hard: 0.05 },
     2: { easy: 0.55, medium: 0.35, hard: 0.10 },
@@ -41,7 +41,7 @@ export const styleConfig = {
     8: { easy: 0.10, medium: 0.40, hard: 0.50 }
   },
 
-  /** 3) Feladat-komplexitás paraméterek (kimenet: LevelGenerator → TaskFactory) */
+  /** 3) Task complexity parameters (output: LevelGenerator → TaskFactory) */
   complexity: {
     easy: {
       textLength: { min: 50, max: 150 },
@@ -63,16 +63,16 @@ export const styleConfig = {
     }
   },
 
-  /** 4) Sorrend / rotáció (ritmus az 1. pályához hasonlóan) */
+  /** 4) Sequencing / rotation (rhythm similar to level 1) */
   sequencing: [
-    { slot: 1, preferredTypes: ['CAESAR', 'VIGENERE', 'XOR'] },           // nyitó puzzle
-    { slot: 2, preferredTypes: ['LOG_ANALYSIS', 'HASH_MISMATCH'] },       // bizonyíték / log
-    { slot: 3, preferredTypes: ['PHISHING', 'URL_TRUST', 'EMAIL_HEADER'] }, // kommunikáció
+    { slot: 1, preferredTypes: ['CAESAR', 'VIGENERE', 'XOR'] },
+    { slot: 2, preferredTypes: ['LOG_ANALYSIS', 'HASH_MISMATCH'] },
+    { slot: 3, preferredTypes: ['PHISHING', 'URL_TRUST', 'EMAIL_HEADER'] },
     { slot: 4, preferredTypes: ['ICON_MEMORY', 'NETWORK_ANOMALY', 'CRYPTO_PUZZLE'] },
     { slot: 5, preferredTypes: ['SECURITY_DECISION', 'MISCONFIG', 'FIREWALL', 'RISKY_PERMISSION'] }
   ],
 
-  /** 5) Szövegstílus és visszajelzés */
+  /** 5) Text style and feedback */
   textStyle: {
     tone: 'neo-noir detective',
     narrationLength: {
@@ -81,21 +81,21 @@ export const styleConfig = {
       hint: 80
     },
     voice: {
-      narrator: 'formális, sejtelmes',
-      hint: 'tanácsadó, barátságos'
+      narrator: 'formal, suspenseful',
+      hint: 'advisory, friendly'
     },
     feedback: {
-      success: 'Pozitív, rövid megerősítés ("Nyom megerősítve").',
-      failure: 'Instruktív ("Valami nem stimmel, figyeld a ...").'
+      success: 'Positive, brief confirmation ("Lead confirmed.").',
+      failure: 'Instructional ("Something is off — watch the ...").'
     }
   },
 
-  /** 6) Extra interakció / UI jelzés */
+  /** 6) Extra interaction / UI cues */
   interactions: {
     icons: {
       success: '✅',
       failure: '⚠️',
-      lives: '🕵️' // kompatibilis az 1. pálya élet HUD-jával
+      lives: '🕵️'
     },
     animationHints: {
       puzzleReveal: 'fading spotlight',
@@ -104,7 +104,7 @@ export const styleConfig = {
     }
   },
 
-  /** 7) Randomizálási szabályok feladattípusonként */
+  /** 7) Randomization rules per task type */
   randomRules: {
     CAESAR: { shifts: { easy: [1, 5], medium: [6, 15], hard: [16, 25] }, plaintextBank: 10 },
     VIGENERE: { keyLengths: { easy: [3, 4], medium: [5, 6], hard: [7, 10] } },
@@ -128,4 +128,3 @@ export const styleConfig = {
     ZERO_DAY: { events: { easy: 2, medium: 3, hard: 4 } }
   }
 }
-

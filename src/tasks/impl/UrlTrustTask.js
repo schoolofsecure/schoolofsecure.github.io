@@ -1,7 +1,6 @@
 import { BaseTask } from '../types/TaskInterface'
 import { Random } from '../utils/random'
 
-// 3 fix szcenárió (3 legit + 3 gyanús URL, összesen 6)
 export const SCENARIOS = [
   {
     urls: [
@@ -37,7 +36,6 @@ export const SCENARIOS = [
 
 export class UrlTrustTask extends BaseTask {
   static create({ id, difficulty }) {
-    // Random választás a 3 fix szcenárió közül
     const scenario = Random.choice(SCENARIOS)
 
     return new UrlTrustTask({
@@ -59,7 +57,7 @@ export class UrlTrustTask extends BaseTask {
       .filter(idx => idx !== null)
     this.payload = {
       urls: urls.map(entry => entry.url),
-      hint: 'A gyanús URL-ek gyakran hasonlítanak a megbízható domainekhez, de tartalmaznak apró eltéréseket. Figyeld meg alaposan a domain neveket és hasonlítsd össze őket a megbízható domainekkel.'
+      hint: 'Suspicious URLs often mimic trusted domains with small differences. Compare domain names carefully against the legitimate ones.'
     }
     return this.payload
   }
@@ -72,5 +70,3 @@ export class UrlTrustTask extends BaseTask {
     return JSON.stringify(sortedInput) === JSON.stringify(sortedSolution)
   }
 }
-
-

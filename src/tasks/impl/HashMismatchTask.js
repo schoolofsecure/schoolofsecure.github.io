@@ -24,7 +24,6 @@ export class HashMismatchTask extends BaseTask {
       return { word, algorithm: algo, hash: hashString(algo, word) }
     })
 
-    // Introduce a mismatch
     const mismatchIndex = Random.int(0, entries.length - 1)
     const wrongWord = entries[mismatchIndex].word + 'x'
     entries[mismatchIndex].hash = hashString(entries[mismatchIndex].algorithm, wrongWord)
@@ -45,7 +44,7 @@ export class HashMismatchTask extends BaseTask {
     const { entries } = this.parameters
     this.solution = this.parameters.mismatchIndex
     this.payload = {
-      instructions: 'Az alábbi hash-listában az egyik hash nem illik a bemeneti szóra. Válaszd ki a hibás sort.',
+      instructions: 'One hash in the list below does not match its input word. Select the incorrect row.',
       entries
     }
     return this.payload
@@ -57,5 +56,3 @@ export class HashMismatchTask extends BaseTask {
     return userInput === this.solution
   }
 }
-
-

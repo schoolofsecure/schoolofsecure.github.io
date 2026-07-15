@@ -2,7 +2,7 @@ import { BaseTask } from '../types/TaskInterface'
 import { Random } from '../utils/random'
 import { StyleHelper } from '../utils/styleHelper'
 
-// Bővített plaintext pool több variációval
+// Expanded plaintext pool with more variations
 const SAMPLE_PLAINTEXTS = [
   'HELLO WORLD',
   'SECURE CHANNEL',
@@ -28,7 +28,6 @@ const SAMPLE_PLAINTEXTS = [
 
 export class CaesarTask extends BaseTask {
   static create({ id, difficulty, levelNumber = 2, slot = 1 }) {
-    // styleConfig randomRules használata
     const rules = StyleHelper.getRandomRules('CAESAR')
     const shiftRange = rules.shifts?.[difficulty] || { easy: [1, 5], medium: [6, 15], hard: [16, 25] }
     
@@ -70,11 +69,10 @@ export class CaesarTask extends BaseTask {
     if (this.payload) return this.payload
     const { plaintext, shift, levelNumber, slot } = this.parameters
     
-    // Fix narratíva minden CaesarTask-nál
     const narrative = {
-        intro: 'Az éjszaka leple alatt a rendszer mélyén rejtett nyomok várnak. A monitorok remegő fényében gyanús aktivitás jelei bukkannak fel.',
-        task: 'A képernyőn furcsa karakterek villognak, mintha valaki sietve rejtette volna el az üzenetet. Fejtsd meg a titkosított üzenetet, hogy megtudd az első nyomot a küldetésedhez.',
-        hint: 'Gondolj az ábécére, és képzeld el, hogy minden betű egy kicsit előrébb vagy hátrébb lép a sorban. A szóközök és írásjelek nem változnak.'
+        intro: 'Under cover of night, hidden traces wait deep inside the system. In the flickering glow of the monitors, signs of suspicious activity begin to surface.',
+        task: 'Strange characters flash on the screen, as if someone hurried to hide a message. Decrypt the ciphertext to uncover your first lead.',
+        hint: 'Think of the alphabet as a line where each letter shifts a few steps forward or back. Spaces and punctuation stay unchanged.'
     }
     const ciphertext = CaesarTask.encode(plaintext, shift)
     this.solution = plaintext.toUpperCase().replace(/\s+/g, ' ')
@@ -95,5 +93,3 @@ export class CaesarTask extends BaseTask {
     return normalized === this.solution
   }
 }
-
-

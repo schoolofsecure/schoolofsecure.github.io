@@ -1,8 +1,8 @@
 import React from 'react'
 
-const NarrativeBlock = ({ badge = 'Ügy 1', children }) => {
+const NarrativeBlock = ({ badge = 'Case 1', children }) => {
   return (
-    <div className="narr" role="article" aria-label="Bevezető">
+    <div className="narr" role="article" aria-label="Introduction">
       <span className="badge">{badge}</span>
       {children}
     </div>
@@ -10,5 +10,3 @@ const NarrativeBlock = ({ badge = 'Ügy 1', children }) => {
 };
 
 export default NarrativeBlock
-
-

@@ -42,51 +42,51 @@ export const SCORING = {
 export const RANKS = [
   {
     id: 'novice',
-    name: 'Nyomozó-újonc',
+    name: 'Rookie Investigator',
     minLevel: 1,
     maxLevel: 2,
     minPoints: 0,
-    description: 'Első lépések a kibernyomozásban'
+    description: 'Your first steps in cyber investigations'
   },
   {
     id: 'junior',
-    name: 'Junior nyomozó',
+    name: 'Junior Investigator',
     minLevel: 3,
     maxLevel: 4,
     minPoints: 100,
-    description: 'Tapasztalatot szerzel a nyomok követésében'
+    description: 'You are gaining experience following the trail'
   },
   {
     id: 'detective',
-    name: 'Nyomozó',
+    name: 'Investigator',
     minLevel: 5,
     maxLevel: 6,
     minPoints: 250,
-    description: 'Megbízható tag a csapatban'
+    description: 'A trusted member of the team'
   },
   {
     id: 'senior',
-    name: 'Senior nyomozó',
+    name: 'Senior Investigator',
     minLevel: 7,
     maxLevel: 8,
     minPoints: 450,
-    description: 'Tapasztalt szakértő vagy'
+    description: 'You are a seasoned expert'
   },
   {
     id: 'specialist',
-    name: 'Hálózat-specialista',
+    name: 'Network Specialist',
     minLevel: 9,
     maxLevel: 10,
     minPoints: 700,
-    description: 'A hálózati biztonság mestere'
+    description: 'Master of network security'
   },
   {
     id: 'master',
-    name: 'Mester nyomozó',
+    name: 'Master Investigator',
     minLevel: 11,
     maxLevel: 12,
     minPoints: 1000,
-    description: 'A legmagasabb szintű kibernyomozó'
+    description: 'The highest tier of cyber investigator'
   }
 ]
 
@@ -96,36 +96,36 @@ export const RANKS = [
 export const ACHIEVEMENTS = {
   PERFECT_LEVEL: {
     id: 'perfect_level',
-    name: 'Hibátlan pálya',
-    description: 'Teljesítsd egy pályát hiba nélkül',
+    name: 'Flawless Case',
+    description: 'Complete a case without any mistakes',
     icon: '⭐',
     points: 50
   },
   FAST_COMPLETER: {
     id: 'fast_completer',
-    name: 'Villámgyors',
-    description: 'Teljesíts egy pályát 5 perc alatt',
+    name: 'Lightning Fast',
+    description: 'Complete a case in under 5 minutes',
     icon: '⚡',
     points: 20
   },
   ALL_CLUES: {
     id: 'all_clues',
-    name: 'Tökéletes dokumentálás',
-    description: 'Minden nyomot helyesen dokumentálj',
+    name: 'Perfect Documentation',
+    description: 'Document every clue correctly',
     icon: '📋',
     points: 30
   },
   STREAK_5: {
     id: 'streak_5',
-    name: '5 pálya sorozat',
-    description: 'Teljesíts 5 pályát sorban hiba nélkül',
+    name: '5-Case Streak',
+    description: 'Complete 5 cases in a row without mistakes',
     icon: '🔥',
     points: 100
   },
   MASTER_DETECTIVE: {
     id: 'master_detective',
-    name: 'Mester nyomozó',
-    description: 'Érd el a legmagasabb rangot',
+    name: 'Master Investigator',
+    description: 'Reach the highest rank',
     icon: '👑',
     points: 200
   }
@@ -146,10 +146,10 @@ export function calculateTaskScore({ difficulty, isCorrect, level, timeSpent = n
   
   let feedback = ''
   if (isCorrect) {
-    feedback = `Helyes döntés! +${points} pont, a hacker nyomai közelebb kerülnek a feltáráshoz.`
+    feedback = `Correct! +${points} points — you're closer to uncovering the hacker's trail.`
   } else {
     // Minden helytelen válasz -5 pont
-    feedback = `Figyelj jobban! ${points} pont, de még mindig nyomozhatsz tovább.`
+    feedback = `Pay closer attention! ${points} points, but you can keep investigating.`
   }
   
   return {
@@ -182,25 +182,25 @@ export function calculateLevelScore({ level, totalTasks, completedTasks, errors,
   const levelBonus = SCORING.LEVEL_BONUS[level] || 0
   if (levelBonus > 0) {
     totalPoints += levelBonus
-    bonuses.push({ type: 'level', points: levelBonus, text: `Pálya bónusz: +${levelBonus} pont` })
+    bonuses.push({ type: 'level', points: levelBonus, text: `Case bonus: +${levelBonus} points` })
   }
   
   // Hibátlan pálya bónusz
   if (errors === 0 && completedTasks === totalTasks) {
     totalPoints += SCORING.PERFECT_LEVEL
-    bonuses.push({ type: 'perfect', points: SCORING.PERFECT_LEVEL, text: `Hibátlan pálya: +${SCORING.PERFECT_LEVEL} pont` })
+    bonuses.push({ type: 'perfect', points: SCORING.PERFECT_LEVEL, text: `Flawless case: +${SCORING.PERFECT_LEVEL} points` })
   }
   
   // Gyors teljesítés bónusz (5 perc = 300 másodperc)
   if (timeSpent && timeSpent < 300) {
     totalPoints += SCORING.FAST_COMPLETION
-    bonuses.push({ type: 'fast', points: SCORING.FAST_COMPLETION, text: `Gyors teljesítés: +${SCORING.FAST_COMPLETION} pont` })
+    bonuses.push({ type: 'fast', points: SCORING.FAST_COMPLETION, text: `Fast completion: +${SCORING.FAST_COMPLETION} points` })
   }
   
   // Minden nyom helyes bónusz
   if (allCluesCorrect) {
     totalPoints += SCORING.ALL_CLUES_CORRECT
-    bonuses.push({ type: 'clues', points: SCORING.ALL_CLUES_CORRECT, text: `Tökéletes dokumentálás: +${SCORING.ALL_CLUES_CORRECT} pont` })
+    bonuses.push({ type: 'clues', points: SCORING.ALL_CLUES_CORRECT, text: `Perfect documentation: +${SCORING.ALL_CLUES_CORRECT} points` })
   }
   
   // Hibák levonása (de nem teljesen büntető)
@@ -280,12 +280,12 @@ export function checkAchievements(stats) {
  * @returns {string} - Visszajelzés szövege
  */
 export function generateLevelCompletionFeedback({ totalPoints, rank, bonuses, nextLevel }) {
-  let feedback = `Gratulálunk! Teljesítetted a pályát!\n\n`
-  feedback += `Összes pontszám: ${totalPoints} pont\n`
-  feedback += `Rang: ${rank.name}\n\n`
+  let feedback = `Congratulations! Case complete!\n\n`
+  feedback += `Total score: ${totalPoints} points\n`
+  feedback += `Rank: ${rank.name}\n\n`
   
   if (bonuses.length > 0) {
-    feedback += `Bónuszok:\n`
+    feedback += `Bonuses:\n`
     bonuses.forEach(bonus => {
       feedback += `• ${bonus.text}\n`
     })
@@ -293,11 +293,10 @@ export function generateLevelCompletionFeedback({ totalPoints, rank, bonuses, ne
   }
   
   if (nextLevel && nextLevel <= 12) {
-    feedback += `A következő nyomok a ${nextLevel}. pályán várnak.`
+    feedback += `The next clues await in case ${nextLevel}.`
   } else {
-    feedback += `Elérted a legmagasabb szintet!`
+    feedback += `You've reached the highest rank!`
   }
   
   return feedback
 }
-

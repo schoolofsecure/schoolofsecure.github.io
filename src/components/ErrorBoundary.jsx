@@ -18,7 +18,6 @@ class ErrorBoundary extends React.Component {
       errorInfo
     })
     
-    // Production-ben küldjük a hibát egy error tracking szolgáltatásnak
     if (import.meta.env.PROD) {
       logger.error('Error caught by boundary:', error, errorInfo)
     }
@@ -29,13 +28,13 @@ class ErrorBoundary extends React.Component {
       return (
         <div className="container" style={{ padding: '40px 20px', textAlign: 'center' }}>
           <div className="card" style={{ maxWidth: '600px', margin: '0 auto' }}>
-            <h2 style={{ color: 'var(--accent)', marginBottom: '16px' }}>Hiba történt</h2>
+            <h2 style={{ color: 'var(--accent)', marginBottom: '16px' }}>Something went wrong</h2>
             <p className="muted" style={{ marginBottom: '24px' }}>
-              Sajnáljuk, valami hiba történt az alkalmazás betöltése során.
+              Sorry, an error occurred while loading the application.
             </p>
             {import.meta.env.DEV && this.state.error && (
               <details style={{ marginBottom: '24px', textAlign: 'left' }}>
-                <summary style={{ cursor: 'pointer', marginBottom: '8px' }}>Hibadetails (csak fejlesztői módban)</summary>
+                <summary style={{ cursor: 'pointer', marginBottom: '8px' }}>Error details (development mode only)</summary>
                 <pre style={{ 
                   background: 'rgba(0,0,0,0.3)', 
                   padding: '12px', 
@@ -54,10 +53,10 @@ class ErrorBoundary extends React.Component {
                 className="btn" 
                 onClick={() => window.location.reload()}
               >
-                Oldal újratöltése
+                Reload page
               </button>
               <Link to="/" className="btn-ghost">
-                Vissza a főoldalra
+                Back to home
               </Link>
             </div>
           </div>
@@ -70,4 +69,3 @@ class ErrorBoundary extends React.Component {
 }
 
 export default ErrorBoundary
-

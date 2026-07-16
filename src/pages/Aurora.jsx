@@ -9,7 +9,7 @@ import '../index.css'
 import '../styles/aurora.css'
 
 const Aurora = () => {
-  const { loginWithEmail, registerWithEmail, sendPasswordReset, isAuthenticated, user, saveLevelCompletion, checkMissionCompletion, getHighestCompletedLevel, logout, getRetroPromptSeen, setRetroPromptSeen } = useAuth()
+  const { loginWithEmail, loginWithGoogle, registerWithEmail, sendPasswordReset, isAuthenticated, user, saveLevelCompletion, checkMissionCompletion, getHighestCompletedLevel, logout, getRetroPromptSeen, setRetroPromptSeen } = useAuth()
   const [data, setData] = useState(null)
   const [unlocked, setUnlocked] = useState(false)
   const [showLevels, setShowLevels] = useState(false)
@@ -114,6 +114,18 @@ const Aurora = () => {
       // A useEffect automatikusan ellenőrzi a mission teljesítését és beállítja a panelt
     } else {
       setGateError(result.message || 'Sign-in failed.')
+    }
+  }
+
+  const handleGoogleLogin = async () => {
+    setGateError('')
+    setRegistrationSuccess(false)
+    const result = await loginWithGoogle()
+    if (result.success) {
+      setUnlocked(true)
+      setGateError('')
+    } else {
+      setGateError(result.message || 'Google sign-in failed.')
     }
   }
 
@@ -364,6 +376,14 @@ const Aurora = () => {
                   Reset password
                 </button>
               </div>
+              <button
+                className="btn-ghost"
+                type="button"
+                onClick={handleGoogleLogin}
+                style={{ marginTop: '10px', width: '100%' }}
+              >
+                Continue with Google
+              </button>
             </form>
             {registrationSuccess && (
               <div style={{

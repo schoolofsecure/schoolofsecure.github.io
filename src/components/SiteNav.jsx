@@ -35,7 +35,7 @@ export default function SiteNav() {
   const location = useLocation()
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
-  const { user, registerWithEmail, loginWithEmail, logout } = useAuth()
+  const { user, registerWithEmail, loginWithEmail, loginWithGoogle, logout } = useAuth()
   const [authPanelOpen, setAuthPanelOpen] = useState(false)
   const [authMode, setAuthMode] = useState('login')
   const [gdprAgreedInForm, setGdprAgreedInForm] = useState(false)
@@ -75,6 +75,16 @@ export default function SiteNav() {
       setAuthPanelOpen(false)
       navigate('/aurora')
     }
+  }
+
+  const handleGoogleLogin = async () => {
+    const result = await loginWithGoogle()
+    if (!result.success) {
+      alert(result.message)
+      return
+    }
+    setAuthPanelOpen(false)
+    navigate('/aurora')
   }
 
   const handleLogout = async () => {
@@ -174,6 +184,9 @@ export default function SiteNav() {
                 )}
                 <button type="submit" className={authMode === 'login' ? 'btn-submit' : 'btn-secondary'}>
                   {authMode === 'login' ? 'Sign In' : 'Sign up'}
+                </button>
+                <button type="button" className="btn-ghost" onClick={handleGoogleLogin} style={{ width: '100%' }}>
+                  Continue with Google
                 </button>
                 <button type="button" className="btn-ghost" onClick={() => setAuthMode(authMode === 'login' ? 'register' : 'login')}>
                   {authMode === 'login' ? "Don't have an account? Sign up" : 'Already have an account? Sign In'}

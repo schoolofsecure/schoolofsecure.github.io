@@ -8,7 +8,9 @@ import {
   sendPasswordResetEmail,
   signOut,
   onAuthStateChanged,
-  deleteUser
+  deleteUser,
+  GoogleAuthProvider,
+  signInWithPopup
 } from 'firebase/auth'
 import {
   getFirestore,
@@ -100,6 +102,22 @@ export const AuthProvider = ({ children }) => {
       return { success: true, message: 'Signed in successfully!' }
     } catch (error) {
       return { success: false, message: sanitizeErrorMessage(error) || 'Sign-in failed' }
+    }
+  }
+
+  const loginWithGoogle = async () => {
+    try {
+      const provider = new GoogleAuthProvider()
+      await signInWithPopup(auth, provider)
+      return { success: true, message: 'Signed in successfully!' }
+    } catch (error) {
+      if (error.code === 'auth/popup-closed-by-user' || error.code === 'auth/cancelled-popup-request') {
+        return { success: false, message: 'Sign-in cancelled.' }
+      }
+      if (error.code === 'auth/unauthorized-domain') {
+        return { success: false, message: 'This domain is not allowed for Google sign-in. Add it in Firebase Console.' }
+      }
+      return { success: false, message: sanitizeErrorMessage(error) || 'Google sign-in failed' }
     }
   }
 
@@ -327,6 +345,7 @@ export const AuthProvider = ({ children }) => {
     loading,
     registerWithEmail,
     loginWithEmail,
+    loginWithGoogle,
     logout,
     sendPasswordReset,
     saveLevelCompletion,

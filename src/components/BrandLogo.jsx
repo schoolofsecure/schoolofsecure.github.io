@@ -5,10 +5,7 @@ const LOGO_SRC = '/images/iterali logo.png'
 
 export function BrandLogo({ to = '/', className = 'brand', ariaLabel = 'Iterali' }) {
   const content = (
-    <>
-      <img src={LOGO_SRC} alt="" className="brand-logo" aria-hidden="true" />
-      <div className="brand-title">Iterali</div>
-    </>
+    <img src={LOGO_SRC} alt="Iterali" className="brand-logo" />
   )
 
   if (to) {

@@ -5,7 +5,6 @@ import { useAuth } from '../contexts/AuthContext'
 import '../index.css'
 
 const navLinks = [
-  { to: '/', label: 'Home' },
   { to: '/play', label: 'Play' },
   { to: '/learn', label: 'Learn' },
   { to: '/teams', label: 'For Teams' },

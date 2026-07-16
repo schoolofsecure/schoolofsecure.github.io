@@ -1,6 +1,8 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import SiteNav from '../components/SiteNav'
+import SiteFooter from '../components/SiteFooter'
+import CookieBanner from '../components/CookieBanner'
 import '../styles/site.css'
 
 const challengeTypes = [
@@ -71,7 +73,10 @@ export default function Play() {
         <p className="muted" style={{ marginTop: 20, fontSize: 14 }}>
           No account required to start playing. Sign in to save progress and scores.
         </p>
+
+        <SiteFooter />
       </div>
+      <CookieBanner />
     </div>
   )
 }

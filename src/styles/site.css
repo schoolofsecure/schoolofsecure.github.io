@@ -67,6 +67,98 @@
   margin: 0 0 14px;
 }
 
+.teams-hero {
+  padding: 48px 0 32px;
+  max-width: 720px;
+}
+
+.teams-hero h1 {
+  font-family: Rajdhani, Inter, sans-serif;
+  font-size: clamp(28px, 4vw, 40px);
+  line-height: 1.12;
+  margin: 0 0 16px;
+}
+
+.teams-list {
+  margin: 0;
+}
+
+.teams-cta-block {
+  padding-bottom: 48px;
+}
+
+.teams-cta-note {
+  margin: 14px 0 0;
+  color: var(--muted);
+  font-size: 14px;
+  max-width: 480px;
+}
+
+.teams-cta-secondary {
+  display: inline-block;
+  margin-top: 20px;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.teams-contact {
+  padding-bottom: 56px;
+  scroll-margin-top: 24px;
+}
+
+.teams-contact-title {
+  font-family: Rajdhani, Inter, sans-serif;
+  font-size: clamp(22px, 2.4vw, 28px);
+  margin: 0 0 8px;
+}
+
+.teams-contact-form {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+  max-width: 640px;
+  margin-top: 8px;
+}
+
+.teams-contact-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.teams-contact-full {
+  grid-column: 1 / -1;
+}
+
+.teams-contact-textarea {
+  resize: vertical;
+  min-height: 96px;
+}
+
+.teams-contact-optional {
+  font-weight: 400;
+  opacity: 0.8;
+}
+
+.teams-contact-success {
+  margin: 12px 0 0;
+  padding: 14px 16px;
+  border-radius: 10px;
+  background: rgba(51, 255, 153, 0.08);
+  border: 1px solid rgba(51, 255, 153, 0.25);
+  color: var(--ink);
+  font-size: 14px;
+  max-width: 480px;
+}
+
+@media (max-width: 640px) {
+  .teams-contact-form {
+    grid-template-columns: 1fr;
+  }
+}
+
 .hero-home {
   display: grid;
   grid-template-columns: 1.1fr 0.9fr;

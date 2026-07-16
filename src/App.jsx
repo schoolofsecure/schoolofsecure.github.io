@@ -16,6 +16,7 @@ import Pricing from './pages/Pricing'
 import ForTeams from './pages/ForTeams'
 import Aurora from './pages/Aurora'
 import Privacy from './pages/Privacy'
+import Terms from './pages/Terms'
 import Profile from './pages/Profile'
 import UgyView from './pages/UgyView'
 import NotFound from './pages/NotFound'
@@ -64,6 +65,7 @@ function AppContent() {
           <Route path="/aurora" element={<Aurora />} />
           <Route path="/aurora.html" element={<Navigate to="/aurora" replace />} />
           <Route path="/privacy" element={<Privacy />} />
+          <Route path="/terms" element={<Terms />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/ugy1" element={<UgyView />} />
           <Route path="/ugy2" element={<UgyView />} />

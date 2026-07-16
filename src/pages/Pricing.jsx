@@ -1,6 +1,8 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import SiteNav from '../components/SiteNav'
+import SiteFooter from '../components/SiteFooter'
+import CookieBanner from '../components/CookieBanner'
 import '../styles/site.css'
 
 export default function Pricing() {
@@ -57,7 +59,10 @@ export default function Pricing() {
         <p className="muted" style={{ marginTop: 28, fontSize: 14, lineHeight: 1.6 }}>
           No certificates, accredited qualifications, official certifications, job guarantees, or lifetime access claims.
         </p>
+
+        <SiteFooter />
       </div>
+      <CookieBanner />
     </div>
   )
 }

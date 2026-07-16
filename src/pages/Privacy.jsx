@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
 import SiteNav from '../components/SiteNav'
+import SiteFooter from '../components/SiteFooter'
+import CookieBanner from '../components/CookieBanner'
 import '../index.css'
 
 const Privacy = () => {
@@ -120,8 +122,9 @@ const Privacy = () => {
             <p>This policy applies to the Iterali interactive cybercrime mystery game and its web application. If it changes, the updated version takes effect upon publication.</p>
           </section>
         </div>
-        <p className="footer">© 2025 Iterali – Privacy Policy</p>
       </div>
+      <SiteFooter />
+      <CookieBanner />
     </div>
   )
 }

@@ -18,6 +18,9 @@ Updated homepage hero and supporting sections to position Iterali as both access
 - **Why it works:** four bullets on realistic scenarios, learning by doing, growth path, scaling from game to structured learning
 - Blockquote tagline: *Real challenges. Practical skills.*
 
-## Files changed
+## Style notes (2026-07-15)
+- British English on landing copy
+- No em dashes; avoid Oxford comma before and/or
+
 - `src/pages/Landing.jsx`
 - `src/index.css` — `.cta-block`, `.cta-micro` for CTA microcopy layout

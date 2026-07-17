@@ -14,6 +14,9 @@ import LearnLesson from './pages/learn/LearnLesson'
 import LearnDashboard from './pages/learn/LearnDashboard'
 import Pricing from './pages/Pricing'
 import ForTeams from './pages/ForTeams'
+import Blog from './pages/Blog'
+import BlogPost from './pages/BlogPost'
+import Values from './pages/Values'
 import Aurora from './pages/Aurora'
 import Privacy from './pages/Privacy'
 import Terms from './pages/Terms'
@@ -62,6 +65,9 @@ function AppContent() {
           <Route path="/learn/lessons/:lessonId" element={<LearnLesson />} />
           <Route path="/pricing" element={<Pricing />} />
           <Route path="/teams" element={<ForTeams />} />
+          <Route path="/blog" element={<Blog />} />
+          <Route path="/blog/:slug" element={<BlogPost />} />
+          <Route path="/values" element={<Values />} />
           <Route path="/aurora" element={<Aurora />} />
           <Route path="/aurora.html" element={<Navigate to="/aurora" replace />} />
           <Route path="/privacy" element={<Privacy />} />

@@ -9,6 +9,7 @@ const navLinks = [
   { to: '/learn', label: 'Learn' },
   { to: '/teams', label: 'For Teams' },
   { to: '/pricing', label: 'Pricing' },
+  { to: '/blog', label: 'Blog' },
 ]
 
 function isNavActive(pathname, to) {
@@ -17,6 +18,7 @@ function isNavActive(pathname, to) {
     return pathname === '/play' || pathname === '/aurora' || /^\/ugy\d+/.test(pathname)
   }
   if (to === '/learn') return pathname.startsWith('/learn')
+  if (to === '/blog') return pathname === '/blog' || pathname.startsWith('/blog/')
   return pathname === to || pathname.startsWith(`${to}/`)
 }
 

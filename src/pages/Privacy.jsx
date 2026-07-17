@@ -5,53 +5,61 @@ import CookieBanner from '../components/CookieBanner'
 import '../index.css'
 
 const Privacy = () => {
+  const contactEmail = 'erikapappkovacs@gmail.com'
   const [revealedEmails, setRevealedEmails] = useState(false)
-  const emails = ['secure@schoolofsecure.com']
+
+  const emailOrReveal = (
+    revealedEmails ? (
+      <a href={`mailto:${contactEmail}`}>{contactEmail}</a>
+    ) : (
+      <span
+        className="obf-emails"
+        onClick={() => setRevealedEmails(true)}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault()
+            setRevealedEmails(true)
+          }
+        }}
+        role="button"
+        tabIndex={0}
+        style={{ cursor: 'pointer', textDecoration: 'underline' }}
+      >
+        [show email address]
+      </span>
+    )
+  )
 
   return (
     <div className="container">
       <SiteNav />
       <div className="card">
         <h1 id="adatkezeles">Privacy Policy</h1>
-        <p className="muted">Last updated: December 2, 2025</p>
+        <p className="muted">Last updated: July 17, 2026</p>
         <span className="pill">GDPR compliant</span>
 
         <div className="grid" style={{marginTop:'14px'}}>
           <section className="section">
             <h2>1. Data controller</h2>
-            <p>The data controller for this interactive cybercrime mystery game is <strong>Papp‑Kovács Erika</strong>. Contact: 
-              {revealedEmails ? (
-                <span>
-                  {emails.map((email, i) => (
-                    <span key={email}>
-                      <a href={`mailto:${email}`}>{email}</a>
-                      {i < emails.length - 1 && ', '}
-                    </span>
-                  ))}
-                </span>
-              ) : (
-                <span 
-                  className="obf-emails" 
-                  onClick={() => setRevealedEmails(true)}
-                  style={{cursor: 'pointer', textDecoration: 'underline'}}
-                >
-                  [show email address]
-                </span>
-              )}
+            <p>
+              The data controller for the Iterali cybersecurity learning platform (including the free practice game, learning paths, and related web services) is <strong>Papp‑Kovács Erika</strong>. Contact:{' '}
+              {emailOrReveal}
             </p>
           </section>
 
           <section className="section">
             <h2>2. Data we collect</h2>
             <ul>
-              <li>Email address.</li>
+              <li>Email address (account sign-in).</li>
+              <li>Learning and game progress linked to your account (for example completed levels, scores, and preferences), when you are signed in.</li>
             </ul>
           </section>
 
           <section className="section">
             <h2>3. Purpose and legal basis</h2>
             <ul>
-              <li>Sign-in and account management for the game (consent – GDPR Article 6(1)(a)).</li>
+              <li>Sign-in and account management for Iterali (consent – GDPR Article 6(1)(a)).</li>
+              <li>Providing the game, learning content, and progress tracking (consent / contract performance – GDPR Article 6(1)(a)/(b)).</li>
               <li>System security and troubleshooting (legitimate interest – GDPR Article 6(1)(f)).</li>
             </ul>
           </section>
@@ -59,7 +67,7 @@ const Privacy = () => {
           <section className="section">
             <h2>4. Retention period</h2>
             <ul>
-              <li>Account data: until withdrawal, up to 24 months maximum.</li>
+              <li>Account and progress data: until you delete your account or withdraw consent, up to 24 months of inactivity maximum unless a longer period is required by law.</li>
               <li>Technical logs: up to 90 days.</li>
             </ul>
           </section>
@@ -67,14 +75,14 @@ const Privacy = () => {
           <section className="section">
             <h2>5. Processors and data transfers</h2>
             <ul>
-              <li>Google Firebase (Authentication) – for sign-in and data storage.</li>
+              <li>Google Firebase (Authentication and data storage) – for sign-in and saving progress.</li>
             </ul>
             <p>Where data is transferred outside the EU, appropriate safeguards or adequacy decisions are in place.</p>
           </section>
 
           <section className="section" id="cookies">
             <h2>6. Cookies</h2>
-            <p>This site uses only cookies that are strictly necessary for operation (settings, form protection, basic functionality). We do not use profiling or marketing cookies.</p>
+            <p>This site uses only cookies that are strictly necessary for operation (settings, form protection, basic functionality, signed-in session). We do not use profiling or marketing cookies.</p>
           </section>
 
           <section className="section">
@@ -95,31 +103,17 @@ const Privacy = () => {
 
           <section className="section">
             <h2>9. Contact</h2>
-            <p>For privacy-related inquiries: 
-              {revealedEmails ? (
-                <span>
-                  {emails.map((email, i) => (
-                    <span key={email}>
-                      <a href={`mailto:${email}`}>{email}</a>
-                      {i < emails.length - 1 && ', '}
-                    </span>
-                  ))}
-                </span>
-              ) : (
-                <span 
-                  className="obf-emails" 
-                  onClick={() => setRevealedEmails(true)}
-                  style={{cursor: 'pointer', textDecoration: 'underline'}}
-                >
-                  [show email address]
-                </span>
-              )}
+            <p>
+              For privacy-related inquiries:{' '}
+              {emailOrReveal}
             </p>
           </section>
 
           <section className="section">
             <h2>10. Scope</h2>
-            <p>This policy applies to the Iterali interactive cybercrime mystery game and its web application. If it changes, the updated version takes effect upon publication.</p>
+            <p>
+              This policy applies to Iterali as a cybersecurity learning platform: the website, free practice game, structured learning paths, team-oriented offerings, and related features. If the policy changes, the updated version takes effect upon publication.
+            </p>
           </section>
         </div>
       </div>

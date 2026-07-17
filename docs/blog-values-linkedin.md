@@ -6,10 +6,10 @@ Homepage és site chrome bővítése SEO / trust tartalommal, a hero és fő CTA
 
 ## Struktúra
 
-- Header: **Blog** → `/blog` (Pricing után)
-- Homepage: csak hero + For individuals / For teams (nincs values/blog teaser)
-- Footer: Privacy · Terms · Contact · Values · Blog · LinkedIn ikon
-- Új oldalak: `/blog`, `/blog/:slug`, `/values`
+- Header: Blog egyelőre elrejtve (route megmaradt: `/blog`)
+- Homepage: csak hero + For individuals / For teams
+- Footer: Privacy · Terms · Contact · LinkedIn (Values/Blog egyelőre elrejtve)
+- Oldalak megmaradtak: `/blog`, `/blog/:slug`, `/values`
 
 ## Fájlok
 

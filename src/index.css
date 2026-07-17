@@ -132,6 +132,27 @@ header {
     z-index: 5;
 }
 
+.site-header-menu-btn {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    border-radius: 10px;
+    border: 1px solid rgba(207, 230, 255, 0.25);
+    background: rgba(255, 255, 255, 0.06);
+    color: var(--ink);
+    cursor: pointer;
+    font-size: 18px;
+    line-height: 1;
+    flex-shrink: 0;
+}
+
+.site-mobile-menu {
+    display: none;
+}
+
 .case-title-bar {
     padding: 0 0 16px;
     font-family: Rajdhani, Inter, sans-serif;
@@ -590,15 +611,241 @@ header {
 @media (max-width: 820px) {
     .landing-hero {
         grid-template-columns: 1fr;
-        padding: 40px 0 48px;
+        padding: 32px 0 40px;
+        gap: 24px;
+    }
+
+    .landing-hero-copy {
+        order: 1;
+    }
+
+    .landing-hero-ctas {
+        order: 2;
+    }
+
+    .landing-hero-media {
+        order: 3;
+    }
+
+    .landing-hero h1 {
+        font-size: clamp(28px, 8vw, 34px);
+        line-height: 1.15;
+        margin-bottom: 14px;
+    }
+
+    .landing-hero-lead {
+        font-size: 15px;
+        line-height: 1.5;
+        margin-bottom: 20px;
+    }
+
+    .landing-hero-ctas {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+    }
+
+    .landing-hero-btn {
+        width: 100%;
+        min-height: 48px;
+        min-width: 0;
+    }
+
+    .landing-hero-media .terminal-card {
+        max-height: 180px;
+        overflow: hidden;
+    }
+
+    .landing-hero-media .terminal-body {
+        font-size: 12px;
+        line-height: 1.45;
     }
 
     .landing-paths {
         grid-template-columns: 1fr;
+        gap: 16px;
+        padding-bottom: 32px;
+    }
+
+    .landing-path {
+        padding: 22px 18px;
+    }
+
+    .landing-path h2 {
+        font-size: 22px;
+        margin-bottom: 14px;
+    }
+
+    .landing-path-list li {
+        margin-bottom: 10px;
+        font-size: 15px;
+    }
+
+    .landing-path-actions {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 8px;
+    }
+
+    .landing-path-actions .btn {
+        width: 100%;
+        min-height: 48px;
+        justify-content: center;
+        text-align: center;
+    }
+
+    .landing-path-link {
+        text-align: center;
+        padding: 10px 4px;
+        min-height: 44px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
     }
 
     .landing-blog-grid {
         grid-template-columns: 1fr;
+    }
+
+    .site-footer {
+        padding: 24px 0 20px;
+    }
+}
+
+@media (max-width: 640px) {
+    .site-header {
+        flex-wrap: nowrap;
+        gap: 10px;
+        padding: 12px 0;
+        min-height: 56px;
+        align-items: center;
+    }
+
+    .brand-logo {
+        height: 32px;
+        width: 32px;
+        border-radius: 8px;
+    }
+
+    .site-header-nav {
+        display: none;
+    }
+
+    .site-header-status-desktop,
+    .site-header-signin-desktop,
+    .site-header-user-desktop {
+        display: none !important;
+    }
+
+    .site-header-menu-btn {
+        display: inline-flex;
+    }
+
+    .site-header-play-free {
+        min-width: 0 !important;
+        height: 40px !important;
+        padding: 0 14px !important;
+        font-size: 13px !important;
+    }
+
+    .site-header-actions {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .site-header-actions-row {
+        gap: 8px;
+        flex-wrap: nowrap;
+    }
+
+    .site-mobile-menu {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        position: absolute;
+        top: calc(100% + 8px);
+        right: 0;
+        left: auto;
+        width: min(300px, calc(100vw - 32px));
+        padding: 12px;
+        background: #0b121c;
+        border: 1px solid rgba(207, 230, 255, 0.2);
+        border-radius: 14px;
+        box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45);
+        z-index: 20;
+    }
+
+    .site-mobile-nav {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    .site-mobile-nav a {
+        display: flex;
+        align-items: center;
+        min-height: 48px;
+        padding: 0 14px;
+        border-radius: 10px;
+        color: var(--muted);
+        text-decoration: none;
+        font-size: 15px;
+        font-weight: 500;
+    }
+
+    .site-mobile-nav a:hover,
+    .site-mobile-nav a.active {
+        color: var(--ink);
+        background: rgba(255, 255, 255, 0.06);
+    }
+
+    .site-mobile-signin {
+        width: 100%;
+        min-height: 48px;
+        margin-top: 4px;
+    }
+
+    .site-mobile-user-links {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        margin-top: 4px;
+    }
+
+    .site-mobile-user-links a {
+        display: flex;
+        align-items: center;
+        min-height: 48px;
+        padding: 0 14px;
+        border-radius: 10px;
+        color: var(--ink);
+        text-decoration: none;
+        font-size: 15px;
+    }
+
+    .site-header-auth-panel {
+        min-width: min(320px, calc(100vw - 32px));
+        right: 0;
+        z-index: 25;
+    }
+
+    .cookie-banner {
+        left: 12px;
+        right: 12px;
+        bottom: max(12px, env(safe-area-inset-bottom));
+        max-width: none;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .cookie-accept {
+        width: 100%;
+        min-height: 44px;
+    }
+
+    .cookie-banner-action {
+        justify-content: stretch;
     }
 }
 
@@ -1090,12 +1337,5 @@ footer {
     .features { grid-template-columns: 1fr; }
     .signup form { grid-template-columns: 1fr; }
     .btn-submit { width: 100%; }
-}
-
-@media (max-width: 640px){ 
-    .cookie-banner {
-        right: 12px;
-        bottom: 12px;
-    }
 }
 

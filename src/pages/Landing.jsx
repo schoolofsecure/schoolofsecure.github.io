@@ -61,7 +61,7 @@ const Landing = () => {
           </ul>
           <div className="landing-path-actions">
             <Link to="/play" className="btn btn-primary">Play Free</Link>
-            <Link to="/learn" className="btn btn-secondary">View learning paths</Link>
+            <Link to="/learn" className="landing-path-link">View learning paths</Link>
           </div>
         </article>
 
@@ -75,7 +75,7 @@ const Landing = () => {
           </ul>
           <div className="landing-path-actions">
             <Link to="/teams" className="btn btn-secondary">For Teams</Link>
-            <Link to="/teams#contact" className="btn btn-ghost landing-path-link">Request team access</Link>
+            <Link to="/teams#contact" className="landing-path-link">Request team access</Link>
           </div>
         </article>
       </section>

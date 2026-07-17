@@ -9,7 +9,6 @@ const navLinks = [
   { to: '/learn', label: 'Learn' },
   { to: '/teams', label: 'For Teams' },
   { to: '/pricing', label: 'Pricing' },
-  { to: '/blog', label: 'Blog' },
 ]
 
 function isNavActive(pathname, to) {
@@ -18,7 +17,6 @@ function isNavActive(pathname, to) {
     return pathname === '/play' || pathname === '/aurora' || /^\/ugy\d+/.test(pathname)
   }
   if (to === '/learn') return pathname.startsWith('/learn')
-  if (to === '/blog') return pathname === '/blog' || pathname.startsWith('/blog/')
   return pathname === to || pathname.startsWith(`${to}/`)
 }
 
@@ -39,6 +37,7 @@ export default function SiteNav() {
   const [searchParams] = useSearchParams()
   const { user, registerWithEmail, loginWithEmail, loginWithGoogle, logout } = useAuth()
   const [authPanelOpen, setAuthPanelOpen] = useState(false)
+  const [menuOpen, setMenuOpen] = useState(false)
   const [authMode, setAuthMode] = useState('login')
   const [gdprAgreedInForm, setGdprAgreedInForm] = useState(false)
   const [email, setEmail] = useState('')
@@ -54,8 +53,32 @@ export default function SiteNav() {
     if (searchParams.get('signin') === '1') {
       setAuthPanelOpen(true)
       setAuthMode('login')
+      setMenuOpen(false)
     }
   }, [searchParams])
+
+  useEffect(() => {
+    setMenuOpen(false)
+  }, [location.pathname])
+
+  useEffect(() => {
+    if (!menuOpen) return undefined
+    const onKey = (e) => {
+      if (e.key === 'Escape') setMenuOpen(false)
+    }
+    document.addEventListener('keydown', onKey)
+    document.body.style.overflow = 'hidden'
+    return () => {
+      document.removeEventListener('keydown', onKey)
+      document.body.style.overflow = ''
+    }
+  }, [menuOpen])
+
+  const openSignIn = () => {
+    setMenuOpen(false)
+    setAuthMode('login')
+    setAuthPanelOpen(true)
+  }
 
   const handleRegister = async () => {
     if (!gdprAgreedInForm) {
@@ -112,26 +135,26 @@ export default function SiteNav() {
       <div className="site-header-actions">
         <div className="site-header-actions-row">
           {authStatusText && (
-            <span className="site-header-status">{authStatusText}</span>
+            <span className="site-header-status site-header-status-desktop">{authStatusText}</span>
           )}
           {!user && (
             <>
               <button
                 type="button"
-                className="btn-ghost site-header-auth-btn"
+                className="btn-ghost site-header-auth-btn site-header-signin-desktop"
                 style={{
                   ...baseAuthBtnStyle,
                   border: '1px solid rgba(207,230,255,0.35)',
                   color: 'var(--ink)',
                   background: 'rgba(255,255,255,0.06)',
                 }}
-                onClick={() => { setAuthMode('login'); setAuthPanelOpen(true) }}
+                onClick={openSignIn}
               >
                 Sign In
               </button>
               <Link
                 to="/play"
-                className="btn btn-primary site-header-auth-btn"
+                className="btn btn-primary site-header-auth-btn site-header-play-free"
                 style={{ ...baseAuthBtnStyle, textDecoration: 'none', display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}
               >
                 Play Free
@@ -142,21 +165,62 @@ export default function SiteNav() {
             <>
               <Link
                 to="/learn/dashboard"
-                className="btn-ghost site-header-auth-btn"
+                className="btn-ghost site-header-auth-btn site-header-user-desktop"
                 style={{ ...baseAuthBtnStyle, textDecoration: 'none', display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}
               >
                 My learning
               </Link>
               <Link
                 to="/profile"
-                className="btn-secondary site-header-auth-btn"
+                className="btn-secondary site-header-auth-btn site-header-play-free"
                 style={{ ...baseAuthBtnStyle, textDecoration: 'none', display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}
               >
                 Profile
               </Link>
             </>
           )}
+          <button
+            type="button"
+            className="site-header-menu-btn"
+            aria-label={menuOpen ? 'Close menu' : 'Open menu'}
+            aria-expanded={menuOpen}
+            aria-controls="siteMobileMenu"
+            onClick={() => setMenuOpen((open) => !open)}
+          >
+            <span className="site-header-menu-icon" aria-hidden="true">
+              {menuOpen ? '✕' : '☰'}
+            </span>
+          </button>
         </div>
+
+        {menuOpen && (
+          <div className="site-mobile-menu" id="siteMobileMenu">
+            <nav className="site-mobile-nav" aria-label="Mobile">
+              {navLinks.map(({ to, label }) => (
+                <Link
+                  key={to}
+                  to={to}
+                  className={isNavActive(location.pathname, to) ? 'active' : undefined}
+                  onClick={() => setMenuOpen(false)}
+                >
+                  {label}
+                </Link>
+              ))}
+            </nav>
+            {!user ? (
+              <button type="button" className="btn-ghost site-mobile-signin" onClick={openSignIn}>
+                Sign In
+              </button>
+            ) : (
+              <div className="site-mobile-user-links">
+                <Link to="/learn/dashboard" onClick={() => setMenuOpen(false)}>My learning</Link>
+                <Link to="/profile" onClick={() => setMenuOpen(false)}>Profile</Link>
+                {authStatusText && <span className="site-header-status">{authStatusText}</span>}
+              </div>
+            )}
+          </div>
+        )}
+
         {authPanelOpen && (
           <div
             id="authPanel"

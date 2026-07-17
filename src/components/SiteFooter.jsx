@@ -13,10 +13,6 @@ export default function SiteFooter({ className = 'site-footer' }) {
         <span aria-hidden="true">·</span>
         <a href="mailto:erikapappkovacs@gmail.com">Contact</a>
         <span aria-hidden="true">·</span>
-        <Link to="/values">Values</Link>
-        <span aria-hidden="true">·</span>
-        <Link to="/blog">Blog</Link>
-        <span aria-hidden="true">·</span>
         <a
           href={LINKEDIN_URL}
           target="_blank"

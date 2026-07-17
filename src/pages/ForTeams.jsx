@@ -6,6 +6,8 @@ import CookieBanner from '../components/CookieBanner'
 import '../index.css'
 import '../styles/site.css'
 
+const CONTACT_EMAIL = 'erikapappkovacs@gmail.com'
+
 const teamPoints = [
   <>Realistic practice for phishing, social engineering and unsafe behaviour.</>,
   <>Workplace focused modules and <strong className="landing-term">structured learning paths</strong> for everyday decisions.</>,
@@ -14,8 +16,6 @@ const teamPoints = [
 
 export default function ForTeams() {
   const [submitted, setSubmitted] = useState(false)
-  const [sending, setSending] = useState(false)
-  const [submitError, setSubmitError] = useState('')
   const [form, setForm] = useState({
     name: '',
     email: '',
@@ -28,38 +28,22 @@ export default function ForTeams() {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }))
   }
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault()
-    setSending(true)
-    setSubmitError('')
-    try {
-      const res = await fetch('https://formsubmit.co/ajax/erikapappkovacs@gmail.com', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
-        },
-        body: JSON.stringify({
-          name: form.name,
-          email: form.email,
-          company: form.company,
-          teamSize: form.teamSize,
-          message: form.message || '(no message)',
-          _subject: `Iterali team access request — ${form.company}`,
-          _template: 'table',
-          _captcha: 'false',
-        }),
-      })
-      const data = await res.json().catch(() => ({}))
-      if (!res.ok || data.success === 'false' || data.success === false) {
-        throw new Error(data.message || 'Could not send the request.')
-      }
-      setSubmitted(true)
-    } catch (_) {
-      setSubmitError('Could not send the request. Please email erikapappkovacs@gmail.com directly.')
-    } finally {
-      setSending(false)
-    }
+    const subject = encodeURIComponent(`Iterali team access request — ${form.company}`)
+    const body = encodeURIComponent(
+      [
+        `Name: ${form.name}`,
+        `Work email: ${form.email}`,
+        `Company: ${form.company}`,
+        `Team size: ${form.teamSize}`,
+        '',
+        'Message:',
+        form.message || '(no message)',
+      ].join('\n')
+    )
+    window.location.href = `mailto:${CONTACT_EMAIL}?subject=${subject}&body=${body}`
+    setSubmitted(true)
   }
 
   useEffect(() => {
@@ -93,24 +77,28 @@ export default function ForTeams() {
           <p className="section-lead">Tell us about your team and we will get back to you.</p>
 
           {submitted ? (
-            <p className="teams-contact-success">Thanks. We have received your request and will be in touch soon.</p>
+            <p className="teams-contact-success">
+              Your email app should open with the request ready. Please send it to complete.
+              If nothing opened, email us at{' '}
+              <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>.
+            </p>
           ) : (
             <form className="teams-contact-form" onSubmit={handleSubmit}>
               <label>
                 Name
-                <input className="input" type="text" name="name" required value={form.name} onChange={handleChange} disabled={sending} />
+                <input className="input" type="text" name="name" required value={form.name} onChange={handleChange} />
               </label>
               <label>
                 Work email
-                <input className="input" type="email" name="email" required value={form.email} onChange={handleChange} disabled={sending} />
+                <input className="input" type="email" name="email" required value={form.email} onChange={handleChange} />
               </label>
               <label>
                 Company
-                <input className="input" type="text" name="company" required value={form.company} onChange={handleChange} disabled={sending} />
+                <input className="input" type="text" name="company" required value={form.company} onChange={handleChange} />
               </label>
               <label>
                 Team size
-                <select className="input" name="teamSize" required value={form.teamSize} onChange={handleChange} disabled={sending}>
+                <select className="input" name="teamSize" required value={form.teamSize} onChange={handleChange}>
                   <option value="">Select</option>
                   <option value="1-25">1–25</option>
                   <option value="26-100">26–100</option>
@@ -120,12 +108,9 @@ export default function ForTeams() {
               </label>
               <label className="teams-contact-full">
                 Message <span className="teams-contact-optional">(optional)</span>
-                <textarea className="input teams-contact-textarea" name="message" rows={4} value={form.message} onChange={handleChange} disabled={sending} />
+                <textarea className="input teams-contact-textarea" name="message" rows={4} value={form.message} onChange={handleChange} />
               </label>
-              {submitError && <p className="error teams-contact-full">{submitError}</p>}
-              <button type="submit" className="btn btn-primary" disabled={sending}>
-                {sending ? 'Sending…' : 'Send request'}
-              </button>
+              <button type="submit" className="btn btn-primary">Send request</button>
             </form>
           )}
 

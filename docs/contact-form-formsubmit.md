@@ -1,14 +1,12 @@
-# Contact form → e-mail (FormSubmit)
+# Contact form → mailto
 
-## Mit csináltunk
+## Miért
 
-A `/teams` „Request team access” form most [FormSubmit](https://formsubmit.co) AJAX végponton keresztül küld levelet.
+A FormSubmit az éles `iterali.com` domainhez nem küldött aktiváló levelet (localhost aktiválás után), ezért lecserélve.
 
-**Címzett:** `erikapappkovacs@gmail.com`
+## Mostani működés
 
-## Fontos
-
-Az első küldés után FormSubmit megerősítő e-mailt küld erre a címre — ezt el kell fogadni, utána jönnek a valódi form üzenetek.
+A `/teams` form `mailto:erikapappkovacs@gmail.com` linket nyit előtöltött subject/body mezőkkel. Nincs harmadik fél, nincs aktiválás.
 
 ## Fájl
 

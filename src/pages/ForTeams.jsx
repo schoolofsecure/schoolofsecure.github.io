@@ -6,8 +6,8 @@ import CookieBanner from '../components/CookieBanner'
 import '../index.css'
 import '../styles/site.css'
 
-/** Gmail +alias = fresh FormSubmit activation (same inbox as erikapappkovacs@gmail.com) */
-const FORMSUBMIT_EMAIL = 'erikapappkovacs+iterali@gmail.com'
+/** FormSubmit — already activated for this inbox */
+const FORMSUBMIT_EMAIL = 'erikapappkovacs@gmail.com'
 
 const teamPoints = [
   <>Realistic practice for phishing, social engineering and unsafe behaviour.</>,

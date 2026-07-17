@@ -11,7 +11,7 @@ export default function SiteFooter({ className = 'site-footer' }) {
         <span aria-hidden="true">·</span>
         <Link to="/terms">Terms</Link>
         <span aria-hidden="true">·</span>
-        <a href="mailto:erikapappkovacs@gmail.com">Contact</a>
+        <Link to="/teams#contact">Contact</Link>
         <span aria-hidden="true">·</span>
         <a
           href={LINKEDIN_URL}

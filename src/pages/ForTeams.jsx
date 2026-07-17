@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import SiteNav from '../components/SiteNav'
 import SiteFooter from '../components/SiteFooter'
 import CookieBanner from '../components/CookieBanner'
@@ -15,7 +15,16 @@ const teamPoints = [
   <>Track team progress and spot knowledge gaps at scale.</>,
 ]
 
+function scrollToContact() {
+  const el = document.getElementById('contact')
+  if (!el) return
+  window.setTimeout(() => {
+    el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  }, 50)
+}
+
 export default function ForTeams() {
+  const location = useLocation()
   const [submitted, setSubmitted] = useState(false)
   const [sending, setSending] = useState(false)
   const [submitError, setSubmitError] = useState('')
@@ -66,10 +75,10 @@ export default function ForTeams() {
   }
 
   useEffect(() => {
-    if (window.location.hash === '#contact') {
-      document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })
+    if (location.hash === '#contact') {
+      scrollToContact()
     }
-  }, [])
+  }, [location.hash, location.pathname])
 
   return (
     <div className="site-page">

@@ -6,10 +6,10 @@ Mobilbarát layout a korábbi UX spec alapján. Values/Blog továbbra is elrejtv
 
 ## Változások
 
-- **Header (≤640px):** hamburger menü (Play, Learn, For Teams, Pricing + Sign In); Play Free a headerben marad; kisebb logo
-- **Hero (≤820px):** stacked full-width CTA-k; terminal a CTA-k alatt, cropolt magasság
-- **Paths:** egy erős gomb + szöveges link; full-width gombok; szorosabb spacing
-- **Cookie:** alsó full-width sáv mobilon, safe-area
+- **Header (≤640px):** hamburger menü; Play Free a headerben; kisebb logo
+- **Hero (≤820px):** stacked full-width CTA-k; terminal cropolt
+- **Paths:** egy gomb + szöveges link
+- **Overflow fix:** `overflow-x: hidden`, sötét háttér (nincs fehér rács overscrollnél), gombok nem lógnak ki, container padding
 
 ## Fájlok
 

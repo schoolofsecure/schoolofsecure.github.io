@@ -13,6 +13,14 @@
 html, body {
     height: 100%;
     margin: 0;
+    overflow-x: hidden;
+    background-color: #0b0f14;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
 }
 
 body {
@@ -22,6 +30,7 @@ body {
     font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, 'Helvetica Neue', Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
+    max-width: 100%;
 }
 
 .scanlines {
@@ -42,21 +51,26 @@ body {
         linear-gradient(rgba(124,58,237,0.07) 1px, transparent 1px),
         linear-gradient(90deg, rgba(0,229,255,0.07) 1px, transparent 1px);
     background-size: 40px 40px, 40px 40px;
+    max-width: 100%;
+    overflow: hidden;
 }
 
 #root {
     min-height: 100vh;
     position: relative;
     z-index: 1;
+    max-width: 100%;
+    overflow-x: hidden;
 }
 
 /* Landing page styles */
 .container { 
-    width: min(1100px, 92vw); 
+    width: 100%;
+    max-width: 1100px;
     margin: 0 auto; 
     position: relative; 
     z-index: 2; 
-    padding: 20px 0;
+    padding: 20px 16px;
 }
 
 header { 
@@ -613,10 +627,13 @@ header {
         grid-template-columns: 1fr;
         padding: 32px 0 40px;
         gap: 24px;
+        width: 100%;
+        max-width: 100%;
     }
 
     .landing-hero-copy {
         order: 1;
+        max-width: 100%;
     }
 
     .landing-hero-ctas {
@@ -625,55 +642,68 @@ header {
 
     .landing-hero-media {
         order: 3;
+        max-width: 100%;
     }
 
     .landing-hero h1 {
         font-size: clamp(28px, 8vw, 34px);
         line-height: 1.15;
         margin-bottom: 14px;
+        overflow-wrap: anywhere;
     }
 
     .landing-hero-lead {
         font-size: 15px;
         line-height: 1.5;
         margin-bottom: 20px;
+        max-width: 100%;
     }
 
     .landing-hero-ctas {
         flex-direction: column;
         align-items: stretch;
         gap: 10px;
+        width: 100%;
     }
 
     .landing-hero-btn {
         width: 100%;
+        max-width: 100%;
         min-height: 48px;
         min-width: 0;
     }
 
     .landing-hero-media .terminal-card {
         max-height: 180px;
+        max-width: 100%;
         overflow: hidden;
+        min-height: 0;
     }
 
     .landing-hero-media .terminal-body {
         font-size: 12px;
         line-height: 1.45;
+        overflow-x: auto;
+        max-width: 100%;
+        word-break: break-word;
     }
 
     .landing-paths {
         grid-template-columns: 1fr;
         gap: 16px;
         padding-bottom: 32px;
+        width: 100%;
     }
 
     .landing-path {
         padding: 22px 18px;
+        max-width: 100%;
     }
 
     .landing-path h2 {
         font-size: 22px;
         margin-bottom: 14px;
+        overflow-wrap: anywhere;
     }
 
     .landing-path-list li {
@@ -685,10 +715,12 @@ header {
         flex-direction: column;
         align-items: stretch;
         gap: 8px;
+        width: 100%;
     }
 
     .landing-path-actions .btn {
         width: 100%;
+        max-width: 100%;
         min-height: 48px;
         justify-content: center;
         text-align: center;
@@ -709,16 +741,33 @@ header {
 
     .site-footer {
         padding: 24px 0 20px;
+        max-width: 100%;
+    }
+
+    .site-footer-nav {
+        max-width: 100%;
+        padding: 0 4px;
     }
 }
 
 @media (max-width: 640px) {
+    .container {
+        padding: 12px 14px 24px;
+    }
+
     .site-header {
         flex-wrap: nowrap;
-        gap: 10px;
-        padding: 12px 0;
+        gap: 8px;
+        padding: 10px 0;
         min-height: 56px;
         align-items: center;
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .brand {
+        min-width: 0;
+        flex-shrink: 1;
     }
 
     .brand-logo {
@@ -743,20 +792,28 @@ header {
 
     .site-header-play-free {
         min-width: 0 !important;
+        width: auto !important;
+        max-width: 42vw !important;
         height: 40px !important;
-        padding: 0 14px !important;
+        padding: 0 12px !important;
         font-size: 13px !important;
+        flex-shrink: 1;
     }
 
     .site-header-actions {
         display: flex;
         align-items: center;
         gap: 8px;
+        margin-left: auto;
+        min-width: 0;
+        flex-shrink: 0;
+        max-width: 70%;
     }
 
     .site-header-actions-row {
         gap: 8px;
         flex-wrap: nowrap;
+        max-width: 100%;
     }
 
     .site-mobile-menu {
@@ -767,7 +824,8 @@ header {
         top: calc(100% + 8px);
         right: 0;
         left: auto;
-        width: min(300px, calc(100vw - 32px));
+        width: min(280px, calc(100% + 14px));
+        max-width: calc(100vw - 28px);
         padding: 12px;
         background: #0b121c;
         border: 1px solid rgba(207, 230, 255, 0.2);
@@ -825,9 +883,18 @@ header {
     }
 
     .site-header-auth-panel {
-        min-width: min(320px, calc(100vw - 32px));
+        min-width: 0;
+        width: min(320px, calc(100vw - 28px));
         right: 0;
+        left: auto;
         z-index: 25;
+        max-width: calc(100vw - 28px);
+    }
+
+    .grid-overlay,
+    .scanlines {
+        width: 100%;
+        max-width: 100vw;
     }
 
     .cookie-banner {
@@ -846,6 +913,10 @@ header {
 
     .cookie-banner-action {
         justify-content: stretch;
+    }
+
+    .btn {
+        max-width: 100%;
     }
 }
 
@@ -1324,7 +1395,6 @@ footer {
     .hero { grid-template-columns: 1fr; }
     .signup { grid-template-columns: 1fr; }
     .features { grid-template-columns: repeat(2, 1fr); }
-    .terminal-card { min-height: 240px; }
     .hero h1 { font-size: clamp(26px, 7vw, 42px); }
     .brief-grid { grid-template-columns: 1fr; }
     .secure-figure { order: 2; justify-self: center; }

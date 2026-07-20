@@ -4,83 +4,120 @@ import SiteNav from '../components/SiteNav'
 import SiteFooter from '../components/SiteFooter'
 import CookieBanner from '../components/CookieBanner'
 import { freeLoginPath, getFirstFreeCaseId } from '../data/freeCases'
+import '../index.css'
 import '../styles/site.css'
-import '../styles/freeCase.css'
+
+const playBenefits = [
+  {
+    title: 'Safe to fail',
+    text: 'Safe-to-fail practice, not a test score on you.',
+  },
+  {
+    title: 'Everyday decisions',
+    text: 'Everyday decisions: emails, logins and shortcuts.',
+  },
+  {
+    title: 'Clear feedback',
+    text: 'Clear feedback on the cue you used.',
+  },
+  {
+    title: 'One next step',
+    text: 'One recommended next step after each case.',
+  },
+]
 
 export default function Play() {
   const firstCaseId = getFirstFreeCaseId()
 
   return (
-    <div className="site-page">
-      <div className="container">
-        <SiteNav />
-        <header style={{ padding: '32px 0 24px' }}>
-          <span className="badge-free">Free</span>
-          <h1 style={{ fontFamily: 'Rajdhani, Inter, sans-serif', margin: '0 0 12px' }}>
-            Practise one realistic case
-          </h1>
-          <p className="section-lead">
-            Decide under pressure, review without blame and get one clear next step. Start with a short workplace login decision. No account needed.
-          </p>
-        </header>
+    <div className="container teams-page">
+      <SiteNav />
 
-        <div className="free-case-card" style={{ marginBottom: 28 }}>
-          <p className="muted" style={{ margin: '0 0 4px', fontSize: 13 }}>
-            Path: {freeLoginPath.title} · step 1 of {freeLoginPath.totalSteps}
+      <header className="teams-hero">
+        <div className="teams-hero-copy">
+          <p className="landing-path-label">
+            {freeLoginPath.title} · step 1 of {freeLoginPath.totalSteps}
           </p>
-          <h2 style={{ margin: '0 0 8px', fontSize: 22, fontFamily: 'Rajdhani, Inter, sans-serif' }}>
-            Session expired
-          </h2>
-          <p className="muted" style={{ margin: '0 0 16px', lineHeight: 1.55 }}>
-            A familiar login popup, a two-minute countdown and a manager waiting on chat. What do you do?
+          <h1>Practise one realistic case</h1>
+          <p className="teams-hero-lead">
+            Start with a short workplace login decision. No account needed.
           </p>
-          <Link
-            to={`/play/case/${firstCaseId}`}
-            className="btn btn-primary"
-            style={{ textDecoration: 'none' }}
-          >
-            Start first case
-          </Link>
+          <div className="teams-hero-ctas">
+            <Link to={`/play/case/${firstCaseId}`} className="btn btn-primary teams-btn">
+              Start first case
+            </Link>
+            <Link to="/aurora" className="btn btn-secondary teams-btn">
+              Explore Aurora
+            </Link>
+          </div>
         </div>
+        <aside className="teams-hero-aside" aria-label="First case">
+          <div className="teams-aside-card">
+            <p className="teams-aside-label">First case</p>
+            <p className="teams-aside-stat">Session expired</p>
+            <p className="teams-aside-note">
+              A familiar login popup, a two-minute countdown and a manager waiting on chat. What do you do?
+            </p>
+            <p className="teams-aside-note" style={{ marginBottom: 0 }}>
+              Decide under pressure, review without blame, and get one clear next step.
+            </p>
+          </div>
+        </aside>
+      </header>
 
-        <ul className="feature-list">
-          <li>Safe-to-fail practice, not a test score on you</li>
-          <li>Everyday decisions: emails, logins and shortcuts</li>
-          <li>Clear feedback on the cue you used</li>
-          <li>One recommended next step after each case</li>
-        </ul>
-
-        <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', marginTop: 28 }}>
-          <Link to={`/play/case/${firstCaseId}`} className="btn btn-primary" style={{ textDecoration: 'none' }}>
-            Start first case
-          </Link>
-          <Link to="/aurora" className="btn-secondary btn" style={{ textDecoration: 'none' }}>
-            Enter Aurora
-          </Link>
-          <Link to="/learn" className="btn-ghost btn" style={{ textDecoration: 'none' }}>
-            Structured learning paths
-          </Link>
+      <section className="teams-section" aria-labelledby="play-benefits-title">
+        <h2 id="play-benefits-title" className="teams-section-title">
+          What you get
+        </h2>
+        <div className="play-benefit-grid">
+          {playBenefits.map((point) => (
+            <article key={point.title} className="teams-benefit">
+              <h3>{point.title}</h3>
+              <p>{point.text}</p>
+            </article>
+          ))}
         </div>
+      </section>
 
-        <div className="free-case-card" style={{ marginTop: 28 }}>
-          <p className="muted" style={{ margin: '0 0 4px', fontSize: 13 }}>Aurora inside Iterali</p>
-          <h2 style={{ margin: '0 0 8px', fontSize: 20, fontFamily: 'Rajdhani, Inter, sans-serif' }}>
-            An Iterali story world, where workplace decisions shape what survives
-          </h2>
-          <p className="muted" style={{ margin: '0 0 14px', lineHeight: 1.55 }}>
-            Aurora is not a separate product. It is the story layer that makes decision practice more engaging. Same safe-to-fail habits. For teams, skill patterns and gaps, not individual mistake replays.
+      <section className="teams-section" aria-labelledby="play-more-title">
+        <h2 id="play-more-title" className="teams-section-title">
+          Go further when you want
+        </h2>
+        <div className="teams-how-grid">
+          <article className="landing-path teams-how-card">
+            <p className="landing-path-label">Aurora inside Iterali</p>
+            <h3>An Iterali story world</h3>
+            <p>
+              Workplace decisions shape what survives. Same safe-to-fail habits — a story layer that makes practice more engaging.
+            </p>
+            <Link to="/aurora" className="btn btn-secondary teams-btn" style={{ marginTop: 16 }}>
+              Explore the Aurora story world
+            </Link>
+          </article>
+          <article className="landing-path teams-how-card">
+            <p className="landing-path-label">Later</p>
+            <h3>Structured learning paths</h3>
+            <p>
+              Want more structure later? Build consistent skills with lessons, workplace modules and tracked progress.
+            </p>
+            <Link to="/learn" className="btn btn-secondary teams-btn" style={{ marginTop: 16 }}>
+              See structured learning paths
+            </Link>
+          </article>
+        </div>
+      </section>
+
+      <section className="teams-section" aria-labelledby="play-signin-title">
+        <div className="landing-path teams-contact-card">
+          <p className="landing-path-label">Progress</p>
+          <h2 id="play-signin-title">Sign in only if you want</h2>
+          <p className="teams-why-ask" style={{ marginBottom: 0 }}>
+            Why we ask later: sign in only if you want saved progress. Practice cases are not used to monitor you at work.
           </p>
-          <Link to="/aurora" className="btn btn-secondary" style={{ textDecoration: 'none' }}>
-            Enter Aurora
-          </Link>
         </div>
+      </section>
 
-        <p className="muted" style={{ marginTop: 20, fontSize: 14 }}>
-          Why we ask later: sign in only if you want saved progress. Practice cases are not used to monitor you at work.
-        </p>
-
-        <SiteFooter />
-      </div>
+      <SiteFooter />
       <CookieBanner />
     </div>
   )

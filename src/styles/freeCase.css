@@ -1,0 +1,132 @@
+.free-case-page {
+  min-height: 100vh;
+}
+
+.free-case-path {
+  margin: 16px 0 0;
+  font-size: 13px;
+  color: var(--muted);
+  letter-spacing: 0.02em;
+}
+
+.free-case-header {
+  padding: 12px 0 8px;
+}
+
+.free-case-header h1 {
+  font-family: Rajdhani, Inter, sans-serif;
+  font-size: clamp(28px, 4vw, 36px);
+  margin: 0 0 8px;
+}
+
+.free-case-header p {
+  margin: 0;
+  max-width: 560px;
+  line-height: 1.55;
+}
+
+.free-case-card {
+  background: #0f1621;
+  border: 1px solid rgba(207, 230, 255, 0.12);
+  border-radius: 14px;
+  padding: 20px 22px;
+  margin-top: 16px;
+  max-width: 640px;
+}
+
+.free-case-card p {
+  margin: 0 0 12px;
+  line-height: 1.6;
+  color: var(--ink);
+}
+
+.free-case-card p:last-child {
+  margin-bottom: 0;
+}
+
+.free-case-section-label {
+  font-family: Rajdhani, Inter, sans-serif;
+  font-size: 18px;
+  margin: 0 0 12px;
+}
+
+.free-case-options {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.free-case-option {
+  text-align: left;
+  padding: 14px 16px;
+  border-radius: 12px;
+  border: 1px solid rgba(207, 230, 255, 0.16);
+  background: rgba(0, 229, 255, 0.04);
+  color: var(--ink);
+  font: inherit;
+  line-height: 1.45;
+  cursor: pointer;
+}
+
+.free-case-option:hover {
+  border-color: rgba(0, 229, 255, 0.35);
+}
+
+.free-case-option.selected {
+  border-color: rgba(0, 229, 255, 0.55);
+  background: rgba(0, 229, 255, 0.1);
+}
+
+.free-case-outcome {
+  font-weight: 600;
+  margin-bottom: 10px !important;
+}
+
+.free-case-outcome.safer {
+  color: var(--ok, #3ddc97);
+}
+
+.free-case-outcome.risk {
+  color: var(--warn, #ffc107);
+}
+
+.free-case-feedback-list {
+  margin: 16px 0;
+}
+
+.free-case-feedback-list > div {
+  margin-bottom: 12px;
+}
+
+.free-case-feedback-list dt {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+  margin-bottom: 4px;
+}
+
+.free-case-feedback-list dd {
+  margin: 0;
+  line-height: 1.55;
+  color: var(--ink);
+}
+
+.free-case-privacy {
+  font-size: 13px !important;
+  color: var(--muted) !important;
+  margin-top: 8px !important;
+}
+
+.free-case-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 16px;
+  align-items: center;
+}
+
+.free-case-actions .btn-primary {
+  flex: 1 1 240px;
+  text-align: center;
+}

@@ -423,6 +423,11 @@ const Aurora = () => {
         pointerEvents: unlocked ? 'auto' : 'none',
         userSelect: unlocked ? 'auto' : 'none'
       }}>
+        {unlocked && (
+          <p className="muted" style={{ maxWidth: 720, margin: '12px auto 0', padding: '0 16px', fontSize: 14, lineHeight: 1.55 }}>
+            Aurora – an Iterali story world. Practise decisions under pressure. Review without blame. Teams see skill patterns, not individual mistake replays.
+          </p>
+        )}
         {showMission && (
           <div id="missionPanel" className="cm-surface">
             <span className="cm-badge" id="missionBadge">{data.mission?.badge || ''}</span>

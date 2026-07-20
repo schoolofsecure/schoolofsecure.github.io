@@ -230,7 +230,7 @@ export function MatchTable({ onDone, onFailure }){
       }
       used.add(matchIdx);
     }
-    setMsg('Correct! All pairings match.');
+    setMsg('Good call. All pairings match.');
     onDone && onDone();
   }
   return (

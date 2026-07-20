@@ -8,6 +8,7 @@ import RankBadgeAnimation from './components/Scoring/RankBadgeAnimation'
 import LevelCompletionSummary from './components/Scoring/LevelCompletionSummary'
 import Landing from './pages/Landing'
 import Play from './pages/Play'
+import FreeCase from './pages/FreeCase'
 import Learn from './pages/learn/Learn'
 import LearnPath from './pages/learn/LearnPath'
 import LearnLesson from './pages/learn/LearnLesson'
@@ -59,6 +60,7 @@ function AppContent() {
         <Routes>
           <Route path="/" element={<Landing />} />
           <Route path="/play" element={<Play />} />
+          <Route path="/play/case/:caseId" element={<FreeCase />} />
           <Route path="/learn" element={<Learn />} />
           <Route path="/learn/dashboard" element={<LearnDashboard />} />
           <Route path="/learn/paths/:pathId" element={<LearnPath />} />

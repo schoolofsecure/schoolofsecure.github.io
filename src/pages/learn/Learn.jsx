@@ -7,7 +7,8 @@ import '../../styles/site.css'
 import '../../styles/learn.css'
 
 export default function Learn() {
-  const { getPathProgress, completedLessons, totalLessonsAvailable } = useLearningProgress()
+  const { getPathProgress, completedLessons, totalLessonsAvailable, getRecommendedNext } = useLearningProgress()
+  const next = getRecommendedNext()
 
   return (
     <div className="site-page learn-page">
@@ -16,12 +17,26 @@ export default function Learn() {
         <header className="learn-header">
           <h1>Learn cybersecurity step by step</h1>
           <p>
-            Structured paths for complete beginners. Short lessons, practical exercises, and progress you can see. Separate from the free game.
+            Structured paths for busy people. Short lessons, practical decisions and one clear next step. Separate from the free game.
           </p>
         </header>
 
+        {next && (
+          <div className="dash-card" style={{ marginBottom: 24, maxWidth: 560 }}>
+            <p className="muted" style={{ margin: '0 0 4px' }}>Your next step</p>
+            <h2 style={{ margin: '0 0 8px', fontSize: 20 }}>{next.title}</h2>
+            <p className="muted" style={{ margin: '0 0 14px', fontSize: 14 }}>
+              {next.pathTitle}
+              {next.duration ? ` · about ${next.duration} min` : ''}
+            </p>
+            <Link to={`/learn/lessons/${next.lessonId}`} className="btn btn-primary" style={{ textDecoration: 'none' }}>
+              Practise this next
+            </Link>
+          </div>
+        )}
+
         <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', marginBottom: 28 }}>
-          <Link to="/learn/dashboard" className="btn btn-primary" style={{ textDecoration: 'none' }}>
+          <Link to="/learn/dashboard" className="btn btn-secondary" style={{ textDecoration: 'none' }}>
             My dashboard
           </Link>
           <Link to="/pricing" className="btn-secondary btn" style={{ textDecoration: 'none' }}>

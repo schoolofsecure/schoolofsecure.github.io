@@ -14,7 +14,7 @@ const navLinks = [
 function isNavActive(pathname, to) {
   if (to === '/') return pathname === '/'
   if (to === '/play') {
-    return pathname === '/play' || pathname === '/aurora' || /^\/ugy\d+/.test(pathname)
+    return pathname === '/play' || pathname.startsWith('/play/') || pathname === '/aurora' || /^\/ugy\d+/.test(pathname)
   }
   if (to === '/learn') return pathname.startsWith('/learn')
   return pathname === to || pathname.startsWith(`${to}/`)
@@ -240,12 +240,15 @@ export default function SiteNav() {
                 }}
                 style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}
               >
-                <input className="input" type="email" placeholder="Email address" value={email} onChange={(e) => setEmail(e.target.value)} />
-                <input className="input" type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
+                <p style={{ margin: 0, fontSize: '12px', color: 'var(--muted)', lineHeight: 1.5 }}>
+                  Why we ask: we use your email to save progress so you can continue later. Practice cases are not used to score or monitor you at work.
+                </p>
+                <input className="input" type="email" placeholder="Email address" value={email} onChange={(e) => setEmail(e.target.value)} aria-label="Email address" />
+                <input className="input" type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} aria-label="Password" />
                 {authMode === 'register' && (
                   <label style={{ fontSize: '12px', color: 'var(--muted)', display: 'flex', gap: '8px', alignItems: 'flex-start' }}>
                     <input type="checkbox" checked={gdprAgreedInForm} onChange={(e) => setGdprAgreedInForm(e.target.checked)} style={{ marginTop: '2px' }} />
-                    <span>I agree to data processing for the game. <Link to="/privacy">Privacy policy</Link></span>
+                    <span>I agree to minimal data processing so progress can be saved. <Link to="/privacy">Privacy policy</Link></span>
                   </label>
                 )}
                 <button type="submit" className={authMode === 'login' ? 'btn-submit' : 'btn-secondary'}>

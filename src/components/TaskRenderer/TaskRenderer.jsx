@@ -147,8 +147,8 @@ const CaesarTaskRenderer = ({ task, payload, taskStory, taskLabel, onSuccess, on
           key={task?.id || 'caesar'}
           placeholder="decoded message…"
           onCheck={handleCheck}
-          okText="Correct! Continue…"
-          errText="Not quite — try again."
+          okText="Good call. Continue when you are ready."
+          errText="Common under time pressure. Spot the cue and try again."
           onSuccess={onSuccess}
           onFailure={onFailure}
         />
@@ -176,8 +176,8 @@ const VigenereTaskRenderer = ({ task, payload, taskStory, taskLabel, onSuccess, 
           key={task?.id || 'vigenere'}
           placeholder="decoded message…"
           onCheck={handleCheck}
-          okText="Correct! Continue…"
-          errText="Not quite — try again."
+          okText="Good call. Continue when you are ready."
+          errText="Common under time pressure. Spot the cue and try again."
           onSuccess={onSuccess}
           onFailure={onFailure}
         />
@@ -281,9 +281,9 @@ const PhishingTaskRenderer = ({ task, payload, taskStory, taskLabel, onSuccess, 
         </div>
         {feedback && (
           <div className={`feedback ${feedback}`} style={{marginBottom:'12px'}}>
-            {feedback === 'ok' 
-              ? 'Correct! All suspicious elements identified.' 
-              : 'Not all selections are correct. Think about which fields are actually suspicious.'}
+            {feedback === 'ok'
+              ? 'Good call. You spotted every suspicious element.'
+              : 'Common when you rush. Look again at which fields are actually suspicious.'}
           </div>
         )}
         <div style={{display:'flex', gap:'10px', flexWrap:'wrap', alignItems:'center'}}>
@@ -382,9 +382,9 @@ const LogAnalysisTaskRenderer = ({ task, payload, taskStory, taskLabel, onSucces
         </div>
         {feedback && (
           <div className={`feedback ${feedback}`} style={{marginBottom:'12px'}}>
-            {feedback === 'ok' 
-              ? 'Correct! All suspicious log entries identified.' 
-              : 'Not all selections are correct. Think about which rows are actually suspicious.'}
+            {feedback === 'ok'
+              ? 'Good call. You spotted every suspicious log entry.'
+              : 'Common when you rush. Look again at which rows are actually suspicious.'}
           </div>
         )}
         <div style={{display:'flex', gap:'10px', flexWrap:'wrap', alignItems:'center'}}>
@@ -492,9 +492,9 @@ const IconMemoryTaskRenderer = ({ task, payload, taskStory, taskLabel, onSuccess
         </div>
         {feedback && (
           <div className={`feedback ${feedback}`} style={{marginBottom:'12px'}}>
-            {feedback === 'ok' 
-              ? 'Correct! All dangerous icons identified.' 
-              : 'Not all selections are correct. Think about which icons represent a risk.'}
+            {feedback === 'ok'
+              ? 'Good call. You spotted every dangerous icon.'
+              : 'Common when you rush. Look again at which icons represent a risk.'}
           </div>
         )}
         <div style={{display:'flex', gap:'10px', flexWrap:'wrap', alignItems:'center'}}>
@@ -600,8 +600,8 @@ const SocialEngineeringTaskRenderer = ({ task, payload, taskStory, taskLabel, on
         {feedback && feedback !== 'missing' && (
           <div className={`feedback ${feedback}`} style={{ margin: '12px 0' }}>
             {feedback === 'ok'
-              ? 'You responded appropriately in every scenario.'
-              : 'Not every response followed protocol. Rethink your steps.'}
+              ? 'Good call. You chose a safer response in every scenario.'
+              : 'Common under time pressure. Review the cue in each scenario and try the safer step.'}
           </div>
         )}
         <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', alignItems:'center' }}>
@@ -727,8 +727,8 @@ const FirewallTaskRenderer = ({ task, payload, taskStory, taskLabel, onSuccess, 
         {feedback && (
           <div className={`feedback ${feedback}`} style={{ margin: '12px 0' }}>
             {feedback === 'ok'
-              ? 'Correct rules! Traffic is allowed in the right direction.'
-              : 'Not quite. Check which services should be open and which should be blocked.'}
+              ? 'Good call. Traffic is allowed in the right direction.'
+              : 'Common under time pressure. Check which services should be open and which should be blocked.'}
           </div>
         )}
         <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', alignItems:'center' }}>
@@ -829,8 +829,8 @@ const SecurityDecisionTaskRenderer = ({ task, payload, taskStory, taskLabel, onS
         {feedback && (
           <div className={`feedback ${feedback}`} style={{ margin: '12px 0' }}>
             {feedback === 'ok'
-              ? 'Correct decisions! You documented the situation appropriately.'
-              : 'Not every decision follows protocol. Consider what evidence belongs in the report.'}
+              ? 'Good call. You documented the situation with the right evidence.'
+              : 'Common under time pressure. Consider what evidence belongs in the report.'}
           </div>
         )}
         {payload.hint && <HintDetails text={payload.hint} />}
@@ -969,8 +969,8 @@ const PasswordStrengthTaskRenderer = ({ task, payload, taskStory, taskLabel, onS
         {feedback && (
           <div className={`feedback ${feedback}`} style={{ marginBottom: '12px' }}>
             {feedback === 'ok'
-              ? 'Correct! The password assessment is right.'
-              : 'Not quite. Think through which requirements are met and which are not.'}
+              ? 'Good call. Your password assessment matches the cues.'
+              : 'Common under time pressure. Check which requirements are met and which are not.'}
           </div>
         )}
         <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', alignItems:'center' }}>
@@ -1053,8 +1053,8 @@ const MisconfigTaskRenderer = ({ task, payload, taskStory, taskLabel, onSuccess,
         {feedback && (
           <div className={`feedback ${feedback}`} style={{ marginBottom: '12px' }}>
             {feedback === 'ok'
-              ? 'Correct! All faulty lines identified.'
-              : 'Not quite. Think about which lines contain incorrect settings.'}
+              ? 'Good call. You spotted every faulty line.'
+              : 'Common under time pressure. Look again at which lines contain incorrect settings.'}
           </div>
         )}
         <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', alignItems:'center' }}>
@@ -1153,8 +1153,8 @@ const NetworkAnomalyTaskRenderer = ({ task, payload, taskStory, taskLabel, onSuc
         {feedback && (
           <div className={`feedback ${feedback}`} style={{ marginBottom: '12px' }}>
             {feedback === 'ok'
-              ? 'Correct! All anomalies identified.'
-              : 'Not quite. Think about which traffic rows represent an anomaly.'}
+              ? 'Good call. You spotted every anomaly.'
+              : 'Common under time pressure. Look again at which traffic rows look unusual.'}
           </div>
         )}
         <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', alignItems:'center' }}>
@@ -1274,8 +1274,8 @@ const EmailHeaderTaskRenderer = ({ task, payload, taskStory, taskLabel, onSucces
         {feedback && (
           <div className={`feedback ${feedback}`} style={{ marginBottom: '12px' }}>
             {feedback === 'ok'
-              ? 'Correct! All suspicious indicators identified.'
-              : 'Not quite. Think about which indicators point to a problem.'}
+              ? 'Good call. You spotted every suspicious indicator.'
+              : 'Common under time pressure. Look again at which indicators point to a problem.'}
           </div>
         )}
         <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', alignItems:'center' }}>
@@ -1368,8 +1368,8 @@ const UrlTrustTaskRenderer = ({ task, payload, taskStory, taskLabel, onSuccess, 
         {feedback && (
           <div className={`feedback ${feedback}`} style={{ marginBottom: '12px' }}>
             {feedback === 'ok'
-              ? 'Correct! All suspicious URLs identified.'
-              : 'Not quite. Think about which URLs are suspicious or fake.'}
+              ? 'Good call. You spotted every suspicious URL.'
+              : 'Common under time pressure. Look again at which URLs look suspicious or fake.'}
           </div>
         )}
         <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', alignItems:'center' }}>
@@ -1462,8 +1462,8 @@ const RiskyPermissionTaskRenderer = ({ task, payload, taskStory, taskLabel, onSu
         {feedback && (
           <div className={`feedback ${feedback}`} style={{ marginBottom: '12px' }}>
             {feedback === 'ok'
-              ? 'Correct! All dangerous permissions identified.'
-              : 'Not quite. Think about which permissions are excessively risky.'}
+              ? 'Good call. You spotted every dangerous permission.'
+              : 'Common under time pressure. Look again at which permissions are excessively risky.'}
           </div>
         )}
         <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', alignItems:'center' }}>
@@ -1520,8 +1520,8 @@ const DefaultTaskRenderer = ({ task, payload, taskStory, taskLabel, onSuccess, o
           key={task?.id || 'default'}
           placeholder="your answer…"
           onCheck={handleCheck}
-          okText="Correct! Continue…"
-          errText="Not quite — try again."
+          okText="Good call. Continue when you are ready."
+          errText="Common under time pressure. Spot the cue and try again."
           onSuccess={onSuccess}
           onFailure={onFailure}
         />

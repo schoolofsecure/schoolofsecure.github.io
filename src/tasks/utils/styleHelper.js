@@ -45,20 +45,20 @@ export const StyleHelper = {
   generateFeedback(success) {
     if (success) {
       const messages = [
-        'Clue confirmed.',
-        'Correct!',
-        'You are moving forward in the investigation.',
-        'You can take the next step.',
-        'Good direction!'
+        'Good call. You used a clear cue.',
+        'Solid decision. Carry that pause into the next step.',
+        'You are moving forward. Note what signal you trusted.',
+        'Safer step taken. Continue when you are ready.',
+        'Well spotted. That pattern will show up again.'
       ]
       return Random.choice(messages)
     } else {
       const messages = [
-        'Something is off — try again.',
-        'Watch the details — that is where the answer hides.',
-        'Not quite — give it another shot.',
-        'You are close, but that is not the answer.',
-        'Walk through the steps again.'
+        'Common under time pressure. Look again at the details.',
+        'Not there yet. Find the cue, then try the safer step.',
+        'Close. Walk through the decision once more.',
+        'That choice happens a lot when you rush. Try again without blame.',
+        'Review the signals and have another go.'
       ]
       return Random.choice(messages)
     }

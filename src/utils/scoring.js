@@ -146,10 +146,10 @@ export function calculateTaskScore({ difficulty, isCorrect, level, timeSpent = n
   
   let feedback = ''
   if (isCorrect) {
-    feedback = `Correct! +${points} points — you're closer to uncovering the hacker's trail.`
+    feedback = `Good call. +${points} points. Note the cue you used and carry it into the next step.`
   } else {
     // Minden helytelen válasz -5 pont
-    feedback = `Pay closer attention! ${points} points, but you can keep investigating.`
+    feedback = `Common under time pressure. ${points} points. Spot the cue, then try the safer step.`
   }
   
   return {
@@ -280,7 +280,7 @@ export function checkAchievements(stats) {
  * @returns {string} - Visszajelzés szövege
  */
 export function generateLevelCompletionFeedback({ totalPoints, rank, bonuses, nextLevel }) {
-  let feedback = `Congratulations! Case complete!\n\n`
+  let feedback = `Case complete. Nice work deciding under pressure.\n\n`
   feedback += `Total score: ${totalPoints} points\n`
   feedback += `Rank: ${rank.name}\n\n`
   
@@ -293,9 +293,9 @@ export function generateLevelCompletionFeedback({ totalPoints, rank, bonuses, ne
   }
   
   if (nextLevel && nextLevel <= 12) {
-    feedback += `The next clues await in case ${nextLevel}.`
+    feedback += `Next step: case ${nextLevel}.`
   } else {
-    feedback += `You've reached the highest rank!`
+    feedback += `You have reached the highest rank.`
   }
   
   return feedback

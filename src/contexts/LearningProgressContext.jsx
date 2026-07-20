@@ -68,8 +68,15 @@ export function LearningProgressProvider({ children }) {
   const getRecommendedNext = useCallback(() => {
     for (const path of learningPaths) {
       for (const id of path.lessonIds) {
-        if (lessons[id] && !state.completedLessons.includes(id)) {
-          return { lessonId: id, pathId: path.id, title: lessons[id].title }
+        const lesson = lessons[id]
+        if (lesson && !state.completedLessons.includes(id)) {
+          return {
+            lessonId: id,
+            pathId: path.id,
+            title: lesson.title,
+            duration: lesson.duration,
+            pathTitle: path.title,
+          }
         }
       }
     }

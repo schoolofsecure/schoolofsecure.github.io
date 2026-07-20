@@ -21,7 +21,7 @@ export default function CookieBanner() {
   return (
     <div id="cookieBanner" className="cookie-banner" role="region" aria-label="Cookie notice">
       <div className="cookie-notice">
-        <p className="cookie-text">We use a few cookies so login and saved progress work.</p>
+        <p className="cookie-text">Why we ask: a few cookies keep you signed in and save progress. Nothing more.</p>
       </div>
       <div className="cookie-banner-action">
         <button type="button" className="cookie-accept" onClick={accept}>Accept</button>

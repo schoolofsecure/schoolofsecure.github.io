@@ -87,9 +87,9 @@ export default function LearnLesson() {
 
           {lesson.nextLessonId && lessons[lesson.nextLessonId] && (
             <div style={{ marginTop: 24 }}>
-              <p className="muted" style={{ marginBottom: 8 }}>Recommended next</p>
+              <p className="muted" style={{ marginBottom: 8 }}>Your next step</p>
               <Link to={`/learn/lessons/${lesson.nextLessonId}`} className="btn btn-primary" style={{ textDecoration: 'none' }}>
-                {lessons[lesson.nextLessonId].title}
+                Practise: {lessons[lesson.nextLessonId].title}
               </Link>
             </div>
           )}

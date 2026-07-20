@@ -6,15 +6,15 @@ import CookieBanner from '../components/CookieBanner'
 import '../index.css'
 
 const individualPoints = [
-  <>Practice with realistic emails, logins and decisions.</>,
-  <>Free game first, then <strong className="landing-term">structured learning paths</strong> when you want more.</>,
-  <>Track progress and focus on what you need next.</>,
+  <>Start with one realistic case: emails, logins and decisions under pressure.</>,
+  <>Review without blame. See the cue you used, then the safer next step.</>,
+  <>We show what to practise next. Begin with the free game, then move into <strong className="landing-term">structured learning paths</strong>.</>,
 ]
 
 const teamPoints = [
-  <>Realistic practice for phishing, social engineering and unsafe behaviour.</>,
-  <>Workplace focused modules and <strong className="landing-term">structured learning paths</strong> for everyday decisions.</>,
-  <>Track team progress and spot knowledge gaps at scale.</>,
+  <>Practise the decisions people face at work: phishing, social engineering and unsafe shortcuts.</>,
+  <>Safe-to-fail modules and <strong className="landing-term">structured learning paths</strong> with one clear next step for each person.</>,
+  <>Leaders see skill patterns and gaps, not individual mistake replays.</>,
 ]
 
 const Landing = () => {
@@ -24,9 +24,9 @@ const Landing = () => {
 
       <section className="landing-hero" aria-label="Introduction">
         <div className="landing-hero-copy">
-          <h1>Learn cybersecurity through realistic challenges</h1>
+          <h1>Practise the decision you would make at work before it happens for real</h1>
           <p className="landing-hero-lead">
-            Build practical skills from your first case to real confidence. Iterali helps individuals and teams learn through realistic scenarios and <strong className="landing-term">structured learning paths</strong>.
+            Decide under pressure, review without blame and get one clear next step. Iterali helps individuals and teams build habits through realistic scenarios and <strong className="landing-term">structured learning paths</strong>.
           </p>
           <div className="landing-hero-ctas">
             <Link to="/play" className="btn btn-primary landing-hero-btn">Play Free</Link>
@@ -52,8 +52,8 @@ const Landing = () => {
 
       <section className="landing-paths" aria-label="Choose your path">
         <article className="landing-path">
-          <p className="landing-path-label">For individuals</p>
-          <h2>Build practical skills at your own pace</h2>
+          <p className="landing-path-label">For people who learn by deciding</p>
+          <h2>Start with one case. We’ll show what to practise next</h2>
           <ul className="landing-path-list">
             {individualPoints.map((point, i) => (
               <li key={i}>{point}</li>
@@ -66,8 +66,8 @@ const Landing = () => {
         </article>
 
         <article className="landing-path">
-          <p className="landing-path-label">For teams</p>
-          <h2>Build security awareness your team will actually use</h2>
+          <p className="landing-path-label">For teams who practise safely</p>
+          <h2>Skill patterns for leaders and safe-to-fail practice for everyone</h2>
           <ul className="landing-path-list">
             {teamPoints.map((point, i) => (
               <li key={i}>{point}</li>

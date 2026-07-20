@@ -14,8 +14,8 @@ export const normalizeText = (s) => {
 const ChallengeInput = ({
   placeholder = 'your answer…',
   onCheck,
-  okText = 'Correct!',
-  errText = 'Not quite — try again.',
+  okText = 'Good call. Continue when you are ready.',
+  errText = 'Common under time pressure. Spot the cue and try again.',
   onSuccess,
   onFailure
 }) => {

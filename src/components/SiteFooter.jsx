@@ -25,7 +25,7 @@ export default function SiteFooter({ className = 'site-footer' }) {
           </svg>
         </a>
       </nav>
-      <p className="site-footer-trust">Security &amp; privacy first</p>
+      <p className="site-footer-trust">Minimal data, clear explanations and privacy first.</p>
     </footer>
   )
 }

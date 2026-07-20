@@ -189,7 +189,7 @@ const UgyView = () => {
     return (completedCount / config.totalTasks) * 100;
   }, [completedCount, config.totalTasks]);
 
-  const isSuccessFeedback = taskFeedback.includes('Correct') || taskFeedback.includes('Helyes') || taskFeedback.includes('+');
+  const isSuccessFeedback = taskFeedback.includes('Correct') || taskFeedback.includes('Good call') || taskFeedback.includes('Helyes') || taskFeedback.includes('+');
 
   // Mentés Firebase-be (csak bejelentkezés után)
   useEffect(() => {
@@ -609,8 +609,8 @@ const UgyView = () => {
                         }
                         return ok;
                       }}
-                      okText={currentStaticTask.okText || "Correct! Continue…"}
-                      errText={currentStaticTask.errText || "Not quite — try again."}
+                      okText={currentStaticTask.okText || "Good call. Continue when you are ready."}
+                      errText={currentStaticTask.errText || "Common under time pressure. Spot the cue and try again."}
                       onFailure={() => handleTaskFailure(currentStaticTask.difficulty)}
                     />
                     {config.images && config.images[step] && (

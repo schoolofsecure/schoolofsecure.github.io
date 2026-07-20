@@ -103,19 +103,19 @@ export default function GameSessionResults({
           }}
         >
           <h3 style={{ margin: '0 0 8px', fontSize: 17, fontFamily: 'Rajdhani, Inter, sans-serif' }}>
-            Ready to Learn More?
+            Your next step
           </h3>
           <p className="muted" style={{ margin: 0, fontSize: 14, lineHeight: 1.55 }}>
-            Your results show which cybersecurity topics you already understand and where you could improve. Continue with short, structured lessons designed for complete beginners.
+            Decide under pressure here, then build the habit with one short lesson. We show what to practise next.
           </p>
         </div>
 
         <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
-          <Link to="/learn" className="btn btn-primary" style={{ textDecoration: 'none', flex: 1, justifyContent: 'center' }} onClick={onClose}>
-            Explore Learning
+          <Link to="/learn/dashboard" className="btn btn-primary" style={{ textDecoration: 'none', flex: 1, justifyContent: 'center' }} onClick={onClose}>
+            See my next step
           </Link>
           <Link to="/aurora" className="btn-secondary btn" style={{ textDecoration: 'none', flex: 1, justifyContent: 'center' }} onClick={onClose}>
-            Play Again
+            Play again
           </Link>
         </div>
         <button type="button" className="btn-ghost" style={{ width: '100%', marginTop: 10 }} onClick={onClose}>

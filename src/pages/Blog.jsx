@@ -21,9 +21,9 @@ export default function Blog() {
         <SiteNav />
         <header style={{ padding: '24px 0' }}>
           <p className="landing-path-label" style={{ marginBottom: 8 }}>Blog</p>
-          <h1 style={{ fontFamily: 'Rajdhani, Inter, sans-serif', margin: '0 0 8px' }}>Resources &amp; articles</h1>
+          <h1 style={{ fontFamily: 'Rajdhani, Inter, sans-serif', margin: '0 0 8px' }}>Short notes for busy people</h1>
           <p className="section-lead" style={{ margin: 0, maxWidth: 640 }}>
-            Practical notes on phishing, safe-to-fail practice, and human-centered security — written for learners and busy teams.
+            Practical articles on deciding under pressure, reviewing without blame and taking one safer next step. Written for learners and teams.
           </p>
         </header>
 

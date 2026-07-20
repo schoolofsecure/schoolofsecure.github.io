@@ -132,8 +132,8 @@ Best regards, S.</p>
         const v = String(val||'').replace(/\D/g,'');
         return v === '3871';
       },
-      okText: "Correct! Continue…",
-      errText: "Not quite - watch the numbers hidden in words and their order.",
+      okText: "Good call. Continue when you are ready.",
+      errText: "Common under time pressure. Watch the numbers hidden in words and their order.",
       hint: (
         <p className="muted" style={{margin:'8px 0 0'}}>
           Watch the letter's subtle hints - certain words hide the key signs behind them.
@@ -177,8 +177,8 @@ Best regards, S.</p>
         const v = String(val||'').replace(/\D/g,'');
         return v === '3542';
       },
-      okText: "Correct! Continue…",
-      errText: "Not quite - find the words first, then turn their first letters into numbers.",
+      okText: "Good call. Continue when you are ready.",
+      errText: "Common under time pressure. Find the words first, then turn their first letters into numbers.",
       hint: (
         <p className="muted" style={{margin:'8px 0 0'}}>
           Each word's first letter hides a number. Watch for the hidden keywords in the grid to reach the next code.

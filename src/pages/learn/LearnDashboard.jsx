@@ -38,9 +38,37 @@ export default function LearnDashboard() {
       <div className="container">
         <SiteNav />
         <header className="learn-header">
-          <h1>Your learning dashboard</h1>
-          <p>Track progress, see what to study next, and build steady security habits.</p>
+          <h1>Your next step</h1>
+          <p>One clear practise case at a time. Review what you decided, then move on.</p>
         </header>
+
+        {next ? (
+          <div className="dash-card" style={{ marginBottom: 24, maxWidth: 560 }}>
+            <p className="muted" style={{ margin: '0 0 4px' }}>{next.pathTitle}</p>
+            <h2 style={{ margin: '0 0 8px', fontSize: 22 }}>{next.title}</h2>
+            <p className="muted" style={{ margin: '0 0 16px', fontSize: 14 }}>
+              {next.duration ? `About ${next.duration} min` : 'Short lesson'} · decide, review, continue
+            </p>
+            <Link to={`/learn/lessons/${next.lessonId}`} className="btn btn-primary" style={{ textDecoration: 'none' }}>
+              Practise this next
+            </Link>
+          </div>
+        ) : (
+          <div className="dash-card" style={{ marginBottom: 24, maxWidth: 560 }}>
+            <h2 style={{ margin: '0 0 8px', fontSize: 22 }}>You have finished the starter lessons</h2>
+            <p className="muted" style={{ margin: '0 0 16px' }}>
+              Keep the habit sharp in the free game, or revisit a path.
+            </p>
+            <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
+              <Link to="/play" className="btn btn-primary" style={{ textDecoration: 'none' }}>
+                Play free
+              </Link>
+              <Link to="/learn" className="btn btn-secondary" style={{ textDecoration: 'none' }}>
+                Browse paths
+              </Link>
+            </div>
+          </div>
+        )}
 
         <div className="dashboard-grid">
           <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
@@ -56,19 +84,9 @@ export default function LearnDashboard() {
             </div>
 
             <div className="dash-card">
-              <h3 style={{ margin: '0 0 12px', fontSize: 17 }}>Recommended Practice</h3>
+              <h3 style={{ margin: '0 0 12px', fontSize: 17 }}>Practice note</h3>
               <p style={{ margin: 0, lineHeight: 1.6, color: 'var(--ink)' }}>{getRecommendedPractice()}</p>
             </div>
-
-            {next && (
-              <div className="dash-card">
-                <h3 style={{ margin: '0 0 8px', fontSize: 17 }}>Recommended next lesson</h3>
-                <p className="muted" style={{ margin: '0 0 12px' }}>{next.title}</p>
-                <Link to={`/learn/lessons/${next.lessonId}`} className="btn btn-primary" style={{ textDecoration: 'none' }}>
-                  Continue learning
-                </Link>
-              </div>
-            )}
           </div>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>

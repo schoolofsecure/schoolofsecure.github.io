@@ -10,9 +10,18 @@ import '../styles/site.css'
 const FORMSUBMIT_EMAIL = 'erikapappkovacs@gmail.com'
 
 const teamPoints = [
-  <>Realistic practice for phishing, social engineering and unsafe behaviour.</>,
-  <>Workplace focused modules and <strong className="landing-term">structured learning paths</strong> for everyday decisions.</>,
-  <>Track team progress and spot knowledge gaps at scale.</>,
+  {
+    title: 'Real workplace decisions',
+    text: 'Practise phishing, social engineering and unsafe shortcuts as they show up at work.',
+  },
+  {
+    title: 'Safe-to-fail paths',
+    text: 'Structured learning with one clear next step for each person. Mistakes stay in practice.',
+  },
+  {
+    title: 'Patterns for leaders',
+    text: 'See skill patterns and gaps across the team. Not individual mistake replays.',
+  },
 ]
 
 function scrollToContact() {
@@ -81,28 +90,84 @@ export default function ForTeams() {
   }, [location.hash, location.pathname])
 
   return (
-    <div className="site-page">
-      <div className="container">
-        <SiteNav />
-        <header className="teams-hero">
-          <p className="landing-path-label">For teams</p>
-          <h1>Build security awareness your team will actually use</h1>
-          <p className="section-lead">
-            Iterali helps employees recognise real risks through practical scenarios, structured learning and workplace focused modules. Less checkbox training. More confidence in everyday decisions.
+    <div className="container teams-page">
+      <SiteNav />
+
+      <header className="teams-hero">
+        <div className="teams-hero-copy">
+          <p className="landing-path-label">For teams who practise safely</p>
+          <h1>Skill patterns for leaders. Safe-to-fail practice for everyone.</h1>
+          <p className="teams-hero-lead">
+            Practical scenarios and structured paths for everyday decisions. Less checkbox training. More confidence at work.
           </p>
-        </header>
+          <div className="teams-hero-ctas">
+            <a
+              href="#contact"
+              className="btn btn-primary teams-btn"
+              onClick={(e) => {
+                e.preventDefault()
+                scrollToContact()
+              }}
+            >
+              Request team access
+            </a>
+            <Link to="/play" className="btn btn-secondary teams-btn">
+              Try the free game first
+            </Link>
+          </div>
+        </div>
+        <aside className="teams-hero-aside" aria-hidden="true">
+          <div className="teams-aside-card">
+            <p className="teams-aside-label">Leaders see</p>
+            <p className="teams-aside-stat">Skill patterns</p>
+            <p className="teams-aside-note">Gaps by topic · not who clicked what</p>
+            <div className="teams-aside-bars">
+              <span style={{ width: '78%' }} />
+              <span style={{ width: '54%' }} />
+              <span style={{ width: '36%' }} />
+            </div>
+          </div>
+        </aside>
+      </header>
 
-        <section className="section-block alt">
-          <ul className="landing-path-list teams-list">
-            {teamPoints.map((point, i) => (
-              <li key={i}>{point}</li>
-            ))}
-          </ul>
-        </section>
+      <section className="teams-section" aria-labelledby="teams-benefits-title">
+        <h2 id="teams-benefits-title" className="teams-section-title">What teams get</h2>
+        <div className="teams-benefit-grid">
+          {teamPoints.map((point) => (
+            <article key={point.title} className="teams-benefit">
+              <h3>{point.title}</h3>
+              <p>{point.text}</p>
+            </article>
+          ))}
+        </div>
+      </section>
 
-        <section id="contact" className="section-block teams-contact">
-          <h2 className="teams-contact-title">Request team access</h2>
-          <p className="section-lead">Tell us about your team and we will get back to you.</p>
+      <section className="teams-section" aria-labelledby="teams-how-title">
+        <h2 id="teams-how-title" className="teams-section-title">How it works</h2>
+        <div className="teams-how-grid">
+          <article className="landing-path teams-how-card">
+            <p className="landing-path-label">Employees</p>
+            <h3>Decide, review, next</h3>
+            <p>Practise under pressure, review without blame, then take one clear next step.</p>
+          </article>
+          <article className="landing-path teams-how-card">
+            <p className="landing-path-label">Leaders</p>
+            <h3>Patterns, not blame</h3>
+            <p>See where the team is strong and where gaps sit. Minimal data. Clear explanations.</p>
+          </article>
+        </div>
+      </section>
+
+      <section id="contact" className="teams-section teams-contact" aria-labelledby="teams-contact-title">
+        <div className="landing-path teams-contact-card">
+          <p className="landing-path-label">Get started</p>
+          <h2 id="teams-contact-title">Request team access</h2>
+          <p className="teams-contact-lead">
+            Tell us about your team. We will reply with how Iterali fits your size and goals.
+          </p>
+          <p className="teams-why-ask">
+            Why we ask: name, work email and company so we can reply. We do not use this form to run phishing tests on your staff.
+          </p>
 
           {submitted ? (
             <p className="teams-contact-success">Thanks. We have received your request and will be in touch soon.</p>
@@ -110,15 +175,15 @@ export default function ForTeams() {
             <form className="teams-contact-form" onSubmit={handleSubmit}>
               <label>
                 Name
-                <input className="input" type="text" name="name" required value={form.name} onChange={handleChange} disabled={sending} />
+                <input className="input" type="text" name="name" required value={form.name} onChange={handleChange} disabled={sending} autoComplete="name" />
               </label>
               <label>
                 Work email
-                <input className="input" type="email" name="email" required value={form.email} onChange={handleChange} disabled={sending} />
+                <input className="input" type="email" name="email" required value={form.email} onChange={handleChange} disabled={sending} autoComplete="email" />
               </label>
               <label>
                 Company
-                <input className="input" type="text" name="company" required value={form.company} onChange={handleChange} disabled={sending} />
+                <input className="input" type="text" name="company" required value={form.company} onChange={handleChange} disabled={sending} autoComplete="organization" />
               </label>
               <label>
                 Team size
@@ -135,17 +200,25 @@ export default function ForTeams() {
                 <textarea className="input teams-contact-textarea" name="message" rows={4} value={form.message} onChange={handleChange} disabled={sending} />
               </label>
               {submitError && <p className="error teams-contact-full">{submitError}</p>}
-              <button type="submit" className="btn btn-primary" disabled={sending}>
-                {sending ? 'Sending…' : 'Send request'}
-              </button>
+              <div className="teams-contact-full teams-form-actions">
+                <button type="submit" className="btn btn-primary teams-btn" disabled={sending}>
+                  {sending ? 'Sending…' : 'Send request'}
+                </button>
+              </div>
             </form>
           )}
 
-          <Link to="/play" className="btn btn-ghost teams-cta-secondary">Or try the free game first</Link>
-        </section>
+          <div className="teams-secondary-cta">
+            <p className="teams-secondary-label">Prefer to feel the product first?</p>
+            <Link to="/play" className="btn btn-secondary teams-btn">
+              Try the free game first
+            </Link>
+            <p className="teams-secondary-note">Short free case. No account required.</p>
+          </div>
+        </div>
+      </section>
 
-        <SiteFooter />
-      </div>
+      <SiteFooter />
       <CookieBanner />
     </div>
   )

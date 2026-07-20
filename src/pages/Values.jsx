@@ -13,9 +13,9 @@ export default function Values() {
         <SiteNav />
         <header style={{ padding: '24px 0' }}>
           <p className="landing-path-label" style={{ marginBottom: 8 }}>Our values</p>
-          <h1 style={{ fontFamily: 'Rajdhani, Inter, sans-serif', margin: '0 0 8px' }}>What Iterali stands for</h1>
+          <h1 style={{ fontFamily: 'Rajdhani, Inter, sans-serif', margin: '0 0 8px' }}>Decide. Review. Next.</h1>
           <p className="section-lead" style={{ margin: 0, maxWidth: 640 }}>
-            Realistic practice, human-centered security, and privacy-first product choices — so people and teams can grow skills without fear of failing in public.
+            Iterali is built so people and teams can practise real decisions without fear of failing in public. Realistic cases, clear next steps and privacy you can see in the product.
           </p>
         </header>
 

@@ -95,6 +95,9 @@ const Profile = () => {
               <strong style={{ color: 'var(--muted)', fontSize: '13px' }}>Email address</strong>
             </div>
             <div style={{ fontSize: '16px', color: '#cfe6ff' }}>{user.email}</div>
+            <p style={{ margin: '8px 0 0', fontSize: '12px', color: 'var(--muted)', lineHeight: 1.5 }}>
+              Why we keep this: so your progress stays with your account. We do not use practice results to monitor you at work.
+            </p>
             {!user.emailVerified && (
               <div style={{ marginTop: '8px', padding: '8px', background: 'rgba(255,193,7,0.1)', border: '1px solid rgba(255,193,7,0.3)', borderRadius: '6px', fontSize: '13px', color: '#ffc107' }}>
                 ⚠️ Your email address is not verified yet

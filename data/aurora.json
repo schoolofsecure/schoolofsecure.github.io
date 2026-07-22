@@ -1,40 +1,40 @@
 {
   "gate": {
-    "title": "Sign in required",
-    "desc": "",
+    "title": "Sign in to enter Aurora",
+    "desc": "Aurora is Iterali’s story world. Practise real decisions under pressure. Safe-to-fail, not a test score on you.",
     "placeholder": "Access key",
-    "hint": "",
+    "hint": "Why we ask: sign in saves progress. Practice is not used to monitor you at work.",
     "pass": "cryptography"
   },
   "intro": {
-    "badge": "Beginner level",
-    "title": "Mission briefing",
-    "lead": "Secure: This is the entry level. A short, question-based warm-up so you're ready to follow the trail on the next stage.",
-    "chips": ["basics", "best practices", "OSINT", "Wi‑Fi security", "backups"],
-    "start": "Start the game"
+    "badge": "Iterali story world",
+    "title": "Welcome to Aurora",
+    "lead": "A narrative investigation where workplace-style decisions shape what survives. Less checkbox training. More confidence under pressure.",
+    "chips": ["decisions under pressure", "safe-to-fail", "skill patterns", "review without blame"],
+    "start": "Enter Aurora"
   },
   "mission": {
     "badge": "Mission 1",
     "title": "Entry protocol",
     "narr1": "The agent terminal comes online. Logs scroll in the background; a faint neon line pulses in the corner of the screen.",
-    "narr2": "Secure only writes: \"First step: prove you're paying attention to the details.\"",
+    "narr2": "Secure only writes: \"First step: prove you're paying attention to the details.\" In Aurora, the details you notice are the same cues that matter at work.",
     "leftTitle": "Protocol terminal",
-    "puzzleHTML": "A short code snippet flashes on screen:<br /><code id=\"entryCode\" class=\"neon-flicker\" style=\"background:#0b121c; border:1px solid rgba(207,230,255,.12); padding:2px 6px; border-radius:6px;\">ACCCESS‑LEVEL: NOVICE_01</code><br />Spot the mistake, then enter the correct verification word (letters, numbers, and hyphens only).",
+    "puzzleHTML": "A short code snippet flashes on screen:<br /><code id=\"entryCode\" class=\"neon-flicker\" style=\"background:#0b121c; border:1px solid rgba(207,230,255,.12); padding:2px 6px; border-radius:6px;\">ACCCESS‑LEVEL: NOVICE_01</code><br />Spot the mistake, then enter the correct verification word (letters, numbers and hyphens only).",
     "statusReady": "[status] READY — awaiting input…",
     "rightTitle": "Answer",
     "inputPlaceholder": "verification word…",
     "hintTitle": "Open hint",
-    "hintText": "Look closely: one letter appears too many times, and not every character is allowed. Use only letters, numbers, and hyphens.",
+    "hintText": "Look closely: one letter appears too many times, and not every character is allowed. Use only letters, numbers and hyphens.",
     "hintChips": ["ACCESS-LEVEL", "NOVICE-01", "ENTRY"],
     "expected": "ACCESS-LEVEL-NOVICE-01",
     "statusOk": "[status] ACCESS GRANTED — entry protocol complete.",
     "statusErrEmpty": "[status] ERROR — empty input.",
-    "statusErrChars": "[status] ERROR — only letters, numbers, and hyphens allowed.",
+    "statusErrChars": "[status] ERROR — only letters, numbers and hyphens allowed.",
     "statusErrWrong": "[status] ACCESS DENIED — check the spelling of \"ACCESS\" and the hyphens."
   },
   "levels": {
     "title": "Choose a case",
-    "desc": "",
+    "desc": "Each Aurora case is safe-to-fail practice inside the story. For teams, Iterali surfaces skill patterns and gaps, not individual mistake replays.",
     "cards": [
       { "n": 1, "title": "The Encrypted Data Packet", "img": "/images/1.jpg", "href": "/ugy1", "locked": false },
       { "n": 2, "title": "The Forged Archive", "img": "/images/2.jpg", "href": "#", "locked": true },

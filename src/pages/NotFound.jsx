@@ -1,7 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import SiteNav from '../components/SiteNav'
-import '../index.css'
 
 const NotFound = () => {
   return (

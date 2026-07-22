@@ -12,10 +12,6 @@
 }
 
 /* Legacy aliases — SiteNav uses .site-header in index.css */
-.site-nav-links,
-.site-nav-actions {
-  display: none;
-}
 
 .btn.btn-sm {
   padding: 8px 14px;
@@ -179,10 +175,8 @@
   gap: 16px;
 }
 
-.play-benefit-grid {
-  display: grid;
+.teams-benefit-grid--2col {
   grid-template-columns: repeat(2, 1fr);
-  gap: 16px;
 }
 
 .teams-benefit {
@@ -219,11 +213,27 @@
   font-weight: 600;
 }
 
-.teams-how-card > p:last-child {
+.teams-how-card > p:last-of-type {
   margin: 0;
   color: var(--muted);
   font-size: 15px;
   line-height: 1.55;
+}
+
+.teams-how-card-btn {
+  margin-top: 16px;
+}
+
+.teams-aside-note--flush {
+  margin-bottom: 0;
+}
+
+.teams-aside-bars--spaced {
+  margin-top: 16px;
+}
+
+.teams-why-ask--flush {
+  margin-bottom: 0;
 }
 
 .teams-contact {
@@ -333,11 +343,8 @@
     max-width: 420px;
   }
 
-  .teams-benefit-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .play-benefit-grid {
+  .teams-benefit-grid,
+  .teams-benefit-grid--2col {
     grid-template-columns: 1fr;
   }
 
@@ -361,27 +368,6 @@
   }
 }
 
-.hero-home {
-  display: grid;
-  grid-template-columns: 1.1fr 0.9fr;
-  gap: 20px;
-  align-items: center;
-  padding: 16px 0 12px;
-}
-
-.hero-home h1 {
-  font-family: Rajdhani, Inter, sans-serif;
-  font-size: clamp(28px, 4vw, 40px);
-  line-height: 1.1;
-  margin: 0 0 10px;
-}
-
-.hero-support {
-  color: var(--muted);
-  font-size: 14px;
-  margin-top: 10px;
-}
-
 .feature-list {
   list-style: none;
   padding: 0;
@@ -403,40 +389,6 @@
   left: 0;
   color: var(--accent);
   font-weight: 700;
-}
-
-.steps-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 12px;
-  margin-top: 14px;
-}
-
-.step-card {
-  background: #0f1621;
-  border: 1px solid rgba(207, 230, 255, 0.1);
-  border-radius: 12px;
-  padding: 14px;
-}
-
-.step-num {
-  font-family: Rajdhani, Inter, sans-serif;
-  font-size: 13px;
-  font-weight: 700;
-  color: var(--neon);
-  margin-bottom: 8px;
-}
-
-.badge-free {
-  display: inline-block;
-  background: rgba(51, 255, 153, 0.12);
-  color: var(--ok);
-  border: 1px solid rgba(51, 255, 153, 0.35);
-  border-radius: 999px;
-  padding: 4px 12px;
-  font-size: 12px;
-  font-weight: 700;
-  margin-bottom: 12px;
 }
 
 .pricing-grid {
@@ -487,6 +439,36 @@
   color: var(--muted);
 }
 
+.price-card h2 {
+  margin: 0;
+  font-family: Rajdhani, Inter, sans-serif;
+}
+
+.price-card-cta {
+  text-decoration: none;
+  margin-top: auto;
+}
+
+.page-header {
+  padding: 24px 0;
+}
+
+.page-header h1 {
+  font-family: Rajdhani, Inter, sans-serif;
+  margin: 0;
+}
+
+.text-accent {
+  color: var(--accent);
+}
+
+.pricing-disclaimer {
+  margin-top: 28px;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--muted);
+}
+
 .price-upgrade-hint {
   margin: 20px 0 0;
   font-size: 14px;
@@ -510,18 +492,7 @@
 }
 
 @media (max-width: 900px) {
-  .hero-home {
-    grid-template-columns: 1fr;
-  }
-  .steps-grid {
-    grid-template-columns: 1fr;
-  }
   .pricing-grid {
     grid-template-columns: 1fr;
-  }
-  .site-nav-links {
-    width: 100%;
-    margin-left: 0;
-    order: 3;
   }
 }

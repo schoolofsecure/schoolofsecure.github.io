@@ -3,7 +3,6 @@ import { Link, useLocation } from 'react-router-dom'
 import SiteNav from '../components/SiteNav'
 import SiteFooter from '../components/SiteFooter'
 import CookieBanner from '../components/CookieBanner'
-import '../index.css'
 import '../styles/site.css'
 
 /** FormSubmit — already activated for this inbox */

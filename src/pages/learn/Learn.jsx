@@ -3,15 +3,35 @@ import { Link } from 'react-router-dom'
 import SiteNav from '../../components/SiteNav'
 import SiteFooter from '../../components/SiteFooter'
 import CookieBanner from '../../components/CookieBanner'
+import PromoCard from '../../components/PromoCard'
 import { learningPaths } from '../../data/learningContent'
 import { useLearningProgress } from '../../contexts/LearningProgressContext'
-import '../../index.css'
 import '../../styles/site.css'
 import '../../styles/learn.css'
+
+const learnPromos = [
+  {
+    label: 'Plans',
+    title: 'View pricing',
+    text: 'See Free and Iterali Learning options. Upgrade when you want tracked progress.',
+    to: '/pricing',
+    linkLabel: 'View plans',
+  },
+  {
+    label: 'Free game',
+    title: 'Practise one case first',
+    text: 'Prefer a short workplace decision with no account? Start with the free case.',
+    to: '/play',
+    linkLabel: 'Try the free game',
+  },
+]
 
 export default function Learn() {
   const { getPathProgress, completedLessons, totalLessonsAvailable, getRecommendedNext } = useLearningProgress()
   const next = getRecommendedNext()
+  const progressPct = totalLessonsAvailable
+    ? Math.round((completedLessons.length / totalLessonsAvailable) * 100)
+    : 0
 
   return (
     <div className="container teams-page">
@@ -57,24 +77,18 @@ export default function Learn() {
                 <p className="teams-aside-note">Pick a path below and take one clear next step.</p>
               </>
             )}
-            <p className="teams-aside-note" style={{ marginBottom: 0 }}>
+            <p className="teams-aside-note teams-aside-note--flush">
               {completedLessons.length} of {totalLessonsAvailable} starter lessons completed
             </p>
-            <div className="teams-aside-bars" style={{ marginTop: 16 }}>
-              <span
-                style={{
-                  width: `${totalLessonsAvailable ? Math.round((completedLessons.length / totalLessonsAvailable) * 100) : 0}%`,
-                }}
-              />
+            <div className="teams-aside-bars teams-aside-bars--spaced">
+              <span style={{ width: `${progressPct}%` }} />
             </div>
           </div>
         </aside>
       </header>
 
       <section className="teams-section" aria-labelledby="learn-paths-title">
-        <h2 id="learn-paths-title" className="teams-section-title">
-          Learning paths
-        </h2>
+        <h2 id="learn-paths-title" className="teams-section-title">Learning paths</h2>
         <div className="path-grid">
           {learningPaths.map((path) => (
             <Link key={path.id} to={`/learn/paths/${path.id}`} className="path-card">
@@ -90,26 +104,11 @@ export default function Learn() {
       </section>
 
       <section className="teams-section" aria-labelledby="learn-more-title">
-        <h2 id="learn-more-title" className="teams-section-title">
-          Also available
-        </h2>
+        <h2 id="learn-more-title" className="teams-section-title">Also available</h2>
         <div className="teams-how-grid">
-          <article className="landing-path teams-how-card">
-            <p className="landing-path-label">Plans</p>
-            <h3>View pricing</h3>
-            <p>See Free and Iterali Learning options. Upgrade when you want tracked progress.</p>
-            <Link to="/pricing" className="btn btn-secondary teams-btn" style={{ marginTop: 16 }}>
-              View plans
-            </Link>
-          </article>
-          <article className="landing-path teams-how-card">
-            <p className="landing-path-label">Free game</p>
-            <h3>Practise one case first</h3>
-            <p>Prefer a short workplace decision with no account? Start with the free case.</p>
-            <Link to="/play" className="btn btn-secondary teams-btn" style={{ marginTop: 16 }}>
-              Try the free game
-            </Link>
-          </article>
+          {learnPromos.map((card) => (
+            <PromoCard key={card.title} {...card} />
+          ))}
         </div>
       </section>
 

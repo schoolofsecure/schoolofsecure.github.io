@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom'
 import SiteNav from '../components/SiteNav'
 import SiteFooter from '../components/SiteFooter'
 import CookieBanner from '../components/CookieBanner'
-import '../index.css'
 
 const individualPoints = [
   <>Start with one realistic case: emails, logins and decisions under pressure.</>,

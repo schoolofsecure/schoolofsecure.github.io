@@ -5,7 +5,6 @@ import { sanitizeErrorMessage } from '../utils/sanitize'
 import { ugyConfigs } from './ugyConfigs.jsx'
 import SiteNav from '../components/SiteNav'
 import { logger } from '../utils/logger'
-import '../index.css'
 import '../styles/aurora.css'
 
 const Aurora = () => {

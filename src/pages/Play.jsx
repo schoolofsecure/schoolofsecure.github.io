@@ -3,26 +3,31 @@ import { Link } from 'react-router-dom'
 import SiteNav from '../components/SiteNav'
 import SiteFooter from '../components/SiteFooter'
 import CookieBanner from '../components/CookieBanner'
+import PromoCard from '../components/PromoCard'
 import { freeLoginPath, getFirstFreeCaseId } from '../data/freeCases'
-import '../index.css'
 import '../styles/site.css'
 
 const playBenefits = [
+  { title: 'Safe to fail', text: 'Safe-to-fail practice, not a test score on you.' },
+  { title: 'Everyday decisions', text: 'Everyday decisions: emails, logins and shortcuts.' },
+  { title: 'Clear feedback', text: 'Clear feedback on the cue you used.' },
+  { title: 'One next step', text: 'One recommended next step after each case.' },
+]
+
+const playPromos = [
   {
-    title: 'Safe to fail',
-    text: 'Safe-to-fail practice, not a test score on you.',
+    label: 'Aurora inside Iterali',
+    title: 'An Iterali story world',
+    text: 'Workplace decisions shape what survives. Same safe-to-fail habits — a story layer that makes practice more engaging.',
+    to: '/aurora',
+    linkLabel: 'Explore the Aurora story world',
   },
   {
-    title: 'Everyday decisions',
-    text: 'Everyday decisions: emails, logins and shortcuts.',
-  },
-  {
-    title: 'Clear feedback',
-    text: 'Clear feedback on the cue you used.',
-  },
-  {
-    title: 'One next step',
-    text: 'One recommended next step after each case.',
+    label: 'Later',
+    title: 'Structured learning paths',
+    text: 'Want more structure later? Build consistent skills with lessons, workplace modules and tracked progress.',
+    to: '/learn',
+    linkLabel: 'See structured learning paths',
   },
 ]
 
@@ -58,7 +63,7 @@ export default function Play() {
             <p className="teams-aside-note">
               A familiar login popup, a two-minute countdown and a manager waiting on chat. What do you do?
             </p>
-            <p className="teams-aside-note" style={{ marginBottom: 0 }}>
+            <p className="teams-aside-note teams-aside-note--flush">
               Decide under pressure, review without blame and get one clear next step.
             </p>
           </div>
@@ -66,10 +71,8 @@ export default function Play() {
       </header>
 
       <section className="teams-section" aria-labelledby="play-benefits-title">
-        <h2 id="play-benefits-title" className="teams-section-title">
-          What you get
-        </h2>
-        <div className="play-benefit-grid">
+        <h2 id="play-benefits-title" className="teams-section-title">What you get</h2>
+        <div className="teams-benefit-grid teams-benefit-grid--2col">
           {playBenefits.map((point) => (
             <article key={point.title} className="teams-benefit">
               <h3>{point.title}</h3>
@@ -80,30 +83,11 @@ export default function Play() {
       </section>
 
       <section className="teams-section" aria-labelledby="play-more-title">
-        <h2 id="play-more-title" className="teams-section-title">
-          Go further when you want
-        </h2>
+        <h2 id="play-more-title" className="teams-section-title">Go further when you want</h2>
         <div className="teams-how-grid">
-          <article className="landing-path teams-how-card">
-            <p className="landing-path-label">Aurora inside Iterali</p>
-            <h3>An Iterali story world</h3>
-            <p>
-              Workplace decisions shape what survives. Same safe-to-fail habits — a story layer that makes practice more engaging.
-            </p>
-            <Link to="/aurora" className="btn btn-secondary teams-btn" style={{ marginTop: 16 }}>
-              Explore the Aurora story world
-            </Link>
-          </article>
-          <article className="landing-path teams-how-card">
-            <p className="landing-path-label">Later</p>
-            <h3>Structured learning paths</h3>
-            <p>
-              Want more structure later? Build consistent skills with lessons, workplace modules and tracked progress.
-            </p>
-            <Link to="/learn" className="btn btn-secondary teams-btn" style={{ marginTop: 16 }}>
-              See structured learning paths
-            </Link>
-          </article>
+          {playPromos.map((card) => (
+            <PromoCard key={card.title} {...card} />
+          ))}
         </div>
       </section>
 
@@ -111,7 +95,7 @@ export default function Play() {
         <div className="landing-path teams-contact-card">
           <p className="landing-path-label">Progress</p>
           <h2 id="play-signin-title">Sign in only if you want</h2>
-          <p className="teams-why-ask" style={{ marginBottom: 0 }}>
+          <p className="teams-why-ask teams-why-ask--flush">
             Why we ask later: sign in only if you want saved progress. Practice cases are not used to monitor you at work.
           </p>
         </div>

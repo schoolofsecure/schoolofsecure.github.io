@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import SiteNav from '../components/SiteNav'
 import SiteFooter from '../components/SiteFooter'
 import CookieBanner from '../components/CookieBanner'
-import '../index.css'
 
 const Privacy = () => {
   const contactEmail = 'erikapappkovacs@gmail.com'

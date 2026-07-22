@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react'
 import { Link, useLocation, useNavigate, useSearchParams } from 'react-router-dom'
 import BrandLogo from './BrandLogo'
 import { useAuth } from '../contexts/AuthContext'
-import '../index.css'
 
 const navLinks = [
   { to: '/play', label: 'Play' },

@@ -1,7 +1,6 @@
 import React from 'react'
 import SiteNav from '../components/SiteNav'
 import SiteFooter from '../components/SiteFooter'
-import '../index.css'
 
 export default function Terms() {
   return (

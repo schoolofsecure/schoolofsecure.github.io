@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
 import { useScoring } from '../contexts/ScoringContext'
 import SiteNav from '../components/SiteNav'
-import '../index.css'
 
 const Profile = () => {
   const { user, logout, deleteAccount, checkLevelCompleted, getHighestCompletedLevel } = useAuth()

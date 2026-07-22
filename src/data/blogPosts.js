@@ -23,13 +23,13 @@ export const blogPosts = [
     ],
   },
   {
-    slug: 'human-centered-security-teams',
-    title: 'Human-centered security for teams that are busy',
+    slug: 'human-centred-security-teams',
+    title: 'Human-centred security for teams that are busy',
     date: '2026-06-26',
     excerpt: 'Security habits stick when training respects real workflows instead of dumping policy walls.',
     body: [
       'Teams ignore security advice that fights how they actually work. Short, realistic scenarios tied to email, chat and access requests fit better than long policy dumps.',
-      'Human-centered security assumes people want to do the right thing when the path is clear. Training should show the safer action in context, then reinforce it with practice.',
+      'Human-centred security assumes people want to do the right thing when the path is clear. Training should show the safer action in context, then reinforce it with practice.',
       'For managers, progress tracking helps spot gaps without turning every miss into a performance issue. Leaders see skill patterns, not individual mistake replays.',
     ],
   },

@@ -56,7 +56,7 @@ export class PasswordStrengthTask extends BaseTask {
     this.solution = PasswordStrengthTask.evaluate(candidate, requirements)
     const hintByDifficulty = {
       easy: 'Check whether the password includes a number and is long enough. Special characters are not required here.',
-      medium: 'A strong password should mix upper- and lowercase letters, numbers, and special characters.',
+      medium: 'A strong password should mix upper- and lowercase letters, numbers and special characters.',
       hard: 'Avoid forbidden words (password, admin, etc.) and make sure characters do not repeat too often.'
     }
     this.payload = {

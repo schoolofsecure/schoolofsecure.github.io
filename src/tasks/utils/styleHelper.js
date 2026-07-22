@@ -23,7 +23,7 @@ export const StyleHelper = {
         'The security system alerts are growing more frequent.'
       ],
       taskDescription: [
-        'Analyze the available data and look for suspicious patterns.',
+        'Analyse the available data and look for suspicious patterns.',
         'You need to uncover the information hidden behind the encrypted messages.',
         'Watch for anomalies and identify the threat.',
         'Search the log files for the key to the solution.',
@@ -33,7 +33,7 @@ export const StyleHelper = {
         'Think about what patterns you are looking for.',
         'Watch the details — that is where the answer hides.',
         'The key often shows up in the most unexpected place.',
-        'Do not rush — analyze the data carefully.',
+        'Do not rush — analyse the data carefully.',
         'The system always leaves traces; you just have to find them.'
       ]
     }

@@ -224,7 +224,7 @@ const Aurora = () => {
       return
     }
     if (!allowed.test(v)) {
-      setEntryStatus(data.mission.statusErrChars || '[status] ERROR — letters, numbers, and hyphens only.')
+      setEntryStatus(data.mission.statusErrChars || '[status] ERROR — letters, numbers and hyphens only.')
       setEntryStatusType('err')
       return
     }

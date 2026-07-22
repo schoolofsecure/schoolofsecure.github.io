@@ -9,7 +9,7 @@ export const valuesPillars = [
   },
   {
     id: 'human',
-    title: 'Human-centered security',
+    title: 'Human-centred security',
     short: 'Design for busy people who want a clear, safer next step.',
     long: 'We assume good intent. Training explains risk in plain language and shows the safer action in context, one clear next step at a time.',
   },

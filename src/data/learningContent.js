@@ -60,7 +60,7 @@ export const learningPaths = [
   {
     id: 'devices',
     title: 'Device and Browser Security',
-    description: 'Keep phones, laptops, and browsers in good shape.',
+    description: 'Keep phones, laptops and browsers in good shape.',
     topics: [
       'Software updates',
       'Secure downloads',
@@ -98,7 +98,7 @@ export const learningPaths = [
       'Incident responder',
       'Security engineer',
       'Digital forensics',
-      'Governance, risk, and compliance',
+      'Governance, risk and compliance',
       'Defensive and offensive security',
       'Beginner cybersecurity learning roadmap',
     ],
@@ -112,13 +112,13 @@ export const lessons = {
     pathId: 'basics',
     title: 'What cybersecurity means',
     duration: 5,
-    intro: 'Cybersecurity is about protecting your information, devices, and accounts from people who want to steal, trick, or misuse them.',
-    example: 'You get a message that looks like your bank. It asks you to "verify" your account on a link. Cybersecurity thinking means pausing, checking the sender, and not clicking until you are sure.',
-    explanation: 'Most attacks target people, not complex systems. Attackers rely on urgency, fear, and habit. Good security is mostly about noticing odd details and slowing down.',
+    intro: 'Cybersecurity is about protecting your information, devices and accounts from people who want to steal, trick or misuse them.',
+    example: 'You get a message that looks like your bank. It asks you to "verify" your account on a link. Cybersecurity thinking means pausing, checking the sender and not clicking until you are sure.',
+    explanation: 'Most attacks target people, not complex systems. Attackers rely on urgency, fear and habit. Good security is mostly about noticing odd details and slowing down.',
     quiz: {
       question: 'What is the main goal of everyday cybersecurity?',
       options: [
-        'Protect information, devices, and accounts from misuse',
+        'Protect information, devices and accounts from misuse',
         'Learn to write computer code',
         'Replace all passwords every day',
         'Avoid using the internet entirely',
@@ -126,7 +126,7 @@ export const lessons = {
       correctIndex: 0,
       feedback: 'Correct. For most people, cybersecurity is about protecting yourself online, not becoming a programmer.',
     },
-    takeaway: 'Cybersecurity protects you, your data, and your accounts. Small habits matter more than perfect tools.',
+    takeaway: 'Cybersecurity protects you, your data and your accounts. Small habits matter more than perfect tools.',
     nextLessonId: 'basics-threats',
   },
   'basics-threats': {
@@ -134,7 +134,7 @@ export const lessons = {
     pathId: 'basics',
     title: 'Common digital threats',
     duration: 4,
-    intro: 'Most online threats fall into a few familiar categories: scams, stolen passwords, unsafe links, and apps that collect too much data.',
+    intro: 'Most online threats fall into a few familiar categories: scams, stolen passwords, unsafe links and apps that collect too much data.',
     example: 'A friend posts that they "found your photo" with a link. The post looks real, but the link leads to a fake login page.',
     explanation: 'Threats often look normal. Scams imitate brands you trust. Malware often arrives as a download you did not expect. Privacy risks hide in app permissions you tap through.',
     quiz: {
@@ -148,7 +148,7 @@ export const lessons = {
       correctIndex: 0,
       feedback: 'Right. Urgency is one of the most common tricks. Scammers want you to react before you think.',
     },
-    takeaway: 'If something pushes you to hurry, slow down. That pause is your best defense.',
+    takeaway: 'If something pushes you to hurry, slow down. That pause is your best defence.',
     nextLessonId: 'passwords-strong',
   },
   'passwords-strong': {
@@ -156,13 +156,13 @@ export const lessons = {
     pathId: 'passwords',
     title: 'Strong passwords',
     duration: 5,
-    intro: 'A strong password is long, unique, and hard to guess. It should not be reused across sites.',
+    intro: 'A strong password is long, unique and hard to guess. It should not be reused across sites.',
     example: 'You use the same password for email and shopping. If the shop gets breached, attackers may try that password on your email too.',
     explanation: 'Length beats cleverness. A passphrase like "river-coffee-guitar-window" is easier to remember and harder to crack than "P@ssw0rd1". Never reuse passwords on important accounts.',
     quiz: {
       question: 'What makes a password stronger?',
       options: [
-        'Long, unique, and not reused on other accounts',
+        'Long, unique and not reused on other accounts',
         'Your birthday with an exclamation mark',
         'The same password everywhere so you remember it',
         'A short password you change every week',
@@ -192,7 +192,7 @@ export const lessons = {
       correctIndex: 0,
       feedback: 'Correct. MFA adds a second layer. It is one of the most effective steps for everyday users.',
     },
-    takeaway: 'Turn on MFA for email, banking, and social accounts first.',
+    takeaway: 'Turn on MFA for email, banking and social accounts first.',
     nextLessonId: 'phishing-email',
   },
   'phishing-email': {
@@ -200,7 +200,7 @@ export const lessons = {
     pathId: 'phishing',
     title: 'Email phishing',
     duration: 6,
-    intro: 'Phishing emails try to look legitimate so you click a link, open an attachment, or share login details.',
+    intro: 'Phishing emails try to look legitimate so you click a link, open an attachment or share login details.',
     example: 'An email says your package could not be delivered. The link goes to a site that copies a real courier page and asks for payment details.',
     explanation: 'Check the sender address carefully. Hover over links before clicking. Real companies rarely ask for passwords by email. When in doubt, open the official app or website yourself.',
     quiz: {
@@ -245,12 +245,12 @@ export const lessons = {
     title: 'Personal information',
     duration: 5,
     intro: 'Personal information is anything that identifies you or could be used to impersonate you.',
-    example: 'A quiz app asks for your birth date, city, and first pet name. Those details are often used in security questions elsewhere.',
+    example: 'A quiz app asks for your birth date, city and first pet name. Those details are often used in security questions elsewhere.',
     explanation: 'Share less by default. Ask why an app needs each piece of data. Information you post publicly can be copied and reused in scams.',
     quiz: {
       question: 'Which counts as sensitive personal information?',
       options: [
-        'Full name, birth date, and phone number combined',
+        'Full name, birth date and phone number combined',
         'Your favourite colour alone',
         'The weather in your city',
         'A public news headline',
@@ -266,7 +266,7 @@ export const lessons = {
     pathId: 'devices',
     title: 'Software updates',
     duration: 4,
-    intro: 'Updates fix security holes in your phone, laptop, and apps. Postponing them leaves known gaps open.',
+    intro: 'Updates fix security holes in your phone, laptop and apps. Postponing them leaves known gaps open.',
     example: 'Your phone shows "Update available" for two weeks. That update may patch a flaw attackers already know about.',
     explanation: 'Turn on automatic updates when possible. Update browsers and operating systems promptly. If an app is no longer supported, consider replacing it.',
     quiz: {
@@ -311,8 +311,8 @@ export const lessons = {
     title: 'Security analyst',
     duration: 6,
     intro: 'Security analysts monitor systems and alerts to spot suspicious activity. Many beginners enter security through analyst roles.',
-    example: 'An analyst reviews login alerts, notices logins from unusual countries, and escalates a possible account takeover.',
-    explanation: 'Analyst work focuses on detection and response. It suits people who like patterns, documentation, and steady problem solving. Paths vary by company and country. No course guarantees a job.',
+    example: 'An analyst reviews login alerts, notices logins from unusual countries and escalates a possible account takeover.',
+    explanation: 'Analyst work focuses on detection and response. It suits people who like patterns, documentation and steady problem solving. Paths vary by company and country. No course guarantees a job.',
     quiz: {
       question: 'What does a security analyst often do?',
       options: [
@@ -332,11 +332,11 @@ export const lessons = {
     pathId: 'careers',
     title: 'Beginner learning roadmap',
     duration: 5,
-    intro: 'Most beginners start with everyday security habits, then add structured learning in areas like phishing, passwords, and workplace safety.',
+    intro: 'Most beginners start with everyday security habits, then add structured learning in areas like phishing, passwords and workplace safety.',
     example: 'You play the free Iterali game, notice you miss phishing clues, then work through short lessons on email scams and fake login pages.',
     explanation: 'There is no single perfect path. Build foundations first: safe browsing, strong accounts, spotting scams. Then explore specialised topics based on your goals. Results depend on your effort and opportunities.',
     quiz: {
-      question: 'What is a sensible first step toward a security career?',
+      question: 'What is a sensible first step towards a security career?',
       options: [
         'Build strong everyday security habits and structured basics',
         'Skip fundamentals and buy advanced hacking tools',
@@ -346,7 +346,7 @@ export const lessons = {
       correctIndex: 0,
       feedback: 'Correct. Foundations and consistent practice matter more than shortcuts.',
     },
-    takeaway: 'Learn steadily, practice regularly, and explore roles over time. No single lesson guarantees a career outcome.',
+    takeaway: 'Learn steadily, practise regularly and explore roles over time. No single lesson guarantees a career outcome.',
     nextLessonId: null,
   },
 }

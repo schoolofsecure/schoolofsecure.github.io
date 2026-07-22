@@ -44,7 +44,7 @@ const SCENARIOS = {
     {
       id: 'usb-drop',
       title: 'Found USB drive',
-      text: 'You find a COBALTIA-branded flash drive in the parking lot labeled "salaries2025.xlsx".',
+      text: 'You find a COBALTIA-branded flash drive in the parking lot labelled "salaries2025.xlsx".',
       actions: [
         { id: 'plug_in', label: 'Plug it into an isolated machine to inspect it.' },
         { id: 'give_manager', label: 'Hand it to my direct manager.' },
@@ -85,7 +85,7 @@ const SCENARIOS = {
       text: 'A new colleague asks on video chat for screen sharing to "show" an internal CRM bug and requests admin rights on your machine.',
       actions: [
         { id: 'share_screen', label: 'Share my screen and grant admin rights.' },
-        { id: 'record_meeting', label: 'Start a recording but still fulfill the request.' },
+        { id: 'record_meeting', label: 'Start a recording but still fulfil the request.' },
         { id: 'refuse_policy', label: 'Refuse and suggest opening an official ticket.' }
       ],
       correctAction: 'refuse_policy',
@@ -96,7 +96,7 @@ const SCENARIOS = {
 
 const HINTS = {
   easy: 'Always ask: is the request legitimate? Do you know the person? Is there an official channel?',
-  medium: 'Check where the request came from, whether a ticket exists, and refer to policy.',
+  medium: 'Check where the request came from, whether a ticket exists and refer to policy.',
   hard: 'Urgent, multi-channel attempts should only be fulfilled after official confirmation.'
 }
 

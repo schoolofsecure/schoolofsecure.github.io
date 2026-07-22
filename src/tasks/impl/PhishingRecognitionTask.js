@@ -186,9 +186,9 @@ If there is no response within 20 minutes, all remote access will be blocked.`
 }
 
 const HINTS_BY_DIFFICULTY = {
-  easy: 'Domain, urgency, and shortened links: look for the most obvious red flags.',
+  easy: 'Domain, urgency and shortened links: look for the most obvious red flags.',
   medium: 'Check whether the domain matches the sender and whether attachments or links look unusual.',
-  hard: 'Review the reply-to address, links, and headers. Attacks often combine several suspicious elements.'
+  hard: 'Review the reply-to address, links and headers. Attacks often combine several suspicious elements.'
 }
 
 const selectElementsForTemplate = (template, config) => {
@@ -234,8 +234,8 @@ export class PhishingRecognitionTask extends BaseTask {
     
     const narrative = {
         intro: 'Signals arrive through communication channels, and system alerts are growing more frequent.',
-        task: 'A suspicious email has arrived in the system. Analyze the message and identify the elements that suggest phishing.',
-        hint: 'Watch domain names, greetings, links, and wording. Phishing messages often create urgency and include suspicious links.'
+        task: 'A suspicious email has arrived in the system. Analyse the message and identify the elements that suggest phishing.',
+        hint: 'Watch domain names, greetings, links and wording. Phishing messages often create urgency and include suspicious links.'
     }
     this.solution = solution
     

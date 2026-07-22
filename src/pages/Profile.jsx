@@ -188,7 +188,7 @@ const Profile = () => {
             {!showDeleteConfirm ? (
               <div>
                 <p className="muted" style={{ marginBottom: '12px', fontSize: '14px' }}>
-                  Deleting your account is permanent. All your data, scores, and progress will be removed and cannot be recovered.
+                  Deleting your account is permanent. All your data, scores and progress will be removed and cannot be recovered.
                 </p>
                 <button
                   className="btn-ghost"

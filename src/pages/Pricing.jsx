@@ -48,13 +48,13 @@ export default function Pricing() {
               Build consistent decision skills with structured lessons and workplace modules.
             </p>
             <p className="price-for-you">
-              For you if… you want regular practice, clear learning paths, and progress you can see over time.
+              For you if… you want regular practice, clear learning paths and progress you can see over time.
             </p>
             <ul className="feature-list">
               <li>Full access to all learning paths</li>
               <li>Beginner lessons and practical exercises</li>
               <li>Workplace security modules</li>
-              <li>Progress tracking and personalized recommendations</li>
+              <li>Progress tracking and personalised recommendations</li>
               <li>Career introduction modules</li>
               <li>New monthly content</li>
               <li>No ads inside the learning platform</li>
@@ -66,7 +66,7 @@ export default function Pricing() {
         </div>
 
         <p className="muted" style={{ marginTop: 28, fontSize: 14, lineHeight: 1.6 }}>
-          No certificates, accredited qualifications, official certifications, job guarantees, or lifetime access claims.
+          No certificates, accredited qualifications, official certifications, job guarantees or lifetime access claims.
         </p>
 
         <SiteFooter />

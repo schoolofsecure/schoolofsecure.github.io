@@ -54,7 +54,7 @@ export class NetworkAnomalyTask extends BaseTask {
       .filter(idx => idx !== null)
     this.payload = {
       flows,
-      hint: 'Normal network traffic typically uses smaller data volumes and well-known ports. Suspicious connections often break the usual pattern — watch data volume, port numbers, and destination IPs.'
+      hint: 'Normal network traffic typically uses smaller data volumes and well-known ports. Suspicious connections often break the usual pattern — watch data volume, port numbers and destination IPs.'
     }
     return this.payload
   }

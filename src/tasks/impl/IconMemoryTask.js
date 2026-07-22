@@ -63,7 +63,7 @@ export class IconMemoryTask extends BaseTask {
       {
         intro: 'Encrypted data hides deep in the network. Security alerts are growing more frequent.',
         task: 'Suspicious elements appear among the system icons. Identify the icons that indicate a potential security risk.',
-        hint: 'Take your time and analyze carefully. The system always leaves traces — you just have to find them.'
+        hint: 'Take your time and analyse carefully. The system always leaves traces — you just have to find them.'
       }
     ]
     

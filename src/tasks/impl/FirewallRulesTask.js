@@ -44,8 +44,8 @@ const FIREWALL_SCENARIOS = [
     id: 'forensic-bridge',
     difficulty: 'hard',
     intro: 'After an incident, only verified data flows are allowed: the forensic team uploads reports over HTTPS, needs DNS lookups, but all remote admin access must be closed.',
-    instructions: 'Allow HTTPS and DNS traffic plus SFTP data transfer, but block SSH, RDP, and OpenVPN.',
-    hint: '443/TCP, 53/UDP, and SFTP (22/TCP) are required; every remote admin channel stays closed.',
+    instructions: 'Allow HTTPS and DNS traffic plus SFTP data transfer, but block SSH, RDP and OpenVPN.',
+    hint: '443/TCP, 53/UDP and SFTP (22/TCP) are required; every remote admin channel stays closed.',
     allow: ['HTTPS', 'DNS', 'SFTP'],
     deny: ['SSH', 'RDP', 'OPENVPN']
   }

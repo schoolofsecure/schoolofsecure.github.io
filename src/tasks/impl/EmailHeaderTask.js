@@ -72,7 +72,7 @@ export class EmailHeaderTask extends BaseTask {
       header: template,
       hints,
       hint: difficulty === 'easy'
-        ? 'SPF (Sender Policy Framework) checks whether the sender is authorized to send from the domain. A "pass" status means all is well; other values may be suspicious.'
+        ? 'SPF (Sender Policy Framework) checks whether the sender is authorised to send from the domain. A "pass" status means all is well; other values may be suspicious.'
         : 'SPF and DKIM authentication verify email origin. A "pass" status means all is well; other values may be suspicious. The Received chain shows the email\'s path.'
     }
     return this.payload

@@ -193,7 +193,7 @@ Best regards, S.</p>
       leftTitle: "Documenting clues",
       leftContent: (
         <>
-          <p className="muted">HQ wants to know how closely you've been following the clues so far. A skilled cyber investigator organizes every clue so it can be retrieved easily later.</p>
+          <p className="muted">HQ wants to know how closely you've been following the clues so far. A skilled cyber investigator organises every clue so it can be retrieved easily later.</p>
           <p className="muted">Document the clues from the previous four tasks! Write each clue on its own line and mark where it came from. You can only move on once all four clues are recorded correctly.</p>
         </>
       ),
@@ -285,21 +285,21 @@ Allow the web protocols used by visitors, but keep the admin SSH channel closed 
 
     Logs suggest the night attacker may have sent it to steal login credentials.
 
-You can only stop the attack if you recognize the hidden signs.
+You can only stop the attack if you recognise the hidden signs.
 
 Hidden messages wait among the log files for decryption. The system always leaves traces - you just have to find them.
 
 A user reported a suspicious email.
 
-Analyze the message content and identify phishing characteristics to stop the attack.`
+Analyse the message content and identify phishing characteristics to stop the attack.`
     },
     SOCIAL_ENGINEERING: {
       title: 'Infiltrating request',
-      text: `An urgent message arrived - supposedly from one of the museum's technicians. The tone is personal, rushed, and asks for help.
+      text: `An urgent message arrived - supposedly from one of the museum's technicians. The tone is personal, rushed and asks for help.
 
 But something isn't right. The wording is odd, and system logs show suspicious attempts from the sender's location before. This might be another attempt to get into the network through you.
 
-Examine the message, analyze the request, and decide:
+Examine the message, analyse the request and decide:
 
 Is this a genuine call for help, or just a manipulative attempt?
 
@@ -362,11 +362,11 @@ Decrypt the Vigenère cipher with the given key to find out what the message con
     },
     NETWORK_ANOMALY: {
       title: 'Network sprawl',
-      text: `While analyzing network traffic, you found suspicious connections.
+      text: `While analysing network traffic, you found suspicious connections.
     
 System logs show unknown sources trying to connect to the internal network.
     
-Analyze the network traffic and identify anomalies to stop the attack.`
+Analyse the network traffic and identify anomalies to stop the attack.`
     },
     EMAIL_HEADER: {
       title: 'Header X-ray',

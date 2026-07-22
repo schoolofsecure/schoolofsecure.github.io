@@ -6,7 +6,7 @@ import { StyleHelper } from '../utils/styleHelper'
 const SAMPLE_PLAINTEXTS = [
   'HELLO WORLD',
   'SECURE CHANNEL',
-  'CYBER DEFENSE',
+  'CYBER DEFENCE',
   'TRUST NO ONE',
   'ACCESS GRANTED',
   'ZERO DAY ALERT',

@@ -59,7 +59,7 @@ export default function Play() {
               A familiar login popup, a two-minute countdown and a manager waiting on chat. What do you do?
             </p>
             <p className="teams-aside-note" style={{ marginBottom: 0 }}>
-              Decide under pressure, review without blame, and get one clear next step.
+              Decide under pressure, review without blame and get one clear next step.
             </p>
           </div>
         </aside>

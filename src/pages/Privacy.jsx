@@ -42,7 +42,7 @@ const Privacy = () => {
           <section className="section">
             <h2>1. Data controller</h2>
             <p>
-              The data controller for the Iterali cybersecurity learning platform (including the free practice game, learning paths, and related web services) is <strong>Papp‑Kovács Erika</strong>. Contact:{' '}
+              The data controller for the Iterali cybersecurity learning platform (including the free practice game, learning paths and related web services) is <strong>Papp‑Kovács Erika</strong>. Contact:{' '}
               {emailOrReveal}
             </p>
           </section>
@@ -51,7 +51,7 @@ const Privacy = () => {
             <h2>2. Data we collect</h2>
             <ul>
               <li>Email address (account sign-in).</li>
-              <li>Learning and game progress linked to your account (for example completed levels, scores, and preferences), when you are signed in.</li>
+              <li>Learning and game progress linked to your account (for example completed levels, scores and preferences), when you are signed in.</li>
             </ul>
           </section>
 
@@ -59,7 +59,7 @@ const Privacy = () => {
             <h2>3. Purpose and legal basis</h2>
             <ul>
               <li>Sign-in and account management for Iterali (consent – GDPR Article 6(1)(a)).</li>
-              <li>Providing the game, learning content, and progress tracking (consent / contract performance – GDPR Article 6(1)(a)/(b)).</li>
+              <li>Providing the game, learning content and progress tracking (consent / contract performance – GDPR Article 6(1)(a)/(b)).</li>
               <li>System security and troubleshooting (legitimate interest – GDPR Article 6(1)(f)).</li>
             </ul>
           </section>
@@ -89,7 +89,7 @@ const Privacy = () => {
             <h2>7. Your rights</h2>
             <ul>
               <li>Request access to and information about your personal data.</li>
-              <li>Request correction, deletion ("right to be forgotten"), or restriction of processing.</li>
+              <li>Request correction, deletion ("right to be forgotten") or restriction of processing.</li>
               <li>Withdraw consent at any time without giving a reason.</li>
               <li>Data portability (for automatically processed data).</li>
               <li>Lodge a complaint with the Hungarian National Authority for Data Protection and Freedom of Information (NAIH).</li>
@@ -98,7 +98,7 @@ const Privacy = () => {
 
           <section className="section">
             <h2>8. Data security</h2>
-            <p>We protect personal data with appropriate technical and organizational measures against unauthorized access, alteration, or disclosure.</p>
+            <p>We protect personal data with appropriate technical and organisational measures against unauthorised access, alteration or disclosure.</p>
           </section>
 
           <section className="section">
@@ -112,7 +112,7 @@ const Privacy = () => {
           <section className="section">
             <h2>10. Scope</h2>
             <p>
-              This policy applies to Iterali as a cybersecurity learning platform: the website, free practice game, structured learning paths, team-oriented offerings, and related features. If the policy changes, the updated version takes effect upon publication.
+              This policy applies to Iterali as a cybersecurity learning platform: the website, free practice game, structured learning paths, team-oriented offerings and related features. If the policy changes, the updated version takes effect upon publication.
             </p>
           </section>
         </div>

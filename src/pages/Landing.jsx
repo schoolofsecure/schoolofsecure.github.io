@@ -41,7 +41,7 @@ const Landing = () => {
             <div className="terminal-body">
               <div><span className="prompt">investigator@cm</span>:~$ trace --source breach.log</div>
               <div>› scanning network… <span style={{ color: 'var(--ok)' }}>OK</span></div>
-              <div>› anomaly detected: <span style={{ color: 'var(--danger)' }}>UNAUTHORIZED ACCESS</span></div>
+              <div>› anomaly detected: <span style={{ color: 'var(--danger)' }}>UNAUTHORISED ACCESS</span></div>
               <div>› decrypting payload… ████░░░░░ 42%</div>
               <div>› clue unlocked: <em>&quot;The password is hidden in the story.&quot;</em></div>
               <div>_ <span className="cursor"></span></div>

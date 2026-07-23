@@ -498,11 +498,10 @@ header {
     padding: 8px 0 24px;
 }
 
-.blog-index-item time {
-    display: block;
+.blog-meta {
+    margin: 0 0 6px;
     font-size: 12px;
     color: var(--muted);
-    margin-bottom: 6px;
 }
 
 .blog-index-item h2 {
@@ -543,10 +542,8 @@ header {
     max-width: 720px;
 }
 
-.blog-post-date {
-    display: block;
+.blog-post .blog-meta {
     font-size: 13px;
-    color: var(--muted);
     margin-bottom: 24px;
 }
 

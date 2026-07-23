@@ -3,7 +3,7 @@ import { Link, useParams } from 'react-router-dom'
 import SiteNav from '../components/SiteNav'
 import SiteFooter from '../components/SiteFooter'
 import CookieBanner from '../components/CookieBanner'
-import { getBlogPost } from '../data/blogPosts'
+import { getBlogPost, getReadingMinutes } from '../data/blogPosts'
 import NotFound from './NotFound'
 import '../styles/site.css'
 
@@ -32,7 +32,11 @@ export default function BlogPost() {
             <Link to="/blog" style={{ color: 'inherit', textDecoration: 'none' }}>Blog</Link>
           </p>
           <h1 style={{ fontFamily: 'Rajdhani, Inter, sans-serif', margin: '0 0 12px' }}>{post.title}</h1>
-          <time className="blog-post-date" dateTime={post.date}>{formatDate(post.date)}</time>
+          <p className="blog-meta">
+            <time dateTime={post.date}>{formatDate(post.date)}</time>
+            <span aria-hidden="true"> · </span>
+            <span>{getReadingMinutes(post)} min read</span>
+          </p>
           <div className="blog-post-body">
             {post.body.map((paragraph, i) => (
               <p key={i}>{paragraph}</p>

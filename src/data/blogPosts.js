@@ -1,6 +1,18 @@
 /** Blog posts for SEO / Resources. Newest first. */
 export const blogPosts = [
   {
+    slug: 'pause-before-you-continue',
+    title: 'The most dangerous button is often “Continue”',
+    date: '2026-07-23',
+    excerpt: 'We tap Continue to accept, connect or move on. A short pause before that click can reveal when something is off.',
+    body: [
+      'Ask someone what the riskiest button online is and they might name Delete, Confirm payment or Share location. The quieter answer is often Continue — the button we press without thinking.',
+      'It shows up everywhere: to accept terms, link an account, grant access or simply leave a screen. Because it feels routine, we rarely stop to ask what we are agreeing to, which account we are using or whether the page is genuine.',
+      'Before you continue, take one breath. Check the URL, the account shown and what the next step actually grants. That pause is often enough to notice when a familiar flow does not feel right.',
+      'Safer habits start with a slower click. Pause before you continue.',
+    ],
+  },
+  {
     slug: 'spot-fake-login-pages',
     title: 'How to spot a fake login page',
     date: '2026-07-10',
@@ -41,4 +53,11 @@ export function getBlogPost(slug) {
 
 export function getLatestBlogPosts(limit = 3) {
   return blogPosts.slice(0, limit)
+}
+
+/** Rough reading time from body (+ excerpt). At least 1 minute. */
+export function getReadingMinutes(post, wordsPerMinute = 200) {
+  const text = [post?.excerpt, ...(post?.body || [])].filter(Boolean).join(' ')
+  const words = text.trim().split(/\s+/).filter(Boolean).length
+  return Math.max(1, Math.ceil(words / wordsPerMinute))
 }

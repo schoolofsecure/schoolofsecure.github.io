@@ -7,6 +7,8 @@ export default function SiteFooter({ className = 'site-footer' }) {
     <footer className={className}>
       <p className="site-footer-copy">© 2025–2026 Iterali. All rights reserved.</p>
       <nav className="site-footer-nav" aria-label="Site">
+        <Link to="/values">Our values</Link>
+        <span aria-hidden="true">·</span>
         <Link to="/privacy">Privacy</Link>
         <span aria-hidden="true">·</span>
         <Link to="/terms">Terms</Link>

@@ -478,7 +478,8 @@ header {
     border-bottom: 1px solid rgba(207, 230, 255, 0.08);
 }
 
-.values-page-item h2 {
+.values-page-item h2,
+.values-page-item h3 {
     font-family: Rajdhani, Inter, sans-serif;
     font-size: 22px;
     margin: 0 0 8px;
@@ -489,6 +490,38 @@ header {
     color: var(--muted);
     line-height: 1.6;
     max-width: 720px;
+}
+
+.values-how-we-work {
+    max-width: 720px;
+}
+
+.values-how-we-work-p {
+    margin: 0 0 14px;
+    color: var(--muted);
+    font-size: 15px;
+    line-height: 1.6;
+}
+
+.values-how-we-work-closing {
+    margin: 8px 0 0;
+    font-family: Rajdhani, Inter, sans-serif;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--ink);
+}
+
+.values-founder-title {
+    margin-bottom: 10px;
+    font-size: clamp(20px, 2.2vw, 26px);
+}
+
+.values-founder-text {
+    margin: 0;
+    max-width: 640px;
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--muted);
 }
 
 .blog-index-list {

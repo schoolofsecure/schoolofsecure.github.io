@@ -1,5 +1,21 @@
 export const LINKEDIN_URL = 'https://www.linkedin.com/company/iterali'
 
+export const howWeWork = {
+  title: 'Remote-friendly work, on our terms',
+  paragraphs: [
+    'People do their best work in different ways. Some like the pace of an office. Others get more done with fewer interruptions, more flexibility or without a long commute. We do not pretend one arrangement fits everyone.',
+    'Being remote-friendly means the business is not stuck in one city. Work has already happened from Porto, Malmö and Budapest — sometimes only for a short visit. The place changes. What we expect of the work does not.',
+    'It is not about being online all day. It is about trust, saying things clearly, sharing the load and finishing what we start. Where the laptop sits matters less than what we deliver.',
+  ],
+  closing: 'Different places. Same standards.',
+}
+
+/** Soft founder background — keep light on the Values page */
+export const founderBackground = {
+  title: 'Built on digital trust and systems thinking',
+  text: 'Iterali is made by someone with DigiCert Digital Trust Associate and Entrust nShield Certified System Engineer (nCSE) credentials, plus a Cybersecurity Specialist certification. That background sits quietly behind the product: security habits, clearer decisions and systems you can rely on.',
+}
+
 export const valuesPillars = [
   {
     id: 'realistic',

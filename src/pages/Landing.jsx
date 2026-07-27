@@ -9,6 +9,81 @@ import { getLatestBlogPosts } from '../data/blogPosts'
 const popularPosts = getLatestBlogPosts(4)
 const POPULAR_VISIBLE = 3
 
+const academyFeatures = [
+  {
+    id: 'anywhere',
+    title: 'Skills you can use anywhere',
+    text: 'What you learn carries into work, home and everyday apps, not just one training screen.',
+    icon: (
+      <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
+        <circle cx="16" cy="16" r="10.5" />
+        <path d="M5.5 16h21M16 5.5c3.2 3.8 3.2 16.2 0 21M16 5.5c-3.2 3.8-3.2 16.2 0 21" />
+      </svg>
+    ),
+  },
+  {
+    id: 'calm',
+    title: 'Calm confidence, not fear',
+    text: 'You build steady habits instead of panic and second-guessing every click.',
+    icon: (
+      <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M16 27s-10-6.5-10-14a6 6 0 0 1 10-4 6 6 0 0 1 10 4c0 7.5-10 14-10 14z" />
+        <path d="M11 15l3.5 3.5L21 12" />
+      </svg>
+    ),
+  },
+  {
+    id: 'path',
+    title: 'A clear path, step by step',
+    text: 'You always know what to practise next, so you never feel lost.',
+    icon: (
+      <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
+        <circle cx="8" cy="22" r="2.5" />
+        <circle cx="16" cy="14" r="2.5" />
+        <circle cx="24" cy="8" r="2.5" />
+        <path d="M10 20l5-5M18 12l5-5" />
+      </svg>
+    ),
+  },
+  {
+    id: 'guidance',
+    title: 'Personal guidance when you are stuck',
+    text: 'One-to-one and small-group help for the moments that feel hard alone.',
+    icon: (
+      <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
+        <circle cx="13" cy="11" r="4.5" />
+        <path d="M6 26c0-5 3.5-8 7-8s7 3 7 8" />
+        <path d="M22 14h6v6" />
+        <path d="M22 20l6-6" />
+      </svg>
+    ),
+  },
+  {
+    id: 'practice',
+    title: 'Live practice that sticks',
+    text: 'Interactive sessions focused on real decisions and action, not long lectures.',
+    icon: (
+      <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
+        <rect x="5" y="8" width="22" height="16" rx="3" />
+        <path d="M14 13l6 3.5-6 3.5V13z" />
+      </svg>
+    ),
+  },
+  {
+    id: 'community',
+    title: 'Private member community',
+    text: 'A members-only space to share progress, get feedback and learn alongside others.',
+    icon: (
+      <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
+        <circle cx="11" cy="12" r="3.5" />
+        <circle cx="21" cy="12" r="3.5" />
+        <path d="M4 26c0-4 3-6.5 7-6.5M21 19.5c4 0 7 2.5 7 6.5" />
+        <path d="M16 26c0-3.5 2.5-5.5 5-5.5s5 2 5 5.5" />
+      </svg>
+    ),
+  },
+]
+
 const Landing = () => {
   const [newsletterEmail, setNewsletterEmail] = useState('')
   const [newsletterStatus, setNewsletterStatus] = useState('idle')
@@ -101,35 +176,15 @@ const Landing = () => {
           </p>
         </div>
         <ul className="landing-academy-features">
-          {[
-            {
-              title: 'Skills you can use anywhere',
-              text: 'What you learn carries into work, home and everyday apps, not just one training screen.',
-            },
-            {
-              title: 'Calm confidence, not fear',
-              text: 'You build steady habits instead of panic and second-guessing every click.',
-            },
-            {
-              title: 'A clear path, step by step',
-              text: 'You always know what to practise next, so you never feel lost.',
-            },
-            {
-              title: 'Personal guidance when you are stuck',
-              text: 'One-to-one and small-group help for the moments that feel hard alone.',
-            },
-            {
-              title: 'Live practice that sticks',
-              text: 'Interactive sessions focused on real decisions and action, not long lectures.',
-            },
-            {
-              title: 'Private member community',
-              text: 'A members-only space to share progress, get feedback and learn alongside others.',
-            },
-          ].map(({ title, text }) => (
-            <li key={title} className="landing-academy-feature">
-              <h3>{title}</h3>
-              {text && <p>{text}</p>}
+          {academyFeatures.map(({ id, title, text, icon }) => (
+            <li key={id} className="landing-academy-feature">
+              <span className="landing-academy-feature-icon" aria-hidden="true">
+                {icon}
+              </span>
+              <div className="landing-academy-feature-body">
+                <h3>{title}</h3>
+                {text && <p>{text}</p>}
+              </div>
             </li>
           ))}
         </ul>

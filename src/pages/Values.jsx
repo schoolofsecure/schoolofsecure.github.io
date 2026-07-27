@@ -19,8 +19,7 @@ export default function Values() {
             Iterali is built so people and teams can practise real decisions without fear of failing in public. Realistic cases, clear next steps and privacy you can see in the product.
           </p>
           <div className="teams-hero-ctas">
-            <Link to="/play" className="btn btn-primary teams-btn">Play Free</Link>
-            <Link to="/teams" className="btn btn-secondary teams-btn">For Teams</Link>
+            <Link to="/teams" className="btn btn-secondary teams-btn">Teams</Link>
           </div>
         </div>
         <aside className="teams-hero-aside" aria-hidden="true">

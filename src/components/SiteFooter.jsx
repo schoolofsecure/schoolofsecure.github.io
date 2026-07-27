@@ -13,6 +13,8 @@ export default function SiteFooter({ className = 'site-footer' }) {
         <span aria-hidden="true">·</span>
         <Link to="/terms">Terms</Link>
         <span aria-hidden="true">·</span>
+        <Link to="/aurora">Play</Link>
+        <span aria-hidden="true">·</span>
         <a href="/teams#contact">Contact</a>
         <span aria-hidden="true">·</span>
         <a

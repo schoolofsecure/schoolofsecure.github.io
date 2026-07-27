@@ -1,25 +1,23 @@
 import React, { useState, useEffect } from 'react'
-import { Link, useLocation } from 'react-router-dom'
+import { useLocation } from 'react-router-dom'
 import SiteNav from '../components/SiteNav'
 import SiteFooter from '../components/SiteFooter'
 import CookieBanner from '../components/CookieBanner'
 import '../styles/site.css'
-
-/** FormSubmit — already activated for this inbox */
-const FORMSUBMIT_EMAIL = 'erikapappkovacs@gmail.com'
+import { submitToFormSubmit } from '../utils/formSubmit'
 
 const teamPoints = [
   {
     title: 'Real workplace decisions',
-    text: 'Practise phishing, social engineering and unsafe shortcuts as they show up at work.',
+    text: 'Practise phishing, social engineering and everyday shortcuts as they show up in real work.',
   },
   {
-    title: 'Safe-to-fail paths',
-    text: 'Structured learning with one clear next step for each person. Mistakes stay in practice.',
+    title: 'Clear paths forward',
+    text: 'Structured learning with one clear next step for each person. Everyone knows what to do next.',
   },
   {
-    title: 'Patterns for leaders',
-    text: 'See skill patterns and gaps across the team. Not individual mistake replays.',
+    title: 'Insight leaders can use',
+    text: 'See skill patterns and gaps across the team — so you know where to support growth.',
   },
 ]
 
@@ -53,27 +51,16 @@ export default function ForTeams() {
     setSending(true)
     setSubmitError('')
     try {
-      const res = await fetch(`https://formsubmit.co/ajax/${FORMSUBMIT_EMAIL}`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
-        },
-        body: JSON.stringify({
-          name: form.name,
-          email: form.email,
-          company: form.company,
-          teamSize: form.teamSize,
-          message: form.message || '(no message)',
-          _subject: `Iterali team access request — ${form.company}`,
-          _template: 'table',
-          _captcha: 'false',
-        }),
+      await submitToFormSubmit({
+        name: form.name,
+        email: form.email,
+        company: form.company,
+        teamSize: form.teamSize,
+        message: form.message || '(no message)',
+        request: 'Team access request',
+        _subject: `Iterali team access request — ${form.company}`,
+        _replyto: form.email,
       })
-      const data = await res.json().catch(() => ({}))
-      if (!res.ok || data.success === 'false' || data.success === false) {
-        throw new Error(data.message || 'Could not send the request.')
-      }
       setSubmitted(true)
     } catch (_) {
       setSubmitError('Could not send the request. Please try again in a moment.')
@@ -94,10 +81,10 @@ export default function ForTeams() {
 
       <header className="teams-hero">
         <div className="teams-hero-copy">
-          <p className="landing-path-label">For teams who practise safely</p>
-          <h1>Skill patterns for leaders. Safe-to-fail practice for everyone.</h1>
+          <p className="landing-path-label">Teams</p>
+          <h1>Help your team build calm, confident habits online</h1>
           <p className="teams-hero-lead">
-            Practical scenarios and structured paths for everyday decisions. Less checkbox training. More confidence at work.
+            Practical scenarios and structured paths for everyday decisions. Safe to practise, easy to follow, designed for how people actually work.
           </p>
           <div className="teams-hero-ctas">
             <a
@@ -110,9 +97,6 @@ export default function ForTeams() {
             >
               Request team access
             </a>
-            <Link to="/play" className="btn btn-secondary teams-btn">
-              Try the free game first
-            </Link>
           </div>
         </div>
         <aside className="teams-hero-aside" aria-hidden="true">
@@ -151,8 +135,8 @@ export default function ForTeams() {
           </article>
           <article className="landing-path teams-how-card">
             <p className="landing-path-label">Leaders</p>
-            <h3>Patterns, not blame</h3>
-            <p>See where the team is strong and where gaps sit. Minimal data. Clear explanations.</p>
+            <h3>Patterns that guide action</h3>
+            <p>See where the team is strong and where to focus next. Clear explanations, minimal data, useful for planning.</p>
           </article>
         </div>
       </section>
@@ -162,7 +146,7 @@ export default function ForTeams() {
           <p className="landing-path-label">Get started</p>
           <h2 id="teams-contact-title">Request team access</h2>
           <p className="teams-contact-lead">
-            Tell us about your team. We will reply with how Iterali fits your size and goals.
+            Tell us about your team. We will show you how Iterali fits your size and goals.
           </p>
           <p className="teams-why-ask">
             Why we ask: name, work email and company so we can reply. We do not use this form to run phishing tests on your staff.
@@ -207,13 +191,6 @@ export default function ForTeams() {
             </form>
           )}
 
-          <div className="teams-secondary-cta">
-            <p className="teams-secondary-label">Prefer to feel the product first?</p>
-            <Link to="/play" className="btn btn-secondary teams-btn">
-              Try the free game first
-            </Link>
-            <p className="teams-secondary-note">Short free case. No account required.</p>
-          </div>
         </div>
       </section>
 

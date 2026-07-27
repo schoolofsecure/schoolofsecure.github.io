@@ -26,7 +26,7 @@ export default function GameSessionResults({
     explanations.push('You answered every challenge correctly this session. Keep that habit of pausing before you click.')
   }
   if (accuracy < 80) {
-    explanations.push('Phishing and fake login pages are worth extra practice in the Learn section.')
+    explanations.push('Phishing and fake login pages are worth extra practice in your next case.')
   }
 
   return (
@@ -106,16 +106,13 @@ export default function GameSessionResults({
             Your next step
           </h3>
           <p className="muted" style={{ margin: 0, fontSize: 14, lineHeight: 1.55 }}>
-            Decide under pressure here, then build the habit with one short lesson. We show what to practise next.
+            Decide under pressure here, then carry the safer habit into your next case.
           </p>
         </div>
 
         <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
-          <Link to="/learn/dashboard" className="btn btn-primary" style={{ textDecoration: 'none', flex: 1, justifyContent: 'center' }} onClick={onClose}>
-            See my next step
-          </Link>
-          <Link to="/aurora" className="btn-secondary btn" style={{ textDecoration: 'none', flex: 1, justifyContent: 'center' }} onClick={onClose}>
-            Play again
+          <Link to="/" className="btn btn-primary" style={{ textDecoration: 'none', flex: 1, justifyContent: 'center' }} onClick={onClose}>
+            Back home
           </Link>
         </div>
         <button type="button" className="btn-ghost" style={{ width: '100%', marginTop: 10 }} onClick={onClose}>

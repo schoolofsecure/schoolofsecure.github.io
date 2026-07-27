@@ -16,9 +16,6 @@ const NotFound = () => {
           <Link to="/" className="btn">
             Back to home
           </Link>
-          <Link to="/aurora" className="btn-ghost">
-            View cases
-          </Link>
         </div>
       </div>
     </div>

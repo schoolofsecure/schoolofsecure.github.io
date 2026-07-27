@@ -4,30 +4,30 @@ import BrandLogo from './BrandLogo'
 import { useAuth } from '../contexts/AuthContext'
 
 const navLinks = [
-  { to: '/play', label: 'Play' },
-  { to: '/learn', label: 'Learn' },
-  { to: '/teams', label: 'For Teams' },
+  { to: '/', label: 'Individual' },
+  { to: '/teams', label: 'Teams' },
   { to: '/blog', label: 'Blog' },
 ]
 
 function isNavActive(pathname, to) {
-  if (to === '/') return pathname === '/'
-  if (to === '/play') {
-    return pathname === '/play' || pathname.startsWith('/play/') || pathname === '/aurora' || /^\/ugy\d+/.test(pathname)
+  if (to === '/') {
+    return pathname === '/' || pathname === '/aurora' || /^\/ugy\d+/.test(pathname)
   }
-  if (to === '/learn') return pathname.startsWith('/learn')
   return pathname === to || pathname.startsWith(`${to}/`)
 }
 
+const ACADEMY_APPLY_LABEL = 'Apply to the Academy'
+const ACADEMY_APPLY_PATH = '/academy'
+
 const baseAuthBtnStyle = {
-  minWidth: '130px',
-  height: '42px',
+  minWidth: '190px',
+  height: '48px',
   borderRadius: '999px',
   fontFamily: 'Rajdhani, Inter, sans-serif',
-  fontSize: '14px',
+  fontSize: '15px',
   letterSpacing: '0.4px',
   fontWeight: 600,
-  padding: '0 18px',
+  padding: '0 20px',
 }
 
 export default function SiteNav() {
@@ -137,46 +137,22 @@ export default function SiteNav() {
             <span className="site-header-status site-header-status-desktop">{authStatusText}</span>
           )}
           {!user && (
-            <>
-              <button
-                type="button"
-                className="btn-ghost site-header-auth-btn site-header-signin-desktop"
-                style={{
-                  ...baseAuthBtnStyle,
-                  border: '1px solid rgba(207,230,255,0.35)',
-                  color: 'var(--ink)',
-                  background: 'rgba(255,255,255,0.06)',
-                }}
-                onClick={openSignIn}
-              >
-                Sign In
-              </button>
-              <Link
-                to="/play"
-                className="btn btn-primary site-header-auth-btn site-header-play-free"
-                style={{ ...baseAuthBtnStyle, textDecoration: 'none', display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}
-              >
-                Play Free
-              </Link>
-            </>
+            <Link
+              to={ACADEMY_APPLY_PATH}
+              className="btn btn-primary site-header-auth-btn site-header-apply-desktop"
+              style={{ ...baseAuthBtnStyle, minWidth: '190px', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}
+            >
+              {ACADEMY_APPLY_LABEL}
+            </Link>
           )}
           {user && (
-            <>
-              <Link
-                to="/learn/dashboard"
-                className="btn-ghost site-header-auth-btn site-header-user-desktop"
-                style={{ ...baseAuthBtnStyle, textDecoration: 'none', display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}
-              >
-                My learning
-              </Link>
-              <Link
-                to="/profile"
-                className="btn-secondary site-header-auth-btn site-header-play-free"
-                style={{ ...baseAuthBtnStyle, textDecoration: 'none', display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}
-              >
-                Profile
-              </Link>
-            </>
+            <Link
+              to="/profile"
+              className="btn-secondary site-header-auth-btn site-header-play-free"
+              style={{ ...baseAuthBtnStyle, textDecoration: 'none', display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}
+            >
+              Profile
+            </Link>
           )}
           <button
             type="button"
@@ -207,12 +183,15 @@ export default function SiteNav() {
               ))}
             </nav>
             {!user ? (
-              <button type="button" className="btn-ghost site-mobile-signin" onClick={openSignIn}>
-                Sign In
-              </button>
+              <Link
+                to={ACADEMY_APPLY_PATH}
+                className="btn btn-primary site-mobile-apply"
+                onClick={() => setMenuOpen(false)}
+              >
+                {ACADEMY_APPLY_LABEL}
+              </Link>
             ) : (
               <div className="site-mobile-user-links">
-                <Link to="/learn/dashboard" onClick={() => setMenuOpen(false)}>My learning</Link>
                 <Link to="/profile" onClick={() => setMenuOpen(false)}>Profile</Link>
                 {authStatusText && <span className="site-header-status">{authStatusText}</span>}
               </div>

@@ -28,7 +28,7 @@ header {
 }
 .brand { display: flex; align-items: center; gap: 10px; color: var(--ink); text-decoration: none; }
 .brand-logo {
-  width: 52px; height: 52px; border-radius: 10px; object-fit: cover; object-position: top center; display: block;
+  width: 52px; height: 52px; border-radius: 0; object-fit: contain; object-position: center; background: transparent; display: block;
 }
 h1,h2,h3 { font-family: 'Inter', system-ui, sans-serif; margin:0 0 8px; }
 .muted { color: var(--muted); }

@@ -11,11 +11,11 @@ import '../../styles/learn.css'
 
 const learnPromos = [
   {
-    label: 'Plans',
-    title: 'View pricing',
-    text: 'See Free and Iterali Learning options. Upgrade when you want tracked progress.',
-    to: '/pricing',
-    linkLabel: 'View plans',
+    label: 'For teams',
+    title: 'Practise safely as a team',
+    text: 'Safe-to-fail modules and skill patterns for leaders — not individual mistake replays.',
+    to: '/teams',
+    linkLabel: 'Explore For Teams',
   },
   {
     label: 'Free game',

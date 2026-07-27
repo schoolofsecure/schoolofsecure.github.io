@@ -7,7 +7,6 @@ const navLinks = [
   { to: '/play', label: 'Play' },
   { to: '/learn', label: 'Learn' },
   { to: '/teams', label: 'For Teams' },
-  { to: '/pricing', label: 'Pricing' },
   { to: '/blog', label: 'Blog' },
 ]
 

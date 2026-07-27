@@ -13,7 +13,6 @@ import Learn from './pages/learn/Learn'
 import LearnPath from './pages/learn/LearnPath'
 import LearnLesson from './pages/learn/LearnLesson'
 import LearnDashboard from './pages/learn/LearnDashboard'
-import Pricing from './pages/Pricing'
 import ForTeams from './pages/ForTeams'
 import Blog from './pages/Blog'
 import BlogPost from './pages/BlogPost'
@@ -65,7 +64,7 @@ function AppContent() {
           <Route path="/learn/dashboard" element={<LearnDashboard />} />
           <Route path="/learn/paths/:pathId" element={<LearnPath />} />
           <Route path="/learn/lessons/:lessonId" element={<LearnLesson />} />
-          <Route path="/pricing" element={<Pricing />} />
+          <Route path="/pricing" element={<Navigate to="/learn" replace />} />
           <Route path="/teams" element={<ForTeams />} />
           <Route path="/blog" element={<Blog />} />
           <Route path="/blog/:slug" element={<BlogPost />} />

@@ -1,13 +1,10 @@
 # Privacy Policy frissítés (Iterali platform)
 
-## Változások
+## Korábbi (2026-07-17)
 
 - Privacy inquiries és controller Contact: `erikapappkovacs@gmail.com` (UI-n elrejtve, kattintásra `[show email address]`)
-- GDPR szöveg már nem „mystery game” fókuszú: Iterali cybersecurity learning platform (game + learning paths + kapcsolódó szolgáltatások)
-- Gyűjtött adatok: e-mail + bejelentkezéshez kötött progress / score / preferences
-- Célok: account, game/learning/progress, biztonság
-- Scope és last updated: 2026-07-17
+- GDPR szöveg már nem „mystery game” fókuszú
 
-## Fájl
+## Frissebb
 
-`src/pages/Privacy.jsx`
+Lásd: `docs/privacy-terms-academy-update.md` (Academy / Teams / newsletter, 2026-07-27).

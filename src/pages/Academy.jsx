@@ -1,4 +1,5 @@
 import React from 'react'
+import { createPortal } from 'react-dom'
 import { Link } from 'react-router-dom'
 import SiteNav from '../components/SiteNav'
 import SiteFooter from '../components/SiteFooter'
@@ -48,9 +49,21 @@ const faqs = [
   },
 ]
 
+function AcademyMobileCta() {
+  if (typeof document === 'undefined') return null
+  return createPortal(
+    <div className="academy-mobile-cta" role="region" aria-label="Share interest">
+      <Link to="/academy/apply" className="academy-start-btn">
+        Share your interest
+      </Link>
+    </div>,
+    document.body,
+  )
+}
+
 export default function Academy() {
   return (
-    <div className="container teams-page">
+    <div className="container teams-page teams-page--academy">
       <SiteNav />
 
       <section className="academy-layout" aria-label="Academy interest">
@@ -89,6 +102,12 @@ export default function Academy() {
             </ul>
           </aside>
 
+          <div className="academy-steps-cta academy-steps-cta--early">
+            <Link to="/academy/apply" className="academy-start-btn">
+              Share your interest
+            </Link>
+          </div>
+
           <h2 className="teams-section-title academy-steps-heading">How things progress</h2>
           <ol className="academy-steps-list">
             {steps.map((step) => (
@@ -110,19 +129,13 @@ export default function Academy() {
               </a>
             </p>
           </aside>
-
-          <div className="academy-steps-cta">
-            <Link to="/academy/apply" className="academy-start-btn">
-              Share your interest
-            </Link>
-          </div>
         </div>
 
         <aside className="academy-faq" aria-labelledby="academy-faq-title">
           <h2 id="academy-faq-title" className="academy-faq-title">Common Questions</h2>
           <p className="academy-faq-intro">
             Any questions? Don&apos;t see yours below?{' '}
-            <Link to="/teams#contact">Use the contact form</Link>
+            <Link to="/contact">Use the contact form</Link>
             . A real person from our team will reply, usually within a day.
           </p>
           <div className="academy-faq-list">
@@ -137,8 +150,15 @@ export default function Academy() {
               </details>
             ))}
           </div>
+          <div className="academy-steps-cta academy-steps-cta--after-faq">
+            <Link to="/academy/apply" className="academy-start-btn">
+              Share your interest
+            </Link>
+          </div>
         </aside>
       </section>
+
+      <AcademyMobileCta />
 
       <SiteFooter />
       <CookieBanner />

@@ -15,7 +15,7 @@ export default function SiteFooter({ className = 'site-footer' }) {
         <span aria-hidden="true">·</span>
         <Link to="/aurora">Play</Link>
         <span aria-hidden="true">·</span>
-        <a href="/teams#contact">Contact</a>
+        <Link to="/contact">Contact</Link>
         <span aria-hidden="true">·</span>
         <a
           href={LINKEDIN_URL}

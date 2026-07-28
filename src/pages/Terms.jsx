@@ -55,7 +55,7 @@ export default function Terms() {
         <section className="section">
           <h2>6. Contact</h2>
           <p>
-            Questions about these terms: use the <Link to="/teams#contact">Teams contact form</Link>, apply via{' '}
+            Questions about these terms: use the <Link to="/contact">contact form</Link>, apply via{' '}
             <Link to="/academy">Academy</Link>, or see our <Link to="/privacy">Privacy Policy</Link>.
           </p>
         </section>

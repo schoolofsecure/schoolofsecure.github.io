@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import SiteNav from '../components/SiteNav'
 import SiteFooter from '../components/SiteFooter'
@@ -17,8 +17,17 @@ const SITUATIONS = [
   { id: 'other', label: 'Other' },
 ]
 
+const SOURCES = [
+  { id: 'linkedin', label: 'LinkedIn' },
+  { id: 'friend', label: 'Friend or recommendation' },
+  { id: 'search', label: 'Search' },
+  { id: 'blog', label: 'Blog' },
+  { id: 'newsletter', label: 'Newsletter' },
+  { id: 'instagram', label: 'Instagram' },
+  { id: 'other', label: 'Other' },
+]
+
 const STEPS = [
-  'intro',
   'serious',
   'location',
   'situation',
@@ -28,27 +37,83 @@ const STEPS = [
   'contact',
 ]
 
+const DRAFT_KEY = 'academyInterestDraft'
+const DRAFT_VERSION = 2
+
+const emptyForm = {
+  serious: '',
+  location: '',
+  situation: '',
+  situationOther: '',
+  background: '',
+  source: '',
+  sourceOther: '',
+  whyNow: '',
+  fullName: '',
+  email: '',
+}
+
+function readDraft() {
+  try {
+    const raw = localStorage.getItem(DRAFT_KEY)
+    if (!raw) return null
+    const data = JSON.parse(raw)
+    if (!data || typeof data.stepIndex !== 'number' || !data.form) return null
+    let stepIndex = data.stepIndex
+    // v1 drafts included an intro step at index 0
+    if (!data.v || data.v < DRAFT_VERSION) {
+      stepIndex = Math.max(0, stepIndex - 1)
+    }
+    if (stepIndex < 0 || stepIndex >= STEPS.length) return null
+    return { ...data, stepIndex }
+  } catch {
+    return null
+  }
+}
+
+function writeDraft(stepIndex, form) {
+  try {
+    localStorage.setItem(
+      DRAFT_KEY,
+      JSON.stringify({ v: DRAFT_VERSION, stepIndex, form, savedAt: Date.now() }),
+    )
+  } catch {
+    /* private mode / blocked storage */
+  }
+}
+
+function clearDraft() {
+  try {
+    localStorage.removeItem(DRAFT_KEY)
+  } catch {
+    /* ignore */
+  }
+}
+
 export default function AcademyApply() {
   const [stepIndex, setStepIndex] = useState(0)
   const [sending, setSending] = useState(false)
   const [submitError, setSubmitError] = useState('')
   const [submitted, setSubmitted] = useState(false)
   const [declined, setDeclined] = useState(false)
-  const [form, setForm] = useState({
-    serious: '',
-    location: '',
-    situation: '',
-    situationOther: '',
-    background: '',
-    source: '',
-    whyNow: '',
-    fullName: '',
-    email: '',
-  })
+  const [hasDraft, setHasDraft] = useState(false)
+  const [draftReady, setDraftReady] = useState(false)
+  const [form, setForm] = useState(emptyForm)
+
+  useEffect(() => {
+    setHasDraft(!!readDraft())
+    setDraftReady(true)
+  }, [])
+
+  useEffect(() => {
+    if (!draftReady || submitted || declined || hasDraft) return
+    writeDraft(stepIndex, form)
+  }, [form, stepIndex, submitted, declined, draftReady, hasDraft])
 
   const step = STEPS[stepIndex]
-  const questionSteps = STEPS.length - 1
-  const progress = step === 'intro' ? 0 : Math.round((stepIndex / questionSteps) * 100)
+  const questionNumber = stepIndex + 1
+  const questionTotal = STEPS.length
+  const progress = Math.round((questionNumber / questionTotal) * 100)
 
   const setField = (name, value) => {
     setForm((prev) => ({ ...prev, [name]: value }))
@@ -58,14 +123,39 @@ export default function AcademyApply() {
   const goNext = () => setStepIndex((i) => Math.min(i + 1, STEPS.length - 1))
   const goBack = () => setStepIndex((i) => Math.max(i - 1, 0))
 
+  const resumeDraft = () => {
+    const draft = readDraft()
+    if (!draft) {
+      setHasDraft(false)
+      return
+    }
+    setForm({ ...emptyForm, ...draft.form })
+    setStepIndex(draft.stepIndex)
+    setHasDraft(false)
+    setSubmitError('')
+  }
+
+  const startFresh = () => {
+    clearDraft()
+    setHasDraft(false)
+    setForm(emptyForm)
+    setStepIndex(0)
+    setSubmitError('')
+  }
+
   const handleSerious = (value) => {
-    setField('serious', value)
+    const nextForm = { ...form, serious: value }
+    setForm(nextForm)
+    setSubmitError('')
     if (value === 'no') {
+      clearDraft()
       setDeclined(true)
       return
     }
     setDeclined(false)
-    goNext()
+    const nextIndex = Math.min(stepIndex + 1, STEPS.length - 1)
+    setStepIndex(nextIndex)
+    writeDraft(nextIndex, nextForm)
   }
 
   const canContinue = () => {
@@ -77,7 +167,7 @@ export default function AcademyApply() {
       case 'background':
         return form.background.trim().length > 20
       case 'source':
-        return form.source.trim().length > 2
+        return form.source && (form.source !== 'other' || form.sourceOther.trim().length > 1)
       case 'whyNow':
         return form.whyNow.trim().length > 40
       case 'contact':
@@ -89,10 +179,6 @@ export default function AcademyApply() {
 
   const handleContinue = async (e) => {
     e?.preventDefault?.()
-    if (step === 'intro') {
-      goNext()
-      return
-    }
     if (!canContinue()) {
       setSubmitError('Please give a fuller answer before continuing.')
       return
@@ -110,6 +196,11 @@ export default function AcademyApply() {
           ? `Other: ${form.situationOther}`
           : SITUATIONS.find((s) => s.id === form.situation)?.label || form.situation
 
+      const sourceLabel =
+        form.source === 'other'
+          ? `Other: ${form.sourceOther}`
+          : SOURCES.find((s) => s.id === form.source)?.label || form.source
+
       await submitToFormSubmit({
         fullName: form.fullName,
         email: form.email,
@@ -117,12 +208,13 @@ export default function AcademyApply() {
         location: form.location,
         situation: situationLabel,
         background: form.background,
-        source: form.source,
+        source: sourceLabel,
         whyNow: form.whyNow,
         request: 'Academy interest',
         _subject: `Iterali Academy interest: ${form.fullName}`,
         _replyto: form.email,
       })
+      clearDraft()
       setSubmitted(true)
     } catch (_) {
       setSubmitError('Could not send your form. Please try again in a moment.')
@@ -143,9 +235,21 @@ export default function AcademyApply() {
       <SiteNav />
 
       <section className="academy-apply" aria-labelledby="academy-apply-title">
-        {step !== 'intro' && !submitted && !declined && (
-          <div className="academy-apply-progress" aria-hidden="true">
-            <span style={{ width: `${progress}%` }} />
+        {!submitted && !declined && !hasDraft && (
+          <div className="academy-apply-progress-wrap">
+            <p className="academy-apply-progress-label" id="academy-apply-progress-label">
+              Question {questionNumber} of {questionTotal}
+            </p>
+            <div
+              className="academy-apply-progress"
+              role="progressbar"
+              aria-valuemin={1}
+              aria-valuemax={questionTotal}
+              aria-valuenow={questionNumber}
+              aria-labelledby="academy-apply-progress-label"
+            >
+              <span style={{ width: `${progress}%` }} />
+            </div>
           </div>
         )}
 
@@ -176,25 +280,33 @@ export default function AcademyApply() {
               </Link>
             </div>
           </div>
-        ) : step === 'intro' ? (
+        ) : hasDraft ? (
           <div className="academy-apply-card academy-apply-panel">
             <p className="landing-path-label">Academy interest</p>
-            <h1 id="academy-apply-title" className="academy-apply-title">Share your interest in the Iterali Academy</h1>
+            <h1 id="academy-apply-title" className="academy-apply-title">Continue where you left off?</h1>
             <p className="academy-apply-lead">
-              This free form helps us understand who might join an early practice group. We read every answer carefully. Vague or one-line answers make it hard to have a useful conversation, so please take a few minutes. No purchase and no enrolment happen on this page.
+              You have answers saved on this device. You can pick up from there, or start again.
             </p>
-            <AcademyCohortNote className="academy-cohort-note--apply" />
             <div className="academy-apply-actions">
-              <button type="button" className="academy-start-btn" onClick={handleContinue}>
-                Start
+              <button type="button" className="academy-start-btn" onClick={resumeDraft}>
+                Continue where you left off
               </button>
-              <p className="academy-apply-meta">Takes about 5 to 7 minutes. Free, with no obligation.</p>
+              <button type="button" className="btn btn-secondary teams-btn" onClick={startFresh}>
+                Start fresh
+              </button>
             </div>
           </div>
         ) : (
           <form className="academy-apply-card academy-apply-panel" onSubmit={handleContinue} onKeyDown={onKeyDown}>
             {step === 'serious' && (
               <>
+                <p className="landing-path-label">Academy interest</p>
+                <h1 id="academy-apply-title" className="academy-apply-title">Share your interest in the Iterali Academy</h1>
+                <p className="academy-apply-lead">
+                  We read every answer carefully. Vague or one-line answers make it hard to have a useful conversation, so please take a few minutes. No purchase and no enrolment happen on this page.
+                </p>
+                <AcademyCohortNote className="academy-cohort-note--apply" />
+                <p className="academy-apply-meta">Takes about five minutes. Free, with no obligation. Progress is saved on this device as you go.</p>
                 <h2 className="academy-apply-step-title">
                   Are you serious about building calm, confident habits online, and ready to practise?
                 </h2>
@@ -292,22 +404,33 @@ export default function AcademyApply() {
             {step === 'source' && (
               <>
                 <h2 className="academy-apply-step-title">How did you first hear about the Iterali Academy?</h2>
-                <p className="academy-apply-step-lead">
-                  e.g. friend recommendation, LinkedIn, blog article, search, newsletter, Instagram, other.
-                </p>
-                <label className="academy-apply-field">
-                  <span className="visually-hidden">How you heard about us</span>
-                  <input
-                    className="input"
-                    type="text"
-                    name="source"
-                    required
-                    placeholder="Type your answer here..."
-                    value={form.source}
-                    onChange={(e) => setField('source', e.target.value)}
-                    autoFocus
-                  />
-                </label>
+                <p className="academy-apply-step-lead">One tap is enough. Pick the closest option.</p>
+                <div className="academy-apply-choices" role="radiogroup" aria-label="How you heard about us">
+                  {SOURCES.map((item, i) => (
+                    <button
+                      key={item.id}
+                      type="button"
+                      className={`academy-apply-choice${form.source === item.id ? ' is-selected' : ''}`}
+                      onClick={() => setField('source', item.id)}
+                    >
+                      <span className="academy-apply-choice-key">{String.fromCharCode(65 + i)}</span>
+                      <span>{item.label}</span>
+                    </button>
+                  ))}
+                </div>
+                {form.source === 'other' && (
+                  <label className="academy-apply-field">
+                    <span className="visually-hidden">Please describe</span>
+                    <input
+                      className="input"
+                      type="text"
+                      placeholder="Please describe"
+                      value={form.sourceOther}
+                      onChange={(e) => setField('sourceOther', e.target.value)}
+                      autoFocus
+                    />
+                  </label>
+                )}
               </>
             )}
 
@@ -343,6 +466,10 @@ export default function AcademyApply() {
                 <h2 className="academy-apply-step-title">How can we reach you?</h2>
                 <p className="academy-apply-step-lead">
                   If a conversation would help, we will use this to send a calendar link for a short call.
+                </p>
+                <p className="teams-why-ask">
+                  Why we ask: name and email so we can reply. We do not sell your details or use this form for phishing tests. There is no payment on this page; the next step is a short conversation if it seems useful. See our{' '}
+                  <Link to="/privacy">Privacy Policy</Link>.
                 </p>
                 <label className="academy-apply-field">
                   Full name

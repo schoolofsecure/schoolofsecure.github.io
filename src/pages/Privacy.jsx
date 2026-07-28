@@ -57,6 +57,9 @@ const Privacy = () => {
                 <strong>Newsletter:</strong> email address.
               </li>
               <li>
+                <strong>Personal contact form:</strong> name, email and message.
+              </li>
+              <li>
                 <strong>Teams contact requests:</strong> name, work email, company, team size and optional message.
               </li>
               <li>
@@ -76,7 +79,7 @@ const Privacy = () => {
                 Sending the newsletter if you subscribe (consent — GDPR Article 6(1)(a)).
               </li>
               <li>
-                Responding to team access requests (pre-contractual steps / legitimate interest — GDPR Article 6(1)(b)/(f)).
+                Responding to personal and team contact requests (pre-contractual steps / legitimate interest — GDPR Article 6(1)(b)/(f)).
               </li>
               <li>
                 Account sign-in and saving progress when you use signed-in features (consent / contract performance — GDPR Article 6(1)(a)/(b)).
@@ -107,7 +110,7 @@ const Privacy = () => {
             <h2>5. Processors and data transfers</h2>
             <ul>
               <li>
-                <strong>FormSubmit</strong> — to deliver Academy applications, newsletter sign-ups and Teams contact requests to us.
+                <strong>FormSubmit</strong> — to deliver Academy interest forms, newsletter sign-ups, personal contact and Teams contact requests to us.
               </li>
               <li>
                 <strong>Google Firebase</strong> (Authentication and data storage) — for sign-in and saving progress when you use an account.

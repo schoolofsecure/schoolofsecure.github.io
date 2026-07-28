@@ -19,6 +19,7 @@ if (!existsSync(indexHtml)) {
 const routes = [
   'academy',
   'academy/apply',
+  'contact',
   'teams',
   'blog',
   'blog/pause-before-you-continue',

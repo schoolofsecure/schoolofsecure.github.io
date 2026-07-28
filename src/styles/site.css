@@ -275,6 +275,10 @@
   gap: 14px;
 }
 
+.contact-personal-form {
+  grid-template-columns: 1fr 1fr;
+}
+
 .teams-contact-form label {
   display: flex;
   flex-direction: column;
@@ -652,6 +656,19 @@
   margin-top: 28px;
 }
 
+.academy-steps-cta--after-faq {
+  margin-top: 24px;
+  justify-content: flex-start;
+}
+
+.academy-steps-cta--early {
+  margin: 24px 0 8px;
+}
+
+.academy-mobile-cta {
+  display: none;
+}
+
 .academy-steps-cta .academy-start-btn,
 a.academy-start-btn,
 button.academy-start-btn {
@@ -866,9 +883,21 @@ button.academy-start-btn:disabled {
   color: var(--ink);
 }
 
+.academy-apply-progress-wrap {
+  margin: 0 0 24px;
+}
+
+.academy-apply-progress-label {
+  margin: 0 0 8px;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--muted);
+}
+
 .academy-apply-progress {
   height: 4px;
-  margin: 0 0 24px;
+  margin: 0;
   border-radius: 999px;
   background: rgba(207, 230, 255, 0.12);
   overflow: hidden;
@@ -990,5 +1019,45 @@ button.academy-start-btn:disabled {
   .academy-step {
     grid-template-columns: 1fr;
     gap: 12px;
+  }
+
+  .academy-mobile-cta {
+    display: flex;
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 45;
+    justify-content: center;
+    padding: 12px 16px calc(12px + env(safe-area-inset-bottom, 0px));
+    background: rgba(11, 18, 28, 0.94);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-top: 1px solid rgba(207, 230, 255, 0.12);
+  }
+
+  .academy-mobile-cta .academy-start-btn {
+    width: 100%;
+    max-width: 420px;
+    min-width: 0;
+  }
+
+  .academy-steps-cta--after-faq {
+    justify-content: stretch;
+  }
+
+  .academy-steps-cta--after-faq .academy-start-btn,
+  .academy-steps-cta--early .academy-start-btn {
+    width: 100%;
+    max-width: none;
+    min-width: 0;
+  }
+
+  .teams-page--academy {
+    padding-bottom: 96px;
+  }
+
+  .teams-page--academy .cookie-banner {
+    bottom: calc(76px + env(safe-area-inset-bottom, 0px));
   }
 }

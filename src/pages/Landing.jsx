@@ -200,7 +200,7 @@ const Landing = () => {
           <div className="landing-founder-copy">
             <p className="landing-founder-label">Led by Erika Papp-Kovacs</p>
             <p className="landing-founder-text">
-              Final-year law student and economist, with a digital trust and security systems background (DigiCert, Entrust nShield, Cybersecurity Specialist). She helps organisations protect identities, transactions and critical systems online.
+              Final-year law student and economist, with a background in digital trust and security systems (DigiCert, Entrust nShield, Cybersecurity Specialist).
             </p>
             <p className="landing-founder-mission">
               I built Iterali for people who want to feel calm online, not scared or overwhelmed by security training.

@@ -1346,13 +1346,20 @@ button.academy-start-btn:disabled {
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
     border-top: 1px solid rgba(207, 230, 255, 0.12);
-    transition: transform 0.2s ease, opacity 0.2s ease;
+    opacity: 0;
+    pointer-events: none;
+    transform: none;
+  }
+
+  .academy-mobile-cta.is-ready {
+    opacity: 1;
+    pointer-events: auto;
   }
 
   .academy-mobile-cta.is-hidden {
-    transform: translateY(110%);
     opacity: 0;
     pointer-events: none;
+    visibility: hidden;
   }
 
   .academy-mobile-cta .academy-start-btn {

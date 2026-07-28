@@ -51,22 +51,35 @@ const faqs = [
 
 function AcademyMobileCta() {
   const [hidden, setHidden] = useState(false)
+  const [ready, setReady] = useState(false)
 
   useEffect(() => {
-    const footer = document.querySelector('.teams-page--academy .site-footer')
-    if (!footer) return undefined
-    const io = new IntersectionObserver(
-      ([entry]) => setHidden(entry.isIntersecting),
-      { threshold: 0.05, rootMargin: '0px 0px -8px 0px' },
-    )
-    io.observe(footer)
-    return () => io.disconnect()
+    window.scrollTo(0, 0)
+    document.documentElement.scrollTop = 0
+    document.body.scrollTop = 0
+
+    let io
+    const startId = window.requestAnimationFrame(() => {
+      setReady(true)
+      const footer = document.querySelector('.teams-page--academy .site-footer')
+      if (!footer) return
+      io = new IntersectionObserver(
+        ([entry]) => setHidden(entry.isIntersecting),
+        { threshold: 0.15, rootMargin: '0px 0px -24px 0px' },
+      )
+      io.observe(footer)
+    })
+
+    return () => {
+      window.cancelAnimationFrame(startId)
+      io?.disconnect()
+    }
   }, [])
 
   if (typeof document === 'undefined') return null
   return createPortal(
     <div
-      className={`academy-mobile-cta${hidden ? ' is-hidden' : ''}`}
+      className={`academy-mobile-cta${ready ? ' is-ready' : ''}${hidden ? ' is-hidden' : ''}`}
       role="region"
       aria-label="Share interest"
       aria-hidden={hidden}

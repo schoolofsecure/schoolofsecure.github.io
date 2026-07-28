@@ -99,7 +99,7 @@ export default function Academy() {
           <aside className="academy-trust" aria-label="Why this is safe to apply">
             <h2 className="academy-trust-title">Why this is safe to apply</h2>
             <ul className="academy-trust-list">
-              <li>{ACADEMY_COHORT.spotsRemaining} seats</li>
+              <li>{ACADEMY_COHORT.spotsRemaining} places</li>
               <li>6 months</li>
               <li>Fit call before you pay</li>
               <li>We usually reply within a day</li>

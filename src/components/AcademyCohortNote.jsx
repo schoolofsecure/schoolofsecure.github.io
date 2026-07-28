@@ -5,7 +5,7 @@ export default function AcademyCohortNote({ className = '' }) {
   const { spotsRemaining, startLabel } = ACADEMY_COHORT
   return (
     <p className={`academy-cohort-note${className ? ` ${className}` : ''}`}>
-      <strong>Only {spotsRemaining} seats for the next cohort</strong>
+      <strong>Only {spotsRemaining} places for the next cohort</strong>
       {' '}· Starts {startLabel}
     </p>
   )

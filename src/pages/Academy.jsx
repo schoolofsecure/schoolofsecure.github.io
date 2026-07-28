@@ -29,19 +29,19 @@ const steps = [
 const faqs = [
   {
     q: 'How much does it cost?',
-    a: 'About €11 a day for calm, confident habits online — €2,000 for the six-month cohort. That covers live sessions, guided practice and personal coaching in a small group. We confirm fit on the call before you join.',
+    a: 'The programme fee is €2,000 for six months of live sessions, guided practice and personal coaching in a small cohort. That works out to about €11 a day. We confirm fit on the call before you join.',
   },
   {
     q: 'How much time per week does it take?',
-    a: 'Most people spend around 3–6 hours a week practising alongside the programme. That includes live sessions, short materials, and — most importantly — applying what you learn in real everyday decisions.\n\nSome weeks will be lighter, some fuller, depending on where you are. The programme is designed to flex around your life, not the other way around.',
+    a: 'Most members spend around 3–6 hours a week between live sessions and guided practice. We keep sessions focused, so you can fit them around a busy schedule.',
   },
   {
     q: "What if I'm still working a full-time job?",
-    a: 'That is common. The Academy is built for busy people. Sessions are live but catch-up options exist, and the practice fits around a normal week rather than asking you to quit everything else.',
+    a: 'Yes, you can join with a full-time job. Sessions are scheduled with busy professionals in mind, and you can catch up with guided materials if you miss a live session.',
   },
   {
     q: 'Is there a refund policy?',
-    a: 'The cohort fee is €2,000. We talk through fit on the call before you join, so there are fewer surprises. If something still does not feel right after you start, reach out through the contact form and we will look at your situation fairly.',
+    a: 'We confirm fit on a call before you pay, so there are fewer surprises. If something still does not feel right after you start, contact us and we will look at your situation fairly.',
   },
   {
     q: 'How long is the programme?',
@@ -49,11 +49,11 @@ const faqs = [
   },
   {
     q: "What happens if I can't make a cohort event?",
-    a: "Life happens. If you miss a live session, you can catch up with recordings or notes where available, and bring questions to the next live coaching session or group check-in so you stay on track.",
+    a: 'Life happens. If you miss a live session, you can catch up with recordings or notes where available, and bring questions to the next live coaching session or group check-in so you stay on track.',
   },
   {
     q: "I'm not sure where I struggle yet. Can I still apply?",
-    a: 'Yes. You do not need a clear “problem statement” or tech background. The application and call help us understand where you are — and whether the Academy is the right next step for you.',
+    a: 'Yes. The application and fit call help you clarify where you feel unsure, and we use that to tailor your practice path.',
   },
 ]
 
@@ -91,9 +91,11 @@ export default function Academy() {
           <aside className="academy-investment" aria-label="Investment">
             <p className="academy-investment-daily">About €11 a day</p>
             <p className="academy-investment-lead">
-              for calm, confident habits online. Six months of live sessions, guided practice and personal coaching in a small cohort.
+              for calm, confident habits in your everyday online life.
             </p>
-            <p className="academy-investment-total">€2,000 — an investment in yourself.</p>
+            <p className="academy-investment-total">
+              €2,000 for six months of live sessions, guided practice and personal coaching — an investment in habits that protect your time, data and peace of mind.
+            </p>
           </aside>
 
           <aside className="academy-trust" aria-label="Why this is safe to apply">

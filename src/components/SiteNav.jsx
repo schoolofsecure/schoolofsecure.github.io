@@ -7,6 +7,7 @@ import { useAuth } from '../contexts/AuthContext'
 const navLinks = [
   { to: '/', label: 'Individual' },
   { to: '/teams', label: 'Teams' },
+  { to: '/about', label: 'About' },
   { to: '/blog', label: 'Blog' },
 ]
 
@@ -141,6 +142,7 @@ export default function SiteNav() {
   }
 
   return (
+    <div className="site-header-bleed">
     <header className="site-header">
       <BrandLogo />
       <nav className="site-header-nav" aria-label="Main">
@@ -283,5 +285,6 @@ export default function SiteNav() {
         )}
       </div>
     </header>
+    </div>
   )
 }

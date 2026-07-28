@@ -230,7 +230,7 @@ export default function AcademyApply() {
   }
 
   return (
-    <div className="container teams-page">
+    <div className="container teams-page teams-page--apply">
       <SiteNav />
 
       <section className="academy-apply" aria-labelledby="academy-apply-title">

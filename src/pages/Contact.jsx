@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import SiteNav from '../components/SiteNav'
 import SiteFooter from '../components/SiteFooter'
 import CookieBanner from '../components/CookieBanner'
-import { submitToFormSubmit, FORMSUBMIT_EMAIL } from '../utils/formSubmit'
+import { submitToFormSubmit } from '../utils/formSubmit'
 import '../styles/site.css'
 
 export default function Contact() {
@@ -54,9 +54,7 @@ export default function Contact() {
             Questions about the Academy, the site, or anything else? Send a short message. A real person will reply, usually within a day.
           </p>
           <p className="teams-why-ask">
-            Why we ask: name and email so we can reply. You can also write to{' '}
-            <a href={`mailto:${FORMSUBMIT_EMAIL}`}>{FORMSUBMIT_EMAIL}</a>.
-            {' '}Looking for team access? Use the{' '}
+            Why we ask: name and email so we can reply. Looking for team access? Use the{' '}
             <Link to="/teams#contact">teams form</Link>.
           </p>
 

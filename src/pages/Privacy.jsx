@@ -1,34 +1,10 @@
-import React, { useState } from 'react'
+import React from 'react'
+import { Link } from 'react-router-dom'
 import SiteNav from '../components/SiteNav'
 import SiteFooter from '../components/SiteFooter'
 import CookieBanner from '../components/CookieBanner'
 
 const Privacy = () => {
-  const contactEmail = 'erikapappkovacs@gmail.com'
-  const [revealedEmails, setRevealedEmails] = useState(false)
-
-  const emailOrReveal = (
-    revealedEmails ? (
-      <a href={`mailto:${contactEmail}`}>{contactEmail}</a>
-    ) : (
-      <span
-        className="obf-emails"
-        onClick={() => setRevealedEmails(true)}
-        onKeyDown={(e) => {
-          if (e.key === 'Enter' || e.key === ' ') {
-            e.preventDefault()
-            setRevealedEmails(true)
-          }
-        }}
-        role="button"
-        tabIndex={0}
-        style={{ cursor: 'pointer', textDecoration: 'underline' }}
-      >
-        [show email address]
-      </span>
-    )
-  )
-
   return (
     <div className="container">
       <SiteNav />
@@ -42,7 +18,8 @@ const Privacy = () => {
             <h2>1. Data controller</h2>
             <p>
               The data controller for Iterali (the Academy programme, website, team offerings and related learning tools) is{' '}
-              <strong>Papp-Kovacs Erika</strong>. Contact: {emailOrReveal}
+              <strong>Papp-Kovacs Erika</strong>. Contact:{' '}
+              <Link to="/contact">use the contact form</Link>.
             </p>
           </section>
 
@@ -149,7 +126,10 @@ const Privacy = () => {
 
           <section className="section">
             <h2>9. Contact</h2>
-            <p>For privacy-related inquiries: {emailOrReveal}</p>
+            <p>
+              For privacy-related inquiries:{' '}
+              <Link to="/contact">use the contact form</Link>.
+            </p>
           </section>
 
           <section className="section">

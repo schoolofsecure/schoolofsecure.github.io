@@ -20,6 +20,7 @@ const routes = [
   'academy',
   'academy/apply',
   'contact',
+  'about',
   'teams',
   'blog',
   'blog/pause-before-you-continue',

@@ -119,11 +119,11 @@ const Landing = () => {
       <section className="landing-hero landing-hero--centered" aria-label="Introduction">
         <div className="landing-hero-copy landing-hero-copy--centered">
           <h1 className="landing-hero-title">
-            <span className="landing-hero-title-line landing-hero-title-line--primary">Live online with calm confidence</span>
+            <span className="landing-hero-title-line landing-hero-title-line--primary">Live online with calm confidence,</span>
             <span className="landing-hero-title-line landing-hero-title-line--emphasis">
-              when every decision{' '}
+              knowing your decisions{' '}
               <span className="landing-hero-highlight">
-                feels right
+                feel right
                 <svg className="landing-hero-highlight-wave" viewBox="0 0 200 16" preserveAspectRatio="none" aria-hidden="true">
                   <path
                     d="M4 11 C48 3, 72 14, 120 8 S160 4, 196 9"

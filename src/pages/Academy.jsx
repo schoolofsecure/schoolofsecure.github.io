@@ -39,7 +39,7 @@ const faqs = [
   },
   {
     q: 'How long is the programme?',
-    a: 'Each cohort runs for a set number of weeks with live sessions, guided practice and support. On the call we will walk you through the current cohort length and calendar so you know exactly what you are joining.',
+    a: 'Each cohort runs for about 6 months, with live sessions, guided practice and support. On the call we will walk you through the current calendar so you know exactly what you are joining.',
   },
   {
     q: "What happens if I can't make a cohort event?",

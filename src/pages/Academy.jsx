@@ -4,6 +4,8 @@ import SiteNav from '../components/SiteNav'
 import SiteFooter from '../components/SiteFooter'
 import CookieBanner from '../components/CookieBanner'
 import AcademyCohortNote from '../components/AcademyCohortNote'
+import { FOUNDER_LINKEDIN_URL } from '../data/brand'
+import { ACADEMY_COHORT } from '../data/academyCohort'
 import '../styles/site.css'
 
 const steps = [
@@ -26,6 +28,10 @@ const steps = [
 
 const faqs = [
   {
+    q: 'How much does it cost?',
+    a: 'About €11 a day for calm, confident habits online — €2,000 for the six-month cohort. That covers live sessions, guided practice and personal coaching in a small group. We confirm fit on the call before you join.',
+  },
+  {
     q: 'How much time per week does it take?',
     a: 'Most people spend around 3–6 hours a week practising alongside the programme. That includes live sessions, short materials, and — most importantly — applying what you learn in real everyday decisions.\n\nSome weeks will be lighter, some fuller, depending on where you are. The programme is designed to flex around your life, not the other way around.',
   },
@@ -35,7 +41,7 @@ const faqs = [
   },
   {
     q: 'Is there a refund policy?',
-    a: 'We talk through fit on the call before you join, so there are fewer surprises. If something still does not feel right after you start, reach out through the contact form and we will look at your situation fairly.',
+    a: 'The cohort fee is €2,000. We talk through fit on the call before you join, so there are fewer surprises. If something still does not feel right after you start, reach out through the contact form and we will look at your situation fairly.',
   },
   {
     q: 'How long is the programme?',
@@ -82,6 +88,24 @@ export default function Academy() {
           </p>
           <AcademyCohortNote />
 
+          <aside className="academy-investment" aria-label="Investment">
+            <p className="academy-investment-daily">About €11 a day</p>
+            <p className="academy-investment-lead">
+              for calm, confident habits online. Six months of live sessions, guided practice and personal coaching in a small cohort.
+            </p>
+            <p className="academy-investment-total">€2,000 — an investment in yourself.</p>
+          </aside>
+
+          <aside className="academy-trust" aria-label="Why this is safe to apply">
+            <h2 className="academy-trust-title">Why this is safe to apply</h2>
+            <ul className="academy-trust-list">
+              <li>{ACADEMY_COHORT.spotsRemaining} seats</li>
+              <li>6 months</li>
+              <li>Fit call before you pay</li>
+              <li>We usually reply within a day</li>
+            </ul>
+          </aside>
+
           <h2 className="teams-section-title academy-steps-heading">How things progress</h2>
           <ol className="academy-steps-list">
             {steps.map((step) => (
@@ -94,6 +118,16 @@ export default function Academy() {
               </li>
             ))}
           </ol>
+
+          <aside className="academy-founder academy-founder--compact" aria-label="Founder">
+            <p className="academy-founder-compact">
+              Led by Erika Papp-Kovacs ·{' '}
+              <a href={FOUNDER_LINKEDIN_URL} target="_blank" rel="noopener noreferrer">
+                LinkedIn
+              </a>
+            </p>
+          </aside>
+
           <div className="academy-steps-cta">
             <Link to="/academy/apply" className="academy-start-btn">
               Start the application

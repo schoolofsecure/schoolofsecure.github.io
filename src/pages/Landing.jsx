@@ -5,6 +5,7 @@ import SiteFooter from '../components/SiteFooter'
 import CookieBanner from '../components/CookieBanner'
 import { submitToFormSubmit } from '../utils/formSubmit'
 import { getLatestBlogPosts } from '../data/blogPosts'
+import { FOUNDER_LINKEDIN_URL } from '../data/brand'
 
 const popularPosts = getLatestBlogPosts(4)
 const POPULAR_VISIBLE = 3
@@ -188,6 +189,32 @@ const Landing = () => {
             </li>
           ))}
         </ul>
+        <aside className="landing-founder" aria-label="Founder">
+          <img
+            className="landing-founder-photo"
+            src="/images/erika-papp-kovacs.jpg"
+            alt="Erika Papp-Kovacs"
+            width="96"
+            height="96"
+          />
+          <div className="landing-founder-copy">
+            <p className="landing-founder-label">Led by Erika Papp-Kovacs</p>
+            <p className="landing-founder-text">
+              Final-year law student and economist, with a digital trust and security systems background (DigiCert, Entrust nShield, Cybersecurity Specialist). Building Iterali so busy people can practise calm decisions online — without fear-based training.
+            </p>
+            <p className="landing-founder-languages">
+              Languages: <span aria-label="English">🇬🇧</span> · <span aria-label="German">🇩🇪</span>
+            </p>
+            <a
+              className="landing-founder-link"
+              href={FOUNDER_LINKEDIN_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              LinkedIn
+            </a>
+          </div>
+        </aside>
         <div className="landing-academy-cta">
           <Link to="/academy" className="btn btn-primary landing-hero-btn">
             Apply to the Academy

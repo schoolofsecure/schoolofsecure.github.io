@@ -1,4 +1,5 @@
 export const LINKEDIN_URL = 'https://www.linkedin.com/company/iterali'
+export const FOUNDER_LINKEDIN_URL = 'https://www.linkedin.com/in/erika-papp-kovacs'
 
 export const howWeWork = {
   title: 'Remote-friendly work, on our terms',

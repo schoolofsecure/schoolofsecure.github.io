@@ -464,6 +464,82 @@ header {
     margin-top: 32px;
 }
 
+.landing-founder {
+    margin: 36px auto 0;
+    max-width: 42rem;
+    padding: 20px 22px;
+    border-radius: 14px;
+    border: 1px solid rgba(207, 230, 255, 0.12);
+    background: rgba(11, 18, 28, 0.92);
+    text-align: left;
+    display: flex;
+    gap: 18px;
+    align-items: flex-start;
+}
+
+.landing-founder-photo {
+    flex: 0 0 auto;
+    width: 88px;
+    height: 88px;
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: center center;
+    border: 2px solid rgba(0, 229, 255, 0.35);
+    background: #fdddb4;
+}
+
+.landing-founder-copy {
+    min-width: 0;
+    flex: 1;
+}
+
+.landing-founder-label {
+    margin: 0 0 8px;
+    font-family: Rajdhani, Inter, sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--ink);
+}
+
+.landing-founder-text {
+    margin: 0 0 10px;
+    color: rgba(230, 246, 255, 0.8);
+    font-size: 15px;
+    line-height: 1.55;
+}
+
+.landing-founder-languages {
+    margin: 0 0 12px;
+    color: rgba(230, 246, 255, 0.78);
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.4;
+}
+
+.landing-founder-link {
+    color: var(--neon);
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.landing-founder-link:hover {
+    text-decoration: underline;
+}
+
+@media (max-width: 520px) {
+    .landing-founder {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .landing-founder-photo {
+        width: 96px;
+        height: 96px;
+    }
+}
+
 .landing-popular {
     padding: 8px 0 64px;
     text-align: left;
@@ -1438,21 +1514,32 @@ header {
     }
 
     .cookie-banner {
-        left: 12px;
+        left: auto;
         right: 12px;
         bottom: max(12px, env(safe-area-inset-bottom));
-        max-width: none;
+        max-width: min(240px, calc(100vw - 24px));
         display: flex;
         flex-direction: column;
     }
 
+    .cookie-notice {
+        padding: 10px 12px 8px;
+    }
+
+    .cookie-text {
+        font-size: 11px;
+        line-height: 1.4;
+    }
+
     .cookie-accept {
-        width: 100%;
-        min-height: 44px;
+        width: auto;
+        min-height: 40px;
+        padding: 8px 14px;
     }
 
     .cookie-banner-action {
-        justify-content: stretch;
+        justify-content: flex-end;
+        padding: 8px 12px 10px;
     }
 
     .btn {

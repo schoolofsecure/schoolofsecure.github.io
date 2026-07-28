@@ -42,7 +42,7 @@ const Privacy = () => {
             <h2>1. Data controller</h2>
             <p>
               The data controller for Iterali (the Academy programme, website, team offerings and related learning tools) is{' '}
-              <strong>Papp‑Kovács Erika</strong>. Contact: {emailOrReveal}
+              <strong>Papp-Kovacs Erika</strong>. Contact: {emailOrReveal}
             </p>
           </section>
 

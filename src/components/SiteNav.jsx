@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
+import { createPortal } from 'react-dom'
 import { Link, useLocation, useNavigate, useSearchParams } from 'react-router-dom'
 import BrandLogo from './BrandLogo'
 import { useAuth } from '../contexts/AuthContext'
@@ -37,6 +38,8 @@ export default function SiteNav() {
   const { user, registerWithEmail, loginWithEmail, loginWithGoogle, logout } = useAuth()
   const [authPanelOpen, setAuthPanelOpen] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
+  const [menuPos, setMenuPos] = useState({ top: 64, right: 14 })
+  const menuBtnRef = useRef(null)
   const [authMode, setAuthMode] = useState('login')
   const [gdprAgreedInForm, setGdprAgreedInForm] = useState(false)
   const [email, setEmail] = useState('')
@@ -70,6 +73,26 @@ export default function SiteNav() {
     return () => {
       document.removeEventListener('keydown', onKey)
       document.body.style.overflow = ''
+    }
+  }, [menuOpen])
+
+  useEffect(() => {
+    if (!menuOpen) return undefined
+    const updatePos = () => {
+      const btn = menuBtnRef.current
+      if (!btn) return
+      const rect = btn.getBoundingClientRect()
+      setMenuPos({
+        top: Math.round(rect.bottom + 8),
+        right: Math.round(Math.max(12, window.innerWidth - rect.right)),
+      })
+    }
+    updatePos()
+    window.addEventListener('resize', updatePos)
+    window.addEventListener('scroll', updatePos, true)
+    return () => {
+      window.removeEventListener('resize', updatePos)
+      window.removeEventListener('scroll', updatePos, true)
     }
   }, [menuOpen])
 
@@ -155,6 +178,7 @@ export default function SiteNav() {
             </Link>
           )}
           <button
+            ref={menuBtnRef}
             type="button"
             className="site-header-menu-btn"
             aria-label={menuOpen ? 'Close menu' : 'Open menu'}
@@ -168,36 +192,51 @@ export default function SiteNav() {
           </button>
         </div>
 
-        {menuOpen && (
-          <div className="site-mobile-menu" id="siteMobileMenu">
-            <nav className="site-mobile-nav" aria-label="Mobile">
-              {navLinks.map(({ to, label }) => (
-                <Link
-                  key={to}
-                  to={to}
-                  className={isNavActive(location.pathname, to) ? 'active' : undefined}
-                  onClick={() => setMenuOpen(false)}
-                >
-                  {label}
-                </Link>
-              ))}
-            </nav>
-            {!user ? (
-              <Link
-                to={ACADEMY_APPLY_PATH}
-                className="btn btn-primary site-mobile-apply"
+        {menuOpen &&
+          typeof document !== 'undefined' &&
+          createPortal(
+            <>
+              <button
+                type="button"
+                className="site-mobile-menu-backdrop"
+                aria-label="Close menu"
                 onClick={() => setMenuOpen(false)}
+              />
+              <div
+                className="site-mobile-menu site-mobile-menu--portal"
+                id="siteMobileMenu"
+                style={{ top: menuPos.top, right: menuPos.right }}
               >
-                {ACADEMY_APPLY_LABEL}
-              </Link>
-            ) : (
-              <div className="site-mobile-user-links">
-                <Link to="/profile" onClick={() => setMenuOpen(false)}>Profile</Link>
-                {authStatusText && <span className="site-header-status">{authStatusText}</span>}
+                <nav className="site-mobile-nav" aria-label="Mobile">
+                  {navLinks.map(({ to, label }) => (
+                    <Link
+                      key={to}
+                      to={to}
+                      className={isNavActive(location.pathname, to) ? 'active' : undefined}
+                      onClick={() => setMenuOpen(false)}
+                    >
+                      {label}
+                    </Link>
+                  ))}
+                </nav>
+                {!user ? (
+                  <Link
+                    to={ACADEMY_APPLY_PATH}
+                    className="btn btn-primary site-mobile-apply"
+                    onClick={() => setMenuOpen(false)}
+                  >
+                    {ACADEMY_APPLY_LABEL}
+                  </Link>
+                ) : (
+                  <div className="site-mobile-user-links">
+                    <Link to="/profile" onClick={() => setMenuOpen(false)}>Profile</Link>
+                    {authStatusText && <span className="site-header-status">{authStatusText}</span>}
+                  </div>
+                )}
               </div>
-            )}
-          </div>
-        )}
+            </>,
+            document.body,
+          )}
 
         {authPanelOpen && (
           <div

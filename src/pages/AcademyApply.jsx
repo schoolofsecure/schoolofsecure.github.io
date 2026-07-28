@@ -4,7 +4,6 @@ import SiteNav from '../components/SiteNav'
 import SiteFooter from '../components/SiteFooter'
 import CookieBanner from '../components/CookieBanner'
 import { submitToFormSubmit } from '../utils/formSubmit'
-import AcademyCohortNote from '../components/AcademyCohortNote'
 import '../styles/site.css'
 
 const SITUATIONS = [
@@ -287,11 +286,11 @@ export default function AcademyApply() {
             <p className="academy-apply-lead">
               You have answers saved on this device. You can pick up from there, or start again.
             </p>
-            <div className="academy-apply-actions">
+            <div className="academy-apply-actions academy-apply-actions--stack">
               <button type="button" className="academy-start-btn" onClick={resumeDraft}>
                 Continue where you left off
               </button>
-              <button type="button" className="btn btn-secondary teams-btn" onClick={startFresh}>
+              <button type="button" className="btn btn-secondary teams-btn academy-apply-secondary-btn" onClick={startFresh}>
                 Start fresh
               </button>
             </div>
@@ -301,13 +300,7 @@ export default function AcademyApply() {
             {step === 'serious' && (
               <>
                 <p className="landing-path-label">Academy interest</p>
-                <h1 id="academy-apply-title" className="academy-apply-title">Share your interest in the Iterali Academy</h1>
-                <p className="academy-apply-lead">
-                  We read every answer carefully. Vague or one-line answers make it hard to have a useful conversation, so please take a few minutes. No purchase and no enrolment happen on this page.
-                </p>
-                <AcademyCohortNote className="academy-cohort-note--apply" />
-                <p className="academy-apply-meta">Takes about five minutes. Free, with no obligation. Progress is saved on this device as you go.</p>
-                <h2 className="academy-apply-step-title">
+                <h2 className="academy-apply-step-title" id="academy-apply-title">
                   Are you serious about building calm, confident habits online, and ready to practise?
                 </h2>
                 <div className="academy-apply-choices" role="group" aria-label="Commitment">
@@ -325,21 +318,21 @@ export default function AcademyApply() {
 
             {step === 'location' && (
               <>
-                <h2 className="academy-apply-step-title">Where are you based?</h2>
+                <h2 className="academy-apply-step-title">Which country are you in?</h2>
                 <p className="academy-apply-step-lead">
-                  This helps us coordinate live session times across time zones. City and country is ideal.
+                  This helps us coordinate live session times across time zones.
                 </p>
                 <label className="academy-apply-field">
-                  <span className="visually-hidden">Location</span>
+                  <span className="visually-hidden">Country</span>
                   <input
                     className="input"
                     type="text"
                     name="location"
                     required
-                    placeholder="e.g. Budapest, Hungary"
+                    placeholder="e.g. Germany"
                     value={form.location}
                     onChange={(e) => setField('location', e.target.value)}
-                    autoComplete="address-level2"
+                    autoComplete="country-name"
                     autoFocus
                   />
                 </label>

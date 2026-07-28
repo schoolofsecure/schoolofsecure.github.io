@@ -115,9 +115,9 @@ const Landing = () => {
 
   return (
     <div className="landing-page">
+      <div className="container landing-page-body">
       <SiteNav />
 
-      <div className="container landing-page-body">
       <section className="landing-hero landing-hero--centered" aria-label="Introduction">
         <div className="landing-hero-copy landing-hero-copy--centered">
           <h1 className="landing-hero-title">

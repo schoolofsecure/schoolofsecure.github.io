@@ -1,5 +1,6 @@
 # Landing header align + hero support wrap
 
 ## Mit változtattunk
-- Főoldali menüsor: `padding-top: 20px` (mint a többi oldal `container` paddingje).
-- Hero support: a rövid tagok (`No lectures`, `Real scenarios`, `A clear next step`) nem törnek sor közepén — a „step” nem kerül egyedül középre.
+- Individual (`/`): `SiteNav` a `container`-en belül (mint a többi oldal), így a menüsor magassága egyezik.
+- Hero support: a rövid tagok nem törnek sor közepén.
+- Newsletter: email mező magassága a Subscribe gombhoz igazítva (nem a szélesség).

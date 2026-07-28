@@ -109,13 +109,6 @@ header {
     box-sizing: border-box;
 }
 
-.landing-page > .site-header-bleed {
-    padding-top: 20px;
-    padding-left: clamp(16px, 4vw, 40px);
-    padding-right: clamp(16px, 4vw, 40px);
-    box-sizing: border-box;
-}
-
 .site-header-bleed .site-header {
     width: 100%;
     max-width: none;
@@ -724,6 +717,7 @@ header {
     flex-wrap: wrap;
     gap: 10px;
     justify-content: center;
+    align-items: stretch;
 }
 
 .landing-newsletter-input {
@@ -734,6 +728,9 @@ header {
 .landing-newsletter-btn {
     flex: 0 0 auto;
     min-width: 120px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .landing-newsletter-success {
@@ -1357,16 +1354,8 @@ header {
         align-items: stretch;
     }
 
-    .input.landing-newsletter-input {
-        height: 36px;
-        min-height: 36px;
-        max-height: 36px;
-        padding: 6px 12px;
-    }
-
     .landing-newsletter-btn {
         width: 100%;
-        min-height: 40px;
     }
 
     .landing-hero {
@@ -1951,12 +1940,12 @@ header {
 }
 
 .input.landing-newsletter-input {
-    height: 36px;
-    min-height: 36px;
-    max-height: 36px;
-    padding: 6px 12px;
+    height: auto;
+    min-height: 0;
+    max-height: none;
+    padding: 14px 22px;
     font-size: 16px;
-    line-height: 1.2;
+    line-height: 1.25;
     box-sizing: border-box;
 }
 

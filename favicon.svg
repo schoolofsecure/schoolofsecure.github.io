@@ -2,17 +2,13 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Iterali">
   <defs>
     <linearGradient id="r" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#6b5cff"/>
+      <stop offset="0%" stop-color="#7c3aed"/>
       <stop offset="100%" stop-color="#0a7bef"/>
     </linearGradient>
   </defs>
-  <rect width="64" height="64" rx="14" fill="#0b121c"/>
+  <rect width="64" height="64" rx="14" fill="#f4f7fb"/>
   <!-- left < -->
-  <path fill="#0a7bef" d="M25 10 L9 32 L25 54 L32 47 L20 32 L32 17 Z"/>
-  <!-- i stem (thicker, high contrast) -->
-  <rect x="28" y="22" width="8" height="28" rx="1.5" fill="#ffffff"/>
-  <!-- i tittle -->
-  <rect x="27" y="10" width="10" height="7" rx="1.5" fill="#ffffff"/>
+  <path fill="#0a7bef" d="M30 8 L10 32 L30 56 L37 49 L22 32 L37 15 Z"/>
   <!-- right > -->
-  <path fill="url(#r)" d="M39 10 L55 32 L39 54 L32 47 L44 32 L32 17 Z"/>
+  <path fill="url(#r)" d="M34 8 L54 32 L34 56 L27 49 L42 32 L27 15 Z"/>
 </svg>

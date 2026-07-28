@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { Link } from 'react-router-dom'
 import SiteNav from '../components/SiteNav'
@@ -50,10 +50,28 @@ const faqs = [
 ]
 
 function AcademyMobileCta() {
+  const [hidden, setHidden] = useState(false)
+
+  useEffect(() => {
+    const footer = document.querySelector('.teams-page--academy .site-footer')
+    if (!footer) return undefined
+    const io = new IntersectionObserver(
+      ([entry]) => setHidden(entry.isIntersecting),
+      { threshold: 0.05, rootMargin: '0px 0px -8px 0px' },
+    )
+    io.observe(footer)
+    return () => io.disconnect()
+  }, [])
+
   if (typeof document === 'undefined') return null
   return createPortal(
-    <div className="academy-mobile-cta" role="region" aria-label="Share interest">
-      <Link to="/academy/apply" className="academy-start-btn">
+    <div
+      className={`academy-mobile-cta${hidden ? ' is-hidden' : ''}`}
+      role="region"
+      aria-label="Share interest"
+      aria-hidden={hidden}
+    >
+      <Link to="/academy/apply" className="academy-start-btn" tabIndex={hidden ? -1 : undefined}>
         Share your interest
       </Link>
     </div>,

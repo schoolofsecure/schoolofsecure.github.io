@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useLayoutEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import SiteNav from '../components/SiteNav'
 import SiteFooter from '../components/SiteFooter'
@@ -38,6 +38,21 @@ const STEPS = [
 
 const DRAFT_KEY = 'academyInterestDraft'
 const DRAFT_VERSION = 2
+const MIN_BACKGROUND = 20
+const MIN_WHY_NOW = 40
+
+function CharProgress({ value, min }) {
+  const count = value.trim().length
+  const remaining = Math.max(0, min - count)
+  const ready = remaining === 0
+  return (
+    <p className={`academy-apply-char-count${ready ? ' is-ready' : ''}`} aria-live="polite">
+      {ready
+        ? `${count} characters — OK is ready`
+        : `${count} / ${min} characters — ${remaining} more to unlock OK`}
+    </p>
+  )
+}
 
 const emptyForm = {
   serious: '',
@@ -98,6 +113,8 @@ export default function AcademyApply() {
   const [hasDraft, setHasDraft] = useState(false)
   const [draftReady, setDraftReady] = useState(false)
   const [form, setForm] = useState(emptyForm)
+  const panelRef = useRef(null)
+  const progressRef = useRef(null)
 
   useEffect(() => {
     setHasDraft(!!readDraft())
@@ -108,6 +125,22 @@ export default function AcademyApply() {
     if (!draftReady || submitted || declined || hasDraft) return
     writeDraft(stepIndex, form)
   }, [form, stepIndex, submitted, declined, draftReady, hasDraft])
+
+  useLayoutEffect(() => {
+    if (!draftReady || hasDraft || submitted || declined) return
+
+    const resetScroll = () => {
+      window.scrollTo(0, 0)
+      document.documentElement.scrollTop = 0
+      document.body.scrollTop = 0
+    }
+
+    resetScroll()
+    const id = window.requestAnimationFrame(() => {
+      resetScroll()
+    })
+    return () => window.cancelAnimationFrame(id)
+  }, [stepIndex, draftReady, hasDraft, submitted, declined])
 
   const step = STEPS[stepIndex]
   const questionNumber = stepIndex + 1
@@ -164,11 +197,11 @@ export default function AcademyApply() {
       case 'situation':
         return form.situation && (form.situation !== 'other' || form.situationOther.trim().length > 1)
       case 'background':
-        return form.background.trim().length > 20
+        return form.background.trim().length >= MIN_BACKGROUND
       case 'source':
         return form.source && (form.source !== 'other' || form.sourceOther.trim().length > 1)
       case 'whyNow':
-        return form.whyNow.trim().length > 40
+        return form.whyNow.trim().length >= MIN_WHY_NOW
       case 'contact':
         return form.fullName.trim().length > 1 && /.+@.+\..+/.test(form.email)
       default:
@@ -235,7 +268,7 @@ export default function AcademyApply() {
 
       <section className="academy-apply" aria-labelledby="academy-apply-title">
         {!submitted && !declined && !hasDraft && (
-          <div className="academy-apply-progress-wrap">
+          <div className="academy-apply-progress-wrap" ref={progressRef}>
             <p className="academy-apply-progress-label" id="academy-apply-progress-label">
               Question {questionNumber} of {questionTotal}
             </p>
@@ -296,7 +329,16 @@ export default function AcademyApply() {
             </div>
           </div>
         ) : (
-          <form className="academy-apply-card academy-apply-panel" onSubmit={handleContinue} onKeyDown={onKeyDown}>
+          <form
+            ref={panelRef}
+            className={`academy-apply-card academy-apply-panel${step === 'location' || step === 'background' || step === 'whyNow' ? ' academy-apply-panel--tight' : ''}`}
+            onSubmit={handleContinue}
+            onKeyDown={onKeyDown}
+          >
+            <div className="academy-apply-step-body">
+            <p className="academy-apply-step-count">
+              {questionNumber} / {questionTotal}
+            </p>
             {step === 'serious' && (
               <>
                 <p className="landing-path-label">Academy interest</p>
@@ -333,7 +375,6 @@ export default function AcademyApply() {
                     value={form.location}
                     onChange={(e) => setField('location', e.target.value)}
                     autoComplete="country-name"
-                    autoFocus
                   />
                 </label>
               </>
@@ -364,7 +405,6 @@ export default function AcademyApply() {
                       placeholder="Please describe your situation"
                       value={form.situationOther}
                       onChange={(e) => setField('situationOther', e.target.value)}
-                      autoFocus
                     />
                   </label>
                 )}
@@ -383,14 +423,14 @@ export default function AcademyApply() {
                     className="input academy-apply-textarea"
                     name="background"
                     required
-                    rows={6}
+                    rows={4}
                     placeholder="Type your answer here..."
                     value={form.background}
                     onChange={(e) => setField('background', e.target.value)}
-                    autoFocus
                   />
                 </label>
                 <p className="academy-apply-hint">Shift + Enter for a new line. Please write more than a single line.</p>
+                <CharProgress value={form.background} min={MIN_BACKGROUND} />
               </>
             )}
 
@@ -420,7 +460,6 @@ export default function AcademyApply() {
                       placeholder="Please describe"
                       value={form.sourceOther}
                       onChange={(e) => setField('sourceOther', e.target.value)}
-                      autoFocus
                     />
                   </label>
                 )}
@@ -441,16 +480,16 @@ export default function AcademyApply() {
                     className="input academy-apply-textarea"
                     name="whyNow"
                     required
-                    rows={8}
+                    rows={5}
                     placeholder="Type your answer here..."
                     value={form.whyNow}
                     onChange={(e) => setField('whyNow', e.target.value)}
-                    autoFocus
                   />
                 </label>
                 <p className="academy-apply-hint">
                   This is one of your last questions. Take a moment to make sure your earlier answers are complete.
                 </p>
+                <CharProgress value={form.whyNow} min={MIN_WHY_NOW} />
               </>
             )}
 
@@ -474,7 +513,6 @@ export default function AcademyApply() {
                     value={form.fullName}
                     onChange={(e) => setField('fullName', e.target.value)}
                     autoComplete="name"
-                    autoFocus
                   />
                 </label>
                 <label className="academy-apply-field">
@@ -493,6 +531,7 @@ export default function AcademyApply() {
             )}
 
             {submitError && <p className="error">{submitError}</p>}
+            </div>
 
             {step !== 'serious' && (
               <div className="academy-apply-actions academy-apply-actions--split">

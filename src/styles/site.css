@@ -416,6 +416,32 @@
   opacity: 1;
 }
 
+@media (max-width: 900px) {
+  @media (prefers-reduced-motion: no-preference) {
+    .teams-benefit,
+    .teams-how-card {
+      animation: card-glow-pulse 3.4s ease-in-out infinite;
+    }
+
+    .teams-benefit::before,
+    .teams-how-card::before {
+      animation: card-glow-wash 3.4s ease-in-out infinite;
+    }
+
+    .teams-benefit:nth-child(2),
+    .teams-benefit:nth-child(2)::before,
+    .teams-how-card:nth-child(2),
+    .teams-how-card:nth-child(2)::before {
+      animation-delay: 0.55s;
+    }
+
+    .teams-benefit:nth-child(3),
+    .teams-benefit:nth-child(3)::before {
+      animation-delay: 1.1s;
+    }
+  }
+}
+
 .teams-how-card > * {
   position: relative;
   z-index: 1;
@@ -1132,15 +1158,22 @@ button.academy-start-btn:disabled {
 }
 
 .academy-apply-progress-wrap {
-  margin: 0 0 24px;
+  position: sticky;
+  top: 56px;
+  z-index: 30;
+  margin: 0 0 20px;
+  padding: 10px 0 12px;
+  background: rgba(11, 18, 28, 0.94);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
 }
 
 .academy-apply-progress-label {
   margin: 0 0 8px;
-  font-size: 13px;
-  font-weight: 600;
+  font-size: 14px;
+  font-weight: 700;
   letter-spacing: 0.02em;
-  color: var(--muted);
+  color: var(--ink);
 }
 
 .academy-apply-progress {
@@ -1160,6 +1193,20 @@ button.academy-start-btn:disabled {
 
 .academy-apply-panel {
   max-width: 640px;
+}
+
+.academy-apply-step-body {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.academy-apply-step-count {
+  margin: 0 0 10px;
+  font-family: Rajdhani, Inter, sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: #ff9f43;
 }
 
 .academy-apply-meta {
@@ -1223,6 +1270,7 @@ button.academy-start-btn:disabled {
 }
 
 .academy-apply-textarea {
+  height: auto;
   min-height: 140px;
   resize: vertical;
   line-height: 1.55;
@@ -1232,6 +1280,17 @@ button.academy-start-btn:disabled {
   margin: 8px 0 0;
   font-size: 12px;
   color: rgba(148, 163, 184, 0.9);
+}
+
+.academy-apply-char-count {
+  margin: 6px 0 0;
+  font-size: 13px;
+  font-weight: 600;
+  color: rgba(255, 159, 67, 0.95);
+}
+
+.academy-apply-char-count.is-ready {
+  color: var(--ok, #3dd68c);
 }
 
 .academy-apply-actions--split {
@@ -1287,6 +1346,13 @@ button.academy-start-btn:disabled {
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
     border-top: 1px solid rgba(207, 230, 255, 0.12);
+    transition: transform 0.2s ease, opacity 0.2s ease;
+  }
+
+  .academy-mobile-cta.is-hidden {
+    transform: translateY(110%);
+    opacity: 0;
+    pointer-events: none;
   }
 
   .academy-mobile-cta .academy-start-btn {
@@ -1296,10 +1362,94 @@ button.academy-start-btn:disabled {
   }
 
   .teams-page--academy {
-    padding-bottom: 96px;
+    padding-bottom: 110px;
+  }
+
+  .teams-page--academy .site-footer {
+    padding-bottom: calc(28px + env(safe-area-inset-bottom, 0px));
   }
 
   .teams-page--academy .cookie-banner {
     bottom: calc(76px + env(safe-area-inset-bottom, 0px));
+  }
+
+  .teams-page--apply .academy-apply {
+    min-height: 0;
+    padding: 24px 0 32px;
+  }
+
+  .teams-page--apply .academy-apply-card.academy-apply-panel {
+    display: flex;
+    flex-direction: column;
+    min-height: calc(100dvh - 160px);
+    padding: 20px 16px 16px;
+  }
+
+  .teams-page--apply .academy-apply-card.academy-apply-panel--tight {
+    min-height: 0;
+  }
+
+  .academy-apply-panel--tight .academy-apply-actions--split {
+    margin-top: 16px;
+    position: static;
+  }
+
+  .academy-apply-step-title {
+    font-size: 18px;
+    line-height: 1.25;
+  }
+
+  .academy-apply-step-lead {
+    margin: 0 0 14px;
+    font-size: 14px;
+  }
+
+  .academy-apply-choices {
+    gap: 8px;
+    margin: 4px 0 0;
+  }
+
+  .academy-apply-choice {
+    padding: 10px 12px;
+    font-size: 14px;
+    gap: 10px;
+  }
+
+  .academy-apply-choice-key {
+    width: 24px;
+    height: 24px;
+    font-size: 12px;
+  }
+
+  .academy-apply-textarea {
+    min-height: 96px;
+  }
+
+  .academy-apply-actions--split {
+    position: sticky;
+    bottom: 0;
+    z-index: 2;
+    margin-top: auto;
+    padding-top: 12px;
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    gap: 10px;
+    background: linear-gradient(180deg, rgba(15, 22, 33, 0) 0%, rgba(15, 22, 33, 0.92) 18%, rgba(15, 22, 33, 0.98) 100%);
+  }
+
+  .academy-apply-actions--split .teams-btn {
+    width: auto;
+    flex: 0 0 auto;
+    min-width: 0;
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .academy-apply-actions--split .academy-start-btn {
+    flex: 1 1 auto;
+    min-height: 48px;
+    padding: 12px 20px;
+    font-size: 16px;
   }
 }

@@ -2,11 +2,11 @@ import React from 'react'
 import { ACADEMY_COHORT } from '../data/academyCohort'
 
 export default function AcademyCohortNote({ className = '' }) {
-  const { spotsRemaining, startLabel } = ACADEMY_COHORT
+  const { startLabel } = ACADEMY_COHORT
   return (
     <p className={`academy-cohort-note${className ? ` ${className}` : ''}`}>
-      <strong>Only {spotsRemaining} places for the next cohort</strong>
-      {' '}· Starts {startLabel}
+      <strong>Small early practice group.</strong>
+      {' '}We talk first. Aiming to start {startLabel}.
     </p>
   )
 }

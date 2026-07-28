@@ -16,7 +16,7 @@ function isNavActive(pathname, to) {
   return pathname === to || pathname.startsWith(`${to}/`)
 }
 
-const ACADEMY_APPLY_LABEL = 'Apply to the Academy'
+const ACADEMY_APPLY_LABEL = 'Academy'
 const ACADEMY_APPLY_PATH = '/academy'
 
 const baseAuthBtnStyle = {

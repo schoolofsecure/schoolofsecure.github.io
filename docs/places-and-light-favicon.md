@@ -1,7 +1,7 @@
 # Places wording + light favicon
 
 ## seats → places
-- `AcademyCohortNote`: Only N **places** for the next cohort
+- `AcademyCohortNote`: Only N **places** for the first cohort
 - Academy trust list: N **places**
 
 ## Favicon

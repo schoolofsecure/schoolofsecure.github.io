@@ -119,13 +119,13 @@ export default function AcademyApply() {
         background: form.background,
         source: form.source,
         whyNow: form.whyNow,
-        request: 'Academy application',
-        _subject: `Iterali Academy application — ${form.fullName}`,
+        request: 'Academy interest',
+        _subject: `Iterali Academy interest: ${form.fullName}`,
         _replyto: form.email,
       })
       setSubmitted(true)
     } catch (_) {
-      setSubmitError('Could not send your application. Please try again in a moment.')
+      setSubmitError('Could not send your form. Please try again in a moment.')
     } finally {
       setSending(false)
     }
@@ -151,10 +151,10 @@ export default function AcademyApply() {
 
         {submitted ? (
           <div className="academy-apply-card academy-apply-panel">
-            <p className="landing-path-label">Application received</p>
+            <p className="landing-path-label">Interest received</p>
             <h1 id="academy-apply-title" className="academy-apply-title">Thank you, {form.fullName.split(' ')[0]}.</h1>
             <p className="academy-apply-lead">
-              We read every application. If it looks like a good fit, you will get a link to book a short call with our team.
+              We read every response. If a conversation would help, you will get a link to book a short call with our team. There is no purchase or enrolment on this site.
             </p>
             <Link to="/academy" className="academy-apply-back">
               Back to Academy
@@ -165,7 +165,7 @@ export default function AcademyApply() {
             <p className="landing-path-label">Not the right fit right now</p>
             <h1 id="academy-apply-title" className="academy-apply-title">No problem.</h1>
             <p className="academy-apply-lead">
-              The Academy is for people who want to practise calm, confident habits online with real commitment. You are welcome to explore the site, join the newsletter, or come back when the timing feels right.
+              This early practice group is for people who want to practise calm, confident habits online with real commitment. You are welcome to explore the site, join the newsletter, or come back when the timing feels right.
             </p>
             <div className="academy-apply-actions academy-apply-actions--split">
               <Link to="/" className="btn btn-secondary teams-btn">
@@ -178,17 +178,17 @@ export default function AcademyApply() {
           </div>
         ) : step === 'intro' ? (
           <div className="academy-apply-card academy-apply-panel">
-            <p className="landing-path-label">Academy application</p>
-            <h1 id="academy-apply-title" className="academy-apply-title">Apply to the Iterali Academy</h1>
+            <p className="landing-path-label">Academy interest</p>
+            <h1 id="academy-apply-title" className="academy-apply-title">Share your interest in the Iterali Academy</h1>
             <p className="academy-apply-lead">
-              Treat this like a university or job application. We read every answer, and we only accept people who are serious about building calm, confident habits online. Vague or one-line answers will not be accepted.
+              This free form helps us understand who might join an early practice group. We read every answer carefully. Vague or one-line answers make it hard to have a useful conversation, so please take a few minutes. No purchase and no enrolment happen on this page.
             </p>
             <AcademyCohortNote className="academy-cohort-note--apply" />
             <div className="academy-apply-actions">
               <button type="button" className="academy-start-btn" onClick={handleContinue}>
                 Start
               </button>
-              <p className="academy-apply-meta">Takes about 5–7 minutes</p>
+              <p className="academy-apply-meta">Takes about 5 to 7 minutes. Free, with no obligation.</p>
             </div>
           </div>
         ) : (
@@ -196,16 +196,16 @@ export default function AcademyApply() {
             {step === 'serious' && (
               <>
                 <h2 className="academy-apply-step-title">
-                  Are you serious about building calm, confident habits online — and ready to practise?
+                  Are you serious about building calm, confident habits online, and ready to practise?
                 </h2>
                 <div className="academy-apply-choices" role="group" aria-label="Commitment">
                   <button type="button" className="academy-apply-choice" onClick={() => handleSerious('yes')}>
                     <span className="academy-apply-choice-key">A</span>
-                    <span>Yes — I am ready and committed to building habits I can use in real life.</span>
+                    <span>Yes. I am ready and committed to building habits I can use in real life.</span>
                   </button>
                   <button type="button" className="academy-apply-choice" onClick={() => handleSerious('no')}>
                     <span className="academy-apply-choice-key">B</span>
-                    <span>No — I have come to the wrong place.</span>
+                    <span>No. I have come to the wrong place.</span>
                   </button>
                 </div>
               </>
@@ -270,7 +270,7 @@ export default function AcademyApply() {
               <>
                 <h2 className="academy-apply-step-title">What is your professional background and current occupation?</h2>
                 <p className="academy-apply-step-lead">
-                  Tell us about the roles and experience you have had so far, and what you do now. This helps us tailor coaching and practice to your real context.
+                  Tell us about the roles and experience you have had so far, and what you do now. This helps us understand your real context if we talk.
                 </p>
                 <label className="academy-apply-field">
                   <span className="visually-hidden">Background</span>
@@ -317,7 +317,7 @@ export default function AcademyApply() {
                   Why are you applying now? What has changed, or what is at stake, that makes this the moment to act?
                 </h2>
                 <p className="academy-apply-step-lead">
-                  Be as detailed and specific as you can. We want to understand why this is the right moment for you to join — the more context you give, the better we can see if the Academy is a good fit.
+                  Be as detailed and specific as you can. We want to understand why this is the right moment for you. The more context you give, the better we can see if a conversation would help.
                 </p>
                 <label className="academy-apply-field">
                   <span className="visually-hidden">Why now</span>
@@ -342,7 +342,7 @@ export default function AcademyApply() {
               <>
                 <h2 className="academy-apply-step-title">How can we reach you?</h2>
                 <p className="academy-apply-step-lead">
-                  If your application is a good fit, we will use this to send a calendar link for a short interview call.
+                  If a conversation would help, we will use this to send a calendar link for a short call.
                 </p>
                 <label className="academy-apply-field">
                   Full name
@@ -380,7 +380,7 @@ export default function AcademyApply() {
                   Back
                 </button>
                 <button type="submit" className="academy-start-btn" disabled={sending || !canContinue()}>
-                  {sending ? 'Sending…' : step === 'contact' ? 'Submit application' : 'OK'}
+                  {sending ? 'Sending…' : step === 'contact' ? 'Share interest' : 'OK'}
                 </button>
               </div>
             )}

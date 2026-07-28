@@ -72,8 +72,8 @@ const academyFeatures = [
   },
   {
     id: 'community',
-    title: 'Private member community',
-    text: 'A members-only space to share progress, get feedback and learn alongside others.',
+    title: 'A small practice community',
+    text: 'A space to share progress, get feedback and learn alongside others in a small early group.',
     icon: (
       <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
         <circle cx="11" cy="12" r="3.5" />
@@ -138,7 +138,7 @@ const Landing = () => {
             </span>
           </h1>
           <p className="landing-hero-lead landing-hero-lead--centered">
-            The Iterali Academy is a guided, practical programme that helps you build calm, confident habits online.
+            The Iterali Academy is an early practice group we are testing, to help people build calm, confident habits online.
           </p>
           <p className="landing-hero-support">
             <span>No lectures</span>
@@ -149,7 +149,7 @@ const Landing = () => {
           </p>
           <div className="landing-hero-ctas landing-hero-ctas--centered">
             <Link to="/academy" className="btn btn-primary landing-hero-btn">
-              Apply to the Academy
+              Learn more
             </Link>
             <a href="#newsletter" className="btn btn-secondary landing-hero-btn">
               Join the Newsletter
@@ -173,7 +173,7 @@ const Landing = () => {
             The Iterali Academy helps you practise the decisions that matter most, in realistic scenarios you recognise from email, chat and everyday shortcuts. Through guided practice, clear feedback and one next step at a time, you build calm habits you can use straight away, without lectures, guilt or complex dashboards.
           </p>
           <p>
-            This is not training you buy and never use. It is a guided journey that helps you take action and make real progress.
+            This is not something you buy and forget. It is guided practice that helps you take action and make real progress. Right now we are only inviting people to share interest and talk, with no purchase on this site.
           </p>
         </div>
         <ul className="landing-academy-features">
@@ -200,7 +200,7 @@ const Landing = () => {
           <div className="landing-founder-copy">
             <p className="landing-founder-label">Led by Erika Papp-Kovacs</p>
             <p className="landing-founder-text">
-              Final-year law student and economist, with a digital trust and security systems background (DigiCert, Entrust nShield, Cybersecurity Specialist) — helping organisations protect identities, transactions and critical systems online.
+              Final-year law student and economist, with a digital trust and security systems background (DigiCert, Entrust nShield, Cybersecurity Specialist). She helps organisations protect identities, transactions and critical systems online.
             </p>
             <p className="landing-founder-mission">
               I built Iterali for people who want to feel calm online, not scared or overwhelmed by security training.
@@ -219,7 +219,7 @@ const Landing = () => {
         </aside>
         <div className="landing-academy-cta">
           <Link to="/academy" className="btn btn-primary landing-hero-btn">
-            Apply to the Academy
+            Learn more & share interest
           </Link>
         </div>
       </section>

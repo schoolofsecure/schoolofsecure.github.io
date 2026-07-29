@@ -1965,6 +1965,36 @@ header {
     border: 1px solid rgba(0,229,255,0.5);
 }
 
+.form-privacy-check {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    margin-top: 12px;
+    font-size: 13px;
+    color: var(--muted);
+    cursor: pointer;
+    line-height: 1.5;
+}
+
+.form-privacy-check input[type="checkbox"] {
+    flex-shrink: 0;
+    margin-top: 2px;
+    width: 16px;
+    height: 16px;
+    accent-color: var(--neon);
+    cursor: pointer;
+}
+
+.form-privacy-check a {
+    color: var(--neon);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+
+.form-privacy-check a:hover {
+    color: var(--ink);
+}
+
 .btn-submit:hover { 
     filter: brightness(1.06); 
     transform: translateY(-1px); 

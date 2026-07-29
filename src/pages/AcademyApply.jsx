@@ -114,6 +114,7 @@ export default function AcademyApply() {
   const [draftReady, setDraftReady] = useState(false)
   const [form, setForm] = useState(emptyForm)
   const [hp, setHp] = useState('')
+  const [privacyAccepted, setPrivacyAccepted] = useState(false)
   const panelRef = useRef(null)
   const progressRef = useRef(null)
 
@@ -204,7 +205,7 @@ export default function AcademyApply() {
       case 'whyNow':
         return form.whyNow.trim().length >= MIN_WHY_NOW
       case 'contact':
-        return form.fullName.trim().length > 1 && /.+@.+\..+/.test(form.email)
+        return form.fullName.trim().length > 1 && /.+@.+\..+/.test(form.email) && privacyAccepted
       default:
         return true
     }
@@ -535,6 +536,10 @@ export default function AcademyApply() {
                     onChange={(e) => setField('email', e.target.value)}
                     autoComplete="email"
                   />
+                </label>
+                <label className="form-privacy-check">
+                  <input type="checkbox" checked={privacyAccepted} onChange={(e) => setPrivacyAccepted(e.target.checked)} />
+                  <span>I have read and accept the <Link to="/privacy">Privacy Policy</Link>.</span>
                 </label>
               </>
             )}

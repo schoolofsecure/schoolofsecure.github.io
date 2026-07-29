@@ -90,6 +90,7 @@ const Landing = () => {
   const [newsletterStatus, setNewsletterStatus] = useState('idle')
   const [newsletterError, setNewsletterError] = useState('')
   const [newsletterHp, setNewsletterHp] = useState('')
+  const [newsletterPrivacy, setNewsletterPrivacy] = useState(false)
   const [popularIndex, setPopularIndex] = useState(0)
 
   const maxPopularIndex = Math.max(0, popularPosts.length - POPULAR_VISIBLE)
@@ -299,9 +300,13 @@ const Landing = () => {
               disabled={newsletterStatus === 'sending'}
               aria-label="Email address"
             />
-            <button type="submit" className="btn btn-primary landing-newsletter-btn" disabled={newsletterStatus === 'sending'}>
+            <button type="submit" className="btn btn-primary landing-newsletter-btn" disabled={newsletterStatus === 'sending' || !newsletterPrivacy}>
               {newsletterStatus === 'sending' ? 'Joining…' : 'Subscribe'}
             </button>
+            <label className="form-privacy-check" style={{ width: '100%' }}>
+              <input type="checkbox" checked={newsletterPrivacy} onChange={(e) => setNewsletterPrivacy(e.target.checked)} />
+              <span>I accept the <Link to="/privacy">Privacy Policy</Link>.</span>
+            </label>
           </form>
         )}
         {newsletterError && <p className="landing-newsletter-error">{newsletterError}</p>}

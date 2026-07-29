@@ -35,6 +35,7 @@ export default function ForTeams() {
   const [sending, setSending] = useState(false)
   const [submitError, setSubmitError] = useState('')
   const [hp, setHp] = useState('')
+  const [privacyAccepted, setPrivacyAccepted] = useState(false)
   const [form, setForm] = useState({
     name: '',
     email: '',
@@ -184,9 +185,13 @@ export default function ForTeams() {
                 Message <span className="teams-contact-optional">(optional)</span>
                 <textarea className="input teams-contact-textarea" name="message" maxLength={3000} rows={4} value={form.message} onChange={handleChange} disabled={sending} />
               </label>
+              <label className="form-privacy-check teams-contact-full">
+                <input type="checkbox" checked={privacyAccepted} onChange={(e) => setPrivacyAccepted(e.target.checked)} />
+                <span>I have read and accept the <Link to="/privacy">Privacy Policy</Link>.</span>
+              </label>
               {submitError && <p className="error teams-contact-full">{submitError}</p>}
               <div className="teams-contact-full teams-form-actions">
-                <button type="submit" className="btn btn-primary teams-btn" disabled={sending}>
+                <button type="submit" className="btn btn-primary teams-btn" disabled={sending || !privacyAccepted}>
                   {sending ? 'Sending…' : 'Send request'}
                 </button>
               </div>

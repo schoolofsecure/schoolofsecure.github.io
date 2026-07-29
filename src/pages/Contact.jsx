@@ -10,6 +10,7 @@ export default function Contact() {
   const [submitted, setSubmitted] = useState(false)
   const [sending, setSending] = useState(false)
   const [submitError, setSubmitError] = useState('')
+  const [hp, setHp] = useState('')
   const [form, setForm] = useState({
     name: '',
     email: '',
@@ -33,7 +34,7 @@ export default function Contact() {
         request: 'Personal contact',
         _subject: `Iterali contact: ${form.name}`,
         _replyto: form.email,
-      })
+      }, { honeypot: hp })
       setSubmitted(true)
     } catch (_) {
       setSubmitError('Could not send your message. Please try again in a moment.')
@@ -62,6 +63,7 @@ export default function Contact() {
             <p className="teams-contact-success">Thanks. We have received your message and will be in touch soon.</p>
           ) : (
             <form className="teams-contact-form contact-personal-form" onSubmit={handleSubmit}>
+              <input type="text" name="_honey" value={hp} onChange={(e) => setHp(e.target.value)} style={{ display: 'none' }} tabIndex={-1} autoComplete="off" aria-hidden="true" />
               <label>
                 Name
                 <input
@@ -69,6 +71,7 @@ export default function Contact() {
                   type="text"
                   name="name"
                   required
+                  maxLength={120}
                   value={form.name}
                   onChange={handleChange}
                   disabled={sending}
@@ -82,6 +85,7 @@ export default function Contact() {
                   type="email"
                   name="email"
                   required
+                  maxLength={254}
                   value={form.email}
                   onChange={handleChange}
                   disabled={sending}
@@ -94,6 +98,7 @@ export default function Contact() {
                   className="input teams-contact-textarea"
                   name="message"
                   required
+                  maxLength={3000}
                   rows={5}
                   value={form.message}
                   onChange={handleChange}

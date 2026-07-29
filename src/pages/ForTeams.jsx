@@ -34,6 +34,7 @@ export default function ForTeams() {
   const [submitted, setSubmitted] = useState(false)
   const [sending, setSending] = useState(false)
   const [submitError, setSubmitError] = useState('')
+  const [hp, setHp] = useState('')
   const [form, setForm] = useState({
     name: '',
     email: '',
@@ -60,7 +61,7 @@ export default function ForTeams() {
         request: 'Team access request',
         _subject: `Iterali team access request — ${form.company}`,
         _replyto: form.email,
-      })
+      }, { honeypot: hp })
       setSubmitted(true)
     } catch (_) {
       setSubmitError('Could not send the request. Please try again in a moment.')
@@ -156,17 +157,18 @@ export default function ForTeams() {
             <p className="teams-contact-success">Thanks. We have received your request and will be in touch soon.</p>
           ) : (
             <form className="teams-contact-form" onSubmit={handleSubmit}>
+              <input type="text" name="_honey" value={hp} onChange={(e) => setHp(e.target.value)} style={{ display: 'none' }} tabIndex={-1} autoComplete="off" aria-hidden="true" />
               <label>
                 Name
-                <input className="input" type="text" name="name" required value={form.name} onChange={handleChange} disabled={sending} autoComplete="name" />
+                <input className="input" type="text" name="name" required maxLength={120} value={form.name} onChange={handleChange} disabled={sending} autoComplete="name" />
               </label>
               <label>
                 Work email
-                <input className="input" type="email" name="email" required value={form.email} onChange={handleChange} disabled={sending} autoComplete="email" />
+                <input className="input" type="email" name="email" required maxLength={254} value={form.email} onChange={handleChange} disabled={sending} autoComplete="email" />
               </label>
               <label>
                 Company
-                <input className="input" type="text" name="company" required value={form.company} onChange={handleChange} disabled={sending} autoComplete="organization" />
+                <input className="input" type="text" name="company" required maxLength={200} value={form.company} onChange={handleChange} disabled={sending} autoComplete="organization" />
               </label>
               <label>
                 Team size
@@ -180,7 +182,7 @@ export default function ForTeams() {
               </label>
               <label className="teams-contact-full">
                 Message <span className="teams-contact-optional">(optional)</span>
-                <textarea className="input teams-contact-textarea" name="message" rows={4} value={form.message} onChange={handleChange} disabled={sending} />
+                <textarea className="input teams-contact-textarea" name="message" maxLength={3000} rows={4} value={form.message} onChange={handleChange} disabled={sending} />
               </label>
               {submitError && <p className="error teams-contact-full">{submitError}</p>}
               <div className="teams-contact-full teams-form-actions">

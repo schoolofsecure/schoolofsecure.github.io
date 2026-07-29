@@ -89,6 +89,7 @@ const Landing = () => {
   const [newsletterEmail, setNewsletterEmail] = useState('')
   const [newsletterStatus, setNewsletterStatus] = useState('idle')
   const [newsletterError, setNewsletterError] = useState('')
+  const [newsletterHp, setNewsletterHp] = useState('')
   const [popularIndex, setPopularIndex] = useState(0)
 
   const maxPopularIndex = Math.max(0, popularPosts.length - POPULAR_VISIBLE)
@@ -104,7 +105,7 @@ const Landing = () => {
         request: 'Newsletter signup',
         _subject: 'Iterali newsletter signup',
         _replyto: newsletterEmail,
-      })
+      }, { honeypot: newsletterHp })
       setNewsletterStatus('success')
       setNewsletterEmail('')
     } catch (_) {
@@ -285,11 +286,13 @@ const Landing = () => {
           <p className="landing-newsletter-success">Thanks. You are on the list.</p>
         ) : (
           <form className="landing-newsletter-form" onSubmit={handleNewsletterSubmit}>
+            <input type="text" name="_honey" value={newsletterHp} onChange={(e) => setNewsletterHp(e.target.value)} style={{ display: 'none' }} tabIndex={-1} autoComplete="off" aria-hidden="true" />
             <input
               className="input landing-newsletter-input"
               type="email"
               name="email"
               placeholder="Email address"
+              maxLength={254}
               value={newsletterEmail}
               onChange={(e) => setNewsletterEmail(e.target.value)}
               required

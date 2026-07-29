@@ -136,11 +136,11 @@ export const AuthProvider = ({ children }) => {
         throw new Error('Please enter an email address.')
       }
       await sendPasswordResetEmail(auth, email.trim())
-      return { success: true, message: 'Password reset email sent. Check your inbox.' }
+      return { success: true, message: 'If that email is registered, we sent a reset link.' }
     } catch (error) {
       let errorMessage = 'Could not send password reset email.'
       if (error.code === 'auth/user-not-found') {
-        errorMessage = 'No account is registered with this email address.'
+        errorMessage = 'If that email is registered, we sent a reset link.'
       } else if (error.code === 'auth/invalid-email') {
         errorMessage = 'Invalid email address.'
       } else {

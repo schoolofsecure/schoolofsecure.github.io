@@ -1,6 +1,10 @@
 export const FORMSUBMIT_EMAIL = 'erikapappkovacs@gmail.com'
 
-export async function submitToFormSubmit(fields) {
+export async function submitToFormSubmit(fields, { honeypot } = {}) {
+  if (honeypot) {
+    return { success: true }
+  }
+
   const res = await fetch(`https://formsubmit.co/ajax/${FORMSUBMIT_EMAIL}`, {
     method: 'POST',
     headers: {
@@ -9,7 +13,6 @@ export async function submitToFormSubmit(fields) {
     },
     body: JSON.stringify({
       _template: 'table',
-      _captcha: 'false',
       ...fields,
     }),
   })

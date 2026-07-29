@@ -113,6 +113,7 @@ export default function AcademyApply() {
   const [hasDraft, setHasDraft] = useState(false)
   const [draftReady, setDraftReady] = useState(false)
   const [form, setForm] = useState(emptyForm)
+  const [hp, setHp] = useState('')
   const panelRef = useRef(null)
   const progressRef = useRef(null)
 
@@ -245,7 +246,7 @@ export default function AcademyApply() {
         request: 'Academy interest',
         _subject: `Iterali Academy interest: ${form.fullName}`,
         _replyto: form.email,
-      })
+      }, { honeypot: hp })
       clearDraft()
       setSubmitted(true)
     } catch (_) {
@@ -335,6 +336,7 @@ export default function AcademyApply() {
             onSubmit={handleContinue}
             onKeyDown={onKeyDown}
           >
+            <input type="text" name="_honey" value={hp} onChange={(e) => setHp(e.target.value)} style={{ display: 'none' }} tabIndex={-1} autoComplete="off" aria-hidden="true" />
             <div className="academy-apply-step-body">
             <p className="academy-apply-step-count">
               {questionNumber} / {questionTotal}
@@ -372,6 +374,7 @@ export default function AcademyApply() {
                     name="location"
                     required
                     placeholder="e.g. Germany"
+                    maxLength={100}
                     value={form.location}
                     onChange={(e) => setField('location', e.target.value)}
                     autoComplete="country-name"
@@ -403,6 +406,7 @@ export default function AcademyApply() {
                       className="input"
                       type="text"
                       placeholder="Please describe your situation"
+                      maxLength={200}
                       value={form.situationOther}
                       onChange={(e) => setField('situationOther', e.target.value)}
                     />
@@ -424,6 +428,7 @@ export default function AcademyApply() {
                     name="background"
                     required
                     rows={4}
+                    maxLength={2000}
                     placeholder="Type your answer here..."
                     value={form.background}
                     onChange={(e) => setField('background', e.target.value)}
@@ -458,6 +463,7 @@ export default function AcademyApply() {
                       className="input"
                       type="text"
                       placeholder="Please describe"
+                      maxLength={200}
                       value={form.sourceOther}
                       onChange={(e) => setField('sourceOther', e.target.value)}
                     />
@@ -481,6 +487,7 @@ export default function AcademyApply() {
                     name="whyNow"
                     required
                     rows={5}
+                    maxLength={3000}
                     placeholder="Type your answer here..."
                     value={form.whyNow}
                     onChange={(e) => setField('whyNow', e.target.value)}
@@ -510,6 +517,7 @@ export default function AcademyApply() {
                     type="text"
                     name="fullName"
                     required
+                    maxLength={120}
                     value={form.fullName}
                     onChange={(e) => setField('fullName', e.target.value)}
                     autoComplete="name"
@@ -522,6 +530,7 @@ export default function AcademyApply() {
                     type="email"
                     name="email"
                     required
+                    maxLength={254}
                     value={form.email}
                     onChange={(e) => setField('email', e.target.value)}
                     autoComplete="email"

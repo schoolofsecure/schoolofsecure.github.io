@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { useLocation } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import SiteNav from '../components/SiteNav'
 import SiteFooter from '../components/SiteFooter'
 import CookieBanner from '../components/CookieBanner'

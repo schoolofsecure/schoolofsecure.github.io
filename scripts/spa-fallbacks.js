@@ -23,6 +23,7 @@ const routes = [
   'about',
   'teams',
   'blog',
+  'blog/people-pleaser-online-stay-kind',
   'blog/pause-before-you-continue',
   'blog/spot-fake-login-pages',
   'blog/safe-to-fail-security-practice',

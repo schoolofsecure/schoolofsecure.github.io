@@ -1,6 +1,25 @@
 /** Blog posts for SEO / Resources. Newest first. */
 export const blogPosts = [
   {
+    slug: 'people-pleaser-online-stay-kind',
+    title: 'People pleaser online? Stay kind without saying yes too fast',
+    date: '2026-08-11',
+    excerpt:
+      'If you say yes too quickly to urgent emails and chat requests, a twenty-second pause helps you stay kind and decide more safely online.',
+    seoTitle: 'People Pleaser Online? Stay Kind Without Instant Yes | Iterali',
+    seoDescription:
+      'Learn how people-pleasing makes urgent online requests harder to refuse — and how a simple 20-second pause keeps you kind while you decide more safely.',
+    body: [
+      'The message lands mid-afternoon. A colleague you like writes: “Quick favour — can you approve this link so I can finish before the call?” Your fingers are already moving. You want to help. You don’t want to be the person who slows things down.',
+      'If that sounds familiar, you are not alone — and you are not broken. A lot of kind people share the same reflex online: when someone asks, the answer rises before the question has fully settled. Being a people pleaser is often just care under pressure. The trouble is that urgency and friendliness can sit side by side in a real request and in a risky one. Online, the difference is not always obvious in the first two seconds.',
+      'We say yes quickly because yes feels like connection. It keeps the peace. It proves we are useful. Our minds treat a delayed reply as a tiny social risk: Will they think I’m difficult? Will I look unhelpful? So we smooth the discomfort with speed. That habit works well in many daily moments. It works less well when a chat ping, an email marked “urgent,” or a shared file asks for access, payment details, or a click you cannot easily undo. Kindness is still a strength. Automatic agreement is the part that leaves the door ajar.',
+      'Here is one small practice you can try today. Call it the twenty-second pause. When a request arrives and your body leans toward yes, stop typing. Count slowly to twenty. In that short space, ask yourself three quiet checks: Do I know this person well enough in this channel? Does the ask match what we normally do? Can this wait until I verify another way — a known bookmark, a separate message, a quick voice note? You are not inventing excuses. You are giving your care room to think. Most genuine colleagues can live with a short delay. Many unsafe requests rely on you skipping that delay.',
+      'You can still be warm while you pause. A line like “Happy to help — give me a moment to check this the usual way” keeps the relationship intact and buys you clarity. That is not cold. That is steady. Over time, the pause stops feeling like hesitation and starts feeling like self-respect. You are teaching yourself that kindness and caution can share the same sentence.',
+      'You do not need a harder personality. You need a slower first yes. Every time you take those twenty seconds, you practise a habit that travels with you: into email, into group chats, into the link that arrives “just this once.” This is a skill you can learn, not a flaw you have to hide. Confidence online is not about distrusting everyone. It is about trusting yourself enough to choose when to move.',
+      'Next step: the next time a request pulls you toward an instant yes, take twenty seconds — then decide with both kindness and care.',
+    ],
+  },
+  {
     slug: 'pause-before-you-continue',
     title: 'The most dangerous button is often “Continue”',
     date: '2026-07-23',

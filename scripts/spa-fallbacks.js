@@ -6,6 +6,7 @@
 import { copyFileSync, mkdirSync, existsSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
+import { getPublishedBlogPosts } from '../src/data/blogPosts.js'
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..')
 const dist = join(root, 'dist')
@@ -16,6 +17,8 @@ if (!existsSync(indexHtml)) {
   process.exit(1)
 }
 
+const blogRoutes = getPublishedBlogPosts().map((post) => `blog/${post.slug}`)
+
 const routes = [
   'academy',
   'academy/apply',
@@ -24,12 +27,7 @@ const routes = [
   'teams',
   'blog',
   'magazine',
-  'blog/will-ai-replace-cybersecurity-professionals',
-  'blog/people-pleaser-online-stay-kind',
-  'blog/pause-before-you-continue',
-  'blog/spot-fake-login-pages',
-  'blog/safe-to-fail-security-practice',
-  'blog/human-centred-security-teams',
+  ...blogRoutes,
   'values',
   'privacy',
   'terms',
@@ -44,5 +42,7 @@ for (const route of routes) {
   copyFileSync(indexHtml, join(targetDir, 'index.html'))
 }
 
-copyFileSync(indexHtml, join(dist, '404.html'))
-console.log(`SPA fallbacks written for ${routes.length} routes + 404.html`)
+const notFound = join(dist, '404.html')
+copyFileSync(indexHtml, notFound)
+
+console.log(`SPA fallbacks: ${routes.length} routes (${blogRoutes.length} published blog posts) + 404.html`)

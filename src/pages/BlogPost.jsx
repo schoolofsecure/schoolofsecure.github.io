@@ -1,9 +1,15 @@
 import React, { useEffect, useState } from 'react'
-import { Link, useParams } from 'react-router-dom'
+import { Link, useParams, useSearchParams } from 'react-router-dom'
 import SiteNav from '../components/SiteNav'
 import SiteFooter from '../components/SiteFooter'
 import CookieBanner from '../components/CookieBanner'
-import { getBlogPost, getPostLocale, getReadingMinutes } from '../data/blogPosts'
+import {
+  getBlogPost,
+  getPostLocale,
+  getReadingMinutes,
+  isBlogPostPublished,
+  isValidBlogPreviewKey,
+} from '../data/blogPosts'
 import NotFound from './NotFound'
 import '../styles/site.css'
 
@@ -66,8 +72,12 @@ function renderBodyBlock(block, i, lang) {
 
 export default function BlogPost() {
   const { slug } = useParams()
-  const post = getBlogPost(slug)
+  const [searchParams] = useSearchParams()
+  const previewKey = searchParams.get('preview')
+  const isPreview = isValidBlogPreviewKey(previewKey)
+  const post = getBlogPost(slug, { previewKey })
   const [lang, setLang] = useState(post?.defaultLang || 'en')
+  const scheduledOnly = Boolean(post && isPreview && !isBlogPostPublished(post))
 
   useEffect(() => {
     setLang(post?.defaultLang || 'en')
@@ -90,6 +100,9 @@ export default function BlogPost() {
     setMetaTag('name', 'twitter:title', title)
     setMetaTag('name', 'twitter:description', description)
     setCanonical(url)
+    if (scheduledOnly) {
+      setMetaTag('name', 'robots', 'noindex, nofollow')
+    }
 
     return () => {
       document.title = DEFAULT_TITLE
@@ -100,10 +113,14 @@ export default function BlogPost() {
       setMetaTag('property', 'og:description', DEFAULT_DESCRIPTION)
       setMetaTag('name', 'twitter:title', DEFAULT_TITLE)
       setMetaTag('name', 'twitter:description', 'Guided practice for calm, confident everyday decisions online.')
+      if (scheduledOnly) {
+        const robots = document.querySelector('meta[name="robots"]')
+        if (robots) robots.remove()
+      }
       const canonical = document.querySelector('link[rel="canonical"]')
       if (canonical) canonical.remove()
     }
-  }, [post, lang])
+  }, [post, lang, scheduledOnly])
 
   if (!post) {
     return <NotFound />
@@ -117,6 +134,14 @@ export default function BlogPost() {
       <div className="container">
         <SiteNav />
         <article className="blog-post">
+          {scheduledOnly && (
+            <p className="blog-preview-banner" role="status">
+              {lang === 'hu'
+                ? 'Előnézet — ez a cikk még nem nyilvános a bloglistán.'
+                : 'Preview — this article is not public on the blog list yet.'}
+            </p>
+          )}
+
           <p className="landing-path-label" style={{ marginBottom: 8 }}>
             <Link to="/blog" style={{ color: 'inherit', textDecoration: 'none' }}>
               Blog

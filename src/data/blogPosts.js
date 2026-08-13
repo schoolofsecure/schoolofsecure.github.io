@@ -395,6 +395,12 @@ function showUnpublishedBlogPosts() {
   }
 }
 
+export const BLOG_PREVIEW_KEY = 'anita'
+
+export function isValidBlogPreviewKey(key) {
+  return typeof key === 'string' && key.trim().toLowerCase() === BLOG_PREVIEW_KEY
+}
+
 export function isBlogPostPublished(post, today = getBlogTodayIso()) {
   if (!post?.date) return false
   if (showUnpublishedBlogPosts()) return true
@@ -406,10 +412,17 @@ export function getPublishedBlogPosts(today = getBlogTodayIso()) {
   return blogPosts.filter((post) => isBlogPostPublished(post, today))
 }
 
-export function getBlogPost(slug, today = getBlogTodayIso()) {
+/**
+ * @param {string} slug
+ * @param {{ today?: string, previewKey?: string | null }} [options]
+ */
+export function getBlogPost(slug, options = {}) {
+  const today = options.today || getBlogTodayIso()
   const post = blogPosts.find((p) => p.slug === slug) || null
-  if (!post || !isBlogPostPublished(post, today)) return null
-  return post
+  if (!post) return null
+  if (isBlogPostPublished(post, today)) return post
+  if (isValidBlogPreviewKey(options.previewKey)) return post
+  return null
 }
 
 export function getLatestBlogPosts(limit = 3, today = getBlogTodayIso()) {

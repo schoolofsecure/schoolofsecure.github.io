@@ -29,7 +29,7 @@ export default function Blog() {
       : filtered.find((p) => p.featured) || filtered[0] || null
 
   const rest = filtered.filter((p) => p.slug !== featured?.slug)
-  const featuredLoc = featured ? getPostLocale(featured, featured.defaultLang || 'en') : null
+  const featuredLoc = featured ? getPostLocale(featured, 'en') : null
 
   return (
     <div className="container teams-page">

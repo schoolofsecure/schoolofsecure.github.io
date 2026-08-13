@@ -6,7 +6,7 @@
 import { copyFileSync, mkdirSync, existsSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { getPublishedBlogPosts } from '../src/data/blogPosts.js'
+import { getPublishedBlogPosts, blogPosts } from '../src/data/blogPosts.js'
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..')
 const dist = join(root, 'dist')
@@ -17,7 +17,9 @@ if (!existsSync(indexHtml)) {
   process.exit(1)
 }
 
-const blogRoutes = getPublishedBlogPosts().map((post) => `blog/${post.slug}`)
+// All slugs (incl. scheduled) so preview links work on GitHub Pages before publish day.
+const blogRoutes = blogPosts.map((post) => `blog/${post.slug}`)
+const publishedCount = getPublishedBlogPosts().length
 
 const routes = [
   'academy',
@@ -45,4 +47,4 @@ for (const route of routes) {
 const notFound = join(dist, '404.html')
 copyFileSync(indexHtml, notFound)
 
-console.log(`SPA fallbacks: ${routes.length} routes (${blogRoutes.length} published blog posts) + 404.html`)
+console.log(`SPA fallbacks: ${routes.length} routes (${blogRoutes.length} blog posts, ${publishedCount} published) + 404.html`)

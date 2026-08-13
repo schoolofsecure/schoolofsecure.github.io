@@ -1239,6 +1239,17 @@ header {
     font-size: 14px;
 }
 
+.blog-preview-banner {
+    margin: 0 0 16px;
+    padding: 10px 14px;
+    border-radius: 10px;
+    border: 1px solid rgba(255, 196, 0, 0.35);
+    background: rgba(255, 196, 0, 0.12);
+    color: var(--ink);
+    font-size: 14px;
+    line-height: 1.4;
+}
+
 .blog-lang-switch {
     display: flex;
     gap: 8px;

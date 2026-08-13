@@ -407,21 +407,33 @@ export function isBlogPostPublished(post, today = getBlogTodayIso()) {
   return post.date <= today
 }
 
-/** Posts visible on the site (date today or earlier). */
+/** Calendar publish only — ignores Vite DEV (used for password gate). */
+export function isBlogPostPublicByDate(post, today = getBlogTodayIso()) {
+  return Boolean(post?.date && post.date <= today)
+}
+
+/** Raw lookup — includes scheduled posts (for password gate). */
+export function findBlogPostBySlug(slug) {
+  return blogPosts.find((p) => p.slug === slug) || null
+}
+
+/** Posts visible on the public blog list (date today or earlier). */
 export function getPublishedBlogPosts(today = getBlogTodayIso()) {
   return blogPosts.filter((post) => isBlogPostPublished(post, today))
 }
 
 /**
+ * Public article access. Scheduled posts need a valid preview unlock (not URL alone).
  * @param {string} slug
- * @param {{ today?: string, previewKey?: string | null }} [options]
+ * @param {{ today?: string, unlocked?: boolean }} [options]
  */
 export function getBlogPost(slug, options = {}) {
   const today = options.today || getBlogTodayIso()
-  const post = blogPosts.find((p) => p.slug === slug) || null
+  const post = findBlogPostBySlug(slug)
   if (!post) return null
-  if (isBlogPostPublished(post, today)) return post
-  if (isValidBlogPreviewKey(options.previewKey)) return post
+  // Public by calendar date — or unlocked preview session.
+  if (isBlogPostPublicByDate(post, today)) return post
+  if (options.unlocked) return post
   return null
 }
 

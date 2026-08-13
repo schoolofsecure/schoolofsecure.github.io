@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react'
-import { Link, useParams, useSearchParams } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import SiteNav from '../components/SiteNav'
 import SiteFooter from '../components/SiteFooter'
 import CookieBanner from '../components/CookieBanner'
 import {
+  findBlogPostBySlug,
   getBlogPost,
   getPostLocale,
   getReadingMinutes,
-  isBlogPostPublished,
+  isBlogPostPublicByDate,
   isValidBlogPreviewKey,
 } from '../data/blogPosts'
 import NotFound from './NotFound'
@@ -16,6 +17,10 @@ import '../styles/site.css'
 const DEFAULT_TITLE = 'Iterali – Calm, confident habits online'
 const DEFAULT_DESCRIPTION =
   'The Iterali Academy helps you build calm, confident habits online through guided practice and realistic scenarios. No tech background needed.'
+
+function previewStorageKey(slug) {
+  return `iterali-blog-preview:${slug}`
+}
 
 function formatDate(iso, lang) {
   try {
@@ -72,16 +77,34 @@ function renderBodyBlock(block, i, lang) {
 
 export default function BlogPost() {
   const { slug } = useParams()
-  const [searchParams] = useSearchParams()
-  const previewKey = searchParams.get('preview')
-  const isPreview = isValidBlogPreviewKey(previewKey)
-  const post = getBlogPost(slug, { previewKey })
-  const [lang, setLang] = useState(post?.defaultLang || 'en')
-  const scheduledOnly = Boolean(post && isPreview && !isBlogPostPublished(post))
+  const draft = findBlogPostBySlug(slug)
+  const [unlocked, setUnlocked] = useState(() => {
+    try {
+      return sessionStorage.getItem(previewStorageKey(slug)) === '1'
+    } catch {
+      return false
+    }
+  })
+  const [password, setPassword] = useState('')
+  const [passwordError, setPasswordError] = useState('')
+  const post = getBlogPost(slug, { unlocked })
+  const [lang, setLang] = useState(draft?.defaultLang || 'en')
+  const needsPassword = Boolean(draft && !isBlogPostPublicByDate(draft) && !unlocked)
+  const scheduledOnly = Boolean(post && !isBlogPostPublicByDate(post))
 
   useEffect(() => {
-    setLang(post?.defaultLang || 'en')
-  }, [slug, post?.defaultLang])
+    try {
+      setUnlocked(sessionStorage.getItem(previewStorageKey(slug)) === '1')
+    } catch {
+      setUnlocked(false)
+    }
+    setPassword('')
+    setPasswordError('')
+  }, [slug])
+
+  useEffect(() => {
+    setLang(draft?.defaultLang || 'en')
+  }, [slug, draft?.defaultLang])
 
   useEffect(() => {
     if (!post) return undefined
@@ -121,6 +144,73 @@ export default function BlogPost() {
       if (canonical) canonical.remove()
     }
   }, [post, lang, scheduledOnly])
+
+  const handleUnlock = (e) => {
+    e.preventDefault()
+    if (!isValidBlogPreviewKey(password)) {
+      setPasswordError(lang === 'hu' ? 'Hibás jelszó.' : 'Wrong password.')
+      return
+    }
+    try {
+      sessionStorage.setItem(previewStorageKey(slug), '1')
+    } catch {
+      /* ignore */
+    }
+    setUnlocked(true)
+    setPasswordError('')
+  }
+
+  if (!draft) {
+    return <NotFound />
+  }
+
+  if (needsPassword) {
+    return (
+      <div className="site-page">
+        <div className="container">
+          <SiteNav />
+          <section className="blog-post blog-preview-gate" aria-labelledby="blog-preview-title">
+            <p className="landing-path-label">
+              <Link to="/blog" style={{ color: 'inherit', textDecoration: 'none' }}>
+                Blog
+              </Link>
+            </p>
+            <h1 id="blog-preview-title">
+              {lang === 'hu' ? 'Előnézet — jelszó kell' : 'Preview — password required'}
+            </h1>
+            <p className="blog-post-subtitle">
+              {lang === 'hu'
+                ? 'Ez a cikk még nem nyilvános. Írd be a jelszót a megtekintéshez.'
+                : 'This article is not public yet. Enter the password to view it.'}
+            </p>
+            <form className="blog-preview-form" onSubmit={handleUnlock}>
+              <label className="blog-preview-label" htmlFor="blog-preview-password">
+                {lang === 'hu' ? 'Jelszó' : 'Password'}
+              </label>
+              <input
+                id="blog-preview-password"
+                className="input"
+                type="password"
+                autoComplete="current-password"
+                value={password}
+                onChange={(e) => {
+                  setPassword(e.target.value)
+                  setPasswordError('')
+                }}
+                required
+              />
+              {passwordError ? <p className="blog-preview-error">{passwordError}</p> : null}
+              <button type="submit" className="btn btn-primary">
+                {lang === 'hu' ? 'Megnyitás' : 'Open'}
+              </button>
+            </form>
+          </section>
+          <SiteFooter />
+        </div>
+        <CookieBanner />
+      </div>
+    )
+  }
 
   if (!post) {
     return <NotFound />

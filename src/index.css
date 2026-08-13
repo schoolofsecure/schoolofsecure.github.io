@@ -1250,6 +1250,30 @@ header {
     line-height: 1.4;
 }
 
+.blog-preview-gate {
+    max-width: 420px;
+    padding-top: 24px;
+}
+
+.blog-preview-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 8px;
+}
+
+.blog-preview-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--muted);
+}
+
+.blog-preview-error {
+    margin: 0;
+    color: #ff8f8f;
+    font-size: 14px;
+}
+
 .blog-lang-switch {
     display: flex;
     gap: 8px;

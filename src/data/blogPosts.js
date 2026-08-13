@@ -386,8 +386,19 @@ export function getBlogTodayIso(now = new Date()) {
   return `${y}-${m}-${d}`
 }
 
+/** In Vite dev (localhost) show scheduled posts too; production keeps the date gate. */
+function showUnpublishedBlogPosts() {
+  try {
+    return Boolean(import.meta.env && import.meta.env.DEV)
+  } catch {
+    return false
+  }
+}
+
 export function isBlogPostPublished(post, today = getBlogTodayIso()) {
-  return Boolean(post?.date && post.date <= today)
+  if (!post?.date) return false
+  if (showUnpublishedBlogPosts()) return true
+  return post.date <= today
 }
 
 /** Posts visible on the site (date today or earlier). */

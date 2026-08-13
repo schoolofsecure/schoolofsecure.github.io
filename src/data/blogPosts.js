@@ -1,22 +1,43 @@
 /** Blog posts for SEO / Resources. Newest first. */
 export const blogPosts = [
   {
+    slug: 'will-ai-replace-cybersecurity-professionals',
+    title: 'Will AI replace cybersecurity professionals?',
+    date: '2026-08-13',
+    excerpt:
+      'AI is speeding up parts of security work. People are still needed — here is what changes, and what is worth learning first.',
+    seoTitle: 'Will AI Replace Cybersecurity Professionals? | Iterali',
+    seoDescription:
+      'AI can speed up alerts and analysis, but cybersecurity still needs human judgement. What is changing, and what beginners should learn now.',
+    body: [
+      'Lately the same question keeps popping up: if AI can already sort alerts, summarise incidents and spot patterns, is there still room for humans in cybersecurity?',
+      'Yes. Though the work will not stay the same.',
+      'A lot of the dull sorting really is getting quicker. Tools can clear noise that used to eat half a morning. What they are less good at is sitting with a messy situation and deciding what matters. Is this alert a real problem, a harmless glitch, or something that needs people woken up at night? The tool can point. Someone still has to own the call when the picture is half-finished.',
+      'Day to day, expect less copy-paste and more awkward questions. What are we looking at? Who gets hurt if we are wrong? Does this output feel solid, or did the tool skate past something obvious? You need enough technical grounding to read the room, and enough honesty to say when you do not.',
+      'And AI is not only on the defender’s side of the desk. Firms are dropping it into customer chat, hiring, internal reports. Suddenly security has new stuff to worry about: the data going in, the models, the vendors. Attackers are using the same wave too — cleaner phishing, fake voices, faces that look real enough. The job is not vanishing. It is getting stranger.',
+      'If you do not match the old “security person” stereotype, that is fine. Clear thinking, staying calm when something feels off, explaining risk without jargon — those skills always mattered. Teaching, legal, ops, design, customer work already train some of that. You still need the basics. You do not need a childhood spent in a server room.',
+      'If I were starting again, I would not chase every new AI toy first. I would learn how phishing and social engineering show up on a normal Tuesday. Enough networking and access control that accounts stop feeling like magic. Real scenarios over flashcards. The habit of asking “how do we know?” when a tool sounds very sure. And saying the risk out loud in plain English, the way you would to a tired colleague.',
+      'Use the tools. Just do not let them replace understanding. The useful people will be the ones who move faster with AI and still notice when the answer feels wrong.',
+      'Waiting for things to settle before you begin will not help much. Pick one practical thing this week and start there.',
+    ],
+  },
+  {
     slug: 'people-pleaser-online-stay-kind',
     title: 'People pleaser online? Stay kind without saying yes too fast',
     date: '2026-08-11',
     excerpt:
-      'If you say yes too quickly to urgent emails and chat requests, a twenty-second pause helps you stay kind and decide more safely online.',
+      'Hate saying no? Urgent chats can pull a yes out of you before you think. A short pause keeps you kind — and a bit safer.',
     seoTitle: 'People Pleaser Online? Stay Kind Without Instant Yes | Iterali',
     seoDescription:
       'Learn how people-pleasing makes urgent online requests harder to refuse — and how a simple 20-second pause keeps you kind while you decide more safely.',
     body: [
-      'The message lands mid-afternoon. A colleague you like writes: “Quick favour — can you approve this link so I can finish before the call?” Your fingers are already moving. You want to help. You don’t want to be the person who slows things down.',
-      'If that sounds familiar, you are not alone — and you are not broken. A lot of kind people share the same reflex online: when someone asks, the answer rises before the question has fully settled. Being a people pleaser is often just care under pressure. The trouble is that urgency and friendliness can sit side by side in a real request and in a risky one. Online, the difference is not always obvious in the first two seconds.',
-      'We say yes quickly because yes feels like connection. It keeps the peace. It proves we are useful. Our minds treat a delayed reply as a tiny social risk: Will they think I’m difficult? Will I look unhelpful? So we smooth the discomfort with speed. That habit works well in many daily moments. It works less well when a chat ping, an email marked “urgent,” or a shared file asks for access, payment details, or a click you cannot easily undo. Kindness is still a strength. Automatic agreement is the part that leaves the door ajar.',
-      'Here is one small practice you can try today. Call it the twenty-second pause. When a request arrives and your body leans toward yes, stop typing. Count slowly to twenty. In that short space, ask yourself three quiet checks: Do I know this person well enough in this channel? Does the ask match what we normally do? Can this wait until I verify another way — a known bookmark, a separate message, a quick voice note? You are not inventing excuses. You are giving your care room to think. Most genuine colleagues can live with a short delay. Many unsafe requests rely on you skipping that delay.',
-      'You can still be warm while you pause. A line like “Happy to help — give me a moment to check this the usual way” keeps the relationship intact and buys you clarity. That is not cold. That is steady. Over time, the pause stops feeling like hesitation and starts feeling like self-respect. You are teaching yourself that kindness and caution can share the same sentence.',
-      'You do not need a harder personality. You need a slower first yes. Every time you take those twenty seconds, you practise a habit that travels with you: into email, into group chats, into the link that arrives “just this once.” This is a skill you can learn, not a flaw you have to hide. Confidence online is not about distrusting everyone. It is about trusting yourself enough to choose when to move.',
-      'Next step: the next time a request pulls you toward an instant yes, take twenty seconds — then decide with both kindness and care.',
+      '3:40pm. Phone buzzes. A colleague you like: “Quick one — can you approve this link before the call?” You are already halfway to yes. Helping feels good. Being the slow one in the thread does not.',
+      'If that landed somewhere in your chest, you are not weird. Plenty of us grew up being useful and easy. Online, that reflex gets louder. Someone asks, and yes shows up before you have properly finished the message. I would not call it broken. I would call it care without a brake.',
+      'The annoying part: real favours and risky ones often look the same. Friendly tone. Mild hurry. A feeling that pausing would be rude. In a hallway, fine. In a chat, that same rush is how people open things they would never open after a coffee.',
+      'We say yes fast because silence feels awkward. Difficult? Unhelpful? Fussy about process? Speed papers over that. Most days the instinct keeps teams moving. It costs more when the ask is access, money, a file, a “just open this”. Kindness is not the bug. The autopilot is.',
+      'Try this once today. When you feel the lean toward yes, put the phone down for twenty seconds. Count. In that gap, check three dull things: do you know this person in this channel, does the request match how you usually work, and can you confirm another way first — bookmark, separate message, quick call. You are not being difficult. You are staying kind without going blind.',
+      'You can even type: “Happy to help — just checking the usual way, one sec.” Real colleagues wait. A lot of the bad asks are banking on you not waiting.',
+      'You do not have to get colder. You need a slower first yes. Practise it once this week, on the smallest request that shows up. That is enough.',
     ],
   },
   {

@@ -23,6 +23,8 @@ const routes = [
   'about',
   'teams',
   'blog',
+  'magazine',
+  'blog/will-ai-replace-cybersecurity-professionals',
   'blog/people-pleaser-online-stay-kind',
   'blog/pause-before-you-continue',
   'blog/spot-fake-login-pages',

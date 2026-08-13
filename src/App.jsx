@@ -13,6 +13,7 @@ import Contact from './pages/Contact'
 import About from './pages/About'
 import Blog from './pages/Blog'
 import BlogPost from './pages/BlogPost'
+import Magazine from './pages/Magazine'
 import Values from './pages/Values'
 import Aurora from './pages/Aurora'
 import Privacy from './pages/Privacy'
@@ -62,6 +63,7 @@ function AppContent() {
           <Route path="/about" element={<About />} />
           <Route path="/blog" element={<Blog />} />
           <Route path="/blog/:slug" element={<BlogPost />} />
+          <Route path="/magazine" element={<Magazine />} />
           <Route path="/values" element={<Values />} />
           <Route path="/aurora" element={<Aurora />} />
           <Route path="/aurora.html" element={<Navigate to="/aurora" replace />} />

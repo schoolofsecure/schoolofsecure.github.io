@@ -4,7 +4,7 @@ export const szatmariInterview = {
   "featured": true,
   "section": "Human",
   "date": "2026-08-18",
-  "defaultLang": "hu",
+  "defaultLang": "en",
   "image": "/images/szatmari-anita-en.png",
   "imageAlt": "Anita Szatmári, HumanDigit Solutions",
   "title": "“If technology, strategy and communication are aligned, digitalisation creates real value.”",

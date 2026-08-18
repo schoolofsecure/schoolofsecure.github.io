@@ -3,7 +3,7 @@ export const szatmariInterview = {
   "slug": "digitalisation-szatmari-anita",
   "featured": true,
   "section": "Human",
-  "date": "2026-08-19",
+  "date": "2026-08-18",
   "defaultLang": "hu",
   "image": "/images/szatmari-anita-en.png",
   "imageAlt": "Anita Szatmári, HumanDigit Solutions",

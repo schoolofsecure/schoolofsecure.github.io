@@ -35,7 +35,7 @@ export const magazineIssues = [
         kind: 'spread',
         eyebrow: 'Line you can use',
         title: 'Warm, and steady',
-        body: '“Happy to help — give me a moment to check this the usual way.” Kindness and caution in one sentence.',
+        body: '“Happy to help, give me a moment to check this the usual way.” Kindness and caution in one sentence.',
         tone: 'soft',
       },
       {
@@ -43,7 +43,7 @@ export const magazineIssues = [
         kind: 'close',
         eyebrow: 'Close',
         title: 'Slower first yes',
-        body: 'You do not need a harder personality. You need a habit you can practise. This is a demo of the magazine viewer — not a finished issue.',
+        body: 'You do not need a harder personality. You need a habit you can practise. This is a demo of the magazine viewer, not a finished issue.',
         tone: 'deep',
         ctaLabel: 'Back to home',
         ctaTo: '/',

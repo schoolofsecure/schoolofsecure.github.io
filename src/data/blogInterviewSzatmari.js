@@ -1,4 +1,4 @@
-/** Interview: Szatmári Anita — do not rewrite; format + faithful EN only. */
+/** Interview: Szatmári Anita, do not rewrite; format + faithful EN only. */
 export const szatmariInterview = {
   "slug": "digitalisation-szatmari-anita",
   "featured": true,
@@ -9,13 +9,13 @@ export const szatmariInterview = {
   "imageAlt": "Anita Szatmári, HumanDigit Solutions",
   "title": "“If technology, strategy and communication are aligned, digitalisation creates real value.”",
   "subtitle": "A conversation with Anita Szatmári, digitalisation expert and creator of the HumanDigit Solutions brand",
-  "excerpt": "A conversation with Anita Szatmári on the human side of digitalisation: trust, leadership, acceptance — and how change can turn fear into curiosity.",
+  "excerpt": "On the human side of digitalisation: trust, leadership, acceptance, and how change can turn fear into curiosity.",
   "seoTitle": "Conversation with Anita Szatmári on Digitalisation | Iterali",
   "seoDescription": "Interview with Anita Szatmári, digitalisation expert and HumanDigit Solutions founder, on the human side of digital change. Available in Hungarian and English.",
   "body": [
     {
       "type": "p",
-      "text": "Digitalisation is no longer merely a technological question; it is part of everyone’s everyday experience. Automation, artificial intelligence and online collaboration have brought new opportunities — and new dilemmas."
+      "text": "Digitalisation is no longer merely a technological question; it is part of everyone’s everyday experience. Automation, artificial intelligence and online collaboration have brought new opportunities, and new dilemmas."
     },
     {
       "type": "p",
@@ -23,7 +23,7 @@ export const szatmariInterview = {
     },
     {
       "type": "p",
-      "text": "That is what I discussed with Anita Szatmári, a digitalisation expert who created the HumanDigit Solutions brand as the professional frame for her own business — with the aim of presenting the possibilities of digitalisation through a human-centred approach."
+      "text": "That is what I discussed with Anita Szatmári, a digitalisation expert who created the HumanDigit Solutions brand as the professional frame for her own business, with the aim of presenting the possibilities of digitalisation through a human-centred approach."
     },
     {
       "type": "q",
@@ -35,7 +35,7 @@ export const szatmariInterview = {
     },
     {
       "type": "p",
-      "text": "But I soon saw what value it creates when we use it well — it does not take away; it supports the work and creates an objective basis for development. Use of the system was also tied to KPIs, so from then on our work became measurable and trackable. That stayed with me deeply, because that is where I understood that digitalisation can work for us, not against us — while making workflows transparent and measurable can also initially create fear in many people if there is no proper communication and trust behind it."
+      "text": "But I soon saw what value it creates when we use it well, it does not take away; it supports the work and creates an objective basis for development. Use of the system was also tied to KPIs, so from then on our work became measurable and trackable. That stayed with me deeply, because that is where I understood that digitalisation can work for us, not against us, while making workflows transparent and measurable can also initially create fear in many people if there is no proper communication and trust behind it."
     },
     {
       "type": "q",
@@ -47,7 +47,7 @@ export const szatmariInterview = {
     },
     {
       "type": "p",
-      "text": "At the same time, it is not enough to talk about the whys only at organisational level — leaders also need to show employees what will make the change genuinely useful for them: how it eases their everyday tasks, and in what ways it makes them more effective or more recognised."
+      "text": "At the same time, it is not enough to talk about the whys only at organisational level, leaders also need to show employees what will make the change genuinely useful for them: how it eases their everyday tasks, and in what ways it makes them more effective or more recognised."
     },
     {
       "type": "p",
@@ -63,7 +63,7 @@ export const szatmariInterview = {
     },
     {
       "type": "p",
-      "text": "A good example is in recruiting: when a recruiting colleague already starts the workday by opening the ATS first — not because they have to, but because it has become a natural part of the daily routine. Then it is no longer about adapting to the system; the system becomes the logical tool for getting the work done."
+      "text": "A good example is in recruiting: when a recruiting colleague already starts the workday by opening the ATS first, not because they have to, but because it has become a natural part of the daily routine. Then it is no longer about adapting to the system; the system becomes the logical tool for getting the work done."
     },
     {
       "type": "p",
@@ -71,7 +71,7 @@ export const szatmariInterview = {
     },
     {
       "type": "p",
-      "text": "In many places they are called the organisation’s “influencers” — they are the ones who can convey change authentically to colleagues. Later they often become the system’s “stewards”: they connect users, leaders and developers, and keep the operation going over the long term."
+      "text": "In many places they are called the organisation’s “influencers”, they are the ones who can convey change authentically to colleagues. Later they often become the system’s “stewards”: they connect users, leaders and developers, and keep the operation going over the long term."
     },
     {
       "type": "q",
@@ -91,15 +91,15 @@ export const szatmariInterview = {
     },
     {
       "type": "p",
-      "text": "So the absence of digitalisation does not only create a competitive disadvantage; it also damages the employer brand. A modern, transparent and well-functioning system, by contrast, signals that the organisation wants to move forward, pays attention to its people and to the future. And that carries the message that there is stability at the company, that there is a vision — and that is one of the most important factors in someone committing for the long term."
+      "text": "So the absence of digitalisation does not only create a competitive disadvantage; it also damages the employer brand. A modern, transparent and well-functioning system, by contrast, signals that the organisation wants to move forward, pays attention to its people and to the future. And that carries the message that there is stability at the company, that there is a vision, and that is one of the most important factors in someone committing for the long term."
     },
     {
       "type": "p",
-      "text": "Moreover, clients and market partners now also watch how digitalised, innovative and environmentally conscious a company is — for example whether it uses paperless HR processes or online administration. If these are missing, that can cause loss not only internally but also at business level, even leading to losing clients or losing a tender."
+      "text": "Moreover, clients and market partners now also watch how digitalised, innovative and environmentally conscious a company is, for example whether it uses paperless HR processes or online administration. If these are missing, that can cause loss not only internally but also at business level, even leading to losing clients or losing a tender."
     },
     {
       "type": "h",
-      "text": "Avoiding ghosting takes more than technology — it takes a conscious HR culture"
+      "text": "Avoiding ghosting takes more than technology, it takes a conscious HR culture"
     },
     {
       "type": "p",
@@ -111,7 +111,7 @@ export const szatmariInterview = {
     },
     {
       "type": "p",
-      "text": "Alongside automated template emails, however, personal feedback remains crucial. Someone may not have been the right fit for a given role, but later they may be the perfect candidate — and for that they need to leave with a positive experience and stay open to the company."
+      "text": "Alongside automated template emails, however, personal feedback remains crucial. Someone may not have been the right fit for a given role, but later they may be the perfect candidate, and for that they need to leave with a positive experience and stay open to the company."
     },
     {
       "type": "p",
@@ -123,11 +123,11 @@ export const szatmariInterview = {
     },
     {
       "type": "p",
-      "text": "For most people the path through digitalisation starts with fear — they worry about losing control or about their work becoming visible — but with the right support they can reach curiosity and motivation."
+      "text": "For most people the path through digitalisation starts with fear, they worry about losing control or about their work becoming visible, but with the right support they can reach curiosity and motivation."
     },
     {
       "type": "p",
-      "text": "I was the same: at first I was afraid, mostly because I feared for my job. Then I realised that the new system was taking off my shoulders exactly what I liked least — the administration. From then on my relationship with digitalisation turned into curiosity, then motivation."
+      "text": "I was the same: at first I was afraid, mostly because I feared for my job. Then I realised that the new system was taking off my shoulders exactly what I liked least, the administration. From then on my relationship with digitalisation turned into curiosity, then motivation."
     },
     {
       "type": "p",
@@ -147,7 +147,7 @@ export const szatmariInterview = {
     },
     {
       "type": "p",
-      "text": "Trust is somewhat more tangible, because it draws on authenticity and professional stability, while likability is much more subjective — it may be a software’s functionality, or the people who represent it, that create a positive feeling. At a strategic level, however, authenticity is what connects the two. When the arguments, the communication and the actions are aligned, likability turns into long-term trust and partnership."
+      "text": "Trust is somewhat more tangible, because it draws on authenticity and professional stability, while likability is much more subjective, it may be a software’s functionality, or the people who represent it, that create a positive feeling. At a strategic level, however, authenticity is what connects the two. When the arguments, the communication and the actions are aligned, likability turns into long-term trust and partnership."
     },
     {
       "type": "q",
@@ -155,13 +155,13 @@ export const szatmariInterview = {
     },
     {
       "type": "p",
-      "text": "Digitalisation is not merely a technological question, but strategy, communication and a deep knowledge of processes — when these are aligned, change truly creates value."
+      "text": "Digitalisation is not merely a technological question, but strategy, communication and a deep knowledge of processes, when these are aligned, change truly creates value."
     }
   ],
   "hu": {
     "title": "„Ha a technológia, a stratégia és a kommunikáció összhangban van, a digitalizáció valódi értéket teremt.”",
-    "subtitle": "– beszélgetés Szatmári Anitával, digitalizációs szakértővel és a HumanDigit Solutions márka megalkotójával",
-    "excerpt": "Beszélgetés Szatmári Anitával a digitalizáció emberi oldaláról: bizalom, vezetés, elfogadás — és arról, hogyan válhat a félelem kíváncsisággá.",
+    "subtitle": "Beszélgetés Szatmári Anitával, digitalizációs szakértővel és a HumanDigit Solutions márka megalkotójával",
+    "excerpt": "A digitalizáció emberi oldaláról: bizalom, vezetés, elfogadás, és arról, hogyan válhat a félelem kíváncsisággá.",
     "image": "/images/szatmari-anita.png",
     "imageAlt": "Szatmári Anita, HumanDigit Solutions",
     "body": [
@@ -175,7 +175,7 @@ export const szatmariInterview = {
       },
       {
         "type": "p",
-        "text": "Erről beszélgettem Szatmári Anitával, digitalizációs szakértővel, aki a HumanDigit Solutions márkanevet saját vállalkozása szakmai kereteként hozta létre – azzal a céllal, hogy emberközpontú megközelítésben mutassa be a digitalizáció lehetőségeit."
+        "text": "Erről beszélgettem Szatmári Anitával, digitalizációs szakértővel, aki a HumanDigit Solutions márkanevet saját vállalkozása szakmai kereteként hozta létre, azzal a céllal, hogy emberközpontú megközelítésben mutassa be a digitalizáció lehetőségeit."
       },
       {
         "type": "q",
@@ -187,7 +187,7 @@ export const szatmariInterview = {
       },
       {
         "type": "p",
-        "text": "De hamar láttam, milyen értéket ad, ha jól használjuk – nem elvesz, hanem támogatja a munkát, és objektív alapot teremt a fejlődéshez. A rendszer használata KPI-okhoz is kötve volt, így a munkánk onnantól mérhetővé és lekövethetővé vált. Ez mélyen megmaradt bennem, mert ott értettem meg, hogy a digitalizáció nem ellenünk, hanem értünk dolgozhat – ugyanakkor a munkafolyamatok átláthatóvá és mérhetővé válása sokakban kezdetben félelmet is kelthet, ha nincs megfelelő kommunikáció és bizalom a háttérben."
+        "text": "De hamar láttam, milyen értéket ad, ha jól használjuk, nem elvesz, hanem támogatja a munkát, és objektív alapot teremt a fejlődéshez. A rendszer használata KPI-okhoz is kötve volt, így a munkánk onnantól mérhetővé és lekövethetővé vált. Ez mélyen megmaradt bennem, mert ott értettem meg, hogy a digitalizáció nem ellenünk, hanem értünk dolgozhat, ugyanakkor a munkafolyamatok átláthatóvá és mérhetővé válása sokakban kezdetben félelmet is kelthet, ha nincs megfelelő kommunikáció és bizalom a háttérben."
       },
       {
         "type": "q",
@@ -199,7 +199,7 @@ export const szatmariInterview = {
       },
       {
         "type": "p",
-        "text": "Ugyanakkor nem elég csak szervezeti szinten beszélni a miértekről – a vezetőknek azt is meg kell mutatniuk, hogy a változás a munkavállalók számára mitől lesz valóban hasznos: hogyan könnyíti meg a mindennapi feladataikat, miben teszi őket hatékonyabbá vagy elismertebbé."
+        "text": "Ugyanakkor nem elég csak szervezeti szinten beszélni a miértekről, a vezetőknek azt is meg kell mutatniuk, hogy a változás a munkavállalók számára mitől lesz valóban hasznos: hogyan könnyíti meg a mindennapi feladataikat, miben teszi őket hatékonyabbá vagy elismertebbé."
       },
       {
         "type": "p",
@@ -215,7 +215,7 @@ export const szatmariInterview = {
       },
       {
         "type": "p",
-        "text": "Egy jó példa erre a toborzási terület: amikor a toborzó kolléga már úgy kezdi a munkanapját, hogy az első, amit megnyit, az az ATS – nem azért, mert muszáj, hanem mert ez vált a napi rutin természetes részévé. Ilyenkor már nem a rendszerhez kell igazodni, hanem a rendszer válik a munkavégzés logikus eszközévé."
+        "text": "Egy jó példa erre a toborzási terület: amikor a toborzó kolléga már úgy kezdi a munkanapját, hogy az első, amit megnyit, az az ATS, nem azért, mert muszáj, hanem mert ez vált a napi rutin természetes részévé. Ilyenkor már nem a rendszerhez kell igazodni, hanem a rendszer válik a munkavégzés logikus eszközévé."
       },
       {
         "type": "p",
@@ -223,7 +223,7 @@ export const szatmariInterview = {
       },
       {
         "type": "p",
-        "text": "Őket sok helyen „a szervezet influenszereinek” nevezik – ők azok, akik képesek a változást hitelesen közvetíteni a kollégák felé. Később pedig gyakran ők válnak a rendszer „éltetőivé”: összekötik a felhasználókat, a vezetőket és a fejlesztőket, és hosszú távon is fenntartják a működést."
+        "text": "Őket sok helyen „a szervezet influenszereinek” nevezik, ők azok, akik képesek a változást hitelesen közvetíteni a kollégák felé. Később pedig gyakran ők válnak a rendszer „éltetőivé”: összekötik a felhasználókat, a vezetőket és a fejlesztőket, és hosszú távon is fenntartják a működést."
       },
       {
         "type": "q",
@@ -243,11 +243,11 @@ export const szatmariInterview = {
       },
       {
         "type": "p",
-        "text": "A digitalizáció hiánya tehát nemcsak versenyhátrányt okoz, hanem munkáltatói márka-veszteséget is. Egy korszerű, átlátható és jól működő rendszer viszont azt üzeni, hogy a szervezet haladni akar, odafigyel az embereire és a jövőre is. Ez pedig azt az üzenetet hordozza, hogy stabilitás van a cégnél, van jövőkép – és ez az egyik legfontosabb tényező abban, hogy valaki hosszú távon elköteleződjön."
+        "text": "A digitalizáció hiánya tehát nemcsak versenyhátrányt okoz, hanem munkáltatói márka-veszteséget is. Egy korszerű, átlátható és jól működő rendszer viszont azt üzeni, hogy a szervezet haladni akar, odafigyel az embereire és a jövőre is. Ez pedig azt az üzenetet hordozza, hogy stabilitás van a cégnél, van jövőkép, és ez az egyik legfontosabb tényező abban, hogy valaki hosszú távon elköteleződjön."
       },
       {
         "type": "p",
-        "text": "Ráadásul ma már az ügyfelek és a piaci partnerek is figyelik, mennyire digitalizált, innovatív és környezettudatos egy vállalat – például papírmentes HR-folyamatokat vagy online ügyintézést alkalmaz-e. Ha ezek hiányoznak, az nemcsak belső, hanem üzleti szinten is veszteséget okozhat, akár ügyfélvesztéshez vagy egy tender elvesztéséhez is vezethet."
+        "text": "Ráadásul ma már az ügyfelek és a piaci partnerek is figyelik, mennyire digitalizált, innovatív és környezettudatos egy vállalat, például papírmentes HR-folyamatokat vagy online ügyintézést alkalmaz-e. Ha ezek hiányoznak, az nemcsak belső, hanem üzleti szinten is veszteséget okozhat, akár ügyfélvesztéshez vagy egy tender elvesztéséhez is vezethet."
       },
       {
         "type": "h",
@@ -263,7 +263,7 @@ export const szatmariInterview = {
       },
       {
         "type": "p",
-        "text": "Az automatizált sablonlevelek mellett azonban a személyes visszajelzés továbbra is kulcsfontosságú. Lehet, hogy valaki egy adott pozícióra nem felelt meg, de a későbbiekben épp ő lesz a tökéletes jelölt – ehhez viszont az kell, hogy pozitív élménnyel távozzon, és nyitott maradjon a cég iránt."
+        "text": "Az automatizált sablonlevelek mellett azonban a személyes visszajelzés továbbra is kulcsfontosságú. Lehet, hogy valaki egy adott pozícióra nem felelt meg, de a későbbiekben épp ő lesz a tökéletes jelölt, ehhez viszont az kell, hogy pozitív élménnyel távozzon, és nyitott maradjon a cég iránt."
       },
       {
         "type": "p",
@@ -275,11 +275,11 @@ export const szatmariInterview = {
       },
       {
         "type": "p",
-        "text": "A legtöbb ember útja a digitalizáció során először a félelemből indul – attól tartanak, hogy elveszítik a kontrollt vagy láthatóvá válik a munkájuk –, de megfelelő támogatással eljuthatnak a kíváncsiság és motiváció szintjére."
+        "text": "A legtöbb ember útja a digitalizáció során először a félelemből indul, attól tartanak, hogy elveszítik a kontrollt vagy láthatóvá válik a munkájuk, de megfelelő támogatással eljuthatnak a kíváncsiság és motiváció szintjére."
       },
       {
         "type": "p",
-        "text": "Én is így voltam ezzel: eleinte féltem, leginkább attól, hogy a munkámat féltettem. Aztán rájöttem, hogy az új rendszer épp azt veszi le a vállamról, amit a legkevésbé szerettem – az adminisztrációt. Onnantól kíváncsisággá, majd motivációvá alakult bennem a digitalizációhoz való viszony."
+        "text": "Én is így voltam ezzel: eleinte féltem, leginkább attól, hogy a munkámat féltettem. Aztán rájöttem, hogy az új rendszer épp azt veszi le a vállamról, amit a legkevésbé szerettem, az adminisztrációt. Onnantól kíváncsisággá, majd motivációvá alakult bennem a digitalizációhoz való viszony."
       },
       {
         "type": "p",
@@ -299,7 +299,7 @@ export const szatmariInterview = {
       },
       {
         "type": "p",
-        "text": "A bizalom valamivel kézzelfoghatóbb, mert a hitelességből és a szakmai stabilitásból táplálkozik, a szimpátia pedig sokkal szubjektívebb – lehet, hogy egy szoftver funkcionalitása, vagy az emberek, akik képviselik azt, váltanak ki pozitív érzést. Stratégiai szinten azonban a hitelesség az, ami összeköti a kettőt. Ha az érvek, a kommunikáció és a tettek összhangban vannak, a szimpátia hosszú távú bizalommá és partnerséggé alakul."
+        "text": "A bizalom valamivel kézzelfoghatóbb, mert a hitelességből és a szakmai stabilitásból táplálkozik, a szimpátia pedig sokkal szubjektívebb, lehet, hogy egy szoftver funkcionalitása, vagy az emberek, akik képviselik azt, váltanak ki pozitív érzést. Stratégiai szinten azonban a hitelesség az, ami összeköti a kettőt. Ha az érvek, a kommunikáció és a tettek összhangban vannak, a szimpátia hosszú távú bizalommá és partnerséggé alakul."
       },
       {
         "type": "q",
@@ -307,7 +307,7 @@ export const szatmariInterview = {
       },
       {
         "type": "p",
-        "text": "A digitalizáció nem csupán technológiai kérdés, hanem stratégia, kommunikáció és a folyamatok mély ismerete – ha ezek összhangban vannak, a változás valóban értéket teremt."
+        "text": "A digitalizáció nem csupán technológiai kérdés, hanem stratégia, kommunikáció és a folyamatok mély ismerete, ha ezek összhangban vannak, a változás valóban értéket teremt."
       }
     ]
   }

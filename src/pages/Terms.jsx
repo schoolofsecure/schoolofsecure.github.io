@@ -15,16 +15,15 @@ export default function Terms() {
         <section className="section">
           <h2>1. Service</h2>
           <p>
-            Iterali provides the Iterali Academy programme, information about team offerings, a newsletter, and optional
-            practice and learning tools on this website. By using the site you agree to these terms.
+            Iterali provides free articles, a newsletter, and optional
+            practice on this website (Aurora). By using the site you agree to these terms.
           </p>
         </section>
 
         <section className="section">
-          <h2>2. Academy and applications</h2>
+          <h2>2. Practice (Aurora)</h2>
           <p>
-            Submitting an Academy application does not guarantee a place. We review applications and decide together whether
-            the programme is a good fit. Places are limited per cohort.
+            Aurora is optional free practice. Signing in saves progress. Using it does not create a paid course or a place on a programme.
           </p>
         </section>
 
@@ -55,8 +54,7 @@ export default function Terms() {
         <section className="section">
           <h2>6. Contact</h2>
           <p>
-            Questions about these terms: use the <Link to="/contact">contact form</Link>, apply via{' '}
-            <Link to="/academy">Academy</Link>, or see our <Link to="/privacy">Privacy Policy</Link>.
+            Questions about these terms: use the <Link to="/contact">contact form</Link>, or see our <Link to="/privacy">Privacy Policy</Link>.
           </p>
         </section>
       </div>

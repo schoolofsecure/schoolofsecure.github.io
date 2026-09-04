@@ -5,85 +5,9 @@ import SiteFooter from '../components/SiteFooter'
 import CookieBanner from '../components/CookieBanner'
 import { submitToFormSubmit } from '../utils/formSubmit'
 import { getLatestBlogPosts } from '../data/blogPosts'
-import { FOUNDER_LINKEDIN_URL } from '../data/brand'
 
 const popularPosts = getLatestBlogPosts(4)
 const POPULAR_VISIBLE = 3
-
-const academyFeatures = [
-  {
-    id: 'anywhere',
-    title: 'Skills you can use anywhere',
-    text: 'What you learn carries into work, home and everyday apps, not just one training screen.',
-    icon: (
-      <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
-        <circle cx="16" cy="16" r="10.5" />
-        <path d="M5.5 16h21M16 5.5c3.2 3.8 3.2 16.2 0 21M16 5.5c-3.2 3.8-3.2 16.2 0 21" />
-      </svg>
-    ),
-  },
-  {
-    id: 'calm',
-    title: 'Calm confidence, not fear',
-    text: 'You build steady habits instead of panic and second-guessing every click.',
-    icon: (
-      <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M16 27s-10-6.5-10-14a6 6 0 0 1 10-4 6 6 0 0 1 10 4c0 7.5-10 14-10 14z" />
-        <path d="M11 15l3.5 3.5L21 12" />
-      </svg>
-    ),
-  },
-  {
-    id: 'path',
-    title: 'A clear path, step by step',
-    text: 'You always know what to practise next, so you never feel lost.',
-    icon: (
-      <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
-        <circle cx="8" cy="22" r="2.5" />
-        <circle cx="16" cy="14" r="2.5" />
-        <circle cx="24" cy="8" r="2.5" />
-        <path d="M10 20l5-5M18 12l5-5" />
-      </svg>
-    ),
-  },
-  {
-    id: 'guidance',
-    title: 'Personal guidance when you are stuck',
-    text: 'One-to-one and small-group help for the moments that feel hard alone.',
-    icon: (
-      <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
-        <circle cx="13" cy="11" r="4.5" />
-        <path d="M6 26c0-5 3.5-8 7-8s7 3 7 8" />
-        <path d="M22 14h6v6" />
-        <path d="M22 20l6-6" />
-      </svg>
-    ),
-  },
-  {
-    id: 'practice',
-    title: 'Live practice that sticks',
-    text: 'Interactive sessions focused on real decisions and action, not long lectures.',
-    icon: (
-      <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
-        <rect x="5" y="8" width="22" height="16" rx="3" />
-        <path d="M14 13l6 3.5-6 3.5V13z" />
-      </svg>
-    ),
-  },
-  {
-    id: 'community',
-    title: 'A small practice community',
-    text: 'A space to share progress, get feedback and learn alongside others in a small early group.',
-    icon: (
-      <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
-        <circle cx="11" cy="12" r="3.5" />
-        <circle cx="21" cy="12" r="3.5" />
-        <path d="M4 26c0-4 3-6.5 7-6.5M21 19.5c4 0 7 2.5 7 6.5" />
-        <path d="M16 26c0-3.5 2.5-5.5 5-5.5s5 2 5 5.5" />
-      </svg>
-    ),
-  },
-]
 
 const Landing = () => {
   const [newsletterEmail, setNewsletterEmail] = useState('')
@@ -123,11 +47,11 @@ const Landing = () => {
       <section className="landing-hero landing-hero--centered" aria-label="Introduction">
         <div className="landing-hero-copy landing-hero-copy--centered">
           <h1 className="landing-hero-title">
-            <span className="landing-hero-title-line landing-hero-title-line--primary">Live online with calm confidence,</span>
+            <span className="landing-hero-title-line landing-hero-title-line--primary">Free reads and simple practice</span>
             <span className="landing-hero-title-line landing-hero-title-line--emphasis">
-              knowing your decisions{' '}
+              for{' '}
               <span className="landing-hero-highlight">
-                feel right
+                calmer online decisions
                 <svg className="landing-hero-highlight-wave" viewBox="0 0 200 16" preserveAspectRatio="none" aria-hidden="true">
                   <path
                     d="M4 11 C48 3, 72 14, 120 8 S160 4, 196 9"
@@ -141,88 +65,41 @@ const Landing = () => {
             </span>
           </h1>
           <p className="landing-hero-lead landing-hero-lead--centered">
-            The Iterali Academy is an early practice group we are testing, to help people build calm, confident habits online.
+            Useful articles when you arrive. Aurora when you want to try a real situation. The newsletter when you want to come back.
           </p>
           <p className="landing-hero-support">
-            <span>No lectures</span>
+            <span>Blog</span>
             <span className="landing-hero-support-dot" aria-hidden="true">·</span>
-            <span>Real scenarios</span>
+            <span>Play</span>
             <span className="landing-hero-support-dot" aria-hidden="true">·</span>
-            <span>A clear next step</span>
+            <span>Newsletter</span>
           </p>
           <div className="landing-hero-ctas landing-hero-ctas--centered">
-            <Link to="/academy" className="btn btn-primary landing-hero-btn">
-              Learn more
+            <Link to="/blog" className="btn btn-primary landing-hero-btn">
+              Read the blog
             </Link>
-            <a href="#newsletter" className="btn btn-secondary landing-hero-btn">
-              Join the Newsletter
-            </a>
+            <Link to="/aurora" className="btn btn-secondary landing-hero-btn">
+              Play
+            </Link>
           </div>
-          <p className="landing-hero-note landing-hero-note--centered">
-            Also available for <Link to="/teams">teams</Link>.
-          </p>
         </div>
       </section>
 
-      <section className="landing-academy-about" aria-labelledby="academy-about-title">
-        <h2 id="academy-about-title" className="landing-academy-about-title">
-          What is the Iterali Academy?
+      <section className="landing-academy-about" aria-labelledby="play-aurora-title">
+        <h2 id="play-aurora-title" className="landing-academy-about-title">
+          Play Aurora
         </h2>
         <div className="landing-academy-about-copy">
+          <p>Practise one small online decision.</p>
           <p>
-            Life online should support your real life, not stress you out. Rather than fear-based training or endless warnings, it prioritises calm, clarity and confident everyday decisions. It is about building habits that fit how you actually live and work.
+            Aurora puts you in a realistic situation: an urgent email, a login prompt or a request that feels slightly off.
           </p>
-          <p>
-            The Iterali Academy helps you practise the decisions that matter most, in realistic scenarios you recognise from email, chat and everyday shortcuts. Through guided practice, clear feedback and one next step at a time, you build calm habits you can use straight away, without lectures, guilt or complex dashboards.
-          </p>
-          <p>
-            This is not something you buy and forget. It is guided practice that helps you take action and make real progress. Right now we are only inviting people to share interest and talk, with no purchase on this site.
-          </p>
+          <p>Choose your next step, then see what to check.</p>
+          <p>You sign in to play. The blog does not need an account.</p>
         </div>
-        <ul className="landing-academy-features">
-          {academyFeatures.map(({ id, title, text, icon }) => (
-            <li key={id} className="landing-academy-feature">
-              <span className="landing-academy-feature-icon" aria-hidden="true">
-                {icon}
-              </span>
-              <div className="landing-academy-feature-body">
-                <h3>{title}</h3>
-                {text && <p>{text}</p>}
-              </div>
-            </li>
-          ))}
-        </ul>
-        <aside className="landing-founder" aria-label="Founder">
-          <img
-            className="landing-founder-photo"
-            src="/images/erika-papp-kovacs.jpg"
-            alt="Erika Papp-Kovacs"
-            width="140"
-            height="140"
-          />
-          <div className="landing-founder-copy">
-            <p className="landing-founder-label">Led by Erika Papp-Kovacs</p>
-            <p className="landing-founder-text">
-              Final-year law student and economist, with a background in digital trust and security systems (DigiCert, Entrust nShield, Cybersecurity Specialist).
-            </p>
-            <p className="landing-founder-mission">
-              I built Iterali for people who want to feel calm online, not scared or overwhelmed by security training.
-            </p>
-            <p className="landing-founder-languages">Questions welcome in English and German.</p>
-            <p className="landing-founder-flags" aria-hidden="true">🇬🇧 · 🇩🇪</p>
-            <a
-              className="landing-founder-link"
-              href={FOUNDER_LINKEDIN_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              LinkedIn
-            </a>
-          </div>
-        </aside>
         <div className="landing-academy-cta">
-          <Link to="/academy" className="btn btn-primary landing-hero-btn">
-            Learn more & share interest
+          <Link to="/aurora" className="btn btn-primary landing-hero-btn">
+            Play Aurora
           </Link>
         </div>
       </section>
@@ -281,7 +158,7 @@ const Landing = () => {
       <section id="newsletter" className="landing-newsletter" aria-labelledby="newsletter-title">
         <h2 id="newsletter-title" className="landing-newsletter-title">Join the Newsletter</h2>
         <p className="landing-newsletter-lead">
-          Short notes on calm decisions, clear habits and confident choices online.
+          A note when there is a new article or a new game.
         </p>
         {newsletterStatus === 'success' ? (
           <p className="landing-newsletter-success">Thanks. You are on the list.</p>

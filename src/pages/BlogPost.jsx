@@ -16,7 +16,7 @@ import '../styles/site.css'
 
 const DEFAULT_TITLE = 'Iterali – Calm, confident habits online'
 const DEFAULT_DESCRIPTION =
-  'The Iterali Academy helps you build calm, confident habits online through guided practice and realistic scenarios. No tech background needed.'
+  'Free reads and simple practice for calmer online decisions.'
 
 function previewStorageKey(slug) {
   return `iterali-blog-preview:${slug}`

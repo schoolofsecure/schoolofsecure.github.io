@@ -53,11 +53,10 @@ export default function Contact() {
           <p className="landing-path-label">Contact</p>
           <h1 id="contact-title">Get in touch</h1>
           <p className="teams-contact-lead">
-            Questions about the Academy, the site, or anything else? Send a short message. A real person will reply, usually within a day.
+            Questions about the site, the blog, or Aurora? Send a short message.
           </p>
           <p className="teams-why-ask">
-            Why we ask: name and email so we can reply. Looking for team access? Use the{' '}
-            <Link to="/teams#contact">teams form</Link>.
+            Why we ask: name and email so we can reply.
           </p>
 
           {submitted ? (

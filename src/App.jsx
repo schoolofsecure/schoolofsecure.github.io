@@ -6,9 +6,6 @@ import PointAnimation from './components/Scoring/PointAnimation'
 import RankBadgeAnimation from './components/Scoring/RankBadgeAnimation'
 import LevelCompletionSummary from './components/Scoring/LevelCompletionSummary'
 import Landing from './pages/Landing'
-import ForTeams from './pages/ForTeams'
-import Academy from './pages/Academy'
-import AcademyApply from './pages/AcademyApply'
 import Contact from './pages/Contact'
 import About from './pages/About'
 import Blog from './pages/Blog'
@@ -56,9 +53,10 @@ function AppContent() {
           <Route path="/learn" element={<Navigate to="/" replace />} />
           <Route path="/learn/*" element={<Navigate to="/" replace />} />
           <Route path="/pricing" element={<Navigate to="/" replace />} />
-          <Route path="/teams" element={<ForTeams />} />
-          <Route path="/academy" element={<Academy />} />
-          <Route path="/academy/apply" element={<AcademyApply />} />
+          <Route path="/teams" element={<Navigate to="/" replace />} />
+          <Route path="/teams/*" element={<Navigate to="/" replace />} />
+          <Route path="/academy" element={<Navigate to="/aurora" replace />} />
+          <Route path="/academy/*" element={<Navigate to="/aurora" replace />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/about" element={<About />} />
           <Route path="/blog" element={<Blog />} />

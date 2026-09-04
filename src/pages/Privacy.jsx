@@ -17,7 +17,7 @@ const Privacy = () => {
           <section className="section">
             <h2>1. Data controller</h2>
             <p>
-              The data controller for Iterali (the Academy programme, website, team offerings and related learning tools) is{' '}
+              The data controller for Iterali (the Academy programme, website and related learning tools) is{' '}
               <strong>Papp-Kovacs Erika</strong>. Contact:{' '}
               <Link to="/contact">use the contact form</Link>.
             </p>
@@ -37,9 +37,6 @@ const Privacy = () => {
                 <strong>Personal contact form:</strong> name, email and message.
               </li>
               <li>
-                <strong>Teams contact requests:</strong> name, work email, company, team size and optional message.
-              </li>
-              <li>
                 <strong>Signed-in accounts</strong> (when you create one): email and learning/practice progress linked to your account
                 (for example completed items, scores and preferences).
               </li>
@@ -56,7 +53,7 @@ const Privacy = () => {
                 Sending the newsletter if you subscribe (consent — GDPR Article 6(1)(a)).
               </li>
               <li>
-                Responding to personal and team contact requests (pre-contractual steps / legitimate interest — GDPR Article 6(1)(b)/(f)).
+                Responding to contact requests (pre-contractual steps / legitimate interest — GDPR Article 6(1)(b)/(f)).
               </li>
               <li>
                 Account sign-in and saving progress when you use signed-in features (consent / contract performance — GDPR Article 6(1)(a)/(b)).
@@ -87,7 +84,7 @@ const Privacy = () => {
             <h2>5. Processors and data transfers</h2>
             <ul>
               <li>
-                <strong>FormSubmit</strong> — to deliver Academy interest forms, newsletter sign-ups, personal contact and Teams contact requests to us.
+                <strong>FormSubmit</strong> — to deliver Academy interest forms, newsletter sign-ups and personal contact requests to us.
               </li>
               <li>
                 <strong>Google Firebase</strong> (Authentication and data storage) — for sign-in and saving progress when you use an account.
@@ -135,7 +132,7 @@ const Privacy = () => {
           <section className="section">
             <h2>10. Scope</h2>
             <p>
-              This policy applies to Iterali as offered today: the website, Iterali Academy applications, newsletter, team offerings,
+              This policy applies to Iterali as offered today: the website, Iterali Academy applications, newsletter,
               optional signed-in practice/learning features and related services. If the policy changes, the updated version takes effect upon publication.
             </p>
           </section>

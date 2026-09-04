@@ -1,5 +1,4 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
 import SiteNav from '../components/SiteNav'
 import SiteFooter from '../components/SiteFooter'
 import CookieBanner from '../components/CookieBanner'
@@ -18,9 +17,6 @@ export default function Values() {
           <p className="teams-hero-lead">
             Iterali is built so people and teams can practise real decisions without fear of failing in public. Realistic cases, clear next steps and privacy you can see in the product.
           </p>
-          <div className="teams-hero-ctas">
-            <Link to="/teams" className="btn btn-secondary teams-btn">Teams</Link>
-          </div>
         </div>
         <aside className="teams-hero-aside" aria-hidden="true">
           <div className="teams-aside-card">

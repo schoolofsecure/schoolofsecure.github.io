@@ -5,21 +5,20 @@ import BrandLogo from './BrandLogo'
 import { useAuth } from '../contexts/AuthContext'
 
 const navLinks = [
-  { to: '/', label: 'Individual' },
-  { to: '/teams', label: 'Teams' },
+  { to: '/', label: 'Home' },
+  { to: '/aurora', label: 'Play' },
   { to: '/about', label: 'About' },
   { to: '/blog', label: 'Blog' },
 ]
 
 function isNavActive(pathname, to) {
-  if (to === '/') {
-    return pathname === '/' || pathname === '/aurora' || /^\/ugy\d+/.test(pathname)
-  }
+  if (to === '/') return pathname === '/'
+  if (to === '/aurora') return pathname === '/aurora' || /^\/ugy\d+/.test(pathname)
   return pathname === to || pathname.startsWith(`${to}/`)
 }
 
-const ACADEMY_APPLY_LABEL = 'Academy'
-const ACADEMY_APPLY_PATH = '/academy'
+const HEADER_CTA_LABEL = 'Newsletter'
+const HEADER_CTA_PATH = '/#newsletter'
 
 const baseAuthBtnStyle = {
   minWidth: '190px',
@@ -163,11 +162,11 @@ export default function SiteNav() {
           )}
           {!user && (
             <Link
-              to={ACADEMY_APPLY_PATH}
+              to={HEADER_CTA_PATH}
               className="btn btn-primary site-header-auth-btn site-header-apply-desktop"
               style={{ ...baseAuthBtnStyle, minWidth: '190px', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}
             >
-              {ACADEMY_APPLY_LABEL}
+              {HEADER_CTA_LABEL}
             </Link>
           )}
           {user && (
@@ -223,11 +222,11 @@ export default function SiteNav() {
                 </nav>
                 {!user ? (
                   <Link
-                    to={ACADEMY_APPLY_PATH}
+                    to={HEADER_CTA_PATH}
                     className="btn btn-primary site-mobile-apply"
                     onClick={() => setMenuOpen(false)}
                   >
-                    {ACADEMY_APPLY_LABEL}
+                    {HEADER_CTA_LABEL}
                   </Link>
                 ) : (
                   <div className="site-mobile-user-links">

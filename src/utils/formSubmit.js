@@ -1,4 +1,4 @@
-export const FORMSUBMIT_EMAIL = 'erikapappkovacs@gmail.com'
+export const FORMSUBMIT_EMAIL = 'hello@iterali.com'
 
 export async function submitToFormSubmit(fields, { honeypot } = {}) {
   if (honeypot) {

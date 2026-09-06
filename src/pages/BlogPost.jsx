@@ -14,9 +14,9 @@ import {
 import NotFound from './NotFound'
 import '../styles/site.css'
 
-const DEFAULT_TITLE = 'Iterali – Calm, confident habits online'
+const DEFAULT_TITLE = 'Iterali – Pause before fast online decisions'
 const DEFAULT_DESCRIPTION =
-  'Free reads and simple practice for calmer online decisions.'
+  'Iterali helps people pause before fast online decisions. Spot what is off before you say yes.'
 
 function previewStorageKey(slug) {
   return `iterali-blog-preview:${slug}`
@@ -287,9 +287,15 @@ export default function BlogPost() {
           <div className="blog-post-body">
             {(loc.body || []).map((block, i) => renderBodyBlock(block, i, lang))}
           </div>
-          <Link to="/blog" className="btn-ghost" style={{ display: 'inline-block', marginTop: 8 }}>
-            {lang === 'hu' ? '← Összes cikk' : '← All articles'}
-          </Link>
+          <aside className="blog-aurora-cta" aria-labelledby="blog-aurora-cta-title">
+            <h2 id="blog-aurora-cta-title">Try a real situation</h2>
+            <p>
+              Aurora gives you a short scenario where you decide what to do before you see the cues.
+            </p>
+            <Link to="/aurora" className="btn btn-primary">
+              Play Aurora free
+            </Link>
+          </aside>
         </article>
         <SiteFooter />
       </div>

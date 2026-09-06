@@ -358,18 +358,17 @@ const Aurora = () => {
                 }}
                 style={{marginBottom: '10px'}}
               />
-              <div style={{display: 'flex', gap: '10px', flexWrap: 'nowrap', alignItems: 'center'}}>
+              <div className="gate-actions">
                 <button className="btn" type="submit">Sign in</button>
                 <button className="btn-ghost" type="button" onClick={handleRegister}>Register</button>
-                <button 
-                  className="btn-ghost" 
-                  type="button" 
+                <button
+                  className="btn-ghost"
+                  type="button"
                   onClick={handlePasswordReset}
                   disabled={!email.trim()}
                   style={{
                     opacity: email.trim() ? 1 : 0.5,
                     cursor: email.trim() ? 'pointer' : 'not-allowed',
-                    whiteSpace: 'nowrap'
                   }}
                 >
                   Reset password

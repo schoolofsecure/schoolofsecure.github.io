@@ -15,8 +15,8 @@ export default function Terms() {
         <section className="section">
           <h2>1. Service</h2>
           <p>
-            Iterali provides free articles, a newsletter, and optional
-            practice on this website (Aurora). By using the site you agree to these terms.
+            Iterali provides free articles, optional practice on this website (Aurora),
+            and a short Digital Boundaries Card check-in. By using the site you agree to these terms.
           </p>
         </section>
 

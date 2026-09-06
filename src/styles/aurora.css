@@ -533,6 +533,14 @@ body.aurora-page {
   }
 }
 
+.gate-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  min-width: 0;
+}
+
 @media (max-width: 600px) {
   .levels-grid {
     grid-template-columns: repeat(1, minmax(0, 1fr));
@@ -543,6 +551,15 @@ body.aurora-page {
   }
 
   .gate-card .btn {
+    width: 100%;
+  }
+
+  .gate-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .gate-actions .btn-ghost {
     width: 100%;
   }
 }

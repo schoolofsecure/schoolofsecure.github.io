@@ -19,6 +19,8 @@ const Privacy = () => {
             <p>
               The data controller for Iterali (the Academy programme, website and related learning tools) is{' '}
               <strong>Papp-Kovacs Erika</strong>. Contact:{' '}
+              <a href="mailto:hello@iterali.com">hello@iterali.com</a>
+              {' '}or{' '}
               <Link to="/contact">use the contact form</Link>.
             </p>
           </section>
@@ -31,7 +33,7 @@ const Privacy = () => {
                 how you heard about us, and why you are applying.
               </li>
               <li>
-                <strong>Newsletter:</strong> email address.
+                <strong>Digital Boundaries Card:</strong> email address if you ask us to send your card.
               </li>
               <li>
                 <strong>Personal contact form:</strong> name, email and message.
@@ -50,7 +52,7 @@ const Privacy = () => {
                 Handling Academy applications and deciding on places together (pre-contractual steps / consent — GDPR Article 6(1)(a)/(b)).
               </li>
               <li>
-                Sending the newsletter if you subscribe (consent — GDPR Article 6(1)(a)).
+                Sending your Digital Boundaries Card if you ask for it (consent — GDPR Article 6(1)(a)).
               </li>
               <li>
                 Responding to contact requests (pre-contractual steps / legitimate interest — GDPR Article 6(1)(b)/(f)).
@@ -71,7 +73,7 @@ const Privacy = () => {
                 Application and contact form messages: as long as needed to handle your request, then typically up to 24 months unless a longer period is required by law.
               </li>
               <li>
-                Newsletter email: until you unsubscribe or ask us to delete it.
+                Digital Boundaries Card email: until you ask us to delete it.
               </li>
               <li>
                 Account and progress data: until you delete your account or withdraw consent, up to 24 months of inactivity maximum unless a longer period is required by law.
@@ -84,7 +86,7 @@ const Privacy = () => {
             <h2>5. Processors and data transfers</h2>
             <ul>
               <li>
-                <strong>FormSubmit</strong> — to deliver Academy interest forms, newsletter sign-ups and personal contact requests to us.
+                <strong>FormSubmit</strong> — to deliver Digital Boundaries Cards, Academy interest forms and personal contact requests to us.
               </li>
               <li>
                 <strong>Google Firebase</strong> (Authentication and data storage) — for sign-in and saving progress when you use an account.
@@ -125,6 +127,8 @@ const Privacy = () => {
             <h2>9. Contact</h2>
             <p>
               For privacy-related inquiries:{' '}
+              <a href="mailto:hello@iterali.com">hello@iterali.com</a>
+              {' '}or{' '}
               <Link to="/contact">use the contact form</Link>.
             </p>
           </section>
@@ -132,7 +136,7 @@ const Privacy = () => {
           <section className="section">
             <h2>10. Scope</h2>
             <p>
-              This policy applies to Iterali as offered today: the website, Iterali Academy applications, newsletter,
+              This policy applies to Iterali as offered today: the website, Iterali Academy applications, Digital Boundaries Card,
               optional signed-in practice/learning features and related services. If the policy changes, the updated version takes effect upon publication.
             </p>
           </section>

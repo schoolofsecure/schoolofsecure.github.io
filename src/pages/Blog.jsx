@@ -40,7 +40,7 @@ export default function Blog() {
           <p className="landing-path-label">Blog</p>
           <h1>Short reads for busy minds</h1>
           <p className="teams-hero-lead">
-            Practical articles on digital trust, human judgement and calmer online decisions.
+            Iterali helps people pause before fast online decisions. Short reads on the moments that ask for a fast yes.
           </p>
         </div>
         {featured && section === 'All' && (

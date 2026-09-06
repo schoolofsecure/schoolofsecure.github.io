@@ -6,6 +6,8 @@ import PointAnimation from './components/Scoring/PointAnimation'
 import RankBadgeAnimation from './components/Scoring/RankBadgeAnimation'
 import LevelCompletionSummary from './components/Scoring/LevelCompletionSummary'
 import Landing from './pages/Landing'
+import Play from './pages/Play'
+import Boundaries from './pages/Boundaries'
 import Contact from './pages/Contact'
 import About from './pages/About'
 import Blog from './pages/Blog'
@@ -48,8 +50,9 @@ function AppContent() {
         <VisualEffects />
         <Routes>
           <Route path="/" element={<Landing />} />
-          <Route path="/play" element={<Navigate to="/aurora" replace />} />
-          <Route path="/play/*" element={<Navigate to="/aurora" replace />} />
+          <Route path="/play" element={<Play />} />
+          <Route path="/play/*" element={<Navigate to="/play" replace />} />
+          <Route path="/boundaries" element={<Boundaries />} />
           <Route path="/learn" element={<Navigate to="/" replace />} />
           <Route path="/learn/*" element={<Navigate to="/" replace />} />
           <Route path="/pricing" element={<Navigate to="/" replace />} />

@@ -24,7 +24,7 @@ export default function Magazine() {
   useEffect(() => {
     document.title = 'Iterali Magazine · Demo'
     return () => {
-      document.title = 'Iterali – Calm, confident habits online'
+      document.title = 'Iterali – Pause before fast online decisions'
     }
   }, [])
 

@@ -6,19 +6,18 @@ import { useAuth } from '../contexts/AuthContext'
 
 const navLinks = [
   { to: '/', label: 'Home' },
-  { to: '/aurora', label: 'Play' },
-  { to: '/about', label: 'About' },
+  { to: '/play', label: 'About the game' },
   { to: '/blog', label: 'Blog' },
 ]
 
 function isNavActive(pathname, to) {
   if (to === '/') return pathname === '/'
-  if (to === '/aurora') return pathname === '/aurora' || /^\/ugy\d+/.test(pathname)
+  if (to === '/play') return pathname === '/play' || pathname === '/aurora' || /^\/ugy\d+/.test(pathname)
   return pathname === to || pathname.startsWith(`${to}/`)
 }
 
-const HEADER_CTA_LABEL = 'Newsletter'
-const HEADER_CTA_PATH = '/#newsletter'
+const HEADER_CTA_LABEL = 'Play'
+const HEADER_CTA_PATH = '/aurora'
 
 const baseAuthBtnStyle = {
   minWidth: '190px',

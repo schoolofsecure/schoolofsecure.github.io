@@ -53,7 +53,9 @@ export default function Contact() {
           <p className="landing-path-label">Contact</p>
           <h1 id="contact-title">Get in touch</h1>
           <p className="teams-contact-lead">
-            Questions about the site, the blog, or Aurora? Send a short message.
+            Questions about the site, the blog, or Aurora? Write to{' '}
+            <a href="mailto:hello@iterali.com">hello@iterali.com</a>
+            {' '}or send a short message.
           </p>
           <p className="teams-why-ask">
             Why we ask: name and email so we can reply.

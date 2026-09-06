@@ -400,6 +400,73 @@ header {
     font-weight: 600;
 }
 
+.landing-round-steps {
+    list-style: none;
+    margin: 0 auto 36px;
+    padding: 0;
+    max-width: 860px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+}
+
+.landing-round-steps li {
+    margin: 0;
+    padding: 0 10px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.landing-round-steps li:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    top: 15px;
+    left: calc(50% + 22px);
+    width: calc(100% - 20px);
+    height: 1px;
+    background: rgba(0, 229, 255, 0.28);
+    pointer-events: none;
+}
+
+.landing-round-step-num {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    margin-bottom: 12px;
+    border-radius: 999px;
+    border: 1px solid rgba(0, 229, 255, 0.5);
+    background: rgba(0, 229, 255, 0.08);
+    color: var(--neon);
+    font-family: Rajdhani, Inter, sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 1;
+    position: relative;
+    z-index: 1;
+}
+
+.landing-round-steps h3 {
+    margin: 0;
+    font-family: Rajdhani, Inter, sans-serif;
+    font-size: clamp(16px, 1.8vw, 19px);
+    font-weight: 700;
+    line-height: 1.25;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+}
+
+.landing-round-steps p {
+    margin: 6px 0 0;
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.5;
+}
+
 .landing-academy-about-copy {
     max-width: 42rem;
     margin: 0 auto 40px;
@@ -446,15 +513,19 @@ header {
 }
 
 .landing-academy-feature-icon {
-    align-self: flex-start;
+    align-self: center;
     display: flex;
-    width: 36px;
-    height: 36px;
-    margin-bottom: 14px;
-    color: rgba(0, 229, 255, 0.85);
+    width: 24px;
+    height: 24px;
+    margin-bottom: 12px;
+    color: rgba(230, 246, 255, 0.42);
     position: relative;
     z-index: 1;
-    transition: color 0.3s ease, transform 0.3s ease;
+    transition: color 0.3s ease;
+}
+
+.landing-academy-feature-icon--pause {
+    color: rgba(230, 246, 255, 0.62);
 }
 
 .landing-academy-feature-icon svg {
@@ -463,8 +534,11 @@ header {
 }
 
 .landing-academy-feature:hover .landing-academy-feature-icon {
-    color: var(--neon);
-    transform: scale(1.06);
+    color: rgba(230, 246, 255, 0.58);
+}
+
+.landing-academy-feature:hover .landing-academy-feature-icon--pause {
+    color: rgba(230, 246, 255, 0.78);
 }
 
 .landing-academy-feature-body {
@@ -656,34 +730,6 @@ header {
     font-weight: 600;
 }
 
-.landing-popular-arrows {
-    display: flex;
-    gap: 10px;
-    flex-shrink: 0;
-}
-
-.landing-popular-arrow {
-    width: 44px;
-    height: 44px;
-    border-radius: 999px;
-    border: 1px solid rgba(207, 230, 255, 0.25);
-    background: rgba(255, 255, 255, 0.04);
-    color: var(--ink);
-    font-size: 18px;
-    line-height: 1;
-    cursor: pointer;
-}
-
-.landing-popular-arrow:hover:not(:disabled) {
-    border-color: rgba(0, 229, 255, 0.45);
-    background: rgba(255, 255, 255, 0.08);
-}
-
-.landing-popular-arrow:disabled {
-    opacity: 0.35;
-    cursor: default;
-}
-
 .landing-popular-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -696,6 +742,21 @@ header {
     padding: 0 0 72px;
     text-align: center;
     scroll-margin-top: 96px;
+}
+
+.landing-boundaries {
+    max-width: 520px;
+    margin: 0 auto;
+    padding: 8px 0 72px;
+    text-align: center;
+}
+
+.boundaries-teaser-title {
+    margin: 0 0 12px;
+    font-family: Rajdhani, Inter, sans-serif;
+    font-size: clamp(22px, 3vw, 28px);
+    font-weight: 600;
+    letter-spacing: -0.02em;
 }
 
 .landing-newsletter-title {
@@ -1555,17 +1616,26 @@ header {
     margin: 0 0 16px;
 }
 
-.site-footer-linkedin {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--ink);
-    opacity: 0.85;
+.blog-aurora-cta {
+    margin: 36px 0 8px;
+    padding: 22px 20px;
+    border-radius: 14px;
+    border: 1px solid rgba(207, 230, 255, 0.14);
+    background: rgba(15, 22, 33, 0.5);
 }
 
-.site-footer-linkedin:hover {
-    color: var(--neon);
-    opacity: 1;
+.blog-aurora-cta h2 {
+    margin: 0 0 8px;
+    font-family: Rajdhani, Inter, sans-serif;
+    font-size: 22px;
+    font-weight: 600;
+}
+
+.blog-aurora-cta p {
+    margin: 0 0 16px;
+    color: var(--muted);
+    font-size: 15px;
+    line-height: 1.55;
 }
 
 .landing-footer {
@@ -1595,7 +1665,15 @@ header {
     justify-content: center;
     align-items: center;
     gap: 8px;
-    margin-bottom: 12px;
+    margin-bottom: 14px;
+}
+
+.site-footer-nav-group {
+    display: inline-flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
 }
 
 .site-footer-nav a {
@@ -1614,10 +1692,12 @@ header {
 }
 
 .site-footer-trust {
-    margin: 0;
-    font-size: 12px;
-    color: rgba(148, 163, 184, 0.75);
-    letter-spacing: 0.02em;
+    margin: 4px 0 0;
+    font-size: 11px;
+    font-weight: 400;
+    line-height: 1.45;
+    color: rgba(148, 163, 184, 0.48);
+    letter-spacing: 0.01em;
 }
 
 @media (max-width: 820px) {
@@ -1629,18 +1709,28 @@ header {
         grid-template-columns: 1fr;
     }
 
+    .landing-academy-feature-icon {
+        width: 20px;
+        height: 20px;
+    }
+
+    .landing-round-steps {
+        grid-template-columns: 1fr;
+        gap: 18px;
+        max-width: 22rem;
+    }
+
+    .landing-round-steps li:not(:last-child)::after {
+        display: none;
+    }
+
     .landing-popular-head {
-        flex-direction: column;
-        align-items: flex-start;
+        margin-bottom: 20px;
     }
 
     .landing-popular-title-line {
         font-size: clamp(30px, 9vw, 42px);
         line-height: 1.1;
-    }
-
-    .landing-popular-arrows {
-        align-self: flex-end;
     }
 
     .landing-popular-grid {
@@ -1663,6 +1753,15 @@ header {
     .landing-hero-support {
         font-size: 12px;
         margin-bottom: 28px;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        column-gap: 0.4em;
+        row-gap: 4px;
+    }
+
+    .landing-hero-support-dot {
+        padding: 0;
     }
 
     .landing-hero-ctas--centered {
@@ -1816,6 +1915,12 @@ header {
     .site-footer-nav {
         max-width: 100%;
         padding: 0 4px;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .site-footer-nav-sep {
+        display: none;
     }
 }
 
